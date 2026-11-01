@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://example.invalid/index.html</loc></url>
+  <url><loc>https://example.invalid/library.html</loc></url>
+</urlset>
+<!-- NOTE: replace example.invalid with the real deployed domain after Vercel deploy. -->

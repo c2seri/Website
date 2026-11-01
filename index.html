@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C2S — College to Service | Govt Exam Coaching, Test Series & Library, Bhubaneswar</title>
+<meta name="description" content="C2S — College to Service, Patrapada, Bhubaneswar. Competitive exams for govt jobs: BANK, SSC, Railway, UPSC, Defence, Teaching, OSSC, OSSSC, OPSC, Odisha Police. Test series, batches and a 24-hour library. Your Selection Our Mission.">
+<meta property="og:title" content="C2S — College to Service"><meta property="og:description" content="Competitive exams for govt jobs, test series and library in Patrapada, Bhubaneswar. Your Selection Our Mission."><meta property="og:type" content="website">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"EducationalOrganization","name":"C2S — College to Service","slogan":"Your Selection Our Mission","address":{"@type":"PostalAddress","streetAddress":"NH-16, opposite Sani Mandir, Patrapada","addressLocality":"Bhubaneswar","postalCode":"751019","addressCountry":"IN"},"telephone":"+91-9777481909"}</script>
+<link rel="stylesheet" href="styles.css"><script src="exams.js"></script><script src="app.js"></script></head>
+<body>
+<header class="topbar"><div><div class="logo">C2S <span>— College to Service</span></div><div class="tagline">Your Selection Our Mission • NH-16, opposite Sani Mandir, Patrapada, Bhubaneswar 751019 • 9777481909 / 9658177712</div></div>
+<button class="btn orange" onclick="location.href='library.html'">Library</button></header>
+<nav>
+<a href="#" data-nav="home" onclick="show('home');return false">Home</a>
+<a href="#" data-nav="exams" onclick="show('exams');return false">Exams</a>
+<a href="#" data-nav="tests" onclick="show('tests');return false">Test Series</a>
+<a href="#" data-nav="batches" onclick="show('batches');return false">Batches / Classes</a>
+<a href="#" data-nav="blog" onclick="show('blog');return false">Blog</a>
+<a href="#" data-nav="notices" onclick="show('notices');return false">Notices</a>
+<a href="#" data-nav="help" onclick="show('help');return false">Help / Contact</a>
+<a href="#" data-nav="login" onclick="show('login');return false">Main Login</a>
+<button class="primary" onclick="location.href='library.html'">Library</button>
+</nav>
+<main>
+<section data-view="home">
+<div class="card hero"><h1>Competitive Exams for Govt Jobs</h1>
+<p>Book &amp; study material, weekly offline test series, smart board teaching, A/C library with Wi-Fi, guidance till your selection, 10+ years experience teachers, mentorship by government employees.</p>
+<div><span class="pill">BANK</span><span class="pill">SSC</span><span class="pill">Railway</span><span class="pill">UPSC</span><span class="pill">Defence</span><span class="pill">Teaching</span><span class="pill">OSSC</span><span class="pill">OSSSC</span><span class="pill">OPSC</span><span class="pill">Odisha Police</span></div>
+<p><button class="btn" onclick="show('exams')">Explore Exams</button> <button class="btn orange" onclick="show('tests')">Take a Test Series</button> <button class="btn ghost" onclick="location.href='library.html'">Open Library</button></p>
+<div class="notice"><strong>Local demo note:</strong> In this static GitHub/Vercel version, logins, tests and library records are stored only in this browser (localStorage) until an external database is connected later. No live payment, WhatsApp or mail is connected.</div></div>
+<div class="card"><h2>Facilities</h2><p>24-hour library • Peaceful, spacious, fully A/C study spaces • Comfortable seating • Proper lighting • Premium interior • Good bus connectivity</p></div>
+</section>
+
+<section data-view="exams" class="hidden">
+<div class="card"><h2>Exams — search by any keyword</h2>
+<input id="examSearch" placeholder="Search: e.g. bank, police, odisha, clerk, graduate…" oninput="renderExams()">
+<select id="examLevel" onchange="renderExams()"><option value="">All levels</option><option>All India</option><option>Odisha State</option></select>
+<div id="examList"></div></div>
+</section>
+
+<section data-view="tests" class="hidden">
+<div class="card"><h2>Test Series — Available Tests</h2><div id="availTests"></div></div>
+<div class="card"><h2>✅ Given Tests</h2><p class="small">A test you have submitted moves here and cannot be retaken. Marks and solutions are shown here.</p><div id="givenTests"></div></div>
+</section>
+
+<section data-view="batches" class="hidden">
+<div class="card"><h2>Batches / Classes</h2><p>This section is kept for classes and videos to be added later. No schedule is invented here — staff will add batches, live classes and videos when ready.</p>
+<p class="small">Current batches: none listed yet. Contact C2S at 9777481909 / 9658177712 for batch enquiries.</p></div>
+</section>
+
+<section data-view="blog" class="hidden">
+<div class="card"><h2>Blog</h2><div id="blogList"></div>
+<h3>Add a post (staff, saved in this browser)</h3>
+<form onsubmit="addPost(event)"><input id="postTitle" placeholder="Post title" required><textarea id="postBody" placeholder="Post body" required></textarea><button class="btn">Publish locally</button></form></div>
+</section>
+
+<section data-view="notices" class="hidden">
+<div class="card"><h2>Notices / Notifications</h2>
+<ul><li>Library is open 24 hours, Patrapada, Bhubaneswar.</li><li>New test series are added under Test Series — given tests move to Given Tests with marks.</li><li>For fees, batch timings and exam dates, check the official notification or contact C2S — no dates or fees are invented on this site.</li></ul></div>
+</section>
+
+<section data-view="help" class="hidden">
+<div class="card"><h2>Help / Contact</h2>
+<p><strong>C2S — College to Service</strong><br>NH-16, opposite Sani Mandir, Patrapada, Bhubaneswar, Odisha 751019<br>Phones: 9777481909 / 9658177712<br>Tagline: Your Selection Our Mission</p>
+<p>Payment provider (chosen, not live): <strong>Cashfree</strong> — settings placeholder only, no API keys, merchant ID or live payment link on this static version.</p>
+<p>WhatsApp / Mail connections: placeholders only, not live. Messages shown as queued/not-connected, never fake-sent.</p></div>
+</section>
+
+<section data-view="login" class="hidden">
+<div class="card"><h2>Main Login — Coaching</h2><p class="small">Separate from Library Login. Browser-local demo data until an external database is connected later.</p>
+<div id="userBox"></div>
+<div class="grid2"><div><h3>Register</h3><form onsubmit="mainRegister(event)"><label>Name</label><input id="regName" required><label>Mobile</label><input id="regMobile" required><button class="btn">Register &amp; Get Registration ID</button></form></div>
+<div><h3>Login</h3><form onsubmit="mainLogin(event)"><label>Registration ID (e.g. C2S-00001)</label><input id="loginRegId" required><button class="btn">Login</button></form></div></div>
+<p id="loginMsg"></p></div>
+</section>
+</main>
+<footer>C2S — College to Service • Your Selection Our Mission • Patrapada, Bhubaneswar</footer>
+
+<!-- Exam lock window -->
+<div id="examLock" class="hidden">
+<div class="panel">
+<div id="instruct"><h2 id="lockTitle">Test</h2><p id="lockCalcNote"></p>
+<p><strong>Instructions:</strong> This is a locked exam window. Do not switch tabs, minimise, exit fullscreen, copy or paste. 3 violations auto-submit the test. Time-up also auto-submits. You can leave only via Submit / Exit confirmation, which submits the test.</p>
+<label><input type="checkbox" id="declare"> I declare I will follow the exam rules.</label><br><br>
+<button class="btn" onclick="beginExam()">Start Exam</button></div>
+<div id="testArea" class="hidden"><p id="timer">Time left: —</p>
+<div id="calcBox" class="calc hidden"><strong>Calculator (allowed for this exam)</strong><br><input id="calcOut" readonly><br>
+<button class="qbtn" onclick="calc('7')">7</button><button class="qbtn" onclick="calc('8')">8</button><button class="qbtn" onclick="calc('9')">9</button><button class="qbtn" onclick="calc('/')">/</button><br>
+<button class="qbtn" onclick="calc('4')">4</button><button class="qbtn" onclick="calc('5')">5</button><button class="qbtn" onclick="calc('6')">6</button><button class="qbtn" onclick="calc('*')">×</button><br>
+<button class="qbtn" onclick="calc('1')">1</button><button class="qbtn" onclick="calc('2')">2</button><button class="qbtn" onclick="calc('3')">3</button><button class="qbtn" onclick="calc('-')">−</button><br>
+<button class="qbtn" onclick="calc('0')">0</button><button class="qbtn" onclick="calc('.')">.</button><button class="qbtn" onclick="calc('=')">=</button><button class="qbtn" onclick="calc('+')">+</button><button class="qbtn" onclick="calc('C')">C</button></div>
+<div><strong>Rough scratch pad (all exams)</strong><br><textarea id="scratch" rows="3" placeholder="Rough work here — not submitted, not saved."></textarea></div>
+<div id="qBox"></div><div id="qNav"></div></div>
+</div></div>
+</body></html>

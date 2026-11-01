@@ -1,0 +1,139 @@
+/* C2S main site — static, browser-local only.
+   Analytics: empty configurable placeholder only. No live ID invented. */
+window.C2S_ANALYTICS_ID = ""; // staff: paste a real analytics ID here only
+const $ = s => document.querySelector(s);
+const store = {
+  get(k, d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch(e){ return d } },
+  set(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
+};
+/* Staff-configurable calculator flag per test. BANK=true, others=false. */
+const TESTS = [
+ {id:"BANK-MOCK-1", exam:"BANK", title:"BANK Mock Test 1", minutes:10, calculatorAllowed:true,
+  qs:[["What is 15% of 240?",["24","36","30","48"],1],["A train covers 180 km in 3 hours. Speed?",["50 km/h","60 km/h","70 km/h","40 km/h"],1],["Next: 2, 6, 12, 20, ?",["28","30","32","36"],1],["Synonym of 'Rapid'?",["Slow","Fast","Weak","Late"],1]]},
+ {id:"SSC-MOCK-1", exam:"SSC", title:"SSC Mock Test 1", minutes:10, calculatorAllowed:false,
+  qs:[["What is 12 × 8?",["84","96","92","108"],1],["Odd one out: 2, 3, 5, 9, 11",["2","9","5","11"],1],["If x + 5 = 12, x = ?",["5","6","7","8"],2],["Capital of Odisha?",["Cuttack","Bhubaneswar","Rourkela","Puri"],1]]},
+ {id:"RAILWAY-MOCK-1", exam:"RAILWAY", title:"Railway Mock Test 1", minutes:10, calculatorAllowed:false,
+  qs:[["What is 25% of 400?",["75","100","125","150"],1],["A train 120 m long crosses a pole in 6 s. Speed (m/s)?",["15","20","25","30"],1],["Which is a prime number?",["21","27","29","33"],2],["Water boils at?",["90°C","95°C","100°C","110°C"],2]]},
+ {id:"OSSC-MOCK-1", exam:"OSSC", title:"OSSC Mock Test 1", minutes:10, calculatorAllowed:false,
+  qs:[["What is 20% of 250?",["40","50","60","70"],1],["Odisha's state animal?",["Tiger","Sambar deer","Elephant","Leopard"],1],["Synonym of 'Brave'?",["Coward","Bold","Weak","Shy"],1],["144 ÷ 12 = ?",["10","11","12","13"],2]]},
+ {id:"UPSC-MOCK-1", exam:"UPSC", title:"UPSC Mock Test 1", minutes:10, calculatorAllowed:false,
+  qs:[["Which article deals with Fundamental Rights?",["Art. 12–35","Art. 36–51","Art. 52–78","Art. 1–4"],0],["First President of India?",["Dr. Rajendra Prasad","Dr. Kalam","Dr. Radhakrishnan","Zakir Husain"],0],["Photosynthesis occurs in?",["Root","Stem","Leaf","Flower"],2],["Ganga flows into?",["Arabian Sea","Bay of Bengal","Indian Ocean","Pacific"],1]]}
+];
+let currentUser = store.get("c2s_main_user", null);
+function show(view){
+  document.querySelectorAll("[data-view]").forEach(el=>el.classList.toggle("hidden", el.dataset.view!==view));
+  document.querySelectorAll("nav a[data-nav]").forEach(a=>a.classList.toggle("active", a.dataset.nav===view));
+  if(view==="exams") renderExams();
+  if(view==="tests") renderTests();
+  if(view==="blog") renderBlog();
+  window.scrollTo(0,0);
+}
+function renderExams(){
+  const q=($("#examSearch").value||"").toLowerCase(), lvl=$("#examLevel").value;
+  const list=EXAMS.filter(e=>(!lvl||e.level===lvl) && (!q || (e.name+" "+e.posts+" "+e.eligibility+" "+e.pattern+" "+e.syllabus+" "+e.state+" "+e.keywords).toLowerCase().includes(q)));
+  $("#examList").innerHTML = list.length ? list.map(e=>`
+   <div class="card"><span class="pill">${e.level}</span> <strong>${e.name}</strong>
+   <p class="small">${e.posts}</p>
+   <details><summary>Pattern</summary>${e.pattern}</details>
+   <details><summary>Syllabus overview</summary>${e.syllabus}</details>
+   <details><summary>Eligibility</summary>${e.eligibility}</details>
+   <details><summary>Posts</summary>${e.posts}</details>
+   <details><summary>State relation</summary>${e.state}</details>
+   <p class="small">Dates, fees and vacancy numbers are not listed here — check the official notification for that exam.</p>
+   <button class="btn ghost" onclick="show('tests')">Go to Test Series</button></div>`).join("") : "<p>No exam matches that search.</p>";
+}
+function renderTests(){
+  const given=store.get("c2s_main_given", []);
+  const givenIds=new Set(given.map(g=>g.testId));
+  const avail=TESTS.filter(t=>!givenIds.has(t.id));
+  $("#availTests").innerHTML = avail.length ? avail.map(t=>`
+    <div class="card"><strong>${t.title}</strong> <span class="pill">${t.exam}</span>
+    <p class="small">${t.minutes} minutes • ${t.qs.length} questions • Calculator: ${t.calculatorAllowed?"Allowed (shown in exam)":"Not allowed — scratch pad only"}</p>
+    <button class="btn" onclick="startTest('${t.id}')">Start Test</button></div>`).join("") : "<p>All available tests have been given — see Given Tests below.</p>";
+  $("#givenTests").innerHTML = given.length ? given.map(g=>`
+    <div class="card"><strong>${g.title}</strong> — ${g.score}/${g.total} marks
+    <p class="small">Correct ${g.correct} • Wrong ${g.wrong} • Skipped ${g.skipped} • Violations ${g.violations||0} • ${g.reason||"submitted"}</p>
+    <button class="btn ghost" onclick="reviewGiven('${g.testId}')">Marks & Solutions Dekho</button></div>`).join("") : "<p>No given tests yet.</p>";
+}
+function reviewGiven(id){
+  const g=store.get("c2s_main_given", []).find(x=>x.testId===id); if(!g) return;
+  const t=TESTS.find(x=>x.id===id);
+  alert(t.title+"\nScore: "+g.score+"/"+g.total+"\n\n"+t.qs.map((q,i)=>"Q"+(i+1)+": "+q[0]+"\nYour answer: "+(g.answers[i]==null?"Skipped":q[1][g.answers[i]])+"\nCorrect: "+q[1][q[2]]).join("\n\n"));
+}
+/* ---------- Main login (browser-local demo) ---------- */
+function mainRegister(e){
+  e.preventDefault();
+  const users=store.get("c2s_main_users", []);
+  const name=$("#regName").value.trim(), mobile=$("#regMobile").value.trim();
+  if(!name||!mobile) return alert("Name and mobile are required.");
+  const id="C2S-"+String(users.length+1).padStart(5,"0");
+  const u={id,name,mobile}; users.push(u); store.set("c2s_main_users",users); store.set("c2s_main_user",u);
+  $("#loginMsg").innerHTML="<span class='ok'>Registered. Your Registration ID is "+id+" (browser-local demo data until an external database is connected).</span>";
+  renderUser();
+}
+function mainLogin(e){
+  e.preventDefault();
+  const id=$("#loginRegId").value.trim();
+  const u=store.get("c2s_main_users", []).find(x=>x.id===id);
+  if(!u) return alert("Registration ID not found in this browser. Register first.");
+  store.set("c2s_main_user",u); renderUser();
+}
+function renderUser(){ $("#userBox").innerHTML = currentUser ? "" : ""; const u=store.get("c2s_main_user",null); $("#userBox").innerHTML = u ? "Logged in as <strong>"+u.name+"</strong> ("+u.id+") — browser-local demo. <button class='btn ghost' onclick='localStorage.removeItem(\"c2s_main_user\");location.reload()'>Logout</button>" : "Not logged in. Register or login to take tests (local demo)."; }
+/* ---------- Exam mode ---------- */
+let exam=null, violations=0, timerInt=null, secondsLeft=0;
+function startTest(id){
+  const u=store.get("c2s_main_user",null); if(!u) return alert("Please register/login (Main Login) first.");
+  const t=TESTS.find(x=>x.id===id); if(!t) return;
+  const given=store.get("c2s_main_given", []); if(given.some(g=>g.testId===id)) return alert("This test has already been given. See Given Tests.");
+  exam={test:t, answers:Array(t.qs.length).fill(null), idx:0};
+  $("#lockTitle").textContent=t.title+" — "+t.exam;
+  $("#lockCalcNote").textContent = t.calculatorAllowed ? "Calculator: Allowed for this exam." : "Calculator: Not allowed for this exam. Use the scratch pad below.";
+  $("#calcBox").classList.toggle("hidden", !t.calculatorAllowed);
+  $("#instruct").classList.remove("hidden"); $("#testArea").classList.add("hidden"); $("#examLock").classList.remove("hidden");
+}
+function beginExam(){
+  if(!$("#declare").checked) return alert("Please tick the declaration first.");
+  $("#instruct").classList.add("hidden"); $("#testArea").classList.remove("hidden");
+  document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(()=>{});
+  secondsLeft=exam.test.minutes*60; renderQ(); startTimer(); addLockListeners();
+}
+function renderQ(){
+  const t=exam.test, q=t.qs[exam.idx];
+  $("#qBox").innerHTML="<strong>Q"+(exam.idx+1)+" of "+t.qs.length+"</strong><p>"+q[0]+"</p>"+q[1].map((o,i)=>`<button class="opt ${exam.answers[exam.idx]===i?"sel":""}" onclick="answer(${i})">${o}</button>`).join("");
+  $("#qNav").innerHTML=`<button class="qbtn" onclick="move(-1)">Previous</button> <button class="qbtn" onclick="move(1)">Next</button> <button class="btn" onclick="confirmSubmit('submitted')">Submit Test</button> <button class="btn danger" onclick="confirmSubmit('exited')">Exit</button>`;
+}
+function answer(i){ exam.answers[exam.idx]=i; renderQ(); }
+function move(d){ exam.idx=Math.max(0,Math.min(exam.test.qs.length-1, exam.idx+d)); renderQ(); }
+function startTimer(){ clearInterval(timerInt); timerInt=setInterval(()=>{ secondsLeft--; $("#timer").textContent="Time left: "+Math.floor(secondsLeft/60)+":"+String(secondsLeft%60).padStart(2,"0"); if(secondsLeft<=0) submitExam("time-up"); },1000); }
+function addLockListeners(){
+  document.addEventListener("visibilitychange", onViolation);
+  window.addEventListener("blur", onViolation);
+  document.addEventListener("fullscreenchange", onViolation);
+  document.addEventListener("copy", e=>e.preventDefault());
+  document.addEventListener("paste", e=>e.preventDefault());
+  document.addEventListener("contextmenu", e=>e.preventDefault());
+}
+function onViolation(){
+  if(!exam || document.getElementById("examLock").classList.contains("hidden")) return;
+  if(document.hidden || !document.fullscreenElement){ violations++; alert("Violation "+violations+"/3 — leaving the exam window is not allowed."); if(violations>=3) submitExam("auto-submitted (3 violations)"); }
+}
+function confirmSubmit(reason){ if(confirm("Are you sure? This will submit the test.")) submitExam(reason); }
+function submitExam(reason){
+  clearInterval(timerInt); document.exitFullscreen && document.exitFullscreen().catch(()=>{});
+  const t=exam.test; let correct=0, wrong=0, skipped=0;
+  exam.answers.forEach((a,i)=>{ if(a==null) skipped++; else if(a===t.qs[i][2]) correct++; else wrong++; });
+  const given=store.get("c2s_main_given", []);
+  given.push({testId:t.id,title:t.title,score:correct,total:t.qs.length,correct,wrong,skipped,violations,reason,answers:exam.answers});
+  store.set("c2s_main_given",given);
+  $("#examLock").classList.add("hidden"); exam=null;
+  alert("Test submitted. Score: "+correct+"/"+t.qs.length);
+  show("tests"); renderTests();
+}
+function calc(op){ const el=$("#calcOut"); try{ if(op==="C") el.value=""; else if(op==="=") el.value=eval(el.value.replace(/[^0-9+\-*/.() ]/g,""))||""; else el.value+=op; }catch(e){ el.value="Error"; } }
+/* ---------- Blog / Notices (browser-local) ---------- */
+function renderBlog(){
+  const posts=store.get("c2s_main_blog", [{title:"Welcome to C2S",body:"Test series, exams and library updates will appear here."},{title:"Library open 24 hours",body:"C2S Library, Patrapada, Bhubaneswar — peaceful, A/C study space."}]);
+  $("#blogList").innerHTML=posts.map(p=>`<div class="card"><strong>${p.title}</strong><p>${p.body}</p></div>`).join("");
+}
+function addPost(e){ e.preventDefault(); const posts=store.get("c2s_main_blog", []); posts.unshift({title:$("#postTitle").value,body:$("#postBody").value}); store.set("c2s_main_blog",posts); renderBlog(); e.target.reset(); }
+document.addEventListener("DOMContentLoaded", ()=>{ renderUser(); renderExams(); renderTests(); renderBlog(); show("home"); });
