@@ -47,9 +47,19 @@ function libAdmit(e){
 function libLogin(e){
   e.preventDefault();
   const m = store.get("c2s_lib_members", []).find(x=>x.mobile===$("#libMobile").value && x.regNo===$("#libRegNo").value);
-  if(!m) return alert("Library member not found in this browser. Complete Quick Admission first.");
+  if(!m) return alert("Library member not found in this browser. Complete Quick Admission first, or use the Demo Library Login below.");
   store.set("c2s_lib_user", m);
   $("#libMsg").innerHTML = "<span class='ok'>Library logged in: "+m.name+" ("+m.regNo+"), Shift "+m.shift+", Pending ₹"+m.pending+"</span>";
+  renderAll();
+}
+/* Demo Library Login — browser-local demo only, no password, no real account. */
+function demoLibLogin(){
+  const members = store.get("c2s_lib_members", []);
+  const demo = {regNo:"C2SLIB-00001", name:"Demo Library Member", mobile:"9000000001", shift:"Afternoon", from:"", to:"", examPref:"", total:1000, paid:1000, pending:0, mode:"Demo", date:new Date().toISOString().slice(0,10)};
+  if(!members.some(x=>x.regNo===demo.regNo)){ members.push(demo); store.set("c2s_lib_members", members); }
+  store.set("c2s_lib_user", demo);
+  const msg = document.getElementById("libMsg");
+  if(msg) msg.innerHTML = "<span class='ok'>Demo Library login active: "+demo.name+" ("+demo.regNo+"), Mobile "+demo.mobile+", Shift "+demo.shift+" — browser-local demo only.</span>";
   renderAll();
 }
 function renderSeats(){
