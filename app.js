@@ -75,10 +75,18 @@ function mainLogin(e){
   e.preventDefault();
   const id=$("#loginRegId").value.trim();
   const u=store.get("c2s_main_users", []).find(x=>x.id===id);
-  if(!u) return alert("Registration ID not found in this browser. Register first.");
+  if(!u) return alert("Registration ID not found in this browser. Register first, or use a demo login below.");
   store.set("c2s_main_user",u); renderUser();
 }
-function renderUser(){ $("#userBox").innerHTML = currentUser ? "" : ""; const u=store.get("c2s_main_user",null); $("#userBox").innerHTML = u ? "Logged in as <strong>"+u.name+"</strong> ("+u.id+") — browser-local demo. <button class='btn ghost' onclick='localStorage.removeItem(\"c2s_main_user\");location.reload()'>Logout</button>" : "Not logged in. Register or login to take tests (local demo)."; }
+/* Demo logins shown on the Main Login page — browser-local demo only, no password, no real account. */
+function demoLogin(role){
+  const users=store.get("c2s_main_users", []);
+  const demo = role==="admin" ? {id:"C2S-ADMIN-01", name:"C2S Admin", mobile:"9777481909", role:"admin"} : {id:"C2S-00001", name:"Demo Student", mobile:"9000000000", role:"student"};
+  if(!users.some(x=>x.id===demo.id)){ users.push(demo); store.set("c2s_main_users",users); }
+  store.set("c2s_main_user",demo); renderUser();
+  $("#loginMsg").innerHTML="<span class='ok'>Demo "+role+" login active: "+demo.name+" ("+demo.id+") — browser-local demo only.</span>";
+}
+function renderUser(){ $("#userBox").innerHTML = currentUser ? "" : ""; const u=store.get("c2s_main_user",null); $("#userBox").innerHTML = u ? "Logged in as <strong>"+u.name+"</strong> ("+u.id+")"+(u.role ? " — Role: "+u.role : "")+" — browser-local demo. <button class='btn ghost' onclick='localStorage.removeItem(\"c2s_main_user\");location.reload()'>Logout</button>" : "Not logged in. Register or login to take tests (local demo)."; }
 /* ---------- Exam mode ---------- */
 let exam=null, violations=0, timerInt=null, secondsLeft=0;
 function startTest(id){
