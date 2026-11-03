@@ -25,6 +25,7 @@ function show(view){
   if(view==="exams") renderExams();
   if(view==="tests") renderTests();
   if(view==="blog") renderBlog();
+  if(view==="notices") renderNotices();
   window.scrollTo(0,0);
 }
 function filterExam(level, id){
@@ -34,30 +35,78 @@ function filterExam(level, id){
   renderExams(id);
 }
 function renderExams(onlyId){
-  const q=($("#examSearch").value||"").toLowerCase(), lvl=$("#examLevel").value;
-  let list=EXAMS.filter(e=>(!lvl||e.level===lvl) && (!q || (e.name+" "+e.posts+" "+e.eligibility+" "+e.pattern+" "+e.syllabus+" "+e.state+" "+e.keywords).toLowerCase().includes(q)));
-  if(onlyId) list=list.filter(e=>e.id===onlyId);
-  $("#examList").innerHTML = list.length ? list.map(e=>`
-   <div class="card" style="border-left:5px solid ${e.level==='Odisha State'?'var(--c2s-emerald-600)':'var(--c2s-blue-700)'};">
-     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-       <span class="pill ${e.level==='Odisha State'?'green':'blue'}">${e.level}</span>
-       <span class="small" style="font-weight:700;color:var(--c2s-slate-600);">${e.id} Track</span>
-     </div>
-     <h3 style="font-size:22px;color:var(--c2s-navy-800);margin:0 0 6px;">${e.name}</h3>
-     <p style="font-size:14px;color:var(--c2s-slate-600);margin-bottom:14px;"><strong>Target Posts:</strong> ${e.posts}</p>
-     <details open><summary>📋 Exam Pattern</summary><p style="margin:8px 0 4px;font-size:14px;color:var(--c2s-slate-700);">${e.pattern}</p></details>
-     <details><summary>📖 Syllabus Overview</summary><p style="margin:8px 0 4px;font-size:14px;color:var(--c2s-slate-700);">${e.syllabus}</p></details>
-     <details><summary>🎓 Eligibility &amp; Criteria</summary><p style="margin:8px 0 4px;font-size:14px;color:var(--c2s-slate-700);">${e.eligibility}</p></details>
-     <details><summary>💼 Posts Detail</summary><p style="margin:8px 0 4px;font-size:14px;color:var(--c2s-slate-700);">${e.posts}</p></details>
-     <details><summary>🏛️ State Relation &amp; Cadre</summary><p style="margin:8px 0 4px;font-size:14px;color:var(--c2s-slate-700);">${e.state}</p></details>
-     <div class="preview" style="margin:14px 0;padding:10px 14px;font-size:12.5px;">
-       ℹ️ <strong>Official Notice Disclaimer:</strong> Specific notification dates, exam dates, application fees, and vacancy counts are NOT listed here — check the official notification or contact C2S desk.
-     </div>
-     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
-       <button class="btn orange" onclick="show('tests')">Practice Test Series →</button>
-       <button class="btn ghost" onclick="show('batches')">Enquire for Batches</button>
-     </div>
-   </div>`).join("") : "<div class='card'><p>No exam matches that search. Try searching for 'bank', 'police', 'ssc', 'odisha', 'clerk', or 'railway'.</p></div>";
+  const q = ($("#examSearch")?.value || "").toLowerCase();
+  const lvl = $("#examLevel")?.value || "";
+
+  let list = EXAMS.filter(e => {
+    const matchLvl = !lvl || e.level === lvl;
+    const matchQuery = !q || (
+      e.name + " " + e.posts + " " + e.eligibility + " " + e.pattern + " " +
+      e.syllabus + " " + e.state + " " + (e.keywords || "") + " " +
+      (e.subExams ? e.subExams.join(" ") : "")
+    ).toLowerCase().includes(q);
+    return matchLvl && matchQuery;
+  });
+
+  if (onlyId) list = list.filter(e => e.id === onlyId);
+
+  const container = $("#examList");
+  if (!container) return;
+
+  container.innerHTML = list.length ? list.map(e => `
+    <div class="card tilt-3d" style="border-left:6px solid ${e.level === 'Odisha State' ? 'var(--c2s-emerald-600)' : 'var(--c2s-blue-700)'};margin-bottom:24px;border-radius:18px;padding:26px;box-shadow:var(--c2s-shadow-sm);">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:26px;">${e.icon || '🏛️'}</span>
+          <span class="pill ${e.level === 'Odisha State' ? 'green' : 'blue'}" style="font-weight:800;">${e.level}</span>
+        </div>
+        <span class="pill" style="font-size:12px;font-weight:750;background:#f1f5f9;color:var(--c2s-navy-900);">
+          ${e.category || 'Govt Exam'}
+        </span>
+      </div>
+
+      <h3 style="font-size:24px;font-weight:900;color:var(--c2s-navy-900);margin:0 0 6px;letter-spacing:-0.02em;">${e.name}</h3>
+
+      <!-- Sub-Exams Covered Pills -->
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
+        ${(e.subExams || []).map(sub => `<span style="background:#f8fafc;border:1px solid #e2e8f0;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;color:var(--c2s-slate-700);">${sub}</span>`).join('')}
+      </div>
+
+      <div style="background:#f8fafc;padding:12px 16px;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:16px;font-size:13.5px;color:var(--c2s-slate-700);">
+        <strong style="color:var(--c2s-navy-900);">💼 Key Target Posts:</strong> ${e.posts}
+      </div>
+
+      <!-- Collapsible Detailed Sections -->
+      <details open style="margin-bottom:8px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;">
+        <summary style="font-weight:800;color:var(--c2s-navy-900);cursor:pointer;font-size:14.5px;">📋 Multi-Stage Selection Pattern</summary>
+        <p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:var(--c2s-slate-700);white-space:pre-line;">${e.pattern}</p>
+      </details>
+
+      <details style="margin-bottom:8px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;">
+        <summary style="font-weight:800;color:var(--c2s-navy-900);cursor:pointer;font-size:14.5px;">📖 Comprehensive Subject-Wise Syllabus</summary>
+        <p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:var(--c2s-slate-700);white-space:pre-line;">${e.syllabus}</p>
+      </details>
+
+      <details style="margin-bottom:8px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;">
+        <summary style="font-weight:800;color:var(--c2s-navy-900);cursor:pointer;font-size:14.5px;">🎓 Eligibility Criteria &amp; Age Standards</summary>
+        <p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:var(--c2s-slate-700);white-space:pre-line;">${e.eligibility}</p>
+      </details>
+
+      <details style="margin-bottom:14px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;">
+        <summary style="font-weight:800;color:var(--c2s-navy-900);cursor:pointer;font-size:14.5px;">🏛️ State Relation, Cadre &amp; Authority</summary>
+        <p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:var(--c2s-slate-700);white-space:pre-line;">${e.state}</p>
+      </details>
+
+      <div class="preview" style="margin:12px 0 16px;padding:10px 14px;font-size:12px;line-height:1.5;">
+        ℹ️ <strong>Official Notification Policy:</strong> Specific notification dates, exam dates, application fees, and vacancy counts are subject to official notifications issued by respective boards. C2S does not publish unverified or invented dates.
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn orange" onclick="show('tests')">Practice Test Series →</button>
+        <button class="btn ghost" onclick="show('batches')">Smart Board Batch Schedule</button>
+      </div>
+    </div>
+  `).join('') : "<div class='card' style='text-align:center;padding:40px;'><p style='font-size:16px;color:var(--c2s-slate-600);'>No exam matches that keyword. Try searching for 'bank', 'police', 'ssc', 'odisha', 'cgl', 'ri', or 'railway'.</p></div>";
 }
 function renderTests(){
   const given=store.get("c2s_main_given", []);
@@ -233,8 +282,52 @@ function submitExam(reason){
 }
 function calc(op){ const el=$("#calcOut"); try{ if(op==="C") el.value=""; else if(op==="=") el.value=eval(el.value.replace(/[^0-9+\-*/.() ]/g,""))||""; else el.value+=op; }catch(e){ el.value="Error"; } }
 function renderBlog(){
-  const posts=store.get("c2s_main_blog", [{title:"Welcome to C2S",body:"Test series, exams and library updates will appear here."},{title:"Library open 24 hours",body:"C2S Library, Patrapada, Bhubaneswar — peaceful, A/C study space."}]);
-  $("#blogList").innerHTML=posts.map(p=>`<div class="card"><strong>${p.title}</strong><p>${p.body}</p></div>`).join("");
+  const customPosts = store.get("c2s_main_blog", []);
+  const allBlogs = typeof STRATEGY_BLOGS !== 'undefined' ? [...STRATEGY_BLOGS, ...customPosts] : customPosts;
+
+  const container = $("#blogList");
+  if (!container) return;
+
+  container.innerHTML = allBlogs.map(b => `
+    <div class="card tilt-3d" style="border-radius:16px;margin-bottom:20px;padding:24px;border-left:5px solid var(--c2s-orange-500);box-shadow:var(--c2s-shadow-sm);">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+        <span class="pill" style="font-weight:800;background:#fff7ed;color:var(--c2s-orange-600);border-color:#fed7aa;">
+          🎯 ${b.examId || 'EXAM STRATEGY'}
+        </span>
+        <span class="small" style="color:var(--c2s-slate-500);font-weight:600;">${b.date || 'Updated'} • By ${b.author || 'C2S Mentors'}</span>
+      </div>
+
+      <h3 style="font-size:20px;font-weight:900;color:var(--c2s-navy-900);margin:0 0 8px;line-height:1.35;">${b.title}</h3>
+      <p style="font-size:14px;color:var(--c2s-slate-600);line-height:1.6;margin-bottom:12px;"><strong>Summary:</strong> ${b.summary || ''}</p>
+
+      <div style="background:#f8fafc;padding:14px 16px;border-radius:12px;border:1px solid #e2e8f0;font-size:13.5px;line-height:1.7;color:var(--c2s-slate-700);">
+        ${b.content || b.body || ''}
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderNotices(){
+  const list = typeof EXAM_NOTIFICATIONS !== 'undefined' ? EXAM_NOTIFICATIONS : [];
+  const container = $("#noticesListContainer");
+  if (!container) return;
+
+  container.innerHTML = list.map(n => `
+    <div class="card tilt-3d" style="border-radius:16px;margin-bottom:16px;padding:22px;border-left:5px solid ${n.category === 'Odisha State' ? 'var(--c2s-emerald-600)' : 'var(--c2s-blue-700)'};box-shadow:var(--c2s-shadow-sm);">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+        <span class="pill ${n.category === 'Odisha State' ? 'green' : 'blue'}" style="font-weight:800;">${n.tag}</span>
+        <span class="small" style="font-weight:700;color:var(--c2s-slate-600);">${n.date}</span>
+      </div>
+
+      <h3 style="font-size:19px;font-weight:900;color:var(--c2s-navy-900);margin:0 0 6px;">${n.title}</h3>
+      <p style="font-size:14px;color:var(--c2s-slate-700);line-height:1.6;margin-bottom:10px;">${n.summary}</p>
+
+      <div style="background:#f8fafc;padding:10px 14px;border-radius:10px;border:1px solid #e2e8f0;font-size:13px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+        <span>🎓 <strong>Eligibility:</strong> ${n.eligibility}</span>
+        <span style="color:var(--c2s-blue-700);font-weight:750;">${n.officialStatus}</span>
+      </div>
+    </div>
+  `).join("");
 }
 function addPost(e){ e.preventDefault(); const posts=store.get("c2s_main_blog", []); posts.unshift({title:$("#postTitle").value,body:$("#postBody").value}); store.set("c2s_main_blog",posts); renderBlog(); e.target.reset(); }
 document.addEventListener("DOMContentLoaded", ()=>{ renderUser(); renderExams(); renderTests(); renderBlog(); show("home"); });

@@ -81,75 +81,111 @@
             Exams <span class="nav-arrow">▾</span>
           </button>
           <div class="mega-menu">
-            <div class="mega-grid">
-              <!-- Col 1: All India Exams -->
+            <div class="mega-grid" style="grid-template-columns: repeat(4, 1fr) 1.2fr; gap: 16px;">
+              <!-- Col 1: Banking & Insurance -->
               <div>
-                <div class="mega-col-title">🇮🇳 All India Exams</div>
+                <div class="mega-col-title">🏦 Banking &amp; Insurance</div>
                 <div class="mega-link-list">
                   <button class="mega-link" onclick="filterExam('All India','BANK');closeMobileNav();">
                     <span class="mega-link-icon">🏦</span>
-                    <div><strong>BANK Exams</strong><span class="mega-link-desc">IBPS, SBI, Clerk, PO, SO</span></div>
+                    <div><strong>IBPS / SBI PO &amp; Clerk</strong><span class="mega-link-desc">Prelims &amp; Mains Strategy</span></div>
                   </button>
-                  <button class="mega-link" onclick="filterExam('All India','SSC');closeMobileNav();">
-                    <span class="mega-link-icon">📋</span>
-                    <div><strong>SSC Exams</strong><span class="mega-link-desc">CGL, CHSL, GD, MTS</span></div>
+                  <button class="mega-link" onclick="filterExam('All India','BANK');closeMobileNav();">
+                    <span class="mega-link-icon">💼</span>
+                    <div><strong>IBPS RRB Officer &amp; Assistant</strong><span class="mega-link-desc">Odisha Gramya Bank</span></div>
                   </button>
-                  <button class="mega-link" onclick="filterExam('All India','RAILWAY');closeMobileNav();">
-                    <span class="mega-link-icon">🚆</span>
-                    <div><strong>Railway Exams</strong><span class="mega-link-desc">NTPC, ALP, Group D, RRB</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('All India','UPSC');closeMobileNav();">
+                  <button class="mega-link" onclick="filterExam('All India','BANK');closeMobileNav();">
                     <span class="mega-link-icon">🏛️</span>
-                    <div><strong>UPSC Exams</strong><span class="mega-link-desc">Civil Services (IAS, IPS, IFS)</span>
-                    </div>
+                    <div><strong>RBI Grade B &amp; Assistant</strong><span class="mega-link-desc">Regulatory Bodies</span></div>
                   </button>
-                  <button class="mega-link" onclick="filterExam('All India','DEFENCE');closeMobileNav();">
-                    <span class="mega-link-icon">🛡️</span>
-                    <div><strong>Defence Exams</strong><span class="mega-link-desc">NDA, CDS, AFCAT entries</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('All India','TEACHING');closeMobileNav();">
-                    <span class="mega-link-icon">📚</span>
-                    <div><strong>Teaching Exams</strong><span class="mega-link-desc">CTET, TGT, PGT, PRT</span></div>
+                  <button class="mega-link" onclick="filterExam('All India','BANK');closeMobileNav();">
+                    <span class="mega-link-icon">📄</span>
+                    <div><strong>LIC AAO &amp; Insurance</strong><span class="mega-link-desc">National Insurers</span></div>
                   </button>
                 </div>
               </div>
 
-              <!-- Col 2: Odisha State Exams -->
+              <!-- Col 2: Staff Selection Commission (SSC) -->
+              <div>
+                <div class="mega-col-title">📋 Staff Selection (SSC)</div>
+                <div class="mega-link-list">
+                  <button class="mega-link" onclick="filterExam('All India','SSC');closeMobileNav();">
+                    <span class="mega-link-icon">⭐</span>
+                    <div><strong>SSC CGL (Graduate Level)</strong><span class="mega-link-desc">ASO, Income Tax, Excise</span></div>
+                  </button>
+                  <button class="mega-link" onclick="filterExam('All India','SSC');closeMobileNav();">
+                    <span class="mega-link-icon">📋</span>
+                    <div><strong>SSC CHSL (10+2 Level)</strong><span class="mega-link-desc">DEO, Postal Assistant</span></div>
+                  </button>
+                  <button class="mega-link" onclick="filterExam('All India','SSC');closeMobileNav();">
+                    <span class="mega-link-icon">🛡️</span>
+                    <div><strong>SSC GD Constable &amp; CPO SI</strong><span class="mega-link-desc">Central Armed Police</span></div>
+                  </button>
+                  <button class="mega-link" onclick="filterExam('All India','SSC');closeMobileNav();">
+                    <span class="mega-link-icon">📝</span>
+                    <div><strong>SSC MTS &amp; Havaldar</strong><span class="mega-link-desc">Non-Technical Staff</span></div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Col 3: Railways, UPSC & Defence -->
+              <div>
+                <div class="mega-col-title">🚆 Railway, UPSC &amp; Defence</div>
+                <div class="mega-link-list">
+                  <button class="mega-link" onclick="filterExam('All India','RAILWAY');closeMobileNav();">
+                    <span class="mega-link-icon">🚆</span>
+                    <div><strong>RRB NTPC, ALP &amp; Group D</strong><span class="mega-link-desc">Station Master, Loco Pilot</span></div>
+                  </button>
+                  <button class="mega-link" onclick="filterExam('All India','UPSC');closeMobileNav();">
+                    <span class="mega-link-icon">🏛️</span>
+                    <div><strong>UPSC Civil Services</strong><span class="mega-link-desc">IAS, IPS, IFS (GS + CSAT)</span></div>
+                  </button>
+                  <button class="mega-link" onclick="filterExam('All India','DEFENCE');closeMobileNav();">
+                    <span class="mega-link-icon">⚔️</span>
+                    <div><strong>NDA, CDS &amp; AFCAT</strong><span class="mega-link-desc">Army, Navy, Air Force + SSB</span></div>
+                  </button>
+                  <button class="mega-link" onclick="filterExam('All India','TEACHING');closeMobileNav();">
+                    <span class="mega-link-icon">📚</span>
+                    <div><strong>CTET, KVS &amp; NVS</strong><span class="mega-link-desc">PRT, TGT, PGT Teaching</span></div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Col 4: Odisha State Recruitments -->
               <div>
                 <div class="mega-col-title">🏛️ Odisha State Exams</div>
                 <div class="mega-link-list">
                   <button class="mega-link" onclick="filterExam('Odisha State','OSSC');closeMobileNav();">
                     <span class="mega-link-icon">📝</span>
-                    <div><strong>OSSC Exams</strong><span class="mega-link-desc">Odisha Group B &amp; C Posts</span>
-                    </div>
+                    <div><strong>OSSC CGL &amp; Group B/C</strong><span class="mega-link-desc">Auditor, Supplies, Excise</span></div>
                   </button>
                   <button class="mega-link" onclick="filterExam('Odisha State','OSSSC');closeMobileNav();">
                     <span class="mega-link-icon">📋</span>
-                    <div><strong>OSSSC Exams</strong><span class="mega-link-desc">Subordinate Group C/D Posts</span>
-                    </div>
+                    <div><strong>OSSSC CRE (RI, ARI, Amin)</strong><span class="mega-link-desc">Forester &amp; Forest Guard</span></div>
                   </button>
                   <button class="mega-link" onclick="filterExam('Odisha State','OPSC');closeMobileNav();">
                     <span class="mega-link-icon">🏛️</span>
-                    <div><strong>OPSC Exams</strong><span class="mega-link-desc">Odisha Civil Service (OAS), Group
-                        A/B</span></div>
+                    <div><strong>OPSC OAS (Odisha Civil Services)</strong><span class="mega-link-desc">OAS, OFS, OPS Group A/B</span></div>
                   </button>
                   <button class="mega-link" onclick="filterExam('Odisha State','ODISHA-POLICE');closeMobileNav();">
                     <span class="mega-link-icon">👮</span>
-                    <div><strong>Odisha Police</strong><span class="mega-link-desc">Constable, Sub-Inspector (SI)</span>
-                    </div>
+                    <div><strong>Odisha Police Constable &amp; SI</strong><span class="mega-link-desc">Written + 1.6km PET Prep</span></div>
                   </button>
                 </div>
               </div>
 
-              <!-- Col 3: Search & Guidance Card -->
-              <div class="mega-featured-card">
-                <h4>🎯 Exam Track Guide</h4>
-                <p>Explore full eligibility, exam pattern, posts &amp; syllabus overview for all 10 tracks with instant
-                  keyword search.</p>
-                <button class="btn orange" style="padding:8px 14px;font-size:13px;"
-                  onclick="show('exams');closeMobileNav();">Search All 10 Tracks →</button>
-                <p class="small" style="color:#94a3b8;font-size:11px;margin:0;">* Official dates, fees &amp; vacancies
-                  as per official notifications.</p>
+              <!-- Col 5: Featured Authority Card -->
+              <div class="mega-featured-card" style="background:linear-gradient(135deg, #0a2540 0%, #1e3a8a 100%);color:#fff;border-radius:14px;padding:20px;">
+                <h4 style="color:#fdba74;font-size:16px;margin:0 0 8px;">🎯 All India &amp; Odisha Exam Directory</h4>
+                <p style="font-size:12.5px;color:#cbd5e1;line-height:1.5;margin:0 0 14px;">
+                  Explore authentic multi-stage exam patterns, subject syllabi, eligibility criteria, and posts for all major government recruitments.
+                </p>
+                <button class="btn orange" style="padding:9px 16px;font-size:13px;width:100%;font-weight:750;" onclick="show('exams');closeMobileNav();">
+                  Explore Full Directory →
+                </button>
+                <p class="small" style="color:#94a3b8;font-size:11px;margin:10px 0 0;line-height:1.4;">
+                  * C2S Patrapada Front Desk: 9777481909
+                </p>
               </div>
             </div>
           </div>
@@ -1020,26 +1056,25 @@
       </div>
     </section>
 
-    <!-- VIEW: Notices -->
+    <!-- VIEW: Notices & Live Exam Notifications -->
     <section data-view="notices" class="hidden">
-      <div class="card">
+      <div class="card" style="border-radius:20px;padding:32px;">
         <div class="section-header" style="margin-top:0;">
-          <span class="section-tag">OFFICIAL NOTIFICATIONS</span>
-          <h2>Notices / Notifications</h2>
-          <p>Official announcements from C2S administration.</p>
+          <span class="section-tag">LIVE EXAM ALERTS &amp; OFFICIAL NOTIFICATIONS</span>
+          <h2>Latest Govt Job Notifications &amp; C2S Alerts</h2>
+          <p>Real-time updates on active recruitment drives across Odisha State &amp; Central Government boards (OSSC, OSSSC, OPSC, Odisha Police, IBPS, SSC, Railway, UPSC). Zero unverified dates.</p>
           <div class="section-divider"></div>
         </div>
-        <ul style="line-height:1.8;color:var(--c2s-slate-700);">
-          <li><strong>24-Hour Premium Study Library:</strong> Fully open and operational at NH-16, Opposite Sani Mandir,
-            Patrapada, Bhubaneswar.</li>
-          <li><strong>Weekly Offline Test Series:</strong> Conducted under simulated exam conditions at the Patrapada
-            coaching centre.</li>
-          <li><strong>Official Dates &amp; Fees Policy:</strong> Dates, fees and vacancy schedules are subject to
-            official notifications released by IBPS, SSC, RRB, UPSC, OSSC, OSSSC, OPSC and Odisha Police. C2S does not
-            publish unverified or invented dates.</li>
-          <li><strong>Admissions:</strong> Visit C2S Patrapada or call <strong>9777481909</strong> /
-            <strong>9658177712</strong> for batch enrolments.</li>
-        </ul>
+
+        <!-- Container for Live Dynamic Notifications -->
+        <div id="noticesListContainer"></div>
+
+        <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:18px 22px;margin-top:24px;">
+          <strong style="color:var(--c2s-navy-900);font-size:15px;">📢 Official Verification Disclaimer:</strong>
+          <p class="small" style="color:var(--c2s-slate-700);margin:6px 0 0;line-height:1.6;">
+            All official examination schedules, application deadlines, vacancy revisions and admit cards are subject to gazette notifications released by respective exam conducting bodies. For offline mock tests and batch admissions, contact C2S Front Desk at NH-16 Patrapada, Bhubaneswar (<strong>9777481909</strong> / <strong>9658177712</strong>).
+          </p>
+        </div>
       </div>
     </section>
 
