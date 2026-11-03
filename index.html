@@ -58,15 +58,28 @@
   <header class="site-header">
     <div class="container header-inner">
       <!-- Brand (NOT a link to home, as specified in brief) -->
-      <div class="brand" title="C2S — College to Service">
-        <span class="logo-badge" role="img" aria-label="C2S official logo"></span>
-        <div class="brand-text">
-          <div class="brand-title">
-            <span class="brand-blue">C2S</span>
-            <span class="brand-sub">College to Service</span>
+      <div class="brand-cluster" style="display:flex;align-items:center;gap:16px;">
+        <!-- Brand (NOT a link to home, as specified in brief) -->
+        <div class="brand" title="C2S — College to Service">
+          <span class="logo-badge" role="img" aria-label="C2S official logo"></span>
+          <div class="brand-text">
+            <div class="brand-title">
+              <span class="brand-blue">C2S</span>
+              <span class="brand-sub">College to Service</span>
+            </div>
+            <span class="brand-tagline">Your Selection Our Mission</span>
           </div>
-          <span class="brand-tagline">Your Selection Our Mission</span>
         </div>
+
+        <!-- Prominent Library Badge Button Right Next to Logo on Left -->
+        <a href="library.html" class="header-library-pill" title="Open 24-Hour Premium Study Sanctuary">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2l10 5H2l10-5z"/></svg>
+          <span class="header-library-pill-text">
+            <strong>24h Study Library</strong>
+            <small>Patrapada Centre</small>
+          </span>
+          <span class="header-library-live-tag">LIVE</span>
+        </a>
       </div>
 
       <!-- Mobile Hamburger Toggle -->
@@ -191,71 +204,72 @@
           </div>
         </div>
 
-        <!-- 2. Test Series (Dropdown) -->
+        <!-- 2. Test Series & Pass (Dropdown) -->
         <div class="nav-item">
           <button class="nav-link" data-nav="tests" onclick="toggleDropdown(this)">
-            Test Series <span class="nav-arrow">▾</span>
+            Test Series &amp; Pass <span class="nav-arrow">▾</span>
           </button>
           <div class="dropdown-menu">
+            <div class="dropdown-item" style="background:#fff7ed;border-bottom:1px solid #fed7aa;" onclick="show('pass');closeMobileNav();">
+              <span style="color:#ea580c;font-weight:900;">⭐</span>
+              <div><strong style="color:#ea580c;">C2S All-Access Year Pass (₹499)</strong><span class="small" style="display:block">All 10 Central &amp; Odisha Tracks</span></div>
+            </div>
             <div class="dropdown-item" onclick="startTest('BANK-MOCK-1');closeMobileNav();">
               <span>🏦</span>
-              <div><strong>BANK Mock Test 1</strong><span class="small" style="display:block">10 min • Calculator
-                  Allowed</span></div>
+              <div><strong>BANK Mock Test 1 (Free Demo)</strong><span class="small" style="display:block">10 min • Calculator Allowed</span></div>
             </div>
             <div class="dropdown-item" onclick="startTest('SSC-MOCK-1');closeMobileNav();">
               <span>📋</span>
-              <div><strong>SSC Mock Test 1</strong><span class="small" style="display:block">10 min • Scratch Pad
-                  Only</span></div>
+              <div><strong>SSC Mock Test 1</strong><span class="small" style="display:block">10 min • Scratch Pad Only</span></div>
             </div>
             <div class="dropdown-item" onclick="startTest('RAILWAY-MOCK-1');closeMobileNav();">
               <span>🚆</span>
-              <div><strong>Railway Mock Test 1</strong><span class="small" style="display:block">10 min • Scratch Pad
-                  Only</span></div>
+              <div><strong>Railway Mock Test 1</strong><span class="small" style="display:block">10 min • Scratch Pad Only</span></div>
             </div>
             <div class="dropdown-item" onclick="startTest('OSSC-MOCK-1');closeMobileNav();">
               <span class="meta-tag">CALC</span>
-              <div><strong>OSSC Mock Test 1</strong><span class="small" style="display:block">10 min • Scratch Pad
-                  Only</span></div>
+              <div><strong>OSSC Mock Test 1</strong><span class="small" style="display:block">10 min • Scratch Pad Only</span></div>
             </div>
             <div class="dropdown-item" onclick="startTest('UPSC-MOCK-1');closeMobileNav();">
               <span>🏛️</span>
-              <div><strong>UPSC Mock Test 1</strong><span class="small" style="display:block">10 min • Scratch Pad
-                  Only</span></div>
+              <div><strong>UPSC Mock Test 1</strong><span class="small" style="display:block">10 min • Scratch Pad Only</span></div>
             </div>
             <div class="dropdown-divider"></div>
             <div class="dropdown-item" onclick="show('tests');closeMobileNav();">
               <span>📊</span>
-              <div><strong>Given / Attempted Tests</strong><span class="small" style="display:block">View Marks &amp;
-                  Full Solutions</span></div>
+              <div><strong>Attempted Tests &amp; Marks</strong><span class="small" style="display:block">View Marks &amp; Full Solutions</span></div>
             </div>
           </div>
         </div>
 
-        <!-- 3. Batches / Classes -->
+        <!-- 3. Class Notes & Study Material -->
+        <button class="nav-link" data-nav="notes" onclick="show('notes');closeMobileNav();">Class Notes</button>
+
+        <!-- 4. PYQ Papers (Previous Year Questions) -->
+        <button class="nav-link" data-nav="pyq" onclick="show('pyq');closeMobileNav();">PYQ Papers</button>
+
+        <!-- 5. Batches / Classes -->
         <div class="nav-item">
           <button class="nav-link" data-nav="batches" onclick="toggleDropdown(this)">
-            Batches / Classes <span class="nav-arrow">▾</span>
+            Batches <span class="nav-arrow">▾</span>
           </button>
           <div class="dropdown-menu">
             <div class="dropdown-item" onclick="show('batches');closeMobileNav();">
               <span>🏫</span>
-              <div><strong>Offline Classroom Batches</strong><span class="small" style="display:block">NH-16 Patrapada
-                  Centre</span></div>
+              <div><strong>Offline Classroom Batches</strong><span class="small" style="display:block">NH-16 Patrapada Centre</span></div>
             </div>
             <div class="dropdown-item" onclick="show('batches');closeMobileNav();">
               <span>🖥️</span>
-              <div><strong>Smart Board Teaching</strong><span class="small" style="display:block">High-engagement
-                  Classroom</span></div>
+              <div><strong>Smart Board Teaching</strong><span class="small" style="display:block">High-engagement Classroom</span></div>
             </div>
             <div class="dropdown-item" onclick="show('batches');closeMobileNav();">
               <span>🎬</span>
-              <div><strong>Video Lectures &amp; HLS Player</strong><span class="small" style="display:block">Coming soon
-                  (Deferred phase)</span></div>
+              <div><strong>Video Lectures &amp; HLS Player</strong><span class="small" style="display:block">Coming soon (Deferred phase)</span></div>
             </div>
           </div>
         </div>
 
-        <!-- 4. Library (Direct link to separate library section) -->
+        <!-- 6. Library -->
         <a class="nav-link" href="library.html" title="Open 24-Hour Premium Study Library">Library</a>
 
         <!-- 5. Notices -->
@@ -1242,6 +1256,55 @@
       </div>
     </section>
 
+  
+    <!-- VIEW: Previous Year Questions (PYQs) -->
+    <section data-view="pyq" class="hidden">
+      <div class="section-header">
+        <span class="section-tag">PREVIOUS YEAR QUESTION PAPERS (2020–2024)</span>
+        <h2>Official PYQ Papers &amp; CBT Question Bank</h2>
+        <p>Real exam questions with official answer keys, detailed solutions and downloadable PDFs for Central &amp; Odisha State examinations.</p>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="filter-chips">
+        <button class="chip-btn active" onclick="renderPyq('');document.querySelectorAll('.filter-chips .chip-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active');">All PYQ Papers (7)</button>
+        <button class="chip-btn" onclick="renderPyq('All India');document.querySelectorAll('.filter-chips .chip-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active');">Central Exams (SSC, Bank, Railway)</button>
+        <button class="chip-btn" onclick="renderPyq('Odisha State');document.querySelectorAll('.filter-chips .chip-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active');">Odisha State (OSSC, OSSSC, OPSC, Police)</button>
+      </div>
+
+      <div id="pyqGrid" class="exam-grid" style="grid-template-columns:repeat(auto-fill, minmax(360px, 1fr));gap:20px;margin-top:20px;"></div>
+    </section>
+
+    <!-- VIEW: Class Notes & Study Material -->
+    <section data-view="notes" class="hidden">
+      <div class="section-header">
+        <span class="section-tag">HANDWRITTEN &amp; SMART BOARD MATERIAL</span>
+        <h2>Faculty Class Notes &amp; Handbooks</h2>
+        <p>Curated formula books, reasoning puzzle blueprints, and Odisha GK handbooks prepared by 10+ years experienced faculty at NH-16 Patrapada.</p>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="filter-chips">
+        <button class="chip-btn active" onclick="renderNotes('');document.querySelectorAll('.filter-chips .chip-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active');">All Class Notes</button>
+        <button class="chip-btn" onclick="renderNotes('All India');document.querySelectorAll('.filter-chips .chip-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active');">Central Exams (Quant, Reasoning, GS)</button>
+        <button class="chip-btn" onclick="renderNotes('Odisha State');document.querySelectorAll('.filter-chips .chip-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active');">Odisha Special GK &amp; Language</button>
+      </div>
+
+      <div id="notesGrid" class="exam-grid" style="grid-template-columns:repeat(auto-fill, minmax(360px, 1fr));gap:20px;margin-top:20px;"></div>
+    </section>
+
+    <!-- VIEW: Test Series All-Access Pass Plans (Testbook Standard) -->
+    <section data-view="pass" class="hidden">
+      <div class="section-header">
+        <span class="section-tag">C2S TEST PASS • TESTBOOK STANDARD</span>
+        <h2>Choose Your Test Series Pass</h2>
+        <p>One-time transparent pricing for full-length test series, negative marking, instant AIR rank, and detailed solutions. Zero hidden renewals.</p>
+        <div class="section-divider"></div>
+      </div>
+
+      <div id="passGrid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:24px;margin-top:24px;"></div>
+    </section>
+
   </main>
 
   <!-- Footer (4 Columns, NO Home Button anywhere) -->
@@ -1448,6 +1511,82 @@
     <div id="examModalBody"></div>
   </div>
 </div>
+
+
+  <!-- Test Series Checkout & Unlock Modal -->
+  <div id="testPaymentModal" class="c2s-modal-backdrop">
+    <div class="c2s-modal-card">
+      <div class="c2s-modal-header">
+        <div>
+          <span style="font-size:11px;font-weight:800;color:#ea580c;letter-spacing:0.5px;">TEST SERIES ACCESS</span>
+          <h3 id="payModalTestTitle" style="margin:2px 0 0;font-size:20px;color:var(--c2s-navy-900);">Unlock Test Series</h3>
+        </div>
+        <button class="c2s-modal-close" onclick="closeTestPaymentModal()">✕</button>
+      </div>
+
+      <div class="c2s-modal-body">
+        <div style="font-size:13px;font-weight:750;color:var(--c2s-slate-700);margin-bottom:10px;">Select Your Access Plan:</div>
+        
+        <div class="pay-plans-wrapper">
+          <div class="pay-plan-card selected" data-plan="single" onclick="selectPayPlan('single')">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <strong>Single Test Unlock</strong>
+              <span class="pay-plan-price-tag">₹49</span>
+            </div>
+            <span class="small" style="color:var(--c2s-slate-500);">Full solutions &amp; rank for 1 chosen test</span>
+          </div>
+
+          <div class="pay-plan-card" data-plan="exam_pass" onclick="selectPayPlan('exam_pass')">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <strong>Dedicated Exam Track Pass</strong>
+              <span class="pay-plan-price-tag">₹199</span>
+            </div>
+            <span class="small" style="color:var(--c2s-slate-500);">All full &amp; sectional mocks for this exam (6 mos)</span>
+          </div>
+
+          <div class="pay-plan-card" data-plan="all_access" onclick="selectPayPlan('all_access')">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <strong>C2S All-Access Year Pass</strong>
+              <span class="pay-plan-price-tag" style="background:#ea580c;color:#fff;">₹499/yr</span>
+            </div>
+            <span class="small" style="color:var(--c2s-slate-500);">Unlimited access to ALL 10 exam tracks + PYQs</span>
+          </div>
+        </div>
+
+        <!-- Payment Mode Simulator -->
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin:16px 0;">
+          <div style="font-size:13px;font-weight:800;color:var(--c2s-navy-900);margin-bottom:8px;">Instant UPI &amp; Card Checkout:</div>
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+            <div style="width:90px;height:90px;background:#fff;border:1px solid #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:6px;">
+              <svg viewBox="0 0 100 100" width="80" height="80">
+                <rect width="100" height="100" fill="#fff"/>
+                <path d="M10 10h30v30h-30zM15 15v20h20v-20zM60 10h30v30h-30zM65 15v20h20v-20zM10 60h30v30h-30zM15 65v20h20v-20zM45 10h10v10h-10zM45 30h10v10h-10zM10 45h10v10h-10zM30 45h10v10h-10zM45 45h10v10h-10zM60 45h10v10h-10zM80 45h10v10h-10zM45 60h10v10h-10zM45 80h10v10h-10zM60 60h10v20h-10zM75 60h15v10h-15zM75 75h15v15h-15z" fill="#0f172a"/>
+              </svg>
+            </div>
+            <div style="flex:1;min-width:180px;">
+              <div style="font-size:12.5px;color:var(--c2s-slate-600);line-height:1.5;">
+                Scan with <strong>PhonePe, Google Pay, Paytm, or BHIM</strong>.<br>
+                Instant unlock callback active.
+              </div>
+              <div style="margin-top:6px;font-size:12px;color:#059669;font-weight:700;">
+                🔒 256-Bit SSL Encrypted Payment
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0;">
+          <div>
+            <span style="font-size:12px;color:var(--c2s-slate-500);display:block;">Selected Plan: <strong id="payModalPlanName">Single Mock Test</strong></span>
+            <span style="font-size:24px;font-weight:900;color:var(--c2s-navy-900);" id="payModalAmount">₹49</span>
+          </div>
+          <button class="btn orange" style="padding:11px 24px;font-size:15px;font-weight:800;" onclick="confirmTestPayment()">
+            Pay &amp; Unlock Access Now →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </body>
 

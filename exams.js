@@ -304,3 +304,202 @@ function getExamSvg(id) {
   };
   return icons[id] || '<svg class="c2s-svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>';
 }
+
+// ==========================================================================
+// PREVIOUS YEAR QUESTION (PYQ) PAPERS REPOSITORY (ALL INDIA + ODISHA STATE)
+// ==========================================================================
+const PYQ_PAPERS = [
+  {
+    id: "pyq-ssc-cgl-2024",
+    exam: "SSC",
+    level: "All India",
+    title: "SSC CGL 2024 Tier 1 Official Question Paper (All Shifts)",
+    year: "2024",
+    shifts: "Shift 1, 2, 3 & 4 (September 2024)",
+    totalQuestions: 100,
+    marks: 200,
+    hasSolutions: true,
+    fileSize: "4.8 MB PDF",
+    cbtAvailable: true,
+    description: "Official Staff Selection Commission graduate recruitment paper covering Reasoning, General Awareness, Quantitative Aptitude, and English Comprehension."
+  },
+  {
+    id: "pyq-ibps-po-2024",
+    exam: "BANK",
+    level: "All India",
+    title: "IBPS PO Prelims 2024 Memory-Based Question Paper",
+    year: "2024",
+    shifts: "October 2024 Cycle (All 4 Shifts)",
+    totalQuestions: 100,
+    marks: 100,
+    hasSolutions: true,
+    fileSize: "3.6 MB PDF",
+    cbtAvailable: true,
+    description: "Authentic Banking recruitment questions covering Quantitative Aptitude, Logical Reasoning, and English Language with section-wise time splits."
+  },
+  {
+    id: "pyq-ossc-cgl-2023",
+    exam: "OSSC",
+    level: "Odisha State",
+    title: "OSSC Combined Graduate Level (CGL) Prelims Paper",
+    year: "2023-2024",
+    shifts: "Morning & Afternoon Sessions",
+    totalQuestions: 150,
+    marks: 150,
+    hasSolutions: true,
+    fileSize: "5.2 MB PDF",
+    cbtAvailable: true,
+    description: "Odisha Staff Selection Commission CGL paper covering 10th-standard Arithmetic, Data Interpretation, Logical Reasoning, Current Events, and Computer Awareness."
+  },
+  {
+    id: "pyq-osssc-cre-2024",
+    exam: "OSSSC",
+    level: "Odisha State",
+    title: "OSSSC CRE (RI, ARI, Amin, Forest Guard) Question Paper",
+    year: "2024",
+    shifts: "Single Composite Paper (District Cadres)",
+    totalQuestions: 180,
+    marks: 180,
+    hasSolutions: true,
+    fileSize: "6.1 MB PDF",
+    cbtAvailable: true,
+    description: "Odisha Subordinate Commission paper with complete Odia Grammar, English, Mathematics, General Knowledge, and Computer Practical questions."
+  },
+  {
+    id: "pyq-rrb-ntpc-cbt1",
+    exam: "RAILWAY",
+    level: "All India",
+    title: "RRB NTPC CBT-1 Official Railway Recruitment Paper",
+    year: "2022-2024",
+    shifts: "Bhubaneswar & Eastern Railway Boards",
+    totalQuestions: 100,
+    marks: 100,
+    hasSolutions: true,
+    fileSize: "4.1 MB PDF",
+    cbtAvailable: true,
+    description: "Indian Railways Non-Technical Categories paper covering General Science, Modern History, Arithmetic, and Syllogisms."
+  },
+  {
+    id: "pyq-opsc-oas-2023",
+    exam: "OPSC",
+    level: "Odisha State",
+    title: "OPSC Odisha Civil Services (OAS) Prelims Paper 1 & 2",
+    year: "2023",
+    shifts: "Paper 1 (GS + Odisha Special) & Paper 2 (CSAT)",
+    totalQuestions: 180,
+    marks: 400,
+    hasSolutions: true,
+    fileSize: "7.4 MB PDF",
+    cbtAvailable: true,
+    description: "Official OPSC Gazetted recruitment prelims papers with deep Odisha heritage, history, Paika rebellion, and CSAT aptitude questions."
+  },
+  {
+    id: "pyq-odisha-police-2024",
+    exam: "ODISHA-POLICE",
+    level: "Odisha State",
+    title: "Odisha Police Constable & SI Official Written Exam",
+    year: "2024",
+    shifts: "Commissionerate Police Written Test",
+    totalQuestions: 100,
+    marks: 100,
+    hasSolutions: true,
+    fileSize: "3.9 MB PDF",
+    cbtAvailable: true,
+    description: "Official Odisha State Police recruitment paper with Odia prose/poetry comprehension, English grammar, arithmetic, and reasoning."
+  }
+];
+
+// ==========================================================================
+// CLASS NOTES & STUDY MATERIAL REPOSITORY (SMART BOARD FACULTY NOTES)
+// ==========================================================================
+const CLASS_NOTES = [
+  {
+    id: "notes-arithmetic-speed",
+    title: "Complete Quantitative Aptitude & Vedic Speed Math Handbook",
+    author: "Senior Math Faculty (10+ Yrs Exp)",
+    pages: "148 Pages",
+    topics: "Vedic Math calculation shortcuts, DI Charts, Arithmetic Formulas, Profit-Loss & SI/CI tricks for Bank & SSC.",
+    format: "Handwritten Smart Board PDF",
+    fileSize: "12.4 MB",
+    track: "All India"
+  },
+  {
+    id: "notes-reasoning-puzzles",
+    title: "Reasoning Ability: 500+ High-Level Puzzles & Seating Masterclass",
+    author: "Banking & SSC Reasoning Specialist",
+    pages: "192 Pages",
+    topics: "Circular, Floor, Matrix, Box puzzles, Syllogisms, Direction Sense & Critical Reasoning with step-by-step decoding.",
+    format: "Verified Solutions PDF",
+    fileSize: "15.8 MB",
+    track: "All India"
+  },
+  {
+    id: "notes-odisha-gk-culture",
+    title: "Odisha GK, Geography, History & Kalinga Architecture Master Guide",
+    author: "Odisha State Competitive Mentors",
+    pages: "210 Pages",
+    topics: "Ancient Kalinga, Kharavela, Paika Rebellion, Mahanadi Basin, Chilika Lake, Minerals, and 1000+ Odisha GK MCQs.",
+    format: "Comprehensive Notes PDF",
+    fileSize: "18.2 MB",
+    track: "Odisha State"
+  },
+  {
+    id: "notes-gs-5000-mcq",
+    title: "General Studies 5,000 High-Yield Exam Hall Question Bank",
+    author: "UPSC & State Civil Services Guidance Cell",
+    pages: "240 Pages",
+    topics: "Indian Constitution, Modern History, Physical Geography, Environment Ecology, and Science for all 10 tracks.",
+    format: "Subject-Wise Answer Keys",
+    fileSize: "22.5 MB",
+    track: "All India"
+  }
+];
+
+// ==========================================================================
+// TEST SERIES MONETIZATION & PASS PLANS (TESTBOOK / PW MODEL)
+// ==========================================================================
+const TEST_PASS_PLANS = [
+  {
+    id: "single",
+    name: "Single Mock Test Unlock",
+    price: 49,
+    validity: "Lifetime access to 1 chosen Mock Test",
+    badge: "STARTER",
+    features: [
+      "Full Exam-Hall Countdown Timer (10–120 mins)",
+      "Exact Negative Marking (-0.25 / -0.33)",
+      "Instant Score Card & All-Odisha Rank Analysis",
+      "Complete Step-by-Step Solutions & Explanations",
+      "Anti-Cheat Window Lock with 3-Violation Guard"
+    ]
+  },
+  {
+    id: "exam_pass",
+    name: "Dedicated Exam Track Pass",
+    price: 199,
+    validity: "6 Months Unlimited Access",
+    badge: "POPULAR CHOICE",
+    features: [
+      "All Full-Length & Sectional Mocks for 1 Exam Track (e.g. Bank or SSC or OSSC)",
+      "Chapter-Wise Tests (Quant, Reasoning, English, Odisha GK)",
+      "All-Odisha & All-India Percentile & AIR Rank",
+      "Downloadable Performance PDF Report Card",
+      "Access to Previous Year Question (PYQ) CBT papers"
+    ]
+  },
+  {
+    id: "all_access",
+    name: "C2S All-Access Annual Pass (Testbook Standard)",
+    price: 499,
+    validity: "1 Full Year Access (All 10 Exam Tracks)",
+    badge: "BEST VALUE • ALL 10 TRACKS",
+    features: [
+      "Unlimited Access to ALL 10 Central & Odisha State Tracks",
+      "BANK, SSC, Railway, UPSC, Defence, Teaching, OSSC, OSSSC, OPSC, Police",
+      "100+ Live Full Mocks + 200+ Sectional Tests",
+      "Complete PYQ Paper Archives (2018–2024)",
+      "Weekly All-Odisha Open Rank Live Sunday Test",
+      "Exclusive Class Notes & Formula Books Included"
+    ]
+  }
+];

@@ -34,12 +34,30 @@ function renderSuperAdmin() {
   const given = store.get('c2s_main_given', []);
   const ledger = store.get('c2s_lib_ledger', []);
   const taken = store.get('c2s_lib_taken', {});
+  const transactions = store.get('c2s_transactions', []);
+  const passesSold = store.get('c2s_passes_sold', 0);
+
+  const todayStr = new Date().toISOString().split("T")[0];
+  const todayAdmissions = members.filter(m => (m.admDate || m.date || "").startsWith(todayStr));
+  const todayRevenue = todayAdmissions.reduce((sum, m) => sum + (Number(m.paid) || Number(m.total) || 0), 0);
+
+  const passRevenue = transactions.filter(t => t.desc && t.desc.includes("Test Pass")).reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
 
   const totalOccupied = Object.keys(taken).length;
   const occupancyPct = Math.round((totalOccupied / 48) * 100);
 
-  const totalRevenue = ledger.filter(l => l.amt > 0).reduce((sum, l) => sum + l.amt, 0);
+  const totalRevenue = ledger.filter(l => l.amt > 0).reduce((sum, l) => sum + l.amt, 0) + passRevenue;
   const totalPending = members.reduce((sum, m) => sum + (Number(m.pending) || 0), 0);
+
+  const elTodayAdm = document.getElementById('kpiTodayAdmissions');
+  if (elTodayAdm) elTodayAdm.textContent = todayAdmissions.length;
+  const elTodayRev = document.getElementById('kpiTodayRevenue');
+  if (elTodayRev) elTodayRev.textContent = '₹' + todayRevenue + ' Today';
+
+  const elPasses = document.getElementById('kpiPassesSold');
+  if (elPasses) elPasses.textContent = passesSold;
+  const elPassRev = document.getElementById('kpiPassesRevenue');
+  if (elPassRev) elPassRev.textContent = '₹' + passRevenue + ' Pass Revenue';
 
   document.getElementById('kpiMainStudents').textContent = users.length;
   document.getElementById('kpiLibMembers').textContent = members.length;

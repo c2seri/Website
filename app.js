@@ -26,6 +26,9 @@ function show(view){
   if(view==="tests") renderTests();
   if(view==="blog") renderBlog();
   if(view==="notices") renderNotices();
+  if(view==="pyq") renderPyq();
+  if(view==="notes") renderNotes();
+  if(view==="pass") renderPass();
   window.scrollTo(0,0);
 }
 function filterExam(level, id){
@@ -109,41 +112,44 @@ function renderExams(onlyId){
   `).join('') : "<div class='card' style='text-align:center;padding:40px;'><p style='font-size:16px;color:var(--c2s-slate-600);'>No exam matches that keyword. Try searching for 'bank', 'police', 'ssc', 'odisha', 'cgl', 'ri', or 'railway'.</p></div>";
 }
 function renderTests(){
-  const given=store.get("c2s_main_given", []);
-  const givenIds=new Set(given.map(g=>g.testId));
-  const avail=TESTS.filter(t=>!givenIds.has(t.id));
-  const examIcons = { 'BANK': '🏦', 'SSC': '📋', 'RAILWAY': '🚆', 'OSSC': '📝', 'UPSC': '🏛️' };
+  const given = store.get("c2s_main_given", []);
+  const givenIds = new Set(given.map(g => g.testId));
+  const avail = TESTS.filter(t => !givenIds.has(t.id));
   const examTheme = { 'BANK': 'bank', 'SSC': 'ssc', 'RAILWAY': 'railway', 'OSSC': 'ossc', 'UPSC': 'upsc' };
 
-  $("#availTests").innerHTML = avail.length ? '<div class="test-grid">' + avail.map(t=>`
-      <div class="tb-test-card">
+  $("#availTests").innerHTML = avail.length ? '<div class="test-grid">' + avail.map(t => {
+    const unlocked = isTestUnlocked(t.id);
+    return `
+      <div class="tb-test-card ${unlocked ? 'unlocked' : 'locked'}">
         <div class="tb-test-header ${examTheme[t.exam] || 'bank'}">
-          <div class="tb-exam-badge-disc">${examIcons[t.exam] || '📝'}</div>
+          <div class="tb-exam-badge-disc">${getExamSvg(t.exam)}</div>
           <span class="tb-student-pill">⏱ ${t.minutes} Mins • ${t.qs.length} Qs</span>
         </div>
         <div class="tb-test-body">
           <div>
-            <span class="pill ${t.exam==='OSSC'||t.exam==='RAILWAY'?'green':t.exam==='UPSC'?'purple':'blue'}" style="margin-bottom:8px;display:inline-block;">${t.exam}</span>
-            <h3 class="tb-test-title">${t.title}</h3>
-            <div class="tb-progress-wrap">
-              <div class="tb-progress-meta">
-                <span>Progress: 0/${t.qs.length}</span>
-                <span>0%</span>
-              </div>
-              <div class="tb-progress-bar-bg">
-                <div class="tb-progress-bar-fill" style="width:0%;"></div>
-              </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span class="pill ${t.exam==='OSSC'||t.exam==='RAILWAY'?'green':t.exam==='UPSC'?'purple':'blue'}">${t.exam}</span>
+              ${unlocked 
+                ? '<span class="status-unlocked-badge">✓ UNLOCKED</span>' 
+                : '<span class="status-locked-badge">🔒 PREMIUM TEST</span>'
+              }
             </div>
+            <h3 class="tb-test-title">${t.title}</h3>
             <div class="tb-meta-tags">
-              <div class="tb-meta-tag-item"><span>🧮</span> <span>Calculator: <strong>${t.calculatorAllowed ? "Allowed (on-screen)" : "Scratch Pad Only"}</strong></span></div>
-              <div class="tb-meta-tag-item"><span>⚖️</span> <span>Marking: <strong>Negative marking enabled</strong></span></div>
-              <div class="tb-meta-tag-item"><span>🔒</span> <span>Anti-Cheat: <strong>3-Violation Auto-Submit</strong></span></div>
+              <div class="tb-meta-tag-item"><span class="meta-tag">CALC</span> <span>Calculator: <strong>${t.calculatorAllowed ? "Allowed (on-screen)" : "Scratch Pad Only"}</strong></span></div>
+              <div class="tb-meta-tag-item"><span class="meta-tag">MARKS</span> <span>Marking: <strong>Negative marking enabled</strong></span></div>
+              <div class="tb-meta-tag-item"><span class="meta-tag">LOCK</span> <span>Anti-Cheat: <strong>3-Violation Auto-Submit</strong></span></div>
             </div>
           </div>
-          <button class="btn-cyan" onclick="startTest('${t.id}')">Go To Test Series →</button>
+          ${unlocked
+            ? `<button class="btn orange" style="width:100%;padding:11px;font-weight:800;" onclick="startTest('${t.id}')">Start Test Engine →</button>`
+            : `<button class="btn" style="width:100%;padding:11px;font-weight:800;background:#0f2444;color:#fff;" onclick="openTestPaymentModal('${t.id}','single')">🔒 Unlock Test (₹49) / Pass →</button>`
+          }
         </div>
-      </div>`).join("") + '</div>' : "<p class='small'>All available mock tests have been completed. Check your scores and solutions in Given Tests below.</p>";
-  $("#givenTests").innerHTML = given.length ? given.map(g=>`
+      </div>`;
+  }).join("") + '</div>' : "<p class='small'>All available mock tests have been completed. Check your scores and solutions in Given Tests below.</p>";
+
+  $("#givenTests").innerHTML = given.length ? given.map(g => `
     <div class="card" style="border-left:5px solid var(--c2s-emerald-600);margin-bottom:14px;">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
         <h4 style="margin:0;font-size:18px;color:var(--c2s-navy-800);">${g.title}</h4>
@@ -233,6 +239,7 @@ function renderUser(){
 /* ---------- Exam mode ---------- */
 let exam=null, violations=0, timerInt=null, secondsLeft=0;
 function startTest(id){
+  if (!isTestUnlocked(id)) { openTestPaymentModal(id); return; }
   const u=store.get("c2s_main_user",null); if(!u) return alert("Please login with OTP (Main Login) first.");
   const t=TESTS.find(x=>x.id===id); if(!t) return;
   const given=store.get("c2s_main_given", []); if(given.some(g=>g.testId===id)) return alert("This test has already been given. See Given Tests.");
@@ -478,3 +485,183 @@ document.addEventListener('DOMContentLoaded', () => {
   init3DTilt();
   setHallShift('afternoon');
 });
+
+// ==========================================================================
+// TEST SERIES MONETIZATION & ACCESS ENGINE (TESTBOOK PASS MODEL)
+// ==========================================================================
+function isTestUnlocked(testId) {
+  if (testId === "BANK-MOCK-1") return true; // Free Demo Test
+  if (store.get("c2s_all_access_pass", false)) return true;
+  const unlocked = store.get("c2s_unlocked_tests", []);
+  return unlocked.includes(testId);
+}
+
+function openTestPaymentModal(testId, preselectPlan = "single") {
+  const t = TESTS.find(x => x.id === testId);
+  const modal = document.getElementById("testPaymentModal");
+  if (!modal) return;
+  modal.dataset.testId = testId || "";
+  
+  const titleEl = document.getElementById("payModalTestTitle");
+  if (titleEl) titleEl.textContent = t ? t.title : "C2S Test Series All-Access Pass";
+  
+  selectPayPlan(preselectPlan);
+  modal.classList.add("open");
+}
+
+function closeTestPaymentModal() {
+  const modal = document.getElementById("testPaymentModal");
+  if (modal) modal.classList.remove("open");
+}
+
+let activePayPlan = "single";
+function selectPayPlan(planId) {
+  activePayPlan = planId;
+  document.querySelectorAll(".pay-plan-card").forEach(c => {
+    c.classList.toggle("selected", c.dataset.plan === planId);
+  });
+  const plan = TEST_PASS_PLANS.find(p => p.id === planId) || TEST_PASS_PLANS[0];
+  const amtEl = document.getElementById("payModalAmount");
+  if (amtEl) amtEl.textContent = "₹" + plan.price;
+  const planNameEl = document.getElementById("payModalPlanName");
+  if (planNameEl) planNameEl.textContent = plan.name;
+}
+
+function confirmTestPayment() {
+  const modal = document.getElementById("testPaymentModal");
+  const testId = modal?.dataset.testId;
+  const plan = TEST_PASS_PLANS.find(p => p.id === activePayPlan) || TEST_PASS_PLANS[0];
+  
+  if (activePayPlan === "all_access") {
+    store.set("c2s_all_access_pass", true);
+  } else if (testId) {
+    const unlocked = store.get("c2s_unlocked_tests", []);
+    if (!unlocked.includes(testId)) {
+      unlocked.push(testId);
+      store.set("c2s_unlocked_tests", unlocked);
+    }
+  }
+
+  // Update admin transaction log & revenue KPI
+  const trans = store.get("c2s_transactions", []);
+  trans.unshift({
+    date: new Date().toISOString().split("T")[0],
+    desc: "Test Pass: " + plan.name + (testId ? " (" + testId + ")" : ""),
+    type: "income",
+    amount: plan.price
+  });
+  store.set("c2s_transactions", trans);
+
+  // Update passes counter
+  const passes = store.get("c2s_passes_sold", 0) + 1;
+  store.set("c2s_passes_sold", passes);
+
+  closeTestPaymentModal();
+  alert("Payment Successful! ₹" + plan.price + " received. " + plan.name + " is now active on your account.");
+  
+  renderTests();
+  if (testId) {
+    startTest(testId);
+  }
+}
+
+// ==========================================================================
+// PYQ (PREVIOUS YEAR QUESTIONS) RENDERER
+// ==========================================================================
+function renderPyq(filterLvl = "") {
+  const container = document.getElementById("pyqGrid");
+  if (!container) return;
+  
+  let list = PYQ_PAPERS;
+  if (filterLvl) {
+    list = list.filter(p => p.level === filterLvl);
+  }
+
+  container.innerHTML = list.map(p => `
+    <div class="card pyq-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px;">
+        <span class="pill ${p.level === 'Odisha State' ? 'green' : 'blue'}" style="font-weight:800;">
+          ${p.level}
+        </span>
+        <span class="pyq-year-badge">${p.year} Exam</span>
+      </div>
+      <h3 style="font-size:18px;font-weight:800;color:var(--c2s-navy-900);margin:0 0 8px;line-height:1.3;">
+        ${p.title}
+      </h3>
+      <p style="font-size:13px;color:var(--c2s-slate-600);line-height:1.5;margin:0 0 14px;">
+        ${p.description}
+      </p>
+      <div class="pyq-meta-strip">
+        <span>📋 ${p.totalQuestions} Qs • ${p.marks} Marks</span>
+        <span>📁 ${p.fileSize}</span>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+        <button class="btn orange" style="flex:1;padding:9px 14px;font-size:13px;" onclick="openTestPaymentModal('SSC-MOCK-1','single')">
+          Attempt Online CBT →
+        </button>
+        <button class="btn ghost" style="padding:9px 14px;font-size:13px;" onclick="alert('Downloading ' + p.title + ' [Official Answer Key & Solutions included].');">
+          Download PDF ⬇
+        </button>
+      </div>
+    </div>
+  `).join("");
+}
+
+// ==========================================================================
+// CLASS NOTES RENDERER
+// ==========================================================================
+function renderNotes(filterTrack = "") {
+  const container = document.getElementById("notesGrid");
+  if (!container) return;
+
+  let list = CLASS_NOTES;
+  if (filterTrack) {
+    list = list.filter(n => n.track === filterTrack);
+  }
+
+  container.innerHTML = list.map(n => `
+    <div class="card note-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <span class="pill orange" style="font-weight:800;">${n.format}</span>
+        <span style="font-size:12px;font-weight:700;color:var(--c2s-slate-500);">${n.pages}</span>
+      </div>
+      <h3 style="font-size:18px;font-weight:800;color:var(--c2s-navy-900);margin:0 0 8px;line-height:1.3;">
+        ${n.title}
+      </h3>
+      <p style="font-size:13px;color:var(--c2s-slate-600);line-height:1.5;margin:0 0 12px;">
+        ${n.topics}
+      </p>
+      <div style="font-size:12px;color:var(--c2s-navy-900);font-weight:700;margin-bottom:14px;">
+        ✍️ By ${n.author}
+      </div>
+      <button class="btn orange" style="width:100%;padding:10px 16px;font-size:13.5px;" onclick="alert('Preparing download for ' + n.title + ' (' + n.fileSize + ').');">
+        Download Smart Board Notes PDF (${n.fileSize}) ⬇
+      </button>
+    </div>
+  `).join("");
+}
+
+// ==========================================================================
+// PASS PLANS RENDERER
+// ==========================================================================
+function renderPass() {
+  const container = document.getElementById("passGrid");
+  if (!container) return;
+
+  container.innerHTML = TEST_PASS_PLANS.map(plan => `
+    <div class="card pass-plan-card-view ${plan.id === 'all_access' ? 'featured' : ''}">
+      <span class="pass-plan-badge">${plan.badge}</span>
+      <h3 style="font-size:22px;font-weight:900;color:var(--c2s-navy-900);margin:8px 0 4px;">${plan.name}</h3>
+      <div class="pass-plan-price">
+        <strong>₹${plan.price}</strong>
+        <span>/ ${plan.validity}</span>
+      </div>
+      <ul class="pass-features-list">
+        ${plan.features.map(f => `<li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> <span>${f}</span></li>`).join('')}
+      </ul>
+      <button class="btn ${plan.id === 'all_access' ? 'orange' : 'ghost'}" style="width:100%;padding:12px;font-size:15px;font-weight:800;margin-top:16px;" onclick="openTestPaymentModal('', '${plan.id}')">
+        Get ${plan.name} →
+      </button>
+    </div>
+  `).join("");
+}
