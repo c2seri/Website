@@ -254,7 +254,7 @@
     <!-- VIEW: Public Homepage (Default View on Load) -->
     <section data-view="home">
       <!-- Modern Physics Wallah / Testbook Style Hero Banner -->
-      <!-- Ultra-Premium 3D Hero with Ambient Gradient Mesh -->
+      <!-- Clean, High-Impact & Premium 3D Hero -->
       <div class="hero hero-3d-wrap">
         <div class="ambient-mesh">
           <div class="mesh-orb-1"></div>
@@ -262,92 +262,71 @@
           <div class="mesh-orb-3"></div>
         </div>
         <div class="hero-layout">
-          <!-- Left Hero Column -->
+          <!-- Left: Clean, High-Impact Punchy Copy -->
           <div class="hero-copy">
             <span class="eyebrow">✨ C2S — College to Service • Patrapada, Bhubaneswar</span>
-            <h1>Competitive Exams for <span class="highlight-orange">Govt Jobs</span></h1>
-            <p class="hero-sub">
-              <strong>"Your Selection Our Mission."</strong> Targeted coaching &amp; weekly test series for Central
-              (BANK, SSC, Railway, UPSC, Defence, Teaching) and Odisha State (OSSC, OSSSC, OPSC, Odisha Police) exams —
-              combined with our <strong>24-hour fully A/C study library</strong> at Patrapada.
+            <h1 style="font-size:44px;font-weight:900;line-height:1.15;margin:6px 0 10px;letter-spacing:-0.03em;">
+              Your Selection <br><span class="highlight-orange">Our Mission.</span>
+            </h1>
+            <p style="font-size:16px;line-height:1.6;color:#e2e8f0;margin:0 0 18px;max-width:520px;">
+              Targeted coaching &amp; weekly test series for Central &amp; Odisha State government exams, combined with our <strong>24-Hour fully A/C premium study library</strong> at Patrapada.
             </p>
 
-            <!-- Hero Search Box with Quick Pills -->
-            <div class="hero-search-box">
-              <span>🔍</span>
-              <input id="heroSearch" placeholder="Search any exam — e.g. bank, ossc, police, ssc, railway, upsc…"
-                onkeydown="if(event.key==='Enter'){handleSearch(this.value)}">
-              <button class="btn orange" style="padding:9px 18px;font-size:14px;"
-                onclick="handleSearch(document.getElementById('heroSearch').value)">Search Exams</button>
-            </div>
-
-            <!-- Quick Filter Pills -->
-            <div class="hero-search-pills">
-              <span class="hero-pill-label">Popular:</span>
-              <button class="hero-pill" onclick="filterExam('Odisha State','OSSC')">OSSC</button>
-              <button class="hero-pill" onclick="filterExam('All India','BANK')">BANK PO/Clerk</button>
-              <button class="hero-pill" onclick="filterExam('All India','SSC')">SSC CGL</button>
-              <button class="hero-pill" onclick="filterExam('Odisha State','ODISHA-POLICE')">Odisha Police</button>
-              <button class="hero-pill" onclick="filterExam('All India','RAILWAY')">Railway NTPC</button>
-              <button class="hero-pill" onclick="filterExam('Odisha State','OPSC')">OPSC OAS</button>
-              <button class="hero-pill" onclick="filterExam('All India','UPSC')">UPSC CSE</button>
-              <button class="hero-pill" onclick="location.href='library.html'">24h Library</button>
-            </div>
-
-            <!-- Hero CTAs -->
-            <div class="hero-actions">
-              <button class="btn orange" onclick="show('exams')">Explore 10 Exam Tracks →</button>
-              <button class="btn light" onclick="show('tests')">Weekly Test Series ⏱</button>
-              <button class="btn ghost"
-                style="background:rgba(255,255,255,0.18);color:#fff;border-color:rgba(255,255,255,0.3);"
-                onclick="location.href='library.html'">24-Hour Premium Library 🏛️</button>
-              <button class="btn dark" onclick="show('login')">Login / Signup (OTP) 👤</button>
+            <!-- 2 Clear, High-Contrast Action Buttons -->
+            <div class="hero-actions" style="margin-top:4px;">
+              <button class="btn orange btn-shimmer" style="padding:13px 26px;font-size:15px;font-weight:800;" onclick="show('exams')">
+                Explore 10 Exam Tracks →
+              </button>
+              <button class="btn ghost" style="padding:13px 24px;font-size:15px;font-weight:750;background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.3);" onclick="location.href='library.html'">
+                24h Study Library 🏛️
+              </button>
             </div>
           </div>
 
-          <!-- Right Hero Column: Value Proposition Glass Card -->
-          <div class="hero-feature-card tilt-3d glass-3d-card">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-              <span class="floating-3d-badge"><span class="live-pulse-dot"></span> Patrapada Centre Active</span>
-              <span style="font-size:12px;font-weight:750;color:#fdba74;">NH-16 Bhubaneswar</span>
+          <!-- Right: Sleek, Visual 3D Highlights Card -->
+          <div class="hero-feature-card tilt-3d glass-3d-card" style="padding:24px 26px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.12);padding-bottom:12px;">
+              <span class="floating-3d-badge"><span class="live-pulse-dot"></span> Offline Centre Open</span>
+              <span style="font-size:12px;font-weight:750;color:#fdba74;">Patrapada, Bhubaneswar</span>
             </div>
-            <div class="hero-card-head">
-              <h3>🏆 Why Aspirants Choose C2S</h3>
-              <p>Complete selection ecosystem under one roof</p>
+
+            <div style="display:flex;flex-direction:column;gap:11px;">
+              <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);">
+                <span style="font-size:22px;">🎯</span>
+                <div>
+                  <strong style="display:block;font-size:14px;color:#fff;">10 Exam Tracks</strong>
+                  <span style="font-size:12px;color:#cbd5e1;">All India &amp; Odisha State (BANK, SSC, Railway, OSSC, Police)</span>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);">
+                <span style="font-size:22px;">⏱️</span>
+                <div>
+                  <strong style="display:block;font-size:14px;color:#fff;">Weekly Locked Test Series</strong>
+                  <span style="font-size:12px;color:#cbd5e1;">Authentic exam hall timer &amp; negative marking engine</span>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);">
+                <span style="font-size:22px;">❄️</span>
+                <div>
+                  <strong style="display:block;font-size:14px;color:#fff;">24-Hour Premium Study Library</strong>
+                  <span style="font-size:12px;color:#cbd5e1;">Fully air-conditioned, high-speed Wi-Fi &amp; ergonomic seating</span>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);">
+                <span style="font-size:22px;">👨‍🏫</span>
+                <div>
+                  <strong style="display:block;font-size:14px;color:#fff;">10+ Yrs Teachers &amp; Govt Mentors</strong>
+                  <span style="font-size:12px;color:#cbd5e1;">Smart Board classrooms + Mentorship by govt employees</span>
+                </div>
+              </div>
             </div>
-            <div class="hero-card-list">
-              <div class="hero-card-item">
-                <span class="hero-card-item-icon">🎯</span>
-                <div class="hero-card-item-text">
-                  <strong>10 Exam Tracks (All India + Odisha)</strong>
-                  <span>BANK, SSC, Railway, UPSC, OSSC, OSSSC, OPSC &amp; Police</span>
-                </div>
-              </div>
-              <div class="hero-card-item">
-                <span class="hero-card-item-icon">⏱</span>
-                <div class="hero-card-item-text">
-                  <strong>Locked Exam Engine Test Series</strong>
-                  <span>Timer, negative marking, 3-violation anti-cheat lock &amp; solutions</span>
-                </div>
-              </div>
-              <div class="hero-card-item">
-                <span class="hero-card-item-icon">❄️</span>
-                <div class="hero-card-item-text">
-                  <strong>24-Hour Fully A/C Premium Library</strong>
-                  <span>Spacious, ergonomic seating, Wi-Fi, peaceful interior at Patrapada</span>
-                </div>
-              </div>
-              <div class="hero-card-item">
-                <span class="hero-card-item-icon">👨‍🏫</span>
-                <div class="hero-card-item-text">
-                  <strong>10+ Yrs Teachers &amp; Govt Mentors</strong>
-                  <span>Classes with Smart Board + Mentorship by government employees</span>
-                </div>
-              </div>
-            </div>
-            <div class="hero-card-footer">
-              <span>📍 NH-16, Opp. Sani Mandir, Patrapada</span>
-              <span style="color:#fdba74;font-weight:700;">📞 9777481909</span>
+
+            <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;justify-content:space-between;align-items:center;font-size:12.5px;">
+              <span style="color:#cbd5e1;">📍 NH-16, Opp. Sani Mandir</span>
+              <a href="tel:9777481909" style="color:#fdba74;font-weight:800;text-decoration:none;">📞 9777481909</a>
             </div>
           </div>
         </div>
