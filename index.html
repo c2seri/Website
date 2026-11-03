@@ -70,10 +70,9 @@
 <div id="userBox"></div>
 <div class="grid2"><div><h3>Register</h3><form onsubmit="mainRegister(event)"><label>Name</label><input id="regName" required><label>Mobile</label><input id="regMobile" required><button class="btn">Register &amp; Get Registration ID</button></form></div>
 <div><h3>Login</h3><form onsubmit="mainLogin(event)"><label>Registration ID (e.g. C2S-00001)</label><input id="loginRegId" required><button class="btn">Login</button></form></div></div>
-<div class="card"><h3>Demo Logins — dikhane ke liye (koi password nahi, browser-local demo only)</h3>
-<p><button class="btn orange" onclick="demoLogin('admin')">Admin Login Dekho</button> — <strong>C2S Admin</strong> (ID: C2S-ADMIN-01)</p>
+<div class="card"><h3>Demo Login — dikhane ke liye (koi password nahi, browser-local demo only)</h3>
 <p><button class="btn" onclick="demoLogin('student')">Student Login Dekho</button> — <strong>Demo Student</strong> (ID: C2S-00001)</p>
-<p class="small">In demo logins se aap Main Login ka alag-alag view dekh sakte ho. Ye real account nahi hain, aur data sirf isi browser me save hoga.</p></div>
+<p class="small">Admin / Employee login yahan publicly nahi dikhaya jata — admin access alag URL se hoga, jo baad me set kiya jayega. Ye demo login real account nahi hai, data sirf isi browser me save hoga.</p></div>
 <p id="loginMsg"></p></div>
 </section>
 </main>

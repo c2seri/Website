@@ -52,16 +52,7 @@ function libLogin(e){
   $("#libMsg").innerHTML = "<span class='ok'>Library logged in: "+m.name+" ("+m.regNo+"), Shift "+m.shift+", Pending ₹"+m.pending+"</span>";
   renderAll();
 }
-/* Demo Library Admin Login — browser-local demo only, no password, no real account. Shows library dashboard (members, ledger, income/pending) — same page, admin view. */
-function demoLibAdmin(){
-  const members = store.get("c2s_lib_members", []);
-  const demo = {regNo:"C2SLIB-ADMIN-01", name:"C2S Library Admin", mobile:"9000000002", shift:"Full Day", from:"", to:"", examPref:"", total:0, paid:0, pending:0, mode:"Demo", role:"admin", date:new Date().toISOString().slice(0,10)};
-  if(!members.some(x=>x.regNo===demo.regNo)){ members.push(demo); store.set("c2s_lib_members", members); }
-  store.set("c2s_lib_user", demo);
-  const msg = document.getElementById("libMsg");
-  if(msg) msg.innerHTML = "<span class='ok'>Demo Library Admin login active: "+demo.name+" ("+demo.regNo+"), Mobile "+demo.mobile+" — library dashboard (members, income, pending, ledger) below — browser-local demo only.</span>";
-  renderAll();
-}
+/* Library Admin login is NOT shown publicly; it will be via a separate admin URL later. */
 /* Demo Library Login — browser-local demo only, no password, no real account. */
 function demoLibLogin(){
   const members = store.get("c2s_lib_members", []);
