@@ -1,22 +1,231 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>C2S Admin — separate URL only</title>
-<meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="styles.css"><script src="admin.js"></script></head>
-<body>
-<header class="topbar"><div><div class="logo"><span class="logo-badge" role="img" aria-label="C2S logo"></span><span>C2S Admin</span></div><div class="tagline">Separate admin URL only — this page is NOT linked from the main navigation or login pages.</div></div>
-</header>
-<main>
-<div class="card"><h1>Admin Dashboard — PREVIEW</h1>
-<p class="small">This admin page is reached only by its direct URL (see README). No admin login is shown publicly on the main site or library page. In preview mode, counts below are read from this browser's localStorage only — they are NOT live production data until DATABASE_URL is set.</p>
-<div id="adminStats"></div></div>
-<div class="card"><h2>Tests</h2><p id="adminTests" class="small"></p><p class="small">Test management (add/edit tests, calculator flag per exam) is a placeholder in preview mode — staff edits here are browser-local only until the database is connected.</p></div>
-<div class="card"><h2>Library members</h2><div id="adminMembers"></div></div>
-<div class="card"><h2>Income / Pending / Ledger</h2><div id="adminLedger"></div></div>
-<div class="card"><h2>Notices / Blog management (preview)</h2>
-<form onsubmit="adminPost(event)"><input id="adminPostTitle" placeholder="Notice / blog title" required><textarea id="adminPostBody" placeholder="Body" required></textarea><button class="btn">Add locally (preview)</button></form>
-<div id="adminPosts"></div></div>
-<div class="card"><h2>Connections — placeholders only</h2><p>Cashfree, SMS, WhatsApp and Email providers: settings placeholders only, no keys or live links in this build. Set them only as Vercel env vars (see README and .env.example) — never in code.</p></div>
-</main><footer>C2S Admin — separate URL only</footer>
-</body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>C2S Admin &amp; Staff Operations Portal</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="admin.js"></script>
+</head>
+<body style="background:#f1f5f9;">
+
+<div class="admin-shell">
+  <!-- Top Admin Bar -->
+  <div class="admin-header-strip">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <span class="logo-badge" role="img" aria-label="C2S logo"></span>
+      <div>
+        <h2 style="margin:0;font-size:22px;letter-spacing:-0.02em;color:#fff;">C2S Management Portal</h2>
+        <span style="font-size:12px;color:#94a3b8;">NH-16 Patrapada, Bhubaneswar • Confidential Staff Access</span>
+      </div>
+    </div>
+
+    <!-- Multi-Role Switcher Tabs -->
+    <div class="role-switcher-bar">
+      <button class="role-btn active" id="btnRoleAdmin" onclick="switchRole('admin')">👑 Super Admin</button>
+      <button class="role-btn" id="btnRoleDesk" onclick="switchRole('desk')">👔 Front Desk / Staff</button>
+      <button class="role-btn" id="btnRoleTeacher" onclick="switchRole('teacher')">👨‍🏫 Faculty / Teacher</button>
+    </div>
+  </div>
+
+  <!-- ROLE 1: SUPER ADMIN DASHBOARD (Full Access & KPIs) -->
+  <div id="roleViewAdmin" class="role-view">
+    <!-- Top KPI Grid -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-title">Active Coaching Students</span>
+        <div class="kpi-value" id="kpiMainStudents">0</div>
+        <span class="kpi-sub">Central &amp; Odisha Exam Tracks</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-title">Active Library Members</span>
+        <div class="kpi-value" id="kpiLibMembers" style="color:var(--c2s-orange-600);">0</div>
+        <span class="kpi-sub">24-Hour Premium Study Sanctuary</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-title">Seat Occupancy (Live)</span>
+        <div class="kpi-value" id="kpiSeatOccupancy" style="color:var(--c2s-emerald-600);">0%</div>
+        <span class="kpi-sub" id="kpiSeatCount">0 / 48 Desks Occupied</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-title">Total Collected Revenue</span>
+        <div class="kpi-value" id="kpiRevenue" style="color:#0284c7;">₹0</div>
+        <span class="kpi-sub">Shift Fees + Registration</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-title">Pending Fee Dues</span>
+        <div class="kpi-value" id="kpiPending" style="color:#dc2626;">₹0</div>
+        <span class="kpi-sub">1-Click WhatsApp Reminder Ready</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-title">Mock Tests Attempted</span>
+        <div class="kpi-value" id="kpiTestsTaken">0</div>
+        <span class="kpi-sub">Exam Centre Engine Submissions</span>
+      </div>
+    </div>
+
+    <!-- Financial Ledger & Expense Management -->
+    <div class="admin-table-wrap">
+      <div style="padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-bottom:1px solid #e2e8f0;">
+        <h3 style="margin:0;font-size:17px;color:var(--c2s-navy-900);">📊 Date-Wise Income &amp; Expense Ledger</h3>
+        <button class="btn ghost" style="padding:7px 14px;font-size:13px;" onclick="exportLedgerCSV()">Export Ledger (CSV) ⬇</button>
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Transaction Description</th>
+            <th>Type</th>
+            <th>Amount (₹)</th>
+          </tr>
+        </thead>
+        <tbody id="adminLedgerBody"></tbody>
+      </table>
+      <div style="padding:16px 22px;background:#f8fafc;border-top:1px solid #e2e8f0;">
+        <form onsubmit="adminAddLedger(event)" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <input id="ledgerDesc" placeholder="Entry description (e.g. Electricity bill, AC servicing, book stock)" style="flex:1;min-width:200px;" required>
+          <input type="number" id="ledgerAmt" placeholder="Amount (₹)" style="width:140px;" required>
+          <select id="ledgerType" style="width:130px;">
+            <option value="income">Income (+)</option>
+            <option value="expense" selected>Expense (-)</option>
+          </select>
+          <button class="btn orange" type="submit">Add Ledger Entry</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Integrations & Cloud Diagnostics -->
+    <div class="card" style="margin-bottom:24px;">
+      <h3 style="margin:0 0 14px;color:var(--c2s-navy-900);">🔌 Platform Integrations Status</h3>
+      <div class="grid2">
+        <div style="background:#f8fafc;padding:16px;border-radius:12px;border:1px solid #e2e8f0;">
+          <strong>Supabase Cloud Postgres:</strong>
+          <p class="small" style="margin:6px 0;">URL: <code>https://ewxkrtkzlkyqfsfdoths.supabase.co</code> (c2seri's Project)</p>
+          <span class="pill blue" id="dbStatusBadge">Configured in schema • Ready for Vercel Keys</span>
+        </div>
+        <div style="background:#f8fafc;padding:16px;border-radius:12px;border:1px solid #e2e8f0;">
+          <strong>Cashfree Payments &amp; OTP Channels:</strong>
+          <p class="small" style="margin:6px 0;">Cashfree Gateway, SMS (MSG91), WhatsApp (Whatsify), Email (Resend)</p>
+          <span class="pill orange">Configurable Placeholders • No Fake Sent Calls</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROLE 2: FRONT DESK & EMPLOYEE (Admissions, Shifts, Seats, Attendance) -->
+  <div id="roleViewDesk" class="role-view hidden">
+    <div class="card" style="margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h2 style="margin:0;font-size:22px;color:var(--c2s-navy-900);">👔 Front Desk Operations Desk</h2>
+          <p class="small" style="margin:4px 0 0;">Manage student check-ins, library seat allocations, and pending fee collections.</p>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn orange" onclick="document.getElementById('quickAdmitSection').scrollIntoView({behavior:'smooth'})">+ New Student Admission</button>
+          <button class="btn ghost" onclick="markAllAttendance()">⚡ Bulk Daily Check-In</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live 3D Seat Allocation Controller -->
+    <div class="card" style="margin-bottom:20px;">
+      <h3 style="margin:0 0 12px;color:var(--c2s-navy-900);">💺 Live 3D Seat Map Controller (Click to Toggle Status)</h3>
+      <p class="small" style="margin-bottom:16px;">Green = Available, Red/Grey = Occupied, Orange = Reserved. Click a seat to mark occupied or release it.</p>
+      <div id="adminSeatController"></div>
+    </div>
+
+    <!-- Member Directory with Search & Dues -->
+    <div class="admin-table-wrap">
+      <div style="padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <h3 style="margin:0;font-size:16px;color:var(--c2s-navy-900);">👥 Registered Members &amp; Admission Records</h3>
+        <input id="memberSearch" placeholder="Search by name, reg no or mobile…" style="max-width:280px;" oninput="filterAdminMembers()">
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Reg No</th>
+            <th>Student Name</th>
+            <th>Contact</th>
+            <th>Shift</th>
+            <th>Paid (₹)</th>
+            <th>Pending (₹)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="adminMemberBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Quick Admission Desk Form -->
+    <div class="card" id="quickAdmitSection">
+      <h3>📝 Quick Front-Desk Admission Form</h3>
+      <form onsubmit="deskQuickAdmit(event)">
+        <div class="grid2">
+          <div><label>Full Name</label><input id="deskName" required placeholder="Student Name"></div>
+          <div><label>Mobile Number</label><input id="deskMobile" required placeholder="10-digit mobile"></div>
+          <div><label>Target Exam Track</label><input id="deskExam" placeholder="e.g. OSSC, Bank, SSC, Police"></div>
+          <div><label>Shift Allocation</label>
+            <select id="deskShift">
+              <option value="Morning">Morning Shift (06:00 AM – 12:00 PM)</option>
+              <option value="Afternoon" selected>Afternoon Shift (02:30 PM – 09:00 PM • ₹800 ref)</option>
+              <option value="Full Day">Full Day Shift (24 Hours)</option>
+              <option value="Night">Night Shift (09:00 PM – 06:00 AM)</option>
+            </select>
+          </div>
+          <div><label>Amount Paid (₹)</label><input type="number" id="deskPaid" value="1000" required></div>
+          <div><label>Pending Balance (₹)</label><input type="number" id="deskPending" value="0"></div>
+        </div>
+        <p class="small" style="margin:10px 0;">* ₹200 one-time non-refundable registration fee is included. Afternoon shift reference is ₹800/mo.</p>
+        <button class="btn orange" type="submit">Issue Library Admission &amp; Generate Reg No</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ROLE 3: TEACHER & FACULTY PORTAL (Batches, Tests, PYQs, Notices) -->
+  <div id="roleViewTeacher" class="role-view hidden">
+    <div class="card" style="margin-bottom:20px;">
+      <h2 style="margin:0;font-size:22px;color:var(--c2s-navy-900);">👨‍🏫 Faculty &amp; Academic Management</h2>
+      <p class="small" style="margin:4px 0 0;">Create mock tests, configure calculator rules per exam, and publish official notices &amp; strategy articles.</p>
+    </div>
+
+    <!-- Test Series Creator & Rules -->
+    <div class="card" style="margin-bottom:20px;">
+      <h3>⏱️ Test Series Manager &amp; Calculator Settings</h3>
+      <p class="small">Configure mock tests. BANK exams allow an on-screen calculator; SSC, Railway, OSSC, and UPSC operate in Scratch Pad only mode.</p>
+      <div id="teacherTestList"></div>
+    </div>
+
+    <!-- Publish Notice / Strategy Blog -->
+    <div class="card">
+      <h3>📢 Publish Notice / Preparation Strategy Article</h3>
+      <form onsubmit="teacherPublishPost(event)">
+        <label>Article / Notice Title</label>
+        <input id="postTitleIn" placeholder="e.g. OSSC CGL Exam Strategy &amp; Syllabus Walkthrough" required>
+        
+        <label>Category</label>
+        <select id="postCatIn">
+          <option value="notice">Official Notice / Notification</option>
+          <option value="blog">Student Strategy Blog</option>
+          <option value="material">Book &amp; Study Material Update</option>
+        </select>
+
+        <label>Content Body</label>
+        <textarea id="postBodyIn" rows="4" placeholder="Write full details, exam tips or announcement body here…" required></textarea>
+
+        <button class="btn orange" type="submit">Publish to Website (Preview)</button>
+      </form>
+
+      <div style="margin-top:20px;">
+        <h4 style="margin:0 0 10px;">Published Notices &amp; Articles</h4>
+        <div id="teacherPostsList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

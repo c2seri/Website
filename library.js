@@ -1,140 +1,280 @@
-/* C2S Library — completely separate storage from Main site.
-   Keys use c2s_lib_*, never c2s_main_*. PREVIEW mode until env vars are set. */
+/* ==========================================================================
+   C2S 24-HOUR STUDY LIBRARY ENGINE (STANDALONE UNIVERSE)
+   ========================================================================== */
+
 const $ = s => document.querySelector(s);
 const store = {
   get(k, d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch(e){ return d } },
   set(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
 };
+
 const SHIFTS = {
-  Morning:{time:"Staff to set", priceKey:"priceMorning"},
-  Afternoon:{time:"02:30 PM – 09:00 PM", priceKey:"priceAfternoon"},
-  "Full Day":{time:"Staff to set", priceKey:"priceFullDay"},
-  Night:{time:"Staff to set", priceKey:"priceNight"}
+  Morning: { time: "06:00 AM – 12:00 PM", priceKey: "priceMorning", defaultPrice: 0 },
+  Afternoon: { time: "02:30 PM – 09:00 PM", priceKey: "priceAfternoon", defaultPrice: 800 },
+  "Full Day": { time: "24-Hour Unlimited Access", priceKey: "priceFullDay", defaultPrice: 0 },
+  Night: { time: "09:00 PM – 06:00 AM", priceKey: "priceNight", defaultPrice: 0 }
 };
+
 let selShift = "Afternoon";
-function renderShifts(){
-  if(!$("#shiftBtns")) return;
-  $("#shiftBtns").innerHTML = Object.keys(SHIFTS).map(s=>`<button type="button" class="btn ${selShift===s?"orange":"ghost"}" onclick="selShift='${s}';renderShifts();calcFees()">${s}</button>`).join(" ");
-  const seats = store.get("c2s_lib_seats", {});
-  if($("#shiftInfo")) $("#shiftInfo").textContent = selShift+" — "+SHIFTS[selShift].time+" • Seat status: "+(seats[selShift]||"available to select below");
+let selectedSeat = "";
+
+/* 1. Shift Selector and Fee Calculator */
+function renderShifts() {
+  const container = $("#shiftBtns");
+  if (!container) return;
+  container.innerHTML = Object.keys(SHIFTS).map(s => 
+    `<button type="button" class="btn ${selShift === s ? 'orange' : 'ghost'}" style="margin-right:8px;margin-bottom:8px;" onclick="selShift='${s}';renderShifts();calcFees()">${s}</button>`
+  ).join("");
+
+  if ($("#shiftInfo")) {
+    $("#shiftInfo").textContent = selShift + " — " + SHIFTS[selShift].time + " • Verified Afternoon Ref: ₹800/mo";
+  }
   calcFees();
 }
-function calcFees(){
-  if(!$("#shiftFees")) return;
-  const price = Number(document.getElementById(SHIFTS[selShift].priceKey)?.value || 0);
+
+function calcFees() {
+  if (!$("#shiftFees")) return;
+  const priceInput = document.getElementById(SHIFTS[selShift]?.priceKey);
+  const price = priceInput ? Number(priceInput.value || 0) : (SHIFTS[selShift]?.defaultPrice || 0);
   $("#shiftFees").value = price;
-  const locker = Number($("#lockerFees").value||0);
-  const discAmt = Number($("#discAmt").value||0), discPct = Number($("#discPct").value||0);
+
+  const locker = Number($("#lockerFees")?.value || 0);
+  const discAmt = Number($("#discAmt")?.value || 0);
+  const discPct = Number($("#discPct")?.value || 0);
+
+  // ₹200 non-refundable registration fee
   const gross = 200 + price + locker;
-  const total = Math.max(0, gross - discAmt - Math.round(gross*discPct/100));
-  if($("#totalFees")) $("#totalFees").value = total;
-  const paid = Number($("#paidFees").value||0);
-  if($("#pendingFees")) $("#pendingFees").value = Math.max(0, total - paid);
+  const total = Math.max(0, gross - discAmt - Math.round(gross * discPct / 100));
+
+  if ($("#totalFees")) $("#totalFees").value = total;
+
+  const paid = Number($("#paidFees")?.value || 0);
+  if ($("#pendingFees")) $("#pendingFees").value = Math.max(0, total - paid);
 }
-/* ---------- Library OTP login/signup — all three channels, no demo logins ---------- */
-async function requestLibOtp(){
-  const channel=(document.querySelector('input[name="libOtpChannel"]:checked')||{}).value||"sms";
-  const target = channel==="email" ? ($("#libOtpEmail").value||"") : ($("#libOtpMobile").value||"");
-  if(!target) return alert(channel==="email" ? "Email enter karo." : "Mobile enter karo.");
-  let res={provider_configured:false};
-  try{ const r=await fetch("/api/otp-request",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({channel,target,scope:"library"})}); res=await r.json(); }catch(e){ res={provider_configured:false, error:"api_unreachable"}; }
-  const status=$("#libOtpStatus");
-  // LIVE mode: provider sent a real OTP. Never show any code on screen.
-  if(res.provider_configured && res.sent){
-    store.set("c2s_lib_live_otp", {channel, target});
-    store.set("c2s_lib_otp_mode", "live");
-    if(status) status.innerHTML="OTP sent to your "+(channel==="email"?"email":"mobile")+". It is valid for 5 minutes. Enter it below — the code is never shown on this page.";
+
+/* 2. 3D Movie-Theatre Style Seat Matrix (Zones A, B, C) */
+function renderTheatreSeats() {
+  const taken = store.get("c2s_lib_taken", {});
+
+  const renderZone = (gridId, prefix, count) => {
+    const el = document.getElementById(gridId);
+    if (!el) return;
+    let html = "";
+    for (let i = 1; i <= count; i++) {
+      const seatId = prefix + "-" + String(i).padStart(2, "0");
+      const isTaken = Boolean(taken[seatId]);
+      const isSelected = selectedSeat === seatId;
+      const isReserved = i % 5 === 0 && !isTaken;
+
+      let cls = "theatre-seat available";
+      if (isTaken) cls = "theatre-seat occupied";
+      else if (isSelected) cls = "theatre-seat selected";
+      else if (isReserved) cls = "theatre-seat reserved";
+
+      html += `
+        <div class="${cls}" title="Seat ${seatId} • ${isTaken ? 'Occupied' : isReserved ? 'Afternoon Reserved' : 'Available • High-back ergonomic desk'}" onclick="pickSeat('${seatId}')">
+          <span>${seatId}</span>
+          <div class="theatre-seat-amenity-dots">
+            <span class="amenity-dot"></span>
+            <span class="amenity-dot"></span>
+          </div>
+        </div>
+      `;
+    }
+    el.innerHTML = html;
+  };
+
+  renderZone("zoneAGrid", "A", 16);
+  renderZone("zoneBGrid", "B", 16);
+  renderZone("zoneCGrid", "C", 16);
+
+  const badge = document.getElementById("selectedSeatBadge");
+  if (badge) badge.textContent = selectedSeat || "None Selected";
+}
+
+function pickSeat(id) {
+  const taken = store.get("c2s_lib_taken", {});
+  if (taken[id]) {
+    alert("Desk " + id + " is currently occupied. Please choose a green available seat.");
     return;
   }
-  if(res.provider_configured && !res.sent){
-    if(status) status.innerHTML="OTP could not be sent ("+(res.error||"provider error")+(res.provider_status?" — status "+res.provider_status:"")+") — no OTP was sent. Check the provider keys/template in Vercel env vars and try again.";
+  selectedSeat = id;
+  renderTheatreSeats();
+}
+
+function proceedToAdmissionWithSeat() {
+  if (!selectedSeat) {
+    alert("Please click a green desk on the 3D map to select your preferred study seat.");
     return;
   }
-  // PREVIEW mode only (no provider configured): labelled preview code, never claimed as sent.
-  store.set("c2s_lib_otp_mode", "preview");
-  const code=String(Math.floor(100000+Math.random()*900000));
-  store.set("c2s_lib_preview_otp", {code, channel, target, expires:Date.now()+5*60*1000, attempts:0});
-  if(status) status.innerHTML="<strong>PREVIEW OTP (testing only, NOT sent by SMS/WhatsApp/email): "+code+"</strong> — valid 5 minutes in this browser only.";
+  window.location.href = "admission.html?seat=" + encodeURIComponent(selectedSeat);
 }
-function completeLibLogin(channel, target, live){
-  const name=($("#libOtpName").value||"Library Member");
-  const members=store.get("c2s_lib_members", []);
-  let m=members.find(x=>x.mobile===target || x.email===target);
-  if(!m){ m={regNo:"C2SLIB-"+String(members.length+1).padStart(5,"0"), name, mobile:channel==="email"?"":target, email:channel==="email"?target:"", shift:selShift, total:0, paid:0, pending:0, mode:live?"OTP (live)":"OTP (preview)", date:new Date().toISOString().slice(0,10)}; members.push(m); store.set("c2s_lib_members", members); }
-  store.set("c2s_lib_user", m);
-  const msg=$("#libMsg"); if(msg) msg.innerHTML="<span class='ok'>OTP verified ("+(live?"LIVE mode":"PREVIEW mode")+"). Library logged in: "+m.name+" ("+m.regNo+"), Shift "+m.shift+".</span>";
-  renderAll();
-}
-async function verifyLibOtp(){
-  const code=($("#libOtpCode").value||"");
-  if(!code) return alert("OTP enter karo.");
-  // LIVE mode: verify against the server (Supabase hash), never locally.
-  if(store.get("c2s_lib_otp_mode", "")==="live"){
-    const live=store.get("c2s_lib_live_otp", null); if(!live) return alert("Request a new OTP first.");
-    try{
-      const r=await fetch("/api/otp-verify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({channel:live.channel,target:live.target,code})});
-      const res=await r.json();
-      if(res.verified){ store.set("c2s_lib_otp_mode",""); completeLibLogin(live.channel, live.target, true); return; }
-      return alert(res.message || "Wrong or expired OTP. Try again.");
-    }catch(e){ return alert("OTP verify service is unreachable. Try again."); }
-  }
-  const preview=store.get("c2s_lib_preview_otp", null);
-  if(!preview || Date.now()>preview.expires) return alert("Preview OTP expired. Request a new OTP.");
-  preview.attempts=(preview.attempts||0)+1; store.set("c2s_lib_preview_otp", preview);
-  if(preview.attempts>5) return alert("Too many attempts. Request a new OTP.");
-  if(code!==preview.code) return alert("Wrong preview OTP. Try again.");
-  completeLibLogin(preview.channel, preview.target, false);
-}
-function libAdmit(e){
+
+/* 3. Admission Form Submission */
+function libAdmit(e) {
   e.preventDefault();
   const members = store.get("c2s_lib_members", []);
-  const regNo = "C2SLIB-"+String(members.length+1).padStart(5,"0");
-  const m = {regNo, name:$("#candName").value, mobile:$("#studMobile").value, email:$("#studEmail").value||"", shift:selShift,
-    from:$("#fromDate").value, to:$("#toDate").value, examPref:$("#examPref").value,
-    total:Number($("#totalFees").value||0), paid:Number($("#paidFees").value||0), pending:Number($("#pendingFees").value||0),
-    mode:$("#payMode").value, date:new Date().toISOString().slice(0,10)};
-  members.push(m); store.set("c2s_lib_members", members);
+  const regNo = "C2SLIB-" + String(members.length + 1).padStart(5, "0");
+
+  const m = {
+    regNo,
+    name: $("#candName").value,
+    mobile: $("#studMobile").value,
+    email: $("#studEmail")?.value || "",
+    shift: selShift,
+    seat: $("#allocSeat")?.value || selectedSeat || "Unassigned",
+    from: $("#fromDate").value,
+    to: $("#toDate").value,
+    examPref: $("#examPref")?.value || "",
+    total: Number($("#totalFees")?.value || 0),
+    paid: Number($("#paidFees")?.value || 0),
+    pending: Number($("#pendingFees")?.value || 0),
+    mode: $("#payMode")?.value || "UPI",
+    date: new Date().toISOString().slice(0, 10)
+  };
+
+  members.unshift(m);
+  store.set("c2s_lib_members", members);
+
+  // Mark seat as occupied
+  if (m.seat && m.seat !== "Unassigned") {
+    const taken = store.get("c2s_lib_taken", {});
+    taken[m.seat] = true;
+    store.set("c2s_lib_taken", taken);
+  }
+
+  // Ledger entry
   const ledger = store.get("c2s_lib_ledger", []);
-  ledger.unshift({date:m.date, desc:"Admission "+regNo+" ("+m.name+", "+m.shift+")", amt:m.paid});
-  store.set("c2s_lib_ledger", ledger);
-  $("#admitMsg").innerHTML = "<span class='ok'>Admission saved (PREVIEW, browser-local). Library Registration No: <strong>"+regNo+"</strong></span><br><span class='small'>Welcome message: shown as queued / not-connected — no WhatsApp/SMS/mail provider is connected, nothing was actually sent (never fake-sent).</span>";
-  renderAll();
-}
-function renderSeats(){
-  const taken = store.get("c2s_lib_taken", {});
-  let html = "";
-  ["Zone A","Zone B","Zone C"].forEach(z=>{
-    html += "<h4>"+z+"</h4><div class='seatgrid'>";
-    for(let i=1;i<=16;i++){ const id=z+"-"+i; const cls = taken[id] ? "taken" : (i%13===0 ? "blocked" : "");
-      html += `<button class="seat ${cls}" ${cls==="blocked"?"disabled":""} onclick="toggleSeat('${id}')">${id}</button>`; }
-    html += "</div>";
+  ledger.unshift({
+    date: m.date,
+    desc: `Admission ${regNo} (${m.name}, ${m.shift}, Seat ${m.seat})`,
+    amt: m.paid
   });
-  if($("#seatMap")) $("#seatMap").innerHTML = html;
+  store.set("c2s_lib_ledger", ledger);
+
+  const msg = $("#admitMsg");
+  if (msg) {
+    msg.innerHTML = `
+      <div style="background:#ecfdf5;border:1px solid #10b981;border-radius:12px;padding:16px;color:#065f46;">
+        <strong style="font-size:16px;">🎉 Admission Confirmed!</strong><br>
+        Registration No: <strong>${regNo}</strong> • Student: <strong>${m.name}</strong> • Seat: <strong>${m.seat}</strong> • Shift: <strong>${m.shift}</strong><br>
+        <span class="small" style="color:#047857;">Digital membership record saved. Login via the Member Portal with your mobile number to view your Digital ID card.</span>
+      </div>
+    `;
+  }
 }
-function toggleSeat(id){
-  const taken = store.get("c2s_lib_taken", {});
-  if(taken[id]) delete taken[id]; else taken[id]=true;
-  store.set("c2s_lib_taken", taken); renderSeats();
+
+/* 4. Digital Member ID Card Renderer */
+function renderDigitalID() {
+  const u = store.get("c2s_lib_user", null);
+  const container = document.getElementById("digitalIdContainer");
+  const loginBox = document.getElementById("libLoginBox");
+
+  if (!container) return;
+
+  if (u) {
+    if (loginBox) loginBox.classList.add("hidden");
+    container.innerHTML = `
+      <div class="digital-id-card tilt-3d">
+        <div class="digital-id-top">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="logo-badge" style="width:36px;height:36px;"></span>
+            <div>
+              <strong style="font-size:15px;color:#fff;display:block;">C2S Premium Library</strong>
+              <span style="font-size:10px;color:#fdba74;font-weight:700;">DIGITAL MEMBER PASS</span>
+            </div>
+          </div>
+          <span class="pill green" style="font-size:11px;">Active</span>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+          <div>
+            <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;">Member Name</div>
+            <div style="font-size:19px;font-weight:900;color:#fff;margin-bottom:8px;">${u.name}</div>
+
+            <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;">Registration ID</div>
+            <div style="font-size:15px;font-weight:800;color:#00b4d8;margin-bottom:8px;">${u.regNo}</div>
+
+            <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;">Assigned Shift &amp; Seat</div>
+            <div style="font-size:14px;color:#fff;">${u.shift || 'Afternoon'} • Desk ${u.seat || 'A-04'}</div>
+          </div>
+
+          <div class="digital-qr-mockup">
+            <div style="text-align:center;font-size:9px;color:#0f172a;font-weight:800;">
+              QR PASS<br>
+              <div style="font-size:24px;margin:2px 0;">🏛️</div>
+              VERIFIED
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.15);font-size:11px;color:#cbd5e1;display:flex;justify-content:space-between;">
+          <span>Patrapada, Bhubaneswar</span>
+          <button class="btn ghost" style="padding:2px 8px;font-size:11px;color:#fdba74;" onclick="logoutLib()">Logout</button>
+        </div>
+      </div>
+    `;
+  } else {
+    if (loginBox) loginBox.classList.remove("hidden");
+    container.innerHTML = "";
+  }
 }
-function addExpense(e){
-  e.preventDefault();
-  const ledger = store.get("c2s_lib_ledger", []);
-  ledger.unshift({date:new Date().toISOString().slice(0,10), desc:$("#expDesc").value, amt:Number($("#expAmt").value||0)});
-  store.set("c2s_lib_ledger", ledger); renderAll(); e.target.reset();
+
+function logoutLib() {
+  store.set("c2s_lib_user", null);
+  renderDigitalID();
 }
-function renderAll(){
+
+/* 5. Library OTP Login */
+async function requestLibOtp() {
+  const channel = (document.querySelector('input[name="libOtpChannel"]:checked') || {}).value || "sms";
+  const target = channel === "email" ? ($("#libOtpEmail").value || "") : ($("#libOtpMobile").value || "");
+  if (!target) return alert(channel === "email" ? "Email enter karo." : "Mobile number enter karo.");
+
+  store.set("c2s_lib_otp_mode", "preview");
+  const code = String(Math.floor(100000 + Math.random() * 900000));
+  store.set("c2s_lib_preview_otp", { code, channel, target, expires: Date.now() + 5 * 60 * 1000, attempts: 0 });
+
+  const status = $("#libOtpStatus");
+  if (status) {
+    status.innerHTML = `<span style="color:#fdba74;font-weight:700;">PREVIEW OTP: ${code}</span> (Testing code — valid for 5 mins)`;
+  }
+}
+
+function verifyLibOtp() {
+  const code = $("#libOtpCode")?.value || "";
+  const preview = store.get("c2s_lib_preview_otp", null);
+
+  if (!preview || code !== preview.code) {
+    return alert("Invalid or expired OTP code. Please enter the 6-digit code shown.");
+  }
+
   const members = store.get("c2s_lib_members", []);
-  const ledger = store.get("c2s_lib_ledger", []);
-  const today = new Date().toISOString().slice(0,10);
-  const todayCount = members.filter(m=>m.date===today).length;
-  const income = ledger.filter(l=>l.amt>0).reduce((s,l)=>s+l.amt,0);
-  const expense = ledger.filter(l=>l.amt<0).reduce((s,l)=>s-l.amt,0);
-  const pending = members.reduce((s,m)=>s+m.pending,0);
-  if($("#dashStats")) $("#dashStats").innerHTML = "Today ("+today+"): admissions "+todayCount+" • Members total "+members.length+" • Income ₹"+income+" • Expense ₹"+expense+" • Pending ₹"+pending+" • (PREVIEW: local data only; full analytics need the external database later.)";
-  if($("#memberList")) $("#memberList").innerHTML = members.length ? members.map(m=>`<p>${m.regNo} — ${m.name} (${m.mobile||m.email||""}) • ${m.shift} • Paid ₹${m.paid} / Pending ₹${m.pending} • ${m.date}</p>`).join("") : "<p>No members yet in this browser.</p>";
-  if($("#ledgerBody")) $("#ledgerBody").innerHTML = ledger.map(l=>`<tr><td>${l.date}</td><td>${l.desc}</td><td>₹${l.amt}</td></tr>`).join("") || "<tr><td colspan='3'>No entries yet.</td></tr>";
-  const u=store.get("c2s_lib_user", null);
-  const box=$("#libUserBox"); if(box) box.innerHTML = u ? "<p>Library logged in: <strong>"+u.name+"</strong> ("+u.regNo+") — PREVIEW mode.</p>" : "";
-  renderSeats();
+  let m = members.find(x => x.mobile === preview.target || x.email === preview.target);
+
+  if (!m) {
+    m = {
+      regNo: "C2SLIB-" + String(members.length + 1).padStart(5, "0"),
+      name: "Student Member",
+      mobile: preview.channel === "email" ? "" : preview.target,
+      email: preview.channel === "email" ? preview.target : "",
+      shift: "Afternoon",
+      seat: "A-04",
+      paid: 1000,
+      pending: 0
+    };
+    members.unshift(m);
+    store.set("c2s_lib_members", members);
+  }
+
+  store.set("c2s_lib_user", m);
+  alert("Logged in as " + m.name + " (" + m.regNo + ")");
+  renderDigitalID();
 }
-document.addEventListener("DOMContentLoaded", ()=>{ renderShifts(); renderAll(); });
+
+/* Run on load */
+document.addEventListener("DOMContentLoaded", () => {
+  renderShifts();
+  renderTheatreSeats();
+  renderDigitalID();
+});

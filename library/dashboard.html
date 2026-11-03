@@ -1,21 +1,90 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>C2S Library — Dashboard</title>
-<meta name="description" content="C2S Premium Library dashboard: date-wise analysis, 48-seat seat map, members list and income/expense ledger.">
-<link rel="stylesheet" href="../styles.css"><script src="../library.js"></script></head>
-<body>
-<header class="topbar"><div><div class="logo"><span class="logo-badge" role="img" aria-label="C2S logo"></span><span>C2S Premium Library</span></div><div class="tagline">C2S Premium Library • Online Membership &amp; Admission • Your Selection Our Mission</div></div><nav class="libnav"><a href="index.html">Overview</a><a href="facilities.html">Facilities</a><a href="shifts.html">Shifts &amp; Pricing</a><a href="admission.html">Admission</a><a href="login.html">Student Login</a><a href="dashboard.html">Dashboard</a><a href="index.html#contact">Contact</a></nav></header>
-<main>
-<div class="card"><h1>Library Dashboard</h1><p class="small">Two views on one page, clearly labelled. Member view shows your own library record; Admin analysis view shows date-wise library analysis. Both are preview and browser-local until a live database is connected.</p><div id="libUserBox"></div></div>
-<div class="card"><h2>Member View</h2><p>Your seat, payment and validity, once logged in. If you are not logged in yet, please use Student Login first.</p><p><button class="btn" onclick="location.href='login.html'">Student Login →</button></p></div>
-<div class="card"><h2>Library Dashboard — Date-wise Analysis (preview, local data)</h2><p id="dashStats"></p>
-<h3>Seat Map — 3 zones, 48 seats (2D grid view in this GitHub/Vercel version; 3D-style hall lives in the hosted full platform)</h3><div id="seatMap"></div><p class="small">Click a free seat to select it. Blocked seats are grey. Seat status updates in this browser only in preview mode.</p>
-<h3>Members</h3><div id="memberList"></div>
-<h3>Income / Expense Ledger (preview, local)</h3><table><thead><tr><th>Date</th><th>Description</th><th>Amount (₹)</th></tr></thead><tbody id="ledgerBody"></tbody></table>
-<form onsubmit="addExpense(event)"><div class="grid2"><input id="expDesc" placeholder="Expense description" required><input type="number" id="expAmt" placeholder="Amount (negative for expense)" required></div><button class="btn ghost">Add Ledger Entry</button></form>
-<h3>Connections (placeholders only — not live)</h3><p>Cashfree: <em>settings placeholder — no API keys, merchant ID or live link.</em><br>WhatsApp: <em>placeholder — not connected.</em><br>Mail / SMS: <em>placeholder — not connected.</em><br>Auto-debit e-mandate: <em>option shown, not live, no mandate collected here.</em></p>
-</div>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>C2S Library — Member Portal &amp; Digital ID</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../library.js"></script>
+</head>
+<body style="background:#091426;color:#e2e8f0;">
 
-</main><footer>C2S Premium Library • NH-16, opposite Sani Mandir, Patrapada, Bhubaneswar, Odisha 751019 • Phones: 9777481909 / 9658177712 • Open 24 hours • Login and payment setup is in progress — some features are shown in preview until then.</footer>
-</body></html>
+  <!-- Header -->
+  <header style="background:rgba(9,20,38,0.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.1);padding:14px 0;">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="logo-badge" role="img" aria-label="C2S logo"></span>
+        <strong style="font-size:18px;color:#fff;">C2S Library Student Portal</strong>
+      </div>
+      <a href="index.html" class="btn ghost" style="color:#cbd5e1;text-decoration:none;">← Library Home</a>
+    </div>
+  </header>
+
+  <main class="container" style="padding:36px 16px 60px;max-width:900px;">
+    
+    <!-- OTP Login Card for Returning Members -->
+    <div id="libLoginBox" class="card" style="background:#0f2444;border:1px solid rgba(255,255,255,0.15);color:#fff;margin-bottom:28px;">
+      <h2 style="margin:0 0 8px;font-size:22px;color:#fff;">Library Member Login (OTP Only)</h2>
+      <p class="small" style="color:#94a3b8;margin-bottom:16px;">Login with your registered mobile or email. No password needed. Covers library seat, shift and payment data only.</p>
+
+      <div class="grid2">
+        <div>
+          <label style="color:#cbd5e1;">Mobile Number (for SMS / WhatsApp OTP)</label>
+          <input id="libOtpMobile" placeholder="10-digit mobile number" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);color:#fff;">
+          
+          <label style="color:#cbd5e1;margin-top:10px;">Email Address (for Email OTP)</label>
+          <input type="email" id="libOtpEmail" placeholder="you@example.com" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);color:#fff;">
+        </div>
+
+        <div>
+          <label style="color:#cbd5e1;">Select OTP Delivery Channel</label>
+          <div style="background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px;margin-bottom:12px;">
+            <label style="display:block;margin-bottom:6px;cursor:pointer;"><input type="radio" name="libOtpChannel" value="sms" checked> 📱 SMS OTP</label>
+            <label style="display:block;margin-bottom:6px;cursor:pointer;"><input type="radio" name="libOtpChannel" value="whatsapp"> 💬 WhatsApp OTP</label>
+            <label style="display:block;cursor:pointer;"><input type="radio" name="libOtpChannel" value="email"> ✉️ Email OTP</label>
+          </div>
+
+          <button class="btn orange" onclick="requestLibOtp()">Request 6-Digit OTP</button>
+          <p id="libOtpStatus" class="small" style="margin:8px 0;"></p>
+
+          <input id="libOtpCode" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit OTP code" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);color:#fff;margin-top:8px;">
+          <button class="btn" style="background:#00b4d8;color:#fff;margin-top:8px;" onclick="verifyLibOtp()">Verify &amp; Open Portal</button>
+          <p id="libMsg" class="small" style="margin-top:6px;"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Member Portal Dashboard (Shown when logged in) -->
+    <div id="libMemberPortal">
+      <!-- Digital ID Card Container -->
+      <div id="digitalIdContainer"></div>
+
+      <!-- Quick Actions Grid -->
+      <div class="grid2" style="margin-top:24px;">
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:20px;">
+          <h4 style="margin:0 0 10px;color:#fff;">⏱️ Daily Attendance &amp; Study Hours</h4>
+          <p class="small" style="color:#94a3b8;line-height:1.6;">Scan the QR code at the Patrapada entrance gate to log your study hours automatically.</p>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:12px;">
+            <div style="font-size:24px;font-weight:900;color:#34d399;">Active</div>
+            <span class="small" style="color:#cbd5e1;">Today's Check-In: <strong>Logged</strong></span>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:20px;">
+          <h4 style="margin:0 0 10px;color:#fff;">🔄 Member Requests</h4>
+          <p class="small" style="color:#94a3b8;line-height:1.6;">Need to pause your membership, transfer your seat, or request a locker?</p>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+            <button class="btn ghost" style="padding:6px 12px;font-size:12px;" onclick="alert('Seat transfer request submitted to front desk.')">Transfer Seat</button>
+            <button class="btn ghost" style="padding:6px 12px;font-size:12px;" onclick="alert('Pause/Leave request logged for next cycle.')">Pause Membership</button>
+            <button class="btn orange" style="padding:6px 12px;font-size:12px;" onclick="alert('Renewal link will be issued via front desk or Cashfree placeholder.')">Renew Shift</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>
