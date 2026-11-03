@@ -54,10 +54,10 @@ function renderExams(onlyId){
   if (!container) return;
 
   container.innerHTML = list.length ? list.map(e => `
-    <div class="card tilt-3d" style="border-left:6px solid ${e.level === 'Odisha State' ? 'var(--c2s-emerald-600)' : 'var(--c2s-blue-700)'};margin-bottom:24px;border-radius:18px;padding:26px;box-shadow:var(--c2s-shadow-sm);">
+    <div class="card" style="border-left:6px solid ${e.level === 'Odisha State' ? 'var(--c2s-emerald-600)' : 'var(--c2s-blue-700)'};margin-bottom:24px;border-radius:18px;padding:26px;box-shadow:var(--c2s-shadow-sm);">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
         <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:26px;">${e.icon || '🏛️'}</span>
+          <span style="display:inline-flex;color:var(--c2s-blue-700);">${getExamSvg(e.id)}</span>
           <span class="pill ${e.level === 'Odisha State' ? 'green' : 'blue'}" style="font-weight:800;">${e.level}</span>
         </div>
         <span class="pill" style="font-size:12px;font-weight:750;background:#f1f5f9;color:var(--c2s-navy-900);">
@@ -289,7 +289,7 @@ function renderBlog(){
   if (!container) return;
 
   container.innerHTML = allBlogs.map(b => `
-    <div class="card tilt-3d" style="border-radius:16px;margin-bottom:20px;padding:24px;border-left:5px solid var(--c2s-orange-500);box-shadow:var(--c2s-shadow-sm);">
+    <div class="card" style="border-radius:16px;margin-bottom:20px;padding:24px;border-left:5px solid var(--c2s-orange-500);box-shadow:var(--c2s-shadow-sm);">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
         <span class="pill" style="font-weight:800;background:#fff7ed;color:var(--c2s-orange-600);border-color:#fed7aa;">
           🎯 ${b.examId || 'EXAM STRATEGY'}
@@ -313,7 +313,7 @@ function renderNotices(){
   if (!container) return;
 
   container.innerHTML = list.map(n => `
-    <div class="card tilt-3d" style="border-radius:16px;margin-bottom:16px;padding:22px;border-left:5px solid ${n.category === 'Odisha State' ? 'var(--c2s-emerald-600)' : 'var(--c2s-blue-700)'};box-shadow:var(--c2s-shadow-sm);">
+    <div class="card" style="border-radius:16px;margin-bottom:16px;padding:22px;border-left:5px solid ${n.category === 'Odisha State' ? 'var(--c2s-emerald-600)' : 'var(--c2s-blue-700)'};box-shadow:var(--c2s-shadow-sm);">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
         <span class="pill ${n.category === 'Odisha State' ? 'green' : 'blue'}" style="font-weight:800;">${n.tag}</span>
         <span class="small" style="font-weight:700;color:var(--c2s-slate-600);">${n.date}</span>

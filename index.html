@@ -213,7 +213,7 @@
                   Only</span></div>
             </div>
             <div class="dropdown-item" onclick="startTest('OSSC-MOCK-1');closeMobileNav();">
-              <span>📝</span>
+              <span class="meta-tag">CALC</span>
               <div><strong>OSSC Mock Test 1</strong><span class="small" style="display:block">10 min • Scratch Pad
                   Only</span></div>
             </div>
@@ -289,113 +289,162 @@
 
     <!-- VIEW: Public Homepage (Default View on Load) -->
     <section data-view="home">
-      <!-- Modern Physics Wallah / Testbook Style Hero Banner -->
-      <!-- Clean, High-Impact & Premium 3D Hero -->
-      <div class="hero hero-3d-wrap">
-        <div class="ambient-mesh">
-          <div class="mesh-orb-1"></div>
-          <div class="mesh-orb-2"></div>
-          <div class="mesh-orb-3"></div>
-        </div>
+      <!-- Elite Corporate EdTech Hero Banner (Physics Wallah / Testbook Reference Standard) -->
+      <div class="hero-enterprise">
         <div class="hero-layout">
-          <!-- Left: Clean, High-Impact Punchy Copy -->
+          <!-- Left: High-Authority Copy, Search & Primary CTAs -->
           <div class="hero-copy">
-            <span class="eyebrow">✨ C2S — College to Service • Patrapada, Bhubaneswar</span>
-            <h1 style="font-size:44px;font-weight:900;line-height:1.15;margin:6px 0 10px;letter-spacing:-0.03em;">
-              Your Selection <br><span class="highlight-orange">Our Mission.</span>
+            <div class="hero-kicker">
+              <span class="live-pulse-dot"></span>
+              <strong>PREMIER OFFLINE CENTRE &amp; 24H STUDY LIBRARY</strong>
+              <span class="kicker-sep">•</span>
+              <span>Patrapada, Bhubaneswar</span>
+            </div>
+
+            <h1 class="hero-headline">
+              Crack Bank, SSC, Railway &amp;<br>
+              <span class="highlight-orange">Odisha Govt Exams.</span>
             </h1>
-            <p style="font-size:16px;line-height:1.6;color:#e2e8f0;margin:0 0 18px;max-width:520px;">
-              Targeted coaching &amp; weekly test series for Central &amp; Odisha State government exams, combined with our <strong>24-Hour fully A/C premium study library</strong> at Patrapada.
+
+            <p class="hero-subtitle">
+              Comprehensive smart board classroom coaching, weekly locked exam-hall test series, and a <strong>24-hour fully air-conditioned study library</strong> under one roof at NH-16 Patrapada.
             </p>
 
-            <!-- 2 Clear, High-Contrast Action Buttons -->
-            <div class="hero-actions" style="margin-top:4px;">
-              <button class="btn orange btn-shimmer" style="padding:13px 26px;font-size:15px;font-weight:800;" onclick="show('exams')">
+            <!-- Search Bar with Instant Goal Filter -->
+            <div class="hero-search-wrapper">
+              <div class="hero-search-bar">
+                <svg class="search-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input id="heroSearchInput" type="search" placeholder="Search syllabus, pattern, or exam (e.g. Bank PO, OSSC, Police, SSC)..." onkeydown="if(event.key==='Enter'){handleSearch(this.value)}">
+                <button class="hero-search-submit" onclick="handleSearch(document.getElementById('heroSearchInput').value)">Search Exams</button>
+              </div>
+              <div class="hero-quick-tags">
+                <span class="tag-label">QUICK TARGETS:</span>
+                <button type="button" class="quick-tag-chip" onclick="filterExam('All India','BANK')">Bank PO / Clerk</button>
+                <button type="button" class="quick-tag-chip" onclick="filterExam('All India','SSC')">SSC CGL</button>
+                <button type="button" class="quick-tag-chip" onclick="filterExam('All India','RAILWAY')">Railway NTPC</button>
+                <button type="button" class="quick-tag-chip" onclick="filterExam('Odisha State','OSSC')">OSSC CGL</button>
+                <button type="button" class="quick-tag-chip" onclick="filterExam('Odisha State','ODISHA-POLICE')">Odisha Police</button>
+                <button type="button" class="quick-tag-chip" onclick="filterExam('Odisha State','OPSC')">OPSC OAS</button>
+                <a href="library.html" class="quick-tag-chip chip-library">24h Library</a>
+              </div>
+            </div>
+
+            <!-- 2 High-Contrast Action Buttons & Verified Academic Desk Call -->
+            <div class="hero-cta-group">
+              <button class="btn-hero-primary" onclick="show('exams')">
                 Explore 10 Exam Tracks →
               </button>
-              <button class="btn ghost" style="padding:13px 24px;font-size:15px;font-weight:750;background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.3);" onclick="location.href='library.html'">
-                24h Study Library 🏛️
+              <button class="btn-hero-secondary" onclick="location.href='library.html'">
+                24h Study Library Seat Map
               </button>
+              <a href="tel:9777481909" class="hero-helpline-link">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>Counseling: <strong>9777481909</strong></span>
+              </a>
             </div>
           </div>
 
-          <!-- Right: Sleek, Visual 3D Highlights Card -->
-          <div class="hero-feature-card tilt-3d glass-3d-card" style="padding:24px 26px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.12);padding-bottom:12px;">
-              <span class="floating-3d-badge"><span class="live-pulse-dot"></span> Offline Centre Open</span>
-              <span style="font-size:12px;font-weight:750;color:#fdba74;">Patrapada, Bhubaneswar</span>
+          <!-- Right: Executive Academic Hub & Live Centre Dashboard -->
+          <div class="hero-centre-board">
+            <div class="centre-board-header">
+              <div>
+                <span class="centre-board-kicker">C2S ACADEMIC DESK</span>
+                <h3 class="centre-board-title">Bhubaneswar Centre Status</h3>
+              </div>
+              <span class="centre-status-badge">
+                <span class="status-live-light"></span> Admissions Active
+              </span>
             </div>
 
-            <div style="display:flex;flex-direction:column;gap:11px;">
-              <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);">
-                <span style="font-size:22px;">🎯</span>
-                <div>
-                  <strong style="display:block;font-size:14px;color:#fff;">10 Exam Tracks</strong>
-                  <span style="font-size:12px;color:#cbd5e1;">All India &amp; Odisha State (BANK, SSC, Railway, OSSC, Police)</span>
+            <div class="centre-board-pillars">
+              <div class="centre-pillar-item">
+                <div class="pillar-icon-box blue">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                </div>
+                <div class="pillar-text">
+                  <strong>10 Dedicated Exam Tracks</strong>
+                  <span>Central (BANK, SSC, Railway, UPSC) &amp; Odisha (OSSC, OSSSC, Police)</span>
                 </div>
               </div>
 
-              <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);">
-                <span style="font-size:22px;">⏱️</span>
-                <div>
-                  <strong style="display:block;font-size:14px;color:#fff;">Weekly Locked Test Series</strong>
-                  <span style="font-size:12px;color:#cbd5e1;">Authentic exam hall timer &amp; negative marking engine</span>
+              <div class="centre-pillar-item">
+                <div class="pillar-icon-box orange">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div class="pillar-text">
+                  <strong>Weekly Locked Test Series</strong>
+                  <span>Authentic timer, negative marking &amp; 3-violation anti-cheat lock</span>
                 </div>
               </div>
 
-              <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);">
-                <span style="font-size:22px;">❄️</span>
-                <div>
-                  <strong style="display:block;font-size:14px;color:#fff;">24-Hour Premium Study Library</strong>
-                  <span style="font-size:12px;color:#cbd5e1;">Fully air-conditioned, high-speed Wi-Fi &amp; ergonomic seating</span>
+              <div class="centre-pillar-item">
+                <div class="pillar-icon-box teal">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/><line x1="19.07" y1="4.93" x2="4.93" y2="19.07"/></svg>
+                </div>
+                <div class="pillar-text">
+                  <strong>24-Hour Premium Study Library</strong>
+                  <span>Afternoon Shift ₹800/mo (Ref) • Registration ₹200 (Non-refundable)</span>
                 </div>
               </div>
 
-              <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);">
-                <span style="font-size:22px;">👨‍🏫</span>
-                <div>
-                  <strong style="display:block;font-size:14px;color:#fff;">10+ Yrs Teachers &amp; Govt Mentors</strong>
-                  <span style="font-size:12px;color:#cbd5e1;">Smart Board classrooms + Mentorship by govt employees</span>
+              <div class="centre-pillar-item">
+                <div class="pillar-icon-box indigo">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="pillar-text">
+                  <strong>10+ Yrs Teachers &amp; Govt Mentors</strong>
+                  <span>Smart Board classroom teaching + Mentorship by selected officers</span>
                 </div>
               </div>
             </div>
 
-            <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;justify-content:space-between;align-items:center;font-size:12.5px;">
-              <span style="color:#cbd5e1;">📍 NH-16, Opp. Sani Mandir</span>
-              <a href="tel:9777481909" style="color:#fdba74;font-weight:800;text-decoration:none;">📞 9777481909</a>
+            <div class="centre-board-footer">
+              <div class="centre-loc-item">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>NH-16, Opp. Sani Mandir, Patrapada (751019)</span>
+              </div>
+              <a href="tel:9658177712" class="centre-contact-call">📞 9658177712</a>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Floating Hero Stats Ribbon -->
+      <!-- Corporate Stats Ribbon -->
       <div class="hero-stats-ribbon">
         <div class="stat-box">
-          <div class="stat-icon">📚</div>
+          <div class="stat-icon-wrap blue">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          </div>
           <div class="stat-data">
-            <strong>10 Tracks</strong>
-            <span>All India &amp; Odisha State Exams</span>
+            <strong>10 Exam Tracks</strong>
+            <span>All India &amp; Odisha State Recruitments</span>
           </div>
         </div>
         <div class="stat-box">
-          <div class="stat-icon orange">🏛️</div>
+          <div class="stat-icon-wrap orange">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
           <div class="stat-data">
-            <strong>24 Hours</strong>
-            <span>Open A/C Study Library</span>
+            <strong>Weekly Test Series</strong>
+            <span>Negative Marking &amp; Solution Engine</span>
           </div>
         </div>
         <div class="stat-box">
-          <div class="stat-icon green">🕒</div>
+          <div class="stat-icon-wrap green">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
           <div class="stat-data">
-            <strong>4 Shifts</strong>
-            <span>Morning, Afternoon, Full Day, Night</span>
+            <strong>24-Hour Study Library</strong>
+            <span>4 Shifts • Fully A/C • Ergonomic</span>
           </div>
         </div>
         <div class="stat-box">
-          <div class="stat-icon purple">📱</div>
+          <div class="stat-icon-wrap purple">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
           <div class="stat-data">
-            <strong>3 OTP Options</strong>
-            <span>SMS, WhatsApp, Email — No Password</span>
+            <strong>Govt Officer Mentors</strong>
+            <span>10+ Yrs Teachers &amp; Selected Officers</span>
           </div>
         </div>
       </div>
@@ -427,10 +476,10 @@
       <!-- 10 Exam Cards Grid -->
       <div class="exam-grid">
         <!-- 1. BANK -->
-        <div class="exam-card tilt-3d" data-level="All India">
+        <div class="exam-card" data-level="All India">
           <div>
             <div class="exam-card-top">
-              <span class="exam-icon">🏦</span>
+              <span class="exam-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2l10 5H2l10-5z"/></svg></span>
               <span class="pill blue">All India</span>
             </div>
             <h3>BANK Exams</h3>
@@ -445,10 +494,10 @@
         </div>
 
         <!-- 2. SSC -->
-        <div class="exam-card tilt-3d" data-level="All India">
+        <div class="exam-card" data-level="All India">
           <div>
             <div class="exam-card-top">
-              <span class="exam-icon orange">📋</span>
+              <span class="exam-icon orange"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
               <span class="pill">All India</span>
             </div>
             <h3>SSC Exams</h3>
@@ -461,10 +510,10 @@
         </div>
 
         <!-- 3. Railway -->
-        <div class="exam-card tilt-3d" data-level="All India">
+        <div class="exam-card" data-level="All India">
           <div>
             <div class="exam-card-top">
-              <span class="exam-icon green">🚆</span>
+              <span class="exam-icon green"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16M12 3v8M8 19l-3 3M16 19l3 3"/></svg></span>
               <span class="pill green">All India</span>
             </div>
             <h3>Railway Exams</h3>
@@ -478,10 +527,10 @@
         </div>
 
         <!-- 4. UPSC -->
-        <div class="exam-card tilt-3d" data-level="All India">
+        <div class="exam-card" data-level="All India">
           <div>
             <div class="exam-card-top">
-              <span class="exam-icon purple">🏛️</span>
+              <span class="exam-icon purple"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="22" x2="22" y2="22"/><line x1="12" y1="2" x2="12" y2="5"/><path d="M4 22V10l8-5 8 5v12M8 14h8M8 18h8"/></svg></span>
               <span class="pill purple">All India</span>
             </div>
             <h3>UPSC Exams</h3>
@@ -495,10 +544,10 @@
         </div>
 
         <!-- 5. Defence -->
-        <div class="exam-card tilt-3d" data-level="All India">
+        <div class="exam-card" data-level="All India">
           <div>
             <div class="exam-card-top">
-              <span class="exam-icon">🛡️</span>
+              <span class="exam-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
               <span class="pill blue">All India</span>
             </div>
             <h3>Defence Exams</h3>
@@ -512,10 +561,10 @@
         </div>
 
         <!-- 6. Teaching -->
-        <div class="exam-card tilt-3d" data-level="All India">
+        <div class="exam-card" data-level="All India">
           <div>
             <div class="exam-card-top">
-              <span class="exam-icon orange">📚</span>
+              <span class="exam-icon orange"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg></span>
               <span class="pill">All India</span>
             </div>
             <h3>Teaching Exams</h3>
@@ -529,10 +578,10 @@
         </div>
 
         <!-- 7. OSSC (Odisha) -->
-        <div class="exam-card tilt-3d" data-level="Odisha State">
+        <div class="exam-card" data-level="Odisha State">
           <div>
             <div class="exam-card-top">
-              <span class="exam-icon green">📝</span>
+              <span class="exam-icon green"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></span>
               <span class="pill green">Odisha State</span>
             </div>
             <h3>OSSC Exams</h3>
@@ -546,10 +595,10 @@
         </div>
 
         <!-- 8. OSSSC (Odisha) -->
-        <div class="exam-card tilt-3d" data-level="Odisha State">
+        <div class="exam-card" data-level="Odisha State">
           <div>
             <div class="exam-card-top">
-              <span class="exam-icon purple">📋</span>
+              <span class="exam-icon purple"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></span>
               <span class="pill purple">Odisha State</span>
             </div>
             <h3>OSSSC Exams</h3>
@@ -563,10 +612,10 @@
         </div>
 
         <!-- 9. OPSC (Odisha) -->
-        <div class="exam-card tilt-3d" data-level="Odisha State">
+        <div class="exam-card" data-level="Odisha State">
           <div>
             <div class="exam-card-top">
-              <span class="exam-icon">🏛️</span>
+              <span class="exam-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
               <span class="pill blue">Odisha State</span>
             </div>
             <h3>OPSC Exams</h3>
@@ -581,10 +630,10 @@
         </div>
 
         <!-- 10. Odisha Police -->
-        <div class="exam-card tilt-3d" data-level="Odisha State">
+        <div class="exam-card" data-level="Odisha State">
           <div>
             <div class="exam-card-top">
-              <span class="exam-icon orange">👮</span>
+              <span class="exam-icon orange"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="11" r="3"/></svg></span>
               <span class="pill">Odisha State</span>
             </div>
             <h3>Odisha Police</h3>
@@ -622,11 +671,11 @@
             </div>
             <h3>BANK Mock Test 1</h3>
             <div class="test-meta-list">
-              <div class="test-meta-item"><span>🧮</span> <span>Calculator: <strong>Allowed (on-screen)</strong></span>
+              <div class="test-meta-item"><span class="meta-tag">CALC</span> <span>Calculator: <strong>Allowed (on-screen)</strong></span>
               </div>
-              <div class="test-meta-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.25 negative</strong></span>
+              <div class="test-meta-item"><span class="meta-tag">MARKS</span> <span>Marking: <strong>1 mark / -0.25 negative</strong></span>
               </div>
-              <div class="test-meta-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab
+              <div class="test-meta-item"><span class="meta-tag">LOCK</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab
                     Lock</strong></span></div>
             </div>
           </div>
@@ -642,11 +691,11 @@
             </div>
             <h3>SSC Mock Test 1</h3>
             <div class="test-meta-list">
-              <div class="test-meta-item"><span>📝</span> <span>Calculator: <strong>Not Allowed (Scratch Pad
+              <div class="test-meta-item"><span class="meta-tag">CALC</span> <span>Calculator: <strong>Not Allowed (Scratch Pad
                     only)</strong></span></div>
-              <div class="test-meta-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.25 negative</strong></span>
+              <div class="test-meta-item"><span class="meta-tag">MARKS</span> <span>Marking: <strong>1 mark / -0.25 negative</strong></span>
               </div>
-              <div class="test-meta-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab
+              <div class="test-meta-item"><span class="meta-tag">LOCK</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab
                     Lock</strong></span></div>
             </div>
           </div>
@@ -662,11 +711,11 @@
             </div>
             <h3>Railway Mock Test 1</h3>
             <div class="test-meta-list">
-              <div class="test-meta-item"><span>📝</span> <span>Calculator: <strong>Not Allowed (Scratch Pad
+              <div class="test-meta-item"><span class="meta-tag">CALC</span> <span>Calculator: <strong>Not Allowed (Scratch Pad
                     only)</strong></span></div>
-              <div class="test-meta-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.33 negative</strong></span>
+              <div class="test-meta-item"><span class="meta-tag">MARKS</span> <span>Marking: <strong>1 mark / -0.33 negative</strong></span>
               </div>
-              <div class="test-meta-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab
+              <div class="test-meta-item"><span class="meta-tag">LOCK</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab
                     Lock</strong></span></div>
             </div>
           </div>
@@ -682,11 +731,11 @@
             </div>
             <h3>OSSC Mock Test 1</h3>
             <div class="test-meta-list">
-              <div class="test-meta-item"><span>📝</span> <span>Calculator: <strong>Not Allowed (Scratch Pad
+              <div class="test-meta-item"><span class="meta-tag">CALC</span> <span>Calculator: <strong>Not Allowed (Scratch Pad
                     only)</strong></span></div>
-              <div class="test-meta-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.25 negative</strong></span>
+              <div class="test-meta-item"><span class="meta-tag">MARKS</span> <span>Marking: <strong>1 mark / -0.25 negative</strong></span>
               </div>
-              <div class="test-meta-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab
+              <div class="test-meta-item"><span class="meta-tag">LOCK</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab
                     Lock</strong></span></div>
             </div>
           </div>
@@ -702,11 +751,11 @@
             </div>
             <h3>UPSC Mock Test 1</h3>
             <div class="test-meta-list">
-              <div class="test-meta-item"><span>📝</span> <span>Calculator: <strong>Not Allowed (Scratch Pad
+              <div class="test-meta-item"><span class="meta-tag">CALC</span> <span>Calculator: <strong>Not Allowed (Scratch Pad
                     only)</strong></span></div>
-              <div class="test-meta-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.33 negative</strong></span>
+              <div class="test-meta-item"><span class="meta-tag">MARKS</span> <span>Marking: <strong>1 mark / -0.33 negative</strong></span>
               </div>
-              <div class="test-meta-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab
+              <div class="test-meta-item"><span class="meta-tag">LOCK</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab
                     Lock</strong></span></div>
             </div>
           </div>
@@ -743,11 +792,11 @@
             </p>
 
             <div class="showcase-chips">
-              <span class="pill">❄️ Fully A/C with High-Speed Wi-Fi</span>
-              <span class="pill">🪑 Comfortable Ergonomic Seating</span>
-              <span class="pill">💡 Eye-Friendly Proper Lighting</span>
-              <span class="pill">🚌 Good Bus Connectivity (NH-16)</span>
-              <span class="pill">🌿 Spacious &amp; Soundproof Interior</span>
+              <span class="pill"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/><line x1="19.07" y1="4.93" x2="4.93" y2="19.07"/></svg>Fully A/C with High-Speed Wi-Fi</span>
+              <span class="pill"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M6 19v2M18 19v2M5 11h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2zM7 11V6a3 3 0 0 1 6 0v5"/></svg>Ergonomic Study Desks &amp; Chairs</span>
+              <span class="pill"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>Eye-Friendly LED Reading Lights</span>
+              <span class="pill"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Direct NH-16 Highway Connectivity</span>
+              <span class="pill"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Soundproof &amp; Peaceful Study Hall</span>
             </div>
 
             <div style="margin:16px 0;background:#fff;border:1px solid #fed7aa;border-radius:12px;padding:14px 18px;">
@@ -774,7 +823,7 @@
           </div>
 
           <!-- Right Column: Interactive 3D Study Hall Simulator -->
-          <div class="study-hall-interactive-card tilt-3d">
+          <div class="study-hall-interactive-card">
             <div id="hallGlow" class="hall-ambient-glow" style="background: radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.4) 0%, transparent 70%);"></div>
             
             <div style="position:relative;z-index:2;">
@@ -789,10 +838,10 @@
 
               <!-- Interactive Shift Switcher Buttons -->
               <div class="hall-shift-nav">
-                <button type="button" class="hall-shift-btn" onclick="setHallShift('morning', this)">🌅 Morning</button>
-                <button type="button" class="hall-shift-btn active" onclick="setHallShift('afternoon', this)">☀️ Afternoon (₹800 ref)</button>
-                <button type="button" class="hall-shift-btn" onclick="setHallShift('fullday', this)">⚡ Full Day (24h)</button>
-                <button type="button" class="hall-shift-btn" onclick="setHallShift('night', this)">🌙 Night</button>
+                <button type="button" class="hall-shift-btn" onclick="setHallShift('morning', this)">Morning</button>
+                <button type="button" class="hall-shift-btn active" onclick="setHallShift('afternoon', this)">Afternoon (₹800 ref)</button>
+                <button type="button" class="hall-shift-btn" onclick="setHallShift('fullday', this)">Full Day (24h)</button>
+                <button type="button" class="hall-shift-btn" onclick="setHallShift('night', this)">Night</button>
               </div>
 
               <!-- Shift Details Meta Strip -->
