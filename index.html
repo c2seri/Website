@@ -7,38 +7,40 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"EducationalOrganization","name":"C2S — College to Service","slogan":"Your Selection Our Mission","address":{"@type":"PostalAddress","streetAddress":"NH-16, opposite Sani Mandir, Patrapada","addressLocality":"Bhubaneswar","postalCode":"751019","addressCountry":"IN"},"telephone":"+91-9777481909"}</script>
 <link rel="stylesheet" href="styles.css"><script src="exams.js"></script><script src="app.js"></script></head>
 <body>
-<header class="topbar"><div><div class="logo"><span class="logo-badge" role="img" aria-label="C2S logo"></span><span>C2S — College to Service</span></div><div class="tagline">Your Selection Our Mission • NH-16, opposite Sani Mandir, Patrapada, Bhubaneswar 751019 • 9777481909 / 9658177712</div></div>
-<button class="btn orange" onclick="location.href='library.html'">Library</button></header>
-<nav class="mainnav" id="mainnav">
-<button class="menubtn" onclick="document.getElementById('mainnav').classList.toggle('open');document.querySelectorAll('.dropdown').forEach(d=>d.classList.toggle('open'))">☰ Menu</button>
-<div class="navwrap" style="display:contents">
-<a class="navlink" href="#" data-nav="home" onclick="show('home');return false">Home</a>
-<div class="dropdown"><button class="dropbtn" onclick="this.parentElement.classList.toggle('open')">Exams ▾</button><div class="dropmenu">
-<strong>All India</strong>
-<a href="#" onclick="filterExam('All India','BANK');return false">BANK</a>
-<a href="#" onclick="filterExam('All India','SSC');return false">SSC</a>
-<a href="#" onclick="filterExam('All India','RAILWAY');return false">Railway</a>
-<a href="#" onclick="filterExam('All India','UPSC');return false">UPSC</a>
-<a href="#" onclick="filterExam('All India','DEFENCE');return false">Defence</a>
-<a href="#" onclick="filterExam('All India','TEACHING');return false">Teaching</a>
-<strong>Odisha State</strong>
-<a href="#" onclick="filterExam('Odisha State','OSSC');return false">OSSC</a>
-<a href="#" onclick="filterExam('Odisha State','OSSSC');return false">OSSSC</a>
-<a href="#" onclick="filterExam('Odisha State','OPSC');return false">OPSC</a>
-<a href="#" onclick="filterExam('Odisha State','ODISHA-POLICE');return false">Odisha Police</a>
-<a href="#" onclick="show('exams');return false">All Exams — Search by keyword</a>
-</div></div>
-<a class="navlink" href="#" data-nav="tests" onclick="show('tests');return false">Test Series</a>
-<a class="navlink" href="#" data-nav="batches" onclick="show('batches');return false">Batches / Classes</a>
-<div class="dropdown"><button class="dropbtn" onclick="this.parentElement.classList.toggle('open')">Notices / Blog ▾</button><div class="dropmenu">
-<a href="#" onclick="show('notices');return false">Notices / Notifications</a>
-<a href="#" onclick="show('blog');return false">Blog</a>
-</div></div>
-<a class="navlink" href="#" data-nav="help" onclick="show('help');return false">Help / Contact</a>
-<a class="navlink" href="#" data-nav="login" onclick="show('login');return false">Login / Signup (OTP)</a>
-<button class="btn orange" onclick="location.href='library.html'">Library</button>
-</div>
+<div class="app">
+<nav class="sidebar" id="sidebar">
+<div class="side-brand"><span class="logo-badge" role="img" aria-label="C2S logo"></span><div><strong>C2S</strong><span>College to Service</span><small>Your Selection Our Mission</small></div></div>
+<div class="side-label">Menu</div>
+<details class="side-group" open><summary>Exams</summary>
+<a class="sidesub" href="#" onclick="document.getElementById('sidebar').classList.remove('open');filterExam('All India','BANK');return false">BANK</a>
+<a class="sidesub" href="#" onclick="document.getElementById('sidebar').classList.remove('open');filterExam('All India','SSC');return false">SSC</a>
+<a class="sidesub" href="#" onclick="document.getElementById('sidebar').classList.remove('open');filterExam('All India','RAILWAY');return false">Railway</a>
+<a class="sidesub" href="#" onclick="document.getElementById('sidebar').classList.remove('open');filterExam('All India','UPSC');return false">UPSC</a>
+<a class="sidesub" href="#" onclick="document.getElementById('sidebar').classList.remove('open');filterExam('All India','DEFENCE');return false">Defence</a>
+<a class="sidesub" href="#" onclick="document.getElementById('sidebar').classList.remove('open');filterExam('All India','TEACHING');return false">Teaching</a>
+<a class="sidesub" href="#" onclick="document.getElementById('sidebar').classList.remove('open');filterExam('Odisha State','OSSC');return false">OSSC</a>
+<a class="sidesub" href="#" onclick="document.getElementById('sidebar').classList.remove('open');filterExam('Odisha State','OSSSC');return false">OSSSC</a>
+<a class="sidesub" href="#" onclick="document.getElementById('sidebar').classList.remove('open');filterExam('Odisha State','OPSC');return false">OPSC</a>
+<a class="sidesub" href="#" onclick="document.getElementById('sidebar').classList.remove('open');filterExam('Odisha State','ODISHA-POLICE');return false">Odisha Police</a>
+<a class="sidesub" href="#" data-nav="exams" onclick="document.getElementById('sidebar').classList.remove('open');show('exams');return false">All Exams — Search by keyword</a>
+</details>
+<a class="sidelink" href="#"  data-nav="tests" onclick="document.getElementById('sidebar').classList.remove('open');show('tests');return false">📝 Test Series</a>
+<a class="sidelink" href="#" data-nav="tests" onclick="document.getElementById('sidebar').classList.remove('open');show('tests');setTimeout(()=>document.getElementById('givenTests').scrollIntoView({behavior:'smooth'}),80);return false">✅ Attempted Tests</a>
+<a class="sidelink" href="#"  data-nav="batches" onclick="document.getElementById('sidebar').classList.remove('open');show('batches');return false">🎬 Batches / Classes</a>
+<a class="sidelink" href="library.html">📚 Library</a>
+<a class="sidelink" href="#"  data-nav="notices" onclick="document.getElementById('sidebar').classList.remove('open');show('notices');return false">📢 Notices</a>
+<a class="sidelink" href="#"  data-nav="blog" onclick="document.getElementById('sidebar').classList.remove('open');show('blog');return false">📰 Blog</a>
+<a class="sidelink" href="#"  data-nav="help" onclick="document.getElementById('sidebar').classList.remove('open');show('help');return false">❓ Help / Contact</a>
+<a class="sidelink" href="#"  data-nav="login" onclick="document.getElementById('sidebar').classList.remove('open');show('login');return false">🔐 Login / Signup (OTP)</a>
+<div class="side-foot">NH-16, opposite Sani Mandir, Patrapada, Bhubaneswar 751019<br>9777481909 / 9658177712</div>
 </nav>
+<div class="app-main">
+<header class="app-topbar">
+<button class="hamburger" aria-label="Menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+<div class="top-search"><input id="topSearch" placeholder="Search for your exam — e.g. bank, police, odisha…" onkeydown="if(event.key==='Enter'){document.getElementById('examSearch').value=this.value;renderExams();show('exams')}"><button class="btn orange" onclick="document.getElementById('examSearch').value=document.getElementById('topSearch').value;renderExams();show('exams')">🔍 Search</button></div>
+<button class="btn ghost" onclick="show('login')">Login / Signup (OTP)</button>
+<button class="btn orange" onclick="location.href='library.html'">Library</button>
+</header>
 <main>
 <section data-view="home">
 <div class="card hero"><span class="eyebrow">🏆 C2S — College to Service • Bhubaneswar</span><h1>Competitive Exams for Govt Jobs</h1>
@@ -47,6 +49,23 @@
 <div class="quick-actions"><button class="btn orange" onclick="show('tests')">📝 Test Series</button> <button class="btn" onclick="location.href='library.html'">📚 Open Library</button> <button class="btn ghost" onclick="show('login')">🔐 Login / Signup (OTP)</button></div>
 <div class="preview"><strong>PREVIEW mode:</strong> No live database, OTP provider, payment or video storage is connected yet. Logins, tests and library records are stored only in this browser (localStorage) until DATABASE_URL and provider env vars are set in Vercel. Nothing here claims a real SMS, WhatsApp or email was sent.</div></div>
 <div class="stats"><div class="stat"><strong>10</strong><span>Exam tracks — All India + Odisha State</span></div><div class="stat blue"><strong>4</strong><span>Library shifts — Morning, Afternoon, Full Day, Night</span></div><div class="stat green"><strong>24 hrs</strong><span>Library open — Patrapada, Bhubaneswar</span></div><div class="stat purple"><strong>3</strong><span>OTP options — SMS, WhatsApp, Email</span></div></div>
+<div class="section-head"><h2>Quick Access</h2><div class="rule"></div></div>
+<div class="quick-grid">
+<button class="quick-tile" onclick="show('tests')"><span>📝</span><strong>Test Series</strong><span>Locked exam, marks + solutions</span></button>
+<button class="quick-tile" onclick="show('exams')"><span>🏦</span><strong>Exams</strong><span>Search by any keyword</span></button>
+<button class="quick-tile" onclick="location.href='library.html'"><span>📚</span><strong>Library</strong><span>Admission, shift &amp; seat</span></button>
+<button class="quick-tile" onclick="show('notices')"><span>📢</span><strong>Notices</strong><span>Latest updates</span></button>
+<button class="quick-tile" onclick="show('help')"><span>❓</span><strong>Help</strong><span>Contact C2S</span></button>
+</div>
+<div class="section-head"><h2>Your Recent Test Series</h2><p>Ye 5 mock tests C2S ke hain — Start dabate hi wahi locked exam khulta hai jo Test Series section me hai. Pehle OTP login zaroori hai.</p><div class="rule"></div></div>
+<div class="test-grid">
+<div class="test-card"><span class="pill">BANK</span><strong>BANK Mock Test 1</strong><p class="small">10 minutes • 4 questions • Calculator: Allowed (shown in exam)</p><button class="btn" onclick="startTest('BANK-MOCK-1')">Start Test</button></div>
+<div class="test-card"><span class="pill">SSC</span><strong>SSC Mock Test 1</strong><p class="small">10 minutes • 4 questions • Calculator: Not allowed — scratch pad only</p><button class="btn" onclick="startTest('SSC-MOCK-1')">Start Test</button></div>
+<div class="test-card"><span class="pill">Railway</span><strong>Railway Mock Test 1</strong><p class="small">10 minutes • 4 questions • Calculator: Not allowed — scratch pad only</p><button class="btn" onclick="startTest('RAILWAY-MOCK-1')">Start Test</button></div>
+<div class="test-card"><span class="pill">OSSC</span><strong>OSSC Mock Test 1</strong><p class="small">10 minutes • 4 questions • Calculator: Not allowed — scratch pad only</p><button class="btn" onclick="startTest('OSSC-MOCK-1')">Start Test</button></div>
+<div class="test-card"><span class="pill">UPSC</span><strong>UPSC Mock Test 1</strong><p class="small">10 minutes • 4 questions • Calculator: Not allowed — scratch pad only</p><button class="btn" onclick="startTest('UPSC-MOCK-1')">Start Test</button></div>
+</div>
+<div class="card"><h3>✅ Attempted Tests / Given Tests</h3><p>Diya hua test yahan se dekho — marks aur solutions ke saath, dobara nahi diya ja sakta.</p><p><button class="btn orange" onclick="show('tests');setTimeout(()=>document.getElementById('givenTests').scrollIntoView({behavior:'smooth'}),80)">View Attempted Tests →</button> <button class="btn ghost" onclick="show('tests')">View All Tests →</button></p></div>
 <div class="section-head"><h2>Popular Exams</h2><p>Apna exam chuno — details, pattern aur syllabus dekhne ke liye card par tap karo.</p><div class="rule"></div></div>
 <div class="exam-grid">
 <button class="exam-tile" onclick="filterExam('All India','BANK')"><span class="tile-icon">🏦</span><strong>BANK Exams</strong><span>All India • Clerk, PO, Specialist Officer</span></button>
@@ -61,8 +80,8 @@
 <button class="exam-tile" onclick="filterExam('Odisha State','ODISHA-POLICE')"><span class="tile-icon orange">👮</span><strong>Odisha Police</strong><span>Odisha State • Constable, SI</span></button>
 </div>
 <p style="text-align:center"><button class="btn" onclick="show('exams')">All Exams — Search by keyword →</button></p>
-<div class="section-head"><h2>Test Series — Exam jaisa experience</h2><p>Locked exam window, timer, negative marking, marks + solutions. Diya hua test Given Tests me chala jata hai, dobara nahi diya ja sakta.</p><div class="rule"></div></div>
-<div class="card"><h3>📝 Available Tests &amp; ✅ Given Tests</h3><p>Test shuru karne, marks dekhne aur solutions padhne ke liye Test Series section kholo.</p><p><button class="btn orange" onclick="show('tests')">Take a Test Series →</button> <button class="btn ghost" onclick="show('login')">Login / Signup (OTP)</button></p></div>
+<div class="section-head"><h2>Batches / Classes — Videos coming here</h2><p>Videos aur live classes abhi deferred hain — is section me baad me aayenge, site dobara banane ki zaroorat nahi padegi.</p><div class="rule"></div></div>
+<div class="card"><h3>🎬 Classes &amp; Video Player</h3><p>No schedule or video is invented here. Staff batches aur videos isi section me add karenge. Live classes abhi live nahi hain.</p><p><button class="btn" onclick="show('batches')">Open Batches / Classes →</button></p></div>
 <div class="section-head"><h2>Library — 24 Hours, Premium Study Space</h2><p>Library ka poora section alag hai — admission, shift, payment aur seat sab kuch Library page par hi hota hai.</p><div class="rule"></div></div>
 <div class="card lib-preview"><h3>📚 C2S Premium Library</h3><p>Peaceful, spacious, fully A/C • Comfortable seating • Proper lighting • Premium interior • Good bus connectivity</p><div><span class="pill">🌅 Morning</span><span class="pill">☀️ Afternoon</span><span class="pill">🕐 Full Day</span><span class="pill">🌙 Night</span><span class="pill">Registration ₹200 (non-refundable)</span></div><p><button class="btn orange" onclick="location.href='library.html'">Open Library — Admission &amp; Seat →</button></p></div>
 <div class="section-head"><h2>Why C2S — Facilities</h2><p>Poster par di gayi facilities, wahi yahan bhi.</p><div class="rule"></div></div>
@@ -75,25 +94,20 @@
 <div class="facility"><span class="tile-icon orange">👨‍🏫</span><strong>10+ Years Experience Teachers</strong><span>Experienced faculty for every exam.</span></div>
 <div class="facility"><span class="tile-icon green">🤝</span><strong>Mentorship by Govt Employees</strong><span>Guidance from people in government service.</span></div>
 </div>
-<div class="section-head"><h2>Batches / Classes — Videos coming here</h2><p>Videos aur live classes abhi deferred hain — is section me baad me aayenge, site dobara banane ki zaroorat nahi padegi.</p><div class="rule"></div></div>
-<div class="card"><h3>🎬 Classes &amp; Video Player</h3><p>No schedule or video is invented here. Staff batches aur videos isi section me add karenge.</p><p><button class="btn" onclick="show('batches')">Open Batches / Classes →</button></p></div>
 <div class="section-head"><h2>Notices &amp; Blog</h2><p>Latest updates aur posts — staff isi section me add karte rahenge.</p><div class="rule"></div></div>
 <div class="card"><h3>📢 Notices / Blog</h3><p>Library 24 hours open hai. Fees, batch timings aur exam dates ke liye official notification ya C2S se contact karein — site par koi date/fee invent nahi ki gayi hai.</p><p><button class="btn ghost" onclick="show('notices')">Notices →</button> <button class="btn ghost" onclick="show('blog')">Blog →</button></p></div>
-<div class="card"><h2>After login — everything in one place</h2><p>Login ke baad aapko dashboard me milega: My Tests, Given Tests (marks + solutions), My Purchases, aur Library ka alag section. Menu ke dropdown se koi bhi student kisi bhi exam, test ya batch tak seedha pahunch sakta hai.</p><p><strong>C2S — College to Service</strong><br>NH-16, opposite Sani Mandir, Patrapada, Bhubaneswar, Odisha 751019<br>Phones: 9777481909 / 9658177712 • Tagline: Your Selection Our Mission</p><p><button class="btn orange" onclick="show('help')">Help / Contact →</button></p></div>
+<div class="card"><h2>Help / Contact</h2><p><strong>C2S — College to Service</strong><br>NH-16, opposite Sani Mandir, Patrapada, Bhubaneswar, Odisha 751019<br>Phones: 9777481909 / 9658177712 • Tagline: Your Selection Our Mission</p><p><button class="btn orange" onclick="show('help')">Help / Contact →</button></p></div>
 </section>
-
 <section data-view="exams" class="hidden">
 <div class="card"><h2>Exams — search by any keyword</h2>
 <input id="examSearch" placeholder="Search: e.g. bank, police, odisha, clerk, graduate…" oninput="renderExams()">
 <select id="examLevel" onchange="renderExams()"><option value="">All levels</option><option>All India</option><option>Odisha State</option></select>
 <div id="examList"></div></div>
 </section>
-
 <section data-view="tests" class="hidden">
 <div class="card"><h2>Test Series — Available Tests</h2><div id="availTests"></div></div>
 <div class="card"><h2>✅ Given Tests</h2><p class="small">A test you have submitted moves here and cannot be retaken. Marks and solutions are shown here.</p><div id="givenTests"></div></div>
 </section>
-
 <section data-view="batches" class="hidden">
 <div class="card"><h2>Batches / Classes — Videos (coming in this section)</h2>
 <p>No schedule, batch or video is invented here. Classes and videos will be added by staff in this section. Video delivery path for 1–2 TB: object storage (S3-compatible) + HLS transcoding + CDN — NOT Vercel disk and NOT the database. See README for the exact path.</p>
@@ -102,25 +116,21 @@
 <p class="small">Player placeholder only — no video source is set until storage is connected.</p></div></div>
 <p class="small">Current batches: none listed yet. Contact C2S at 9777481909 / 9658177712 for batch enquiries.</p></div>
 </section>
-
 <section data-view="blog" class="hidden">
 <div class="card"><h2>Blog</h2><div id="blogList"></div>
 <h3>Add a post (preview, saved in this browser)</h3>
 <form onsubmit="addPost(event)"><input id="postTitle" placeholder="Post title" required><textarea id="postBody" placeholder="Post body" required></textarea><button class="btn">Publish locally (preview)</button></form></div>
 </section>
-
 <section data-view="notices" class="hidden">
 <div class="card"><h2>Notices / Notifications</h2>
 <ul><li>Library is open 24 hours, Patrapada, Bhubaneswar.</li><li>New test series are added under Test Series — given tests move to Given Tests with marks.</li><li>For fees, batch timings and exam dates, check the official notification or contact C2S — no dates or fees are invented on this site.</li></ul></div>
 </section>
-
 <section data-view="help" class="hidden">
 <div class="card"><h2>Help / Contact</h2>
 <p><strong>C2S — College to Service</strong><br>NH-16, opposite Sani Mandir, Patrapada, Bhubaneswar, Odisha 751019<br>Phones: 9777481909 / 9658177712<br>Tagline: Your Selection Our Mission</p>
 <p>Payment provider (chosen, not live): <strong>Cashfree</strong> — settings placeholder only, no API keys, merchant ID or live payment link in this version.</p>
 <p>OTP providers: SMS, WhatsApp and Email are all offered as choices at login/signup. Until provider env vars are set in Vercel, no real OTP is sent — a clearly labelled PREVIEW OTP is shown on screen for testing only.</p></div>
 </section>
-
 <section data-view="login" class="hidden">
 <div class="card"><h2>Main Login / Signup — OTP based</h2><p class="small">Separate from Library Login. Choose any one channel below. No password is used.</p>
 <div id="userBox"></div>
@@ -139,6 +149,8 @@
 </section>
 </main>
 <footer>C2S — College to Service • Your Selection Our Mission • Patrapada, Bhubaneswar</footer>
+</div>
+</div>
 <div id="examLock" class="hidden">
 <div class="panel">
 <div id="instruct"><h2 id="lockTitle">Test</h2><p id="lockCalcNote"></p>
@@ -154,4 +166,5 @@
 <div><strong>Rough scratch pad (all exams)</strong><br><textarea id="scratch" rows="3" placeholder="Rough work here — not submitted, not saved."></textarea></div>
 <div id="qBox"></div><div id="qNav"></div></div>
 </div></div>
+
 </body></html>
