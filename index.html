@@ -339,6 +339,57 @@
     </div>
   </div>
 
+  <!-- Quick Actions Strip (Exact Testbook Circular Navigation Pattern) -->
+  <div class="quick-actions-strip">
+    <button class="quick-action-item" onclick="show('tests')">
+      <div class="quick-action-circle blue">
+        <span>📝</span>
+        <span class="quick-action-pill orange">WEEKLY</span>
+      </div>
+      <span class="quick-action-label">Offline Tests</span>
+    </button>
+
+    <button class="quick-action-item" onclick="location.href='library.html'">
+      <div class="quick-action-circle purple">
+        <span>🏛️</span>
+        <span class="quick-action-pill green">24 HRS</span>
+      </div>
+      <span class="quick-action-label">Study Library</span>
+    </button>
+
+    <button class="quick-action-item" onclick="show('batches')">
+      <div class="quick-action-circle orange">
+        <span>🖥️</span>
+        <span class="quick-action-pill blue">OFFLINE</span>
+      </div>
+      <span class="quick-action-label">Smart Classes</span>
+    </button>
+
+    <button class="quick-action-item" onclick="document.getElementById('booksSection').scrollIntoView({behavior:'smooth'})">
+      <div class="quick-action-circle green">
+        <span>📖</span>
+        <span class="quick-action-pill purple">POSTER</span>
+      </div>
+      <span class="quick-action-label">Books &amp; Material</span>
+    </button>
+
+    <button class="quick-action-item" onclick="document.getElementById('facilitiesSection').scrollIntoView({behavior:'smooth'})">
+      <div class="quick-action-circle yellow">
+        <span>🎯</span>
+        <span class="quick-action-pill green">FREE</span>
+      </div>
+      <span class="quick-action-label">Govt Mentorship</span>
+    </button>
+
+    <button class="quick-action-item" onclick="show('notices')">
+      <div class="quick-action-circle red">
+        <span>📢</span>
+        <span class="quick-action-pill orange">UPDATES</span>
+      </div>
+      <span class="quick-action-label">Exam Notices</span>
+    </button>
+  </div>
+
   <!-- Preview Mode Architecture Notice -->
   <div class="preview" style="margin-bottom:30px;">
     <strong>ℹ️ PREVIEW mode:</strong> No live database, OTP provider, payment gateway or video CDN is connected yet. Logins, test results and admission drafts are stored browser-locally in localStorage until Supabase, OTP providers (SMS/WhatsApp/Email) and Cashfree env vars are configured in Vercel. Nothing claims a real SMS, WhatsApp, or email was sent.
@@ -350,6 +401,19 @@
     <h2>Explore Competitive Exams</h2>
     <p>Select your target exam to view syllabus overview, criteria, eligibility, pattern, posts and state relation. Zero invented dates or fees.</p>
     <div class="section-divider"></div>
+  </div>
+
+  
+  <!-- Testbook Style Category Tabs Bar -->
+  <div class="category-tab-strip">
+    <button class="cat-tab active" onclick="applyExamFilter('', this)">🏛️ All 10 Tracks</button>
+    <button class="cat-tab" onclick="applyExamFilter('Odisha State', this)">🏛️ Odisha State Exams (4)</button>
+    <button class="cat-tab" onclick="applyExamFilter('All India', this)">🇮🇳 All India Exams (6)</button>
+    <button class="cat-tab" onclick="filterExam('All India','BANK')">🏦 Bank PO / Clerk</button>
+    <button class="cat-tab" onclick="filterExam('All India','SSC')">📋 SSC CGL / CHSL</button>
+    <button class="cat-tab" onclick="filterExam('All India','RAILWAY')">🚆 Railway NTPC</button>
+    <button class="cat-tab" onclick="filterExam('Odisha State','OSSC')">📝 OSSC Group B/C</button>
+    <button class="cat-tab" onclick="filterExam('Odisha State','ODISHA-POLICE')">👮 Odisha Police</button>
   </div>
 
   <!-- Filter Chips for Level -->
@@ -534,105 +598,201 @@
     <div class="section-divider"></div>
   </div>
 
+  
   <div class="test-grid">
     <!-- Test 1: BANK -->
-    <div class="test-card">
-      <div>
-        <div class="test-card-header">
-          <span class="pill blue">BANK</span>
-          <span class="small" style="font-weight:700;">⏱ 10 Mins • 4 Qs</span>
-        </div>
-        <h3>BANK Mock Test 1</h3>
-        <div class="test-meta-list">
-          <div class="test-meta-item"><span>🧮</span> <span>Calculator: <strong>Allowed (on-screen)</strong></span></div>
-          <div class="test-meta-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.25 negative</strong></span></div>
-          <div class="test-meta-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab Lock</strong></span></div>
-        </div>
+    <div class="tb-test-card">
+      <div class="tb-test-header bank">
+        <div class="tb-exam-badge-disc">🏦</div>
+        <span class="tb-student-pill">⏱ 10 Mins • 4 Qs</span>
       </div>
-      <button class="btn orange" onclick="startTest('BANK-MOCK-1')">Start Test →</button>
+      <div class="tb-test-body">
+        <div>
+          <span class="pill blue" style="margin-bottom:8px;display:inline-block;">BANK PO &amp; Clerk</span>
+          <h3 class="tb-test-title">BANK Mock Test 1</h3>
+          <div class="tb-progress-wrap">
+            <div class="tb-progress-meta">
+              <span>Progress: 0/4</span>
+              <span>0%</span>
+            </div>
+            <div class="tb-progress-bar-bg">
+              <div class="tb-progress-bar-fill" style="width:0%;"></div>
+            </div>
+          </div>
+          <div class="tb-meta-tags">
+            <div class="tb-meta-tag-item"><span>🧮</span> <span>Calculator: <strong>Allowed (on-screen)</strong></span></div>
+            <div class="tb-meta-tag-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.25 negative</strong></span></div>
+            <div class="tb-meta-tag-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab Lock</strong></span></div>
+          </div>
+        </div>
+        <button class="btn-cyan" onclick="startTest('BANK-MOCK-1')">Go To Test Series →</button>
+      </div>
     </div>
 
     <!-- Test 2: SSC -->
-    <div class="test-card">
-      <div>
-        <div class="test-card-header">
-          <span class="pill">SSC</span>
-          <span class="small" style="font-weight:700;">⏱ 10 Mins • 4 Qs</span>
-        </div>
-        <h3>SSC Mock Test 1</h3>
-        <div class="test-meta-list">
-          <div class="test-meta-item"><span>📝</span> <span>Calculator: <strong>Not Allowed (Scratch Pad only)</strong></span></div>
-          <div class="test-meta-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.25 negative</strong></span></div>
-          <div class="test-meta-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab Lock</strong></span></div>
-        </div>
+    <div class="tb-test-card">
+      <div class="tb-test-header ssc">
+        <div class="tb-exam-badge-disc">📋</div>
+        <span class="tb-student-pill">⏱ 10 Mins • 4 Qs</span>
       </div>
-      <button class="btn" onclick="startTest('SSC-MOCK-1')">Start Test →</button>
+      <div class="tb-test-body">
+        <div>
+          <span class="pill" style="margin-bottom:8px;display:inline-block;">SSC CGL &amp; CHSL</span>
+          <h3 class="tb-test-title">SSC Mock Test 1</h3>
+          <div class="tb-progress-wrap">
+            <div class="tb-progress-meta">
+              <span>Progress: 0/4</span>
+              <span>0%</span>
+            </div>
+            <div class="tb-progress-bar-bg">
+              <div class="tb-progress-bar-fill" style="width:0%;"></div>
+            </div>
+          </div>
+          <div class="tb-meta-tags">
+            <div class="tb-meta-tag-item"><span>📝</span> <span>Calculator: <strong>Scratch Pad Only</strong></span></div>
+            <div class="tb-meta-tag-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.25 negative</strong></span></div>
+            <div class="tb-meta-tag-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab Lock</strong></span></div>
+          </div>
+        </div>
+        <button class="btn-cyan" onclick="startTest('SSC-MOCK-1')">Go To Test Series →</button>
+      </div>
     </div>
 
     <!-- Test 3: Railway -->
-    <div class="test-card">
-      <div>
-        <div class="test-card-header">
-          <span class="pill green">Railway</span>
-          <span class="small" style="font-weight:700;">⏱ 10 Mins • 4 Qs</span>
-        </div>
-        <h3>Railway Mock Test 1</h3>
-        <div class="test-meta-list">
-          <div class="test-meta-item"><span>📝</span> <span>Calculator: <strong>Not Allowed (Scratch Pad only)</strong></span></div>
-          <div class="test-meta-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.33 negative</strong></span></div>
-          <div class="test-meta-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab Lock</strong></span></div>
-        </div>
+    <div class="tb-test-card">
+      <div class="tb-test-header railway">
+        <div class="tb-exam-badge-disc">🚆</div>
+        <span class="tb-student-pill">⏱ 10 Mins • 4 Qs</span>
       </div>
-      <button class="btn" onclick="startTest('RAILWAY-MOCK-1')">Start Test →</button>
+      <div class="tb-test-body">
+        <div>
+          <span class="pill green" style="margin-bottom:8px;display:inline-block;">RRB NTPC &amp; ALP</span>
+          <h3 class="tb-test-title">Railway Mock Test 1</h3>
+          <div class="tb-progress-wrap">
+            <div class="tb-progress-meta">
+              <span>Progress: 0/4</span>
+              <span>0%</span>
+            </div>
+            <div class="tb-progress-bar-bg">
+              <div class="tb-progress-bar-fill" style="width:0%;"></div>
+            </div>
+          </div>
+          <div class="tb-meta-tags">
+            <div class="tb-meta-tag-item"><span>📝</span> <span>Calculator: <strong>Scratch Pad Only</strong></span></div>
+            <div class="tb-meta-tag-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.33 negative</strong></span></div>
+            <div class="tb-meta-tag-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab Lock</strong></span></div>
+          </div>
+        </div>
+        <button class="btn-cyan" onclick="startTest('RAILWAY-MOCK-1')">Go To Test Series →</button>
+      </div>
     </div>
 
     <!-- Test 4: OSSC -->
-    <div class="test-card">
-      <div>
-        <div class="test-card-header">
-          <span class="pill green">OSSC Odisha</span>
-          <span class="small" style="font-weight:700;">⏱ 10 Mins • 4 Qs</span>
-        </div>
-        <h3>OSSC Mock Test 1</h3>
-        <div class="test-meta-list">
-          <div class="test-meta-item"><span>📝</span> <span>Calculator: <strong>Not Allowed (Scratch Pad only)</strong></span></div>
-          <div class="test-meta-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.25 negative</strong></span></div>
-          <div class="test-meta-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab Lock</strong></span></div>
-        </div>
+    <div class="tb-test-card">
+      <div class="tb-test-header ossc">
+        <div class="tb-exam-badge-disc">📝</div>
+        <span class="tb-student-pill">⏱ 10 Mins • 4 Qs</span>
       </div>
-      <button class="btn" onclick="startTest('OSSC-MOCK-1')">Start Test →</button>
+      <div class="tb-test-body">
+        <div>
+          <span class="pill green" style="margin-bottom:8px;display:inline-block;">OSSC Odisha Govt</span>
+          <h3 class="tb-test-title">OSSC Mock Test 1</h3>
+          <div class="tb-progress-wrap">
+            <div class="tb-progress-meta">
+              <span>Progress: 0/4</span>
+              <span>0%</span>
+            </div>
+            <div class="tb-progress-bar-bg">
+              <div class="tb-progress-bar-fill" style="width:0%;"></div>
+            </div>
+          </div>
+          <div class="tb-meta-tags">
+            <div class="tb-meta-tag-item"><span>📝</span> <span>Calculator: <strong>Scratch Pad Only</strong></span></div>
+            <div class="tb-meta-tag-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.25 negative</strong></span></div>
+            <div class="tb-meta-tag-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab Lock</strong></span></div>
+          </div>
+        </div>
+        <button class="btn-cyan" onclick="startTest('OSSC-MOCK-1')">Go To Test Series →</button>
+      </div>
     </div>
 
     <!-- Test 5: UPSC -->
-    <div class="test-card">
-      <div>
-        <div class="test-card-header">
-          <span class="pill purple">UPSC</span>
-          <span class="small" style="font-weight:700;">⏱ 10 Mins • 4 Qs</span>
-        </div>
-        <h3>UPSC Mock Test 1</h3>
-        <div class="test-meta-list">
-          <div class="test-meta-item"><span>📝</span> <span>Calculator: <strong>Not Allowed (Scratch Pad only)</strong></span></div>
-          <div class="test-meta-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.33 negative</strong></span></div>
-          <div class="test-meta-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab Lock</strong></span></div>
-        </div>
+    <div class="tb-test-card">
+      <div class="tb-test-header upsc">
+        <div class="tb-exam-badge-disc">🏛️</div>
+        <span class="tb-student-pill">⏱ 10 Mins • 4 Qs</span>
       </div>
-      <button class="btn" onclick="startTest('UPSC-MOCK-1')">Start Test →</button>
+      <div class="tb-test-body">
+        <div>
+          <span class="pill purple" style="margin-bottom:8px;display:inline-block;">Civil Services Prelims</span>
+          <h3 class="tb-test-title">UPSC Mock Test 1</h3>
+          <div class="tb-progress-wrap">
+            <div class="tb-progress-meta">
+              <span>Progress: 0/4</span>
+              <span>0%</span>
+            </div>
+            <div class="tb-progress-bar-bg">
+              <div class="tb-progress-bar-fill" style="width:0%;"></div>
+            </div>
+          </div>
+          <div class="tb-meta-tags">
+            <div class="tb-meta-tag-item"><span>📝</span> <span>Calculator: <strong>Scratch Pad Only</strong></span></div>
+            <div class="tb-meta-tag-item"><span>⚖️</span> <span>Marking: <strong>1 mark / -0.33 negative</strong></span></div>
+            <div class="tb-meta-tag-item"><span>🔒</span> <span>Anti-Cheat: <strong>Fullscreen &amp; Tab Lock</strong></span></div>
+          </div>
+        </div>
+        <button class="btn-cyan" onclick="startTest('UPSC-MOCK-1')">Go To Test Series →</button>
+      </div>
     </div>
 
     <!-- Attempted Tests Card -->
-    <div class="test-card" style="background:var(--c2s-slate-50);border-style:dashed;">
-      <div>
-        <div class="test-card-header">
-          <span class="pill green">Results</span>
-          <span class="small" style="font-weight:700;">Solutions Hub</span>
-        </div>
-        <h3>Attempted Tests</h3>
-        <p class="small" style="line-height:1.5;">Once you submit a test, it moves to Given Tests and cannot be retaken. Review your scores, skipped questions, and complete solutions here.</p>
+    <div class="tb-test-card" style="background:var(--c2s-slate-50);border-style:dashed;">
+      <div class="tb-test-header" style="background:#f1f5f9;">
+        <div class="tb-exam-badge-disc" style="background:#fff;">📊</div>
+        <span class="tb-student-pill">Solutions Hub</span>
       </div>
-      <button class="btn ghost" onclick="show('tests');setTimeout(()=>document.getElementById('givenTests').scrollIntoView({behavior:'smooth'}),80)">View Given Tests &amp; Marks →</button>
+      <div class="tb-test-body">
+        <div>
+          <span class="pill green" style="margin-bottom:8px;display:inline-block;">Attempted Archive</span>
+          <h3 class="tb-test-title">Given Tests &amp; Marks</h3>
+          <p class="small" style="line-height:1.5;margin-bottom:16px;">
+            Submitted tests permanently move to Given Tests. Retake is strictly blocked. View detailed marks, time spent, correct answers and step-by-step solutions.
+          </p>
+        </div>
+        <button class="btn ghost" style="width:100%;" onclick="show('tests');setTimeout(()=>document.getElementById('givenTests').scrollIntoView({behavior:'smooth'}),80)">View Given Tests →</button>
+      </div>
     </div>
   </div>
+
+  <!-- Your Enrolled Test Series Strip (Testbook Pattern) -->
+  <div style="margin:24px 0 36px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <h4 style="margin:0;font-size:16px;color:var(--c2s-navy-800);">Your Active Mock Test Tracks</h4>
+      <span class="small" style="color:var(--c2s-slate-500);">5 Mocks Available • 10 Mins Each</span>
+    </div>
+    <div class="enrolled-strip" onclick="startTest('BANK-MOCK-1')">
+      <div class="enrolled-strip-left">
+        <div class="enrolled-icon">🏦</div>
+        <div>
+          <strong>BANK Mock Test 1 (Pre + Mains pattern)</strong>
+          <div class="small" style="color:var(--c2s-slate-500);">0 / 4 questions completed • Calculator Allowed</div>
+        </div>
+      </div>
+      <span style="font-weight:700;color:#00b4d8;">Take Test &gt;</span>
+    </div>
+    <div class="enrolled-strip" onclick="startTest('OSSC-MOCK-1')">
+      <div class="enrolled-strip-left">
+        <div class="enrolled-icon">📝</div>
+        <div>
+          <strong>OSSC Odisha State Mock Test 1</strong>
+          <div class="small" style="color:var(--c2s-slate-500);">0 / 4 questions completed • Scratch Pad Only</div>
+        </div>
+      </div>
+      <span style="font-weight:700;color:#00b4d8;">Take Test &gt;</span>
+    </div>
+  </div>
+
+
 
   <!-- SECTION: 24-Hour Premium Study Library Showcase -->
   <div class="showcase-card library-showcase">
@@ -713,10 +873,46 @@
     <button class="btn ghost" onclick="show('batches')">Open Batches / Classes Section →</button>
   </div>
 
+  
+  <!-- SECTION: Book & Study Material (Testbook Books Pattern • Official Poster Facility #1) -->
+  <div id="booksSection" class="book-banner-card">
+    <div>
+      <span class="book-tag-pill">Official Poster Facility #1</span>
+      <h2 style="font-size:28px;font-weight:900;margin:0 0 10px;line-height:1.25;color:#fff;">
+        Book &amp; Study Material
+      </h2>
+      <p style="color:#cbd5e1;font-size:15px;line-height:1.6;margin:0 0 16px;">
+        Curated printed books, syllabus notes and workbooks authored by teachers with 10+ years experience and vetted by serving government officers.
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+        <span class="pill" style="background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.25);">📚 Formula Sheets &amp; Revision Booklets</span>
+        <span class="pill" style="background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.25);">📝 Central &amp; Odisha State PYQ Compilations</span>
+        <span class="pill" style="background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.25);">🎯 Bilingual Explanations (Odia &amp; English)</span>
+      </div>
+      <p class="small" style="color:#fdba74;margin:0 0 14px;font-weight:600;">
+        📍 Available physically at C2S Patrapada front desk for enrolled coaching students and 24h library members.
+      </p>
+      <button class="btn orange" onclick="show('help')">Enquire at C2S Front Desk →</button>
+    </div>
+    <div class="book-cover-mockup">
+      <h4 style="margin:0 0 10px;color:#fff;font-size:16px;">📖 Complete Exam Material Kit</h4>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#e2e8f0;">
+        <li>Quantitative Aptitude &amp; Data Interpretation</li>
+        <li>Reasoning Ability &amp; Mental Alertness</li>
+        <li>English Language &amp; Comprehension</li>
+        <li>General Studies &amp; Odisha Special GK</li>
+        <li>Current Affairs &amp; Monthly Compendiums</li>
+      </ul>
+      <div style="margin-top:14px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.15);font-size:12px;color:#cbd5e1;">
+        Included as part of classroom coaching packages. Zero unverified pricing.
+      </div>
+    </div>
+  </div>
+
   <!-- SECTION: Why C2S — Facilities (7 Official Poster Facilities) -->
   <div class="section-header">
     <span class="section-tag">OFFICIAL INFRASTRUCTURE</span>
-    <h2>Why C2S — Key Facilities</h2>
+    <h2 id="facilitiesSection">Why C2S — Key Facilities</h2>
     <p>Everything listed on the official C2S poster is delivered with uncompromising dedication at our Patrapada centre.</p>
     <div class="section-divider"></div>
   </div>

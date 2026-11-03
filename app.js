@@ -63,21 +63,36 @@ function renderTests(){
   const given=store.get("c2s_main_given", []);
   const givenIds=new Set(given.map(g=>g.testId));
   const avail=TESTS.filter(t=>!givenIds.has(t.id));
+  const examIcons = { 'BANK': '🏦', 'SSC': '📋', 'RAILWAY': '🚆', 'OSSC': '📝', 'UPSC': '🏛️' };
+  const examTheme = { 'BANK': 'bank', 'SSC': 'ssc', 'RAILWAY': 'railway', 'OSSC': 'ossc', 'UPSC': 'upsc' };
+
   $("#availTests").innerHTML = avail.length ? '<div class="test-grid">' + avail.map(t=>`
-      <div class="test-card">
-        <div>
-          <div class="test-card-header">
-            <span class="pill ${t.exam==='OSSC'?'green':'blue'}">${t.exam}</span>
-            <span class="small" style="font-weight:700;">⏱ ${t.minutes} Mins • ${t.qs.length} Qs</span>
-          </div>
-          <h3>${t.title}</h3>
-          <div class="test-meta-list">
-            <div class="test-meta-item"><span>🧮</span> <span>Calculator: <strong>${t.calculatorAllowed ? "Allowed (on-screen)" : "Not allowed — scratch pad only"}</strong></span></div>
-            <div class="test-meta-item"><span>⚖️</span> <span>Marking: <strong>Negative marking enabled</strong></span></div>
-            <div class="test-meta-item"><span>🔒</span> <span>Exam Lock: <strong>3 Violations Auto-Submit</strong></span></div>
-          </div>
+      <div class="tb-test-card">
+        <div class="tb-test-header ${examTheme[t.exam] || 'bank'}">
+          <div class="tb-exam-badge-disc">${examIcons[t.exam] || '📝'}</div>
+          <span class="tb-student-pill">⏱ ${t.minutes} Mins • ${t.qs.length} Qs</span>
         </div>
-        <button class="btn orange" onclick="startTest('${t.id}')">Start Test Now →</button>
+        <div class="tb-test-body">
+          <div>
+            <span class="pill ${t.exam==='OSSC'||t.exam==='RAILWAY'?'green':t.exam==='UPSC'?'purple':'blue'}" style="margin-bottom:8px;display:inline-block;">${t.exam}</span>
+            <h3 class="tb-test-title">${t.title}</h3>
+            <div class="tb-progress-wrap">
+              <div class="tb-progress-meta">
+                <span>Progress: 0/${t.qs.length}</span>
+                <span>0%</span>
+              </div>
+              <div class="tb-progress-bar-bg">
+                <div class="tb-progress-bar-fill" style="width:0%;"></div>
+              </div>
+            </div>
+            <div class="tb-meta-tags">
+              <div class="tb-meta-tag-item"><span>🧮</span> <span>Calculator: <strong>${t.calculatorAllowed ? "Allowed (on-screen)" : "Scratch Pad Only"}</strong></span></div>
+              <div class="tb-meta-tag-item"><span>⚖️</span> <span>Marking: <strong>Negative marking enabled</strong></span></div>
+              <div class="tb-meta-tag-item"><span>🔒</span> <span>Anti-Cheat: <strong>3-Violation Auto-Submit</strong></span></div>
+            </div>
+          </div>
+          <button class="btn-cyan" onclick="startTest('${t.id}')">Go To Test Series →</button>
+        </div>
       </div>`).join("") + '</div>' : "<p class='small'>All available mock tests have been completed. Check your scores and solutions in Given Tests below.</p>";
   $("#givenTests").innerHTML = given.length ? given.map(g=>`
     <div class="card" style="border-left:5px solid var(--c2s-emerald-600);margin-bottom:14px;">
