@@ -10,7 +10,7 @@
 <main>
 <div class="card"><h1>C2S Library – Online Admission Form</h1><p class="small">This Library section is completely separate from the Main Login. Library data here is stored only in this browser (localStorage) in PREVIEW mode until DATABASE_URL and OTP providers are set in Vercel. Photo/Aadhaar are private member records only, never public — do not upload them on this preview version.</p>
 <div class="preview"><strong>PREVIEW mode:</strong> No live database or OTP provider is connected yet. No real SMS, WhatsApp or email is sent.</div>
-<div class="stats" style="margin-top:16px"><div class="stat"><strong>24 hrs</strong><span>Library open</span></div><div class="stat blue"><strong>4</strong><span>Shifts — Morning, Afternoon, Full Day, Night</span></div><div class="stat green"><strong>₹200</strong><span>Registration fee (non-refundable)</span></div><div class="stat purple"><strong>3</strong><span>OTP options — SMS, WhatsApp, Email</span></div></div></div>
+<div class="stats" style="margin-top:16px"><div class="stat"><strong>24 hrs</strong><span>Library open</span></div><div class="stat blue"><strong>4</strong><span>Shifts — Morning, Afternoon, Full Day, Night</span></div><div class="stat green"><strong>₹2</strong><span>Inaugural Offer — sab kuch sirf ₹2</span></div><div class="stat purple"><strong>3</strong><span>OTP options — SMS, WhatsApp, Email</span></div></div></div>
 
 <div class="card" id="libLoginCard"><h2>Library Login / Signup (separate, OTP based)</h2>
 <p class="small">Login with OTP — completely separate from Main Login. No Main Login account works here, and vice versa. No password is used.</p>
@@ -43,7 +43,7 @@
 <div><label>District</label><input id="district"></div><div><label>State</label><input id="state"></div><div><label>Pin</label><input id="pin"></div></div>
 <h3>Shift Allocation (choose one)</h3><div id="shiftBtns"></div><p id="shiftInfo" class="small"></p>
 <h3>Payment Details (separate section)</h3>
-<p>Registration Fee: <strong>₹200, non-refundable</strong>, separate from Monthly Payment.</p>
+<p><strong>🎉 Inaugural Offer:</strong> Registration fee (normally ₹200, non-refundable) is waived during the inaugural offer, and every shift's monthly fee is ₹2 — so Library admission total is <strong>₹2</strong> (plus locker, if any).</p>
 <div class="grid2">
 <div><label>Shift Fees (monthly, configurable per shift)</label><input id="shiftFees" readonly></div>
 <div><label>Locker Fees</label><input type="number" id="lockerFees" value="0" oninput="calcFees()"></div>
@@ -54,8 +54,8 @@
 <div><label>Pending Fees</label><input id="pendingFees" readonly></div>
 <div><label>Payment Mode</label><select id="payMode"><option>Cash</option><option>UPI</option><option>Card</option><option>Cashfree (link — placeholder, not live)</option></select></div>
 </div>
-<p class="small">Staff: per-shift monthly prices are configurable below. Only Afternoon ₹800 is a known screenshot example — it is not the price for all shifts. Other shifts start unset (0) until staff set them.</p>
-<div class="grid2"><div><label>Morning monthly price (₹)</label><input type="number" id="priceMorning" value="0"></div><div><label>Afternoon monthly price (₹) — screenshot example</label><input type="number" id="priceAfternoon" value="800"></div><div><label>Full Day monthly price (₹)</label><input type="number" id="priceFullDay" value="0"></div><div><label>Night monthly price (₹)</label><input type="number" id="priceNight" value="0"></div></div>
+<p class="small">Inaugural Offer prices (staff-configurable): all shifts are set to ₹2 for now. Earlier, only Afternoon ₹800 was a known screenshot example — that price is superseded by this ₹2 inaugural offer until staff change it.</p>
+<div class="grid2"><div><label>Morning monthly price (₹) — Inaugural Offer</label><input type="number" id="priceMorning" value="2"></div><div><label>Afternoon monthly price (₹) — Inaugural Offer</label><input type="number" id="priceAfternoon" value="2"></div><div><label>Full Day monthly price (₹) — Inaugural Offer</label><input type="number" id="priceFullDay" value="2"></div><div><label>Night monthly price (₹) — Inaugural Offer</label><input type="number" id="priceNight" value="2"></div></div>
 <p><button class="btn" type="submit">Submit Admission</button> <button class="btn ghost" type="reset" onclick="setTimeout(calcFees,0)">Reset</button> <button class="btn ghost" type="button" onclick="if(confirm('Cancel this admission form?')) this.form.reset()">Cancel</button></p>
 <p id="admitMsg"></p></form></div>
 

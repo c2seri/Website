@@ -7,6 +7,7 @@ const store = {
   get(k, d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch(e){ return d } },
   set(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
 };
+const INAUGURAL_PRICE = 2; /* Inaugural offer: sab kuch sirf Rs 2 */
 const TESTS = [
  {id:"BANK-MOCK-1", exam:"BANK", title:"BANK Mock Test 1", minutes:10, calculatorAllowed:true,
   qs:[["What is 15% of 240?",["24","36","30","48"],1],["A train covers 180 km in 3 hours. Speed?",["50 km/h","60 km/h","70 km/h","40 km/h"],1],["Next: 2, 6, 12, 20, ?",["28","30","32","36"],1],["Synonym of 'Rapid'?",["Slow","Fast","Weak","Late"],1]]},
@@ -53,7 +54,7 @@ function renderTests(){
   const givenIds=new Set(given.map(g=>g.testId));
   const avail=TESTS.filter(t=>!givenIds.has(t.id));
   $("#availTests").innerHTML = avail.length ? avail.map(t=>`
-    <div class="card"><strong>${t.title}</strong> <span class="pill">${t.exam}</span>
+    <div class="card"><strong>${t.title}</strong> <span class="pill">${t.exam}</span> <span class="pill">Inaugural Offer — ₹2</span>
     <p class="small">${t.minutes} minutes • ${t.qs.length} questions • Calculator: ${t.calculatorAllowed?"Allowed (shown in exam)":"Not allowed — scratch pad only"}</p>
     <button class="btn" onclick="startTest('${t.id}')">Start Test</button></div>`).join("") : "<p>All available tests have been given — see Given Tests below.</p>";
   $("#givenTests").innerHTML = given.length ? given.map(g=>`

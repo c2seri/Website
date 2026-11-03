@@ -23,7 +23,7 @@ function calcFees(){
   $("#shiftFees").value = price;
   const locker = Number($("#lockerFees").value||0);
   const discAmt = Number($("#discAmt").value||0), discPct = Number($("#discPct").value||0);
-  const gross = 200 + price + locker;
+  const gross = 0 + price + locker; /* Inaugural offer: registration (was Rs 200) waived, shift fee Rs 2 = total Rs 2 */
   const total = Math.max(0, gross - discAmt - Math.round(gross*discPct/100));
   $("#totalFees").value = total;
   const paid = Number($("#paidFees").value||0);
