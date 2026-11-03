@@ -29,29 +29,83 @@ repo **c2seri/Website** — no new repo.
     mode. Admin access via a separate URL is handled by the owner, not
     by a public demo button on the site.
   - `styles.css`, `exams.js`, `app.js`, `library.js`, `admin.js`,
-    `api/otp-request.js`, `api/otp-verify.js`, `sitemap.xml`, `robots.txt`,
+    `api/otp-request.js`, `api/otp-verify.js`, `api/cashfree-order.js`,
+    `supabase/schema.sql`, `sitemap.xml`, `robots.txt`,
     `.env.example` (empty placeholders only, no secrets).
+
+## LIVE-READY — exact steps, in order (no code change needed after this)
+
+This build is **live-ready**: once the env vars below are set in Vercel
+and the site is redeployed, real OTP login and real Cashfree orders work
+without another code change. Until then it stays honestly in preview
+mode (see below). **No key should ever be sent in chat — only in
+Vercel's Settings > Environment Variables.**
+
+1. **(a) Create a free Supabase project.** In Supabase, open the SQL
+   editor, paste and run the whole of `supabase/schema.sql` (it creates
+   `c2s_users`, `otp_codes`, `library_members` and `test_attempts` —
+   no real data). Copy the project URL and the **service** key
+   (not the anon key — the service key must stay server-side only).
+2. **(b) Choose at least one OTP provider and create its account.**
+   Start with the easiest channel for you, then add the others:
+   Email via Resend (`RESEND_API_KEY` + `EMAIL_FROM`), SMS via MSG91
+   (`SMS_PROVIDER=msg91`, `MSG91_AUTH_KEY`, `MSG91_SENDER_ID`) or a
+   generic SMS HTTP endpoint (`SMS_API_URL` + `SMS_API_KEY`), and
+   WhatsApp via Meta (`WHATSAPP_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`,
+   `WHATSAPP_OTP_TEMPLATE` — template approval is required by Meta
+   and takes time, so do WhatsApp last if you are in a hurry).
+3. **(c) In Vercel, Settings > Environment Variables, set:**
+   `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `OTP_SALT` (your own random
+   string — required for live OTP hashing), plus the provider keys for
+   the channels you chose, plus `CASHFREE_APP_ID` /
+   `CASHFREE_SECRET_KEY` / `CASHFREE_ENV` **only when taking payments**
+   (use `sandbox` first, test, then switch to `production`).
+   The full list with names is in `.env.example`.
+4. **(d) Redeploy in Vercel** (Deployments > Redeploy, or push any
+   commit). Env vars only take effect after a redeploy.
+5. **(e) Test OTP with your own mobile/email first**, on the live site,
+   before announcing to real users. Check: a live OTP is never shown
+   on screen (only "OTP sent" is shown), a wrong OTP is refused, an
+   expired OTP is refused, and more than 3 requests in 10 minutes for
+   one destination are rate-limited.
+
+**Session warning (read before handling paid data):** live OTP verify
+returns only a simple `verified` session flag, not a signed JWT. That
+is fine for OTP login, test and library flows, but a real signed
+session/JWT should replace this flag before the site is relied on for
+paid data — and every payment must still be checked in admin
+(Cashfree dashboard / order status) before it is treated as final.
+
+**Still NOT live in this build:** videos / live classes (deferred
+phase — see the video section below), and `admin.html` dashboard data
+is still preview placeholders until its tables are wired to the same
+Supabase tables. Admin is still reachable only via its separate URL.
 
 ## PREVIEW vs LIVE — read this first
 
-**Right now this is PREVIEW mode, not live production data:**
+**Until the env vars above are set, this is PREVIEW mode, not live production data:**
 
 - **Database: PREVIEW only.** Until `DATABASE_URL` is set in Vercel
   (external managed Postgres, Supabase/Neon style), all accounts, tests,
   members and ledger entries are stored only in the browser
   (localStorage). They do not sync across browsers/devices, and they are
   NOT saved to a real database. Never claim otherwise.
-- **OTP: PREVIEW only.** Login/signup offer all three channels —
-  **SMS OTP, WhatsApp OTP, Email OTP** — and the user chooses one.
-  `api/otp-request` reads `OTP_PROVIDER_SMS`, `OTP_PROVIDER_WHATSAPP`
-  and `OTP_PROVIDER_EMAIL` and returns `provider_configured:false`
-  honestly when the matching env var is missing. In that case the
+- **OTP: PREVIEW only until providers are set.** Login/signup offer
+  all three channels — **SMS OTP, WhatsApp OTP, Email OTP** — and the
+  user chooses one. `api/otp-request` now really sends via MSG91 /
+  generic SMS, Meta WhatsApp, or Resend when that channel's keys are
+  set, and returns `provider_configured:false`, `sent:false`,
+  `preview:true` honestly when they are missing. In that case the
   frontend shows a clearly labelled **PREVIEW OTP on screen for testing
   only**. No real SMS, WhatsApp or email is sent, and no OTP code,
-  secret or token is hardcoded anywhere.
-- **Payment: placeholder only.** Cashfree is the chosen provider, shown
-  as a settings placeholder only. No API keys, merchant ID or live
-  payment link is included or invented.
+  secret or token is hardcoded anywhere. In live mode the OTP is never
+  shown on screen and only its SHA-256 hash is stored (5-minute expiry,
+  5 attempts, 3 requests per 10 minutes per destination).
+- **Payment: live-ready, not yet configured.** `api/cashfree-order.js`
+  really creates a Cashfree order when `CASHFREE_APP_ID` /
+  `CASHFREE_SECRET_KEY` are set, and returns `configured:false` with
+  no fake session id when they are missing. No API keys, merchant ID
+  or live payment link is included or invented.
 - **Videos: placeholder only.** Batches/Classes has an HLS-ready player
   placeholder and **no video files**. No 1 TB / 2 TB of video is claimed
   as already uploaded.
@@ -117,13 +171,14 @@ repo **c2seri/Website** — no new repo.
 Copy names from `.env.example` and fill values only in Vercel's
 dashboard (never commit real values):
 
-- `DATABASE_URL` — external managed Postgres connection string
-  (Supabase/Neon style). Until set, the site stays in PREVIEW mode.
-- `OTP_PROVIDER_SMS` — SMS OTP provider name/endpoint identifier
-  (provider integration step still required before live sending).
-- `OTP_PROVIDER_WHATSAPP` — WhatsApp OTP provider identifier
-  (template approval required with the provider).
-- `OTP_PROVIDER_EMAIL` — Email OTP provider identifier.
+- `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `OTP_SALT` — live database
+  + OTP hashing. Until set, the site stays in PREVIEW mode.
+  (`DATABASE_URL` is the old preview name; Supabase vars replace it.)
+- `SMS_PROVIDER`, `MSG91_AUTH_KEY`, `MSG91_SENDER_ID` — MSG91 SMS, or
+  `SMS_API_URL` + `SMS_API_KEY` for a generic SMS endpoint.
+- `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`,
+  `WHATSAPP_OTP_TEMPLATE` — Meta WhatsApp (template approval required).
+- `RESEND_API_KEY`, `EMAIL_FROM` — Resend email OTP.
 - `S3_ENDPOINT`, `S3_BUCKET`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`,
   `S3_REGION`, `CDN_URL` — object storage + CDN for videos.
 - `CASHFREE_APP_ID`, `CASHFREE_SECRET_KEY`, `CASHFREE_ENV`

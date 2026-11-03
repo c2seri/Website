@@ -85,29 +85,52 @@ async function requestOtp(scope){
   if(!target) return alert(channel==="email" ? "Email enter karo." : "Mobile enter karo.");
   const res=await apiOtpRequest(channel, target);
   const status=$("#otpStatus");
-  if(res.provider_configured){
-    if(status) status.innerHTML="OTP provider is configured in env, but live sending is not yet implemented in this build — no real OTP has been sent. Ask staff to complete the provider integration, or use PREVIEW mode below.";
+  // LIVE mode: provider sent a real OTP. Never show any code on screen.
+  if(res.provider_configured && res.sent){
+    store.set("c2s_main_live_otp", {channel, target});
+    store.set("c2s_main_otp_mode", "live");
+    if(status) status.innerHTML="OTP sent to your "+(channel==="email"?"email":"mobile")+". It is valid for 5 minutes. Enter it below — the code is never shown on this page.";
     return;
   }
-  // PREVIEW mode only: generate a random preview code locally, labelled clearly. Never claim it was sent.
+  // Provider configured but send failed: say so honestly, do not fall back to preview silently.
+  if(res.provider_configured && !res.sent){
+    if(status) status.innerHTML="OTP could not be sent ("+(res.error||"provider error")+(res.provider_status?" — status "+res.provider_status:"")+") — no OTP was sent. Check the provider keys/template in Vercel env vars and try again.";
+    return;
+  }
+  // PREVIEW mode only (no provider configured): generate a random preview code locally, labelled clearly. Never claim it was sent.
+  store.set("c2s_main_otp_mode", "preview");
   const code=String(Math.floor(100000+Math.random()*900000));
   store.set("c2s_main_preview_otp", {code, channel, target, expires:Date.now()+5*60*1000, attempts:0});
   if(status) status.innerHTML="<strong>PREVIEW OTP (testing only, NOT sent by SMS/WhatsApp/email): "+code+"</strong> — valid 5 minutes in this browser only.";
 }
+function completeMainLogin(channel, target, live){
+  const name=($("#otpName")||{}).value||"C2S Student";
+  const users=store.get("c2s_main_users", []);
+  let u=users.find(x=>x.mobile===target || x.email===target);
+  if(!u){ u={id:"C2S-"+String(users.length+1).padStart(5,"0"), name, mobile:channel==="email"?"":target, email:channel==="email"?target:"", channel}; users.push(u); store.set("c2s_main_users",users); }
+  store.set("c2s_main_user",u);
+  const msg=$("#loginMsg"); if(msg) msg.innerHTML="<span class='ok'>OTP verified ("+(live?"LIVE mode":"PREVIEW mode")+" — "+(live?"real provider OTP":"browser-local preview")+"). Logged in as "+u.name+" ("+u.id+").</span>";
+  renderUser();
+}
 async function verifyOtp(scope){
   const code=($("#otpCode")||{}).value||"";
+  if(!code) return alert("OTP enter karo.");
+  // LIVE mode: verify against the server (Supabase hash), never locally.
+  if(store.get("c2s_main_otp_mode", "")==="live"){
+    const live=store.get("c2s_main_live_otp", null); if(!live) return alert("Request a new OTP first.");
+    try{
+      const r=await fetch("/api/otp-verify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({channel:live.channel,target:live.target,code})});
+      const res=await r.json();
+      if(res.verified){ store.set("c2s_main_otp_mode",""); completeMainLogin(live.channel, live.target, true); return; }
+      return alert(res.message || "Wrong or expired OTP. Try again.");
+    }catch(e){ return alert("OTP verify service is unreachable. Try again."); }
+  }
   const preview=store.get("c2s_main_preview_otp", null);
   if(!preview || Date.now()>preview.expires) return alert("Preview OTP expired. Request a new OTP.");
   preview.attempts=(preview.attempts||0)+1; store.set("c2s_main_preview_otp", preview);
   if(preview.attempts>5) return alert("Too many attempts. Request a new OTP.");
   if(code!==preview.code) return alert("Wrong preview OTP. Try again.");
-  const name=($("#otpName")||{}).value||"C2S Student";
-  const users=store.get("c2s_main_users", []);
-  let u=users.find(x=>x.mobile===preview.target || x.email===preview.target);
-  if(!u){ u={id:"C2S-"+String(users.length+1).padStart(5,"0"), name, mobile:preview.channel==="email"?"":preview.target, email:preview.channel==="email"?preview.target:"", channel:preview.channel}; users.push(u); store.set("c2s_main_users",users); }
-  store.set("c2s_main_user",u);
-  const msg=$("#loginMsg"); if(msg) msg.innerHTML="<span class='ok'>OTP verified (PREVIEW mode). Logged in as "+u.name+" ("+u.id+"). Real database/OTP is not connected yet.</span>";
-  renderUser();
+  completeMainLogin(preview.channel, preview.target, false);
 }
 function renderUser(){
   const u=store.get("c2s_main_user",null);

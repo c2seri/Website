@@ -37,25 +37,51 @@ async function requestLibOtp(){
   let res={provider_configured:false};
   try{ const r=await fetch("/api/otp-request",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({channel,target,scope:"library"})}); res=await r.json(); }catch(e){ res={provider_configured:false, error:"api_unreachable"}; }
   const status=$("#libOtpStatus");
-  if(res.provider_configured){ if(status) status.innerHTML="OTP provider is configured in env, but live sending is not yet implemented in this build — no real OTP has been sent."; return; }
+  // LIVE mode: provider sent a real OTP. Never show any code on screen.
+  if(res.provider_configured && res.sent){
+    store.set("c2s_lib_live_otp", {channel, target});
+    store.set("c2s_lib_otp_mode", "live");
+    if(status) status.innerHTML="OTP sent to your "+(channel==="email"?"email":"mobile")+". It is valid for 5 minutes. Enter it below — the code is never shown on this page.";
+    return;
+  }
+  if(res.provider_configured && !res.sent){
+    if(status) status.innerHTML="OTP could not be sent ("+(res.error||"provider error")+(res.provider_status?" — status "+res.provider_status:"")+") — no OTP was sent. Check the provider keys/template in Vercel env vars and try again.";
+    return;
+  }
+  // PREVIEW mode only (no provider configured): labelled preview code, never claimed as sent.
+  store.set("c2s_lib_otp_mode", "preview");
   const code=String(Math.floor(100000+Math.random()*900000));
   store.set("c2s_lib_preview_otp", {code, channel, target, expires:Date.now()+5*60*1000, attempts:0});
   if(status) status.innerHTML="<strong>PREVIEW OTP (testing only, NOT sent by SMS/WhatsApp/email): "+code+"</strong> — valid 5 minutes in this browser only.";
 }
-function verifyLibOtp(){
+function completeLibLogin(channel, target, live){
+  const name=($("#libOtpName").value||"Library Member");
+  const members=store.get("c2s_lib_members", []);
+  let m=members.find(x=>x.mobile===target || x.email===target);
+  if(!m){ m={regNo:"C2SLIB-"+String(members.length+1).padStart(5,"0"), name, mobile:channel==="email"?"":target, email:channel==="email"?target:"", shift:selShift, total:0, paid:0, pending:0, mode:live?"OTP (live)":"OTP (preview)", date:new Date().toISOString().slice(0,10)}; members.push(m); store.set("c2s_lib_members", members); }
+  store.set("c2s_lib_user", m);
+  const msg=$("#libMsg"); if(msg) msg.innerHTML="<span class='ok'>OTP verified ("+(live?"LIVE mode":"PREVIEW mode")+"). Library logged in: "+m.name+" ("+m.regNo+"), Shift "+m.shift+".</span>";
+  renderAll();
+}
+async function verifyLibOtp(){
   const code=($("#libOtpCode").value||"");
+  if(!code) return alert("OTP enter karo.");
+  // LIVE mode: verify against the server (Supabase hash), never locally.
+  if(store.get("c2s_lib_otp_mode", "")==="live"){
+    const live=store.get("c2s_lib_live_otp", null); if(!live) return alert("Request a new OTP first.");
+    try{
+      const r=await fetch("/api/otp-verify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({channel:live.channel,target:live.target,code})});
+      const res=await r.json();
+      if(res.verified){ store.set("c2s_lib_otp_mode",""); completeLibLogin(live.channel, live.target, true); return; }
+      return alert(res.message || "Wrong or expired OTP. Try again.");
+    }catch(e){ return alert("OTP verify service is unreachable. Try again."); }
+  }
   const preview=store.get("c2s_lib_preview_otp", null);
   if(!preview || Date.now()>preview.expires) return alert("Preview OTP expired. Request a new OTP.");
   preview.attempts=(preview.attempts||0)+1; store.set("c2s_lib_preview_otp", preview);
   if(preview.attempts>5) return alert("Too many attempts. Request a new OTP.");
   if(code!==preview.code) return alert("Wrong preview OTP. Try again.");
-  const name=($("#libOtpName").value||"Library Member");
-  const members=store.get("c2s_lib_members", []);
-  let m=members.find(x=>x.mobile===preview.target || x.email===preview.target);
-  if(!m){ m={regNo:"C2SLIB-"+String(members.length+1).padStart(5,"0"), name, mobile:preview.channel==="email"?"":preview.target, email:preview.channel==="email"?preview.target:"", shift:selShift, total:0, paid:0, pending:0, mode:"OTP (preview)", date:new Date().toISOString().slice(0,10)}; members.push(m); store.set("c2s_lib_members", members); }
-  store.set("c2s_lib_user", m);
-  const msg=$("#libMsg"); if(msg) msg.innerHTML="<span class='ok'>OTP verified (PREVIEW mode). Library logged in: "+m.name+" ("+m.regNo+"), Shift "+m.shift+". Real database/OTP is not connected yet.</span>";
-  renderAll();
+  completeLibLogin(preview.channel, preview.target, false);
 }
 function libAdmit(e){
   e.preventDefault();
