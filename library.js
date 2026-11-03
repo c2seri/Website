@@ -33,7 +33,7 @@ function calcFees(){
 async function requestLibOtp(){
   const channel=(document.querySelector('input[name="libOtpChannel"]:checked')||{}).value||"sms";
   const target = channel==="email" ? ($("#libOtpEmail").value||"") : ($("#libOtpMobile").value||"");
-  if(!target) return alert(channel==="email" ? "Email enter karo." : "Mobile enter karo.");
+  if(!target) return alert(channel==="email" ? "Please enter your email." : "Please enter your mobile number.");
   let res={provider_configured:false};
   try{ const r=await fetch("/api/otp-request",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({channel,target,scope:"library"})}); res=await r.json(); }catch(e){ res={provider_configured:false, error:"api_unreachable"}; }
   const status=$("#libOtpStatus");
@@ -65,7 +65,7 @@ function completeLibLogin(channel, target, live){
 }
 async function verifyLibOtp(){
   const code=($("#libOtpCode").value||"");
-  if(!code) return alert("OTP enter karo.");
+  if(!code) return alert("Please enter the OTP.");
   // LIVE mode: verify against the server (Supabase hash), never locally.
   if(store.get("c2s_lib_otp_mode", "")==="live"){
     const live=store.get("c2s_lib_live_otp", null); if(!live) return alert("Request a new OTP first.");
@@ -135,4 +135,19 @@ function renderAll(){
   const box=$("#libUserBox"); if(box) box.innerHTML = u ? "<p>Library logged in: <strong>"+u.name+"</strong> ("+u.regNo+") — PREVIEW mode.</p>" : "";
   renderSeats();
 }
-document.addEventListener("DOMContentLoaded", ()=>{ renderShifts(); renderAll(); });
+
+/* Lightweight reveal-on-scroll + animated counters (real numbers only) */
+function initReveal(){
+  if(!("IntersectionObserver" in window)) return;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("revealed"); io.unobserve(e.target); } }),{threshold:0.12});
+  document.querySelectorAll(".card, .stat").forEach(el=>{
+    if(el.dataset.revealDone) return; el.dataset.revealDone="1"; el.classList.add("reveal"); io.observe(el);
+  });
+  const cio=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting) return; const el=e.target; cio.unobserve(el);
+    const target=Number(el.dataset.count||0), start=performance.now();
+    (function tick(now){ const p=Math.min(1,(now-start)/900); el.textContent=Math.round(target*p*(2-p)); if(p<1) requestAnimationFrame(tick); })(start);
+  }),{threshold:0.4});
+  document.querySelectorAll(".counter").forEach(el=>{ if(el.dataset.countDone) return; el.dataset.countDone="1"; cio.observe(el); });
+}
+document.addEventListener("DOMContentLoaded", ()=>{ renderShifts(); renderAll(); initReveal(); });

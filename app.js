@@ -7,7 +7,7 @@ const store = {
   get(k, d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch(e){ return d } },
   set(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
 };
-const INAUGURAL_PRICE = 2; /* Inaugural offer: sab kuch sirf Rs 2 */
+const INAUGURAL_PRICE = 2; /* Inaugural offer: everything for Rs 2 */
 const TESTS = [
  {id:"BANK-MOCK-1", exam:"BANK", title:"BANK Mock Test 1", minutes:10, calculatorAllowed:true,
   qs:[["What is 15% of 240?",["24","36","30","48"],1],["A train covers 180 km in 3 hours. Speed?",["50 km/h","60 km/h","70 km/h","40 km/h"],1],["Next: 2, 6, 12, 20, ?",["28","30","32","36"],1],["Synonym of 'Rapid'?",["Slow","Fast","Weak","Late"],1]]},
@@ -26,6 +26,7 @@ function show(view){
   if(view==="exams") renderExams();
   if(view==="tests") renderTests();
   if(view==="blog") renderBlog();
+  initReveal();
   window.scrollTo(0,0);
 }
 function filterExam(level, id){
@@ -60,7 +61,7 @@ function renderTests(){
   $("#givenTests").innerHTML = given.length ? given.map(g=>`
     <div class="card"><strong>${g.title}</strong> — ${g.score}/${g.total} marks
     <p class="small">Correct ${g.correct} • Wrong ${g.wrong} • Skipped ${g.skipped} • Violations ${g.violations||0} • ${g.reason||"submitted"}</p>
-    <button class="btn ghost" onclick="reviewGiven('${g.testId}')">Marks & Solutions Dekho</button></div>`).join("") : "<p>No given tests yet.</p>";
+    <button class="btn ghost" onclick="reviewGiven('${g.testId}')">View Marks & Solutions</button></div>`).join("") : "<p>No given tests yet.</p>";
 }
 function reviewGiven(id){
   const g=store.get("c2s_main_given", []).find(x=>x.testId===id); if(!g) return;
@@ -83,7 +84,7 @@ async function requestOtp(scope){
   const mobile=($("#otpMobile")||{}).value||"";
   const email=($("#otpEmail")||{}).value||"";
   const target = channel==="email" ? email : mobile;
-  if(!target) return alert(channel==="email" ? "Email enter karo." : "Mobile enter karo.");
+  if(!target) return alert(channel==="email" ? "Please enter your email." : "Please enter your mobile number.");
   const res=await apiOtpRequest(channel, target);
   const status=$("#otpStatus");
   // LIVE mode: provider sent a real OTP. Never show any code on screen.
@@ -115,7 +116,7 @@ function completeMainLogin(channel, target, live){
 }
 async function verifyOtp(scope){
   const code=($("#otpCode")||{}).value||"";
-  if(!code) return alert("OTP enter karo.");
+  if(!code) return alert("Please enter the OTP.");
   // LIVE mode: verify against the server (Supabase hash), never locally.
   if(store.get("c2s_main_otp_mode", "")==="live"){
     const live=store.get("c2s_main_live_otp", null); if(!live) return alert("Request a new OTP first.");
@@ -193,4 +194,19 @@ function renderBlog(){
   $("#blogList").innerHTML=posts.map(p=>`<div class="card"><strong>${p.title}</strong><p>${p.body}</p></div>`).join("");
 }
 function addPost(e){ e.preventDefault(); const posts=store.get("c2s_main_blog", []); posts.unshift({title:$("#postTitle").value,body:$("#postBody").value}); store.set("c2s_main_blog",posts); renderBlog(); e.target.reset(); }
-document.addEventListener("DOMContentLoaded", ()=>{ renderUser(); renderExams(); renderTests(); renderBlog(); show("home"); });
+
+/* ---------- Lightweight reveal-on-scroll + animated counters (real numbers only) ---------- */
+function initReveal(){
+  if(!("IntersectionObserver" in window)) return;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("revealed"); io.unobserve(e.target); } }),{threshold:0.12});
+  document.querySelectorAll(".hero, .band, .card, .facility, .exam-tile, .test-card, .step, .lib-panel, .batch-panel, .hero-visual").forEach(el=>{
+    if(el.dataset.revealDone) return; el.dataset.revealDone="1"; el.classList.add("reveal"); io.observe(el);
+  });
+  const cio=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting) return; const el=e.target; cio.unobserve(el);
+    const target=Number(el.dataset.count||0), start=performance.now();
+    (function tick(now){ const p=Math.min(1,(now-start)/900); el.textContent=Math.round(target*p*(2-p)); if(p<1) requestAnimationFrame(tick); })(start);
+  }),{threshold:0.4});
+  document.querySelectorAll(".counter").forEach(el=>{ if(el.dataset.countDone) return; el.dataset.countDone="1"; cio.observe(el); });
+}
+document.addEventListener("DOMContentLoaded", ()=>{ renderUser(); renderExams(); renderTests(); renderBlog(); show("home"); initReveal(); });
