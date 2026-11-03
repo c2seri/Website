@@ -1,5 +1,5 @@
 /* C2S Library — completely separate storage from Main site.
-   Keys use c2s_lib_*, never c2s_main_*. Browser-local only. */
+   Keys use c2s_lib_*, never c2s_main_*. PREVIEW mode until env vars are set. */
 const $ = s => document.querySelector(s);
 const store = {
   get(k, d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch(e){ return d } },
@@ -29,11 +29,39 @@ function calcFees(){
   const paid = Number($("#paidFees").value||0);
   $("#pendingFees").value = Math.max(0, total - paid);
 }
+/* ---------- Library OTP login/signup — all three channels, no demo logins ---------- */
+async function requestLibOtp(){
+  const channel=(document.querySelector('input[name="libOtpChannel"]:checked')||{}).value||"sms";
+  const target = channel==="email" ? ($("#libOtpEmail").value||"") : ($("#libOtpMobile").value||"");
+  if(!target) return alert(channel==="email" ? "Email enter karo." : "Mobile enter karo.");
+  let res={provider_configured:false};
+  try{ const r=await fetch("/api/otp-request",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({channel,target,scope:"library"})}); res=await r.json(); }catch(e){ res={provider_configured:false, error:"api_unreachable"}; }
+  const status=$("#libOtpStatus");
+  if(res.provider_configured){ if(status) status.innerHTML="OTP provider is configured in env, but live sending is not yet implemented in this build — no real OTP has been sent."; return; }
+  const code=String(Math.floor(100000+Math.random()*900000));
+  store.set("c2s_lib_preview_otp", {code, channel, target, expires:Date.now()+5*60*1000, attempts:0});
+  if(status) status.innerHTML="<strong>PREVIEW OTP (testing only, NOT sent by SMS/WhatsApp/email): "+code+"</strong> — valid 5 minutes in this browser only.";
+}
+function verifyLibOtp(){
+  const code=($("#libOtpCode").value||"");
+  const preview=store.get("c2s_lib_preview_otp", null);
+  if(!preview || Date.now()>preview.expires) return alert("Preview OTP expired. Request a new OTP.");
+  preview.attempts=(preview.attempts||0)+1; store.set("c2s_lib_preview_otp", preview);
+  if(preview.attempts>5) return alert("Too many attempts. Request a new OTP.");
+  if(code!==preview.code) return alert("Wrong preview OTP. Try again.");
+  const name=($("#libOtpName").value||"Library Member");
+  const members=store.get("c2s_lib_members", []);
+  let m=members.find(x=>x.mobile===preview.target || x.email===preview.target);
+  if(!m){ m={regNo:"C2SLIB-"+String(members.length+1).padStart(5,"0"), name, mobile:preview.channel==="email"?"":preview.target, email:preview.channel==="email"?preview.target:"", shift:selShift, total:0, paid:0, pending:0, mode:"OTP (preview)", date:new Date().toISOString().slice(0,10)}; members.push(m); store.set("c2s_lib_members", members); }
+  store.set("c2s_lib_user", m);
+  const msg=$("#libMsg"); if(msg) msg.innerHTML="<span class='ok'>OTP verified (PREVIEW mode). Library logged in: "+m.name+" ("+m.regNo+"), Shift "+m.shift+". Real database/OTP is not connected yet.</span>";
+  renderAll();
+}
 function libAdmit(e){
   e.preventDefault();
   const members = store.get("c2s_lib_members", []);
   const regNo = "C2SLIB-"+String(members.length+1).padStart(5,"0");
-  const m = {regNo, name:$("#candName").value, mobile:$("#studMobile").value, shift:selShift,
+  const m = {regNo, name:$("#candName").value, mobile:$("#studMobile").value, email:$("#studEmail").value||"", shift:selShift,
     from:$("#fromDate").value, to:$("#toDate").value, examPref:$("#examPref").value,
     total:Number($("#totalFees").value||0), paid:Number($("#paidFees").value||0), pending:Number($("#pendingFees").value||0),
     mode:$("#payMode").value, date:new Date().toISOString().slice(0,10)};
@@ -41,26 +69,7 @@ function libAdmit(e){
   const ledger = store.get("c2s_lib_ledger", []);
   ledger.unshift({date:m.date, desc:"Admission "+regNo+" ("+m.name+", "+m.shift+")", amt:m.paid});
   store.set("c2s_lib_ledger", ledger);
-  $("#admitMsg").innerHTML = "<span class='ok'>Admission saved. Library Registration No: <strong>"+regNo+"</strong></span><br><span class='small'>Welcome message: shown as queued / not-connected — WhatsApp/Mail are placeholders, nothing was actually sent (never fake-sent).</span>";
-  renderAll();
-}
-function libLogin(e){
-  e.preventDefault();
-  const m = store.get("c2s_lib_members", []).find(x=>x.mobile===$("#libMobile").value && x.regNo===$("#libRegNo").value);
-  if(!m) return alert("Library member not found in this browser. Complete Quick Admission first, or use the Demo Library Login below.");
-  store.set("c2s_lib_user", m);
-  $("#libMsg").innerHTML = "<span class='ok'>Library logged in: "+m.name+" ("+m.regNo+"), Shift "+m.shift+", Pending ₹"+m.pending+"</span>";
-  renderAll();
-}
-/* Library Admin login is NOT shown publicly; it will be via a separate admin URL later. */
-/* Demo Library Login — browser-local demo only, no password, no real account. */
-function demoLibLogin(){
-  const members = store.get("c2s_lib_members", []);
-  const demo = {regNo:"C2SLIB-00001", name:"Demo Library Member", mobile:"9000000001", shift:"Afternoon", from:"", to:"", examPref:"", total:1000, paid:1000, pending:0, mode:"Demo", date:new Date().toISOString().slice(0,10)};
-  if(!members.some(x=>x.regNo===demo.regNo)){ members.push(demo); store.set("c2s_lib_members", members); }
-  store.set("c2s_lib_user", demo);
-  const msg = document.getElementById("libMsg");
-  if(msg) msg.innerHTML = "<span class='ok'>Demo Library login active: "+demo.name+" ("+demo.regNo+"), Mobile "+demo.mobile+", Shift "+demo.shift+" — browser-local demo only.</span>";
+  $("#admitMsg").innerHTML = "<span class='ok'>Admission saved (PREVIEW, browser-local). Library Registration No: <strong>"+regNo+"</strong></span><br><span class='small'>Welcome message: shown as queued / not-connected — no WhatsApp/SMS/mail provider is connected, nothing was actually sent (never fake-sent).</span>";
   renderAll();
 }
 function renderSeats(){
@@ -93,9 +102,11 @@ function renderAll(){
   const income = ledger.filter(l=>l.amt>0).reduce((s,l)=>s+l.amt,0);
   const expense = ledger.filter(l=>l.amt<0).reduce((s,l)=>s-l.amt,0);
   const pending = members.reduce((s,m)=>s+m.pending,0);
-  $("#dashStats").innerHTML = "Today ("+today+"): admissions "+todayCount+" • Members total "+members.length+" • Income ₹"+income+" • Expense ₹"+expense+" • Pending ₹"+pending+" • (Date-wise: filter by the Date column in Members/Ledger; full analytics need the external database later.)";
-  $("#memberList").innerHTML = members.length ? members.map(m=>`<p>${m.regNo} — ${m.name} (${m.mobile}) • ${m.shift} • Paid ₹${m.paid} / Pending ₹${m.pending} • ${m.date}</p>`).join("") : "<p>No members yet in this browser.</p>";
+  $("#dashStats").innerHTML = "Today ("+today+"): admissions "+todayCount+" • Members total "+members.length+" • Income ₹"+income+" • Expense ₹"+expense+" • Pending ₹"+pending+" • (PREVIEW: local data only; full analytics need the external database later.)";
+  $("#memberList").innerHTML = members.length ? members.map(m=>`<p>${m.regNo} — ${m.name} (${m.mobile||m.email||""}) • ${m.shift} • Paid ₹${m.paid} / Pending ₹${m.pending} • ${m.date}</p>`).join("") : "<p>No members yet in this browser.</p>";
   $("#ledgerBody").innerHTML = ledger.map(l=>`<tr><td>${l.date}</td><td>${l.desc}</td><td>₹${l.amt}</td></tr>`).join("") || "<tr><td colspan='3'>No entries yet.</td></tr>";
+  const u=store.get("c2s_lib_user", null);
+  const box=$("#libUserBox"); if(box) box.innerHTML = u ? "<p>Library logged in: <strong>"+u.name+"</strong> ("+u.regNo+") — PREVIEW mode.</p>" : "";
   renderSeats();
 }
 document.addEventListener("DOMContentLoaded", ()=>{ renderShifts(); renderAll(); });

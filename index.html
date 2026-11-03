@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>C2S — College to Service | Govt Exam Coaching, Test Series & Library, Bhubaneswar</title>
+<title>C2S — College to Service | Govt Exam Coaching, Test Series &amp; Library, Bhubaneswar</title>
 <meta name="description" content="C2S — College to Service, Patrapada, Bhubaneswar. Competitive exams for govt jobs: BANK, SSC, Railway, UPSC, Defence, Teaching, OSSC, OSSSC, OPSC, Odisha Police. Test series, batches and a 24-hour library. Your Selection Our Mission.">
 <meta property="og:title" content="C2S — College to Service"><meta property="og:description" content="Competitive exams for govt jobs, test series and library in Patrapada, Bhubaneswar. Your Selection Our Mission."><meta property="og:type" content="website">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"EducationalOrganization","name":"C2S — College to Service","slogan":"Your Selection Our Mission","address":{"@type":"PostalAddress","streetAddress":"NH-16, opposite Sani Mandir, Patrapada","addressLocality":"Bhubaneswar","postalCode":"751019","addressCountry":"IN"},"telephone":"+91-9777481909"}</script>
@@ -9,16 +9,35 @@
 <body>
 <header class="topbar"><div><div class="logo">C2S <span>— College to Service</span></div><div class="tagline">Your Selection Our Mission • NH-16, opposite Sani Mandir, Patrapada, Bhubaneswar 751019 • 9777481909 / 9658177712</div></div>
 <button class="btn orange" onclick="location.href='library.html'">Library</button></header>
-<nav>
-<a href="#" data-nav="home" onclick="show('home');return false">Home</a>
-<a href="#" data-nav="exams" onclick="show('exams');return false">Exams</a>
-<a href="#" data-nav="tests" onclick="show('tests');return false">Test Series</a>
-<a href="#" data-nav="batches" onclick="show('batches');return false">Batches / Classes</a>
-<a href="#" data-nav="blog" onclick="show('blog');return false">Blog</a>
-<a href="#" data-nav="notices" onclick="show('notices');return false">Notices</a>
-<a href="#" data-nav="help" onclick="show('help');return false">Help / Contact</a>
-<a href="#" data-nav="login" onclick="show('login');return false">Main Login</a>
-<button class="primary" onclick="location.href='library.html'">Library</button>
+<nav class="mainnav" id="mainnav">
+<button class="menubtn" onclick="document.getElementById('mainnav').classList.toggle('open');document.querySelectorAll('.dropdown').forEach(d=>d.classList.toggle('open'))">☰ Menu</button>
+<div class="navwrap" style="display:contents">
+<a class="navlink" href="#" data-nav="home" onclick="show('home');return false">Home</a>
+<div class="dropdown"><button class="dropbtn" onclick="this.parentElement.classList.toggle('open')">Exams ▾</button><div class="dropmenu">
+<strong>All India</strong>
+<a href="#" onclick="filterExam('All India','BANK');return false">BANK</a>
+<a href="#" onclick="filterExam('All India','SSC');return false">SSC</a>
+<a href="#" onclick="filterExam('All India','RAILWAY');return false">Railway</a>
+<a href="#" onclick="filterExam('All India','UPSC');return false">UPSC</a>
+<a href="#" onclick="filterExam('All India','DEFENCE');return false">Defence</a>
+<a href="#" onclick="filterExam('All India','TEACHING');return false">Teaching</a>
+<strong>Odisha State</strong>
+<a href="#" onclick="filterExam('Odisha State','OSSC');return false">OSSC</a>
+<a href="#" onclick="filterExam('Odisha State','OSSSC');return false">OSSSC</a>
+<a href="#" onclick="filterExam('Odisha State','OPSC');return false">OPSC</a>
+<a href="#" onclick="filterExam('Odisha State','ODISHA-POLICE');return false">Odisha Police</a>
+<a href="#" onclick="show('exams');return false">All Exams — Search by keyword</a>
+</div></div>
+<a class="navlink" href="#" data-nav="tests" onclick="show('tests');return false">Test Series</a>
+<a class="navlink" href="#" data-nav="batches" onclick="show('batches');return false">Batches / Classes</a>
+<div class="dropdown"><button class="dropbtn" onclick="this.parentElement.classList.toggle('open')">Notices / Blog ▾</button><div class="dropmenu">
+<a href="#" onclick="show('notices');return false">Notices / Notifications</a>
+<a href="#" onclick="show('blog');return false">Blog</a>
+</div></div>
+<a class="navlink" href="#" data-nav="help" onclick="show('help');return false">Help / Contact</a>
+<a class="navlink" href="#" data-nav="login" onclick="show('login');return false">Login / Signup (OTP)</a>
+<button class="btn orange" onclick="location.href='library.html'">Library</button>
+</div>
 </nav>
 <main>
 <section data-view="home">
@@ -26,8 +45,9 @@
 <p>Book &amp; study material, weekly offline test series, smart board teaching, A/C library with Wi-Fi, guidance till your selection, 10+ years experience teachers, mentorship by government employees.</p>
 <div><span class="pill">BANK</span><span class="pill">SSC</span><span class="pill">Railway</span><span class="pill">UPSC</span><span class="pill">Defence</span><span class="pill">Teaching</span><span class="pill">OSSC</span><span class="pill">OSSSC</span><span class="pill">OPSC</span><span class="pill">Odisha Police</span></div>
 <p><button class="btn" onclick="show('exams')">Explore Exams</button> <button class="btn orange" onclick="show('tests')">Take a Test Series</button> <button class="btn ghost" onclick="location.href='library.html'">Open Library</button></p>
-<div class="notice"><strong>Local demo note:</strong> In this static GitHub/Vercel version, logins, tests and library records are stored only in this browser (localStorage) until an external database is connected later. No live payment, WhatsApp or mail is connected.</div></div>
+<div class="preview"><strong>PREVIEW mode:</strong> No live database, OTP provider, payment or video storage is connected yet. Logins, tests and library records are stored only in this browser (localStorage) until DATABASE_URL and provider env vars are set in Vercel. Nothing here claims a real SMS, WhatsApp or email was sent.</div></div>
 <div class="card"><h2>Facilities</h2><p>24-hour library • Peaceful, spacious, fully A/C study spaces • Comfortable seating • Proper lighting • Premium interior • Good bus connectivity</p></div>
+<div class="card"><h2>After login — everything in one place</h2><p>Login ke baad aapko dashboard me milega: My Tests, Given Tests (marks + solutions), My Purchases, aur Library ka alag section. Menu ke dropdown se koi bhi student kisi bhi exam, test ya batch tak seedha pahunch sakta hai.</p></div>
 </section>
 
 <section data-view="exams" class="hidden">
@@ -43,14 +63,18 @@
 </section>
 
 <section data-view="batches" class="hidden">
-<div class="card"><h2>Batches / Classes</h2><p>This section is kept for classes and videos to be added later. No schedule is invented here — staff will add batches, live classes and videos when ready.</p>
+<div class="card"><h2>Batches / Classes — Videos (coming in this section)</h2>
+<p>No schedule, batch or video is invented here. Classes and videos will be added by staff in this section. Video delivery path for 1–2 TB: object storage (S3-compatible) + HLS transcoding + CDN — NOT Vercel disk and NOT the database. See README for the exact path.</p>
+<div class="video-wrap"><div><strong>HLS-ready video player placeholder</strong><br><span class="small">No video file is uploaded yet. When S3 env vars are set, staff-uploaded videos will play here in HLS form.</span><br><br>
+<video controls preload="none" style="width:100%;max-width:720px" poster=""><source src="" type="application/x-mpegURL"></video>
+<p class="small">Player placeholder only — no video source is set until storage is connected.</p></div></div>
 <p class="small">Current batches: none listed yet. Contact C2S at 9777481909 / 9658177712 for batch enquiries.</p></div>
 </section>
 
 <section data-view="blog" class="hidden">
 <div class="card"><h2>Blog</h2><div id="blogList"></div>
-<h3>Add a post (staff, saved in this browser)</h3>
-<form onsubmit="addPost(event)"><input id="postTitle" placeholder="Post title" required><textarea id="postBody" placeholder="Post body" required></textarea><button class="btn">Publish locally</button></form></div>
+<h3>Add a post (preview, saved in this browser)</h3>
+<form onsubmit="addPost(event)"><input id="postTitle" placeholder="Post title" required><textarea id="postBody" placeholder="Post body" required></textarea><button class="btn">Publish locally (preview)</button></form></div>
 </section>
 
 <section data-view="notices" class="hidden">
@@ -61,24 +85,28 @@
 <section data-view="help" class="hidden">
 <div class="card"><h2>Help / Contact</h2>
 <p><strong>C2S — College to Service</strong><br>NH-16, opposite Sani Mandir, Patrapada, Bhubaneswar, Odisha 751019<br>Phones: 9777481909 / 9658177712<br>Tagline: Your Selection Our Mission</p>
-<p>Payment provider (chosen, not live): <strong>Cashfree</strong> — settings placeholder only, no API keys, merchant ID or live payment link on this static version.</p>
-<p>WhatsApp / Mail connections: placeholders only, not live. Messages shown as queued/not-connected, never fake-sent.</p></div>
+<p>Payment provider (chosen, not live): <strong>Cashfree</strong> — settings placeholder only, no API keys, merchant ID or live payment link in this version.</p>
+<p>OTP providers: SMS, WhatsApp and Email are all offered as choices at login/signup. Until provider env vars are set in Vercel, no real OTP is sent — a clearly labelled PREVIEW OTP is shown on screen for testing only.</p></div>
 </section>
 
 <section data-view="login" class="hidden">
-<div class="card"><h2>Main Login — Coaching</h2><p class="small">Separate from Library Login. Browser-local demo data until an external database is connected later.</p>
+<div class="card"><h2>Main Login / Signup — OTP based</h2><p class="small">Separate from Library Login. Choose any one channel below. No password is used.</p>
 <div id="userBox"></div>
-<div class="grid2"><div><h3>Register</h3><form onsubmit="mainRegister(event)"><label>Name</label><input id="regName" required><label>Mobile</label><input id="regMobile" required><button class="btn">Register &amp; Get Registration ID</button></form></div>
-<div><h3>Login</h3><form onsubmit="mainLogin(event)"><label>Registration ID (e.g. C2S-00001)</label><input id="loginRegId" required><button class="btn">Login</button></form></div></div>
-<div class="card"><h3>Demo Login — dikhane ke liye (koi password nahi, browser-local demo only)</h3>
-<p><button class="btn" onclick="demoLogin('student')">Student Login Dekho</button> — <strong>Demo Student</strong> (ID: C2S-00001)</p>
-<p class="small">Admin / Employee login yahan publicly nahi dikhaya jata — admin access alag URL se hoga, jo baad me set kiya jayega. Ye demo login real account nahi hai, data sirf isi browser me save hoga.</p></div>
-<p id="loginMsg"></p></div>
+<div class="grid2"><div><h3>1. Your details</h3><form onsubmit="return false"><label>Name (for signup)</label><input id="otpName" placeholder="Your name"><label>Mobile (for SMS / WhatsApp OTP)</label><input id="otpMobile" placeholder="10-digit mobile"><label>Email (for Email OTP)</label><input type="email" id="otpEmail" placeholder="you@example.com"></form></div>
+<div><h3>2. Choose OTP channel</h3>
+<label><input type="radio" name="otpChannel" value="sms" checked> SMS OTP</label><br>
+<label><input type="radio" name="otpChannel" value="whatsapp"> WhatsApp OTP</label><br>
+<label><input type="radio" name="otpChannel" value="email"> Email OTP</label><br>
+<button class="btn" onclick="requestOtp('main')">Send OTP</button>
+<p id="otpStatus" class="small"></p>
+<label>Enter 6-digit OTP</label><input id="otpCode" inputmode="numeric" maxlength="6" placeholder="6-digit code">
+<button class="btn orange" onclick="verifyOtp('main')">Verify OTP &amp; Login</button>
+<p id="loginMsg"></p></div></div>
+<div class="preview"><strong>PREVIEW OTP:</strong> Until an OTP provider is connected in Vercel env vars, the OTP shown on screen is a preview code for testing only. It is NOT a real SMS, WhatsApp or email, and it must never be presented as sent.</div>
+</div>
 </section>
 </main>
 <footer>C2S — College to Service • Your Selection Our Mission • Patrapada, Bhubaneswar</footer>
-
-<!-- Exam lock window -->
 <div id="examLock" class="hidden">
 <div class="panel">
 <div id="instruct"><h2 id="lockTitle">Test</h2><p id="lockCalcNote"></p>

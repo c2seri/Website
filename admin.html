@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C2S Admin — separate URL only</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="styles.css"><script src="admin.js"></script></head>
+<body>
+<header class="topbar"><div><div class="logo">C2S <span>Admin</span></div><div class="tagline">Separate admin URL only — this page is NOT linked from the main navigation or login pages.</div></div>
+<button class="btn ghost" onclick="location.href='index.html'">← Back to Main Site</button></header>
+<main>
+<div class="card"><h1>Admin Dashboard — PREVIEW</h1>
+<p class="small">This admin page is reached only by its direct URL (see README). No admin login is shown publicly on the main site or library page. In preview mode, counts below are read from this browser's localStorage only — they are NOT live production data until DATABASE_URL is set.</p>
+<div id="adminStats"></div></div>
+<div class="card"><h2>Tests</h2><p id="adminTests" class="small"></p><p class="small">Test management (add/edit tests, calculator flag per exam) is a placeholder in preview mode — staff edits here are browser-local only until the database is connected.</p></div>
+<div class="card"><h2>Library members</h2><div id="adminMembers"></div></div>
+<div class="card"><h2>Income / Pending / Ledger</h2><div id="adminLedger"></div></div>
+<div class="card"><h2>Notices / Blog management (preview)</h2>
+<form onsubmit="adminPost(event)"><input id="adminPostTitle" placeholder="Notice / blog title" required><textarea id="adminPostBody" placeholder="Body" required></textarea><button class="btn">Add locally (preview)</button></form>
+<div id="adminPosts"></div></div>
+<div class="card"><h2>Connections — placeholders only</h2><p>Cashfree, SMS, WhatsApp and Email providers: settings placeholders only, no keys or live links in this build. Set them only as Vercel env vars (see README and .env.example) — never in code.</p></div>
+</main><footer>C2S Admin — separate URL only</footer>
+</body></html>

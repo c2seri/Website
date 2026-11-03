@@ -3,4 +3,4 @@
   <url><loc>https://example.invalid/index.html</loc></url>
   <url><loc>https://example.invalid/library.html</loc></url>
 </urlset>
-<!-- NOTE: replace example.invalid with the real deployed domain after Vercel deploy. -->
+<!-- NOTE: replace example.invalid with the real deployed Vercel domain after deploy. Admin page (admin.html) is intentionally NOT in this sitemap — it is a separate URL only. -->

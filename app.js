@@ -1,12 +1,12 @@
-/* C2S main site — static, browser-local only.
-   Analytics: empty configurable placeholder only. No live ID invented. */
-window.C2S_ANALYTICS_ID = ""; // staff: paste a real analytics ID here only
+/* C2S production v2 — GitHub + Vercel only, no VPS.
+   PREVIEW mode until DATABASE_URL + OTP provider env vars are set in Vercel.
+   No live DB, OTP, payment or video is claimed. Analytics: empty placeholder only. */
+window.C2S_ANALYTICS_ID = "";
 const $ = s => document.querySelector(s);
 const store = {
   get(k, d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch(e){ return d } },
   set(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
 };
-/* Staff-configurable calculator flag per test. BANK=true, others=false. */
 const TESTS = [
  {id:"BANK-MOCK-1", exam:"BANK", title:"BANK Mock Test 1", minutes:10, calculatorAllowed:true,
   qs:[["What is 15% of 240?",["24","36","30","48"],1],["A train covers 180 km in 3 hours. Speed?",["50 km/h","60 km/h","70 km/h","40 km/h"],1],["Next: 2, 6, 12, 20, ?",["28","30","32","36"],1],["Synonym of 'Rapid'?",["Slow","Fast","Weak","Late"],1]]},
@@ -19,7 +19,6 @@ const TESTS = [
  {id:"UPSC-MOCK-1", exam:"UPSC", title:"UPSC Mock Test 1", minutes:10, calculatorAllowed:false,
   qs:[["Which article deals with Fundamental Rights?",["Art. 12–35","Art. 36–51","Art. 52–78","Art. 1–4"],0],["First President of India?",["Dr. Rajendra Prasad","Dr. Kalam","Dr. Radhakrishnan","Zakir Husain"],0],["Photosynthesis occurs in?",["Root","Stem","Leaf","Flower"],2],["Ganga flows into?",["Arabian Sea","Bay of Bengal","Indian Ocean","Pacific"],1]]}
 ];
-let currentUser = store.get("c2s_main_user", null);
 function show(view){
   document.querySelectorAll("[data-view]").forEach(el=>el.classList.toggle("hidden", el.dataset.view!==view));
   document.querySelectorAll("nav a[data-nav]").forEach(a=>a.classList.toggle("active", a.dataset.nav===view));
@@ -28,9 +27,16 @@ function show(view){
   if(view==="blog") renderBlog();
   window.scrollTo(0,0);
 }
-function renderExams(){
+function filterExam(level, id){
+  show("exams");
+  const lvl=$("#examLevel"); if(lvl) lvl.value=level;
+  const s=$("#examSearch"); if(s) s.value="";
+  renderExams(id);
+}
+function renderExams(onlyId){
   const q=($("#examSearch").value||"").toLowerCase(), lvl=$("#examLevel").value;
-  const list=EXAMS.filter(e=>(!lvl||e.level===lvl) && (!q || (e.name+" "+e.posts+" "+e.eligibility+" "+e.pattern+" "+e.syllabus+" "+e.state+" "+e.keywords).toLowerCase().includes(q)));
+  let list=EXAMS.filter(e=>(!lvl||e.level===lvl) && (!q || (e.name+" "+e.posts+" "+e.eligibility+" "+e.pattern+" "+e.syllabus+" "+e.state+" "+e.keywords).toLowerCase().includes(q)));
+  if(onlyId) list=list.filter(e=>e.id===onlyId);
   $("#examList").innerHTML = list.length ? list.map(e=>`
    <div class="card"><span class="pill">${e.level}</span> <strong>${e.name}</strong>
    <p class="small">${e.posts}</p>
@@ -60,40 +66,60 @@ function reviewGiven(id){
   const t=TESTS.find(x=>x.id===id);
   alert(t.title+"\nScore: "+g.score+"/"+g.total+"\n\n"+t.qs.map((q,i)=>"Q"+(i+1)+": "+q[0]+"\nYour answer: "+(g.answers[i]==null?"Skipped":q[1][g.answers[i]])+"\nCorrect: "+q[1][q[2]]).join("\n\n"));
 }
-/* ---------- Main login (browser-local demo) ---------- */
-function mainRegister(e){
-  e.preventDefault();
+/* ---------- OTP login/signup (Main) — all three channels, no demo logins ---------- */
+function otpChannel(scope){
+  const el=document.querySelector(`input[name="otpChannel"]:checked`);
+  return el ? el.value : "sms";
+}
+async function apiOtpRequest(channel, target){
+  try{
+    const r=await fetch("/api/otp-request",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({channel,target})});
+    return await r.json();
+  }catch(e){ return {provider_configured:false, error:"api_unreachable"}; }
+}
+async function requestOtp(scope){
+  const channel=otpChannel(scope);
+  const mobile=($("#otpMobile")||{}).value||"";
+  const email=($("#otpEmail")||{}).value||"";
+  const target = channel==="email" ? email : mobile;
+  if(!target) return alert(channel==="email" ? "Email enter karo." : "Mobile enter karo.");
+  const res=await apiOtpRequest(channel, target);
+  const status=$("#otpStatus");
+  if(res.provider_configured){
+    if(status) status.innerHTML="OTP provider is configured in env, but live sending is not yet implemented in this build — no real OTP has been sent. Ask staff to complete the provider integration, or use PREVIEW mode below.";
+    return;
+  }
+  // PREVIEW mode only: generate a random preview code locally, labelled clearly. Never claim it was sent.
+  const code=String(Math.floor(100000+Math.random()*900000));
+  store.set("c2s_main_preview_otp", {code, channel, target, expires:Date.now()+5*60*1000, attempts:0});
+  if(status) status.innerHTML="<strong>PREVIEW OTP (testing only, NOT sent by SMS/WhatsApp/email): "+code+"</strong> — valid 5 minutes in this browser only.";
+}
+async function verifyOtp(scope){
+  const code=($("#otpCode")||{}).value||"";
+  const preview=store.get("c2s_main_preview_otp", null);
+  if(!preview || Date.now()>preview.expires) return alert("Preview OTP expired. Request a new OTP.");
+  preview.attempts=(preview.attempts||0)+1; store.set("c2s_main_preview_otp", preview);
+  if(preview.attempts>5) return alert("Too many attempts. Request a new OTP.");
+  if(code!==preview.code) return alert("Wrong preview OTP. Try again.");
+  const name=($("#otpName")||{}).value||"C2S Student";
   const users=store.get("c2s_main_users", []);
-  const name=$("#regName").value.trim(), mobile=$("#regMobile").value.trim();
-  if(!name||!mobile) return alert("Name and mobile are required.");
-  const id="C2S-"+String(users.length+1).padStart(5,"0");
-  const u={id,name,mobile}; users.push(u); store.set("c2s_main_users",users); store.set("c2s_main_user",u);
-  $("#loginMsg").innerHTML="<span class='ok'>Registered. Your Registration ID is "+id+" (browser-local demo data until an external database is connected).</span>";
+  let u=users.find(x=>x.mobile===preview.target || x.email===preview.target);
+  if(!u){ u={id:"C2S-"+String(users.length+1).padStart(5,"0"), name, mobile:preview.channel==="email"?"":preview.target, email:preview.channel==="email"?preview.target:"", channel:preview.channel}; users.push(u); store.set("c2s_main_users",users); }
+  store.set("c2s_main_user",u);
+  const msg=$("#loginMsg"); if(msg) msg.innerHTML="<span class='ok'>OTP verified (PREVIEW mode). Logged in as "+u.name+" ("+u.id+"). Real database/OTP is not connected yet.</span>";
   renderUser();
 }
-function mainLogin(e){
-  e.preventDefault();
-  const id=$("#loginRegId").value.trim();
-  const u=store.get("c2s_main_users", []).find(x=>x.id===id);
-  if(!u) return alert("Registration ID not found in this browser. Register first, or use a demo login below.");
-  store.set("c2s_main_user",u); renderUser();
+function renderUser(){
+  const u=store.get("c2s_main_user",null);
+  $("#userBox").innerHTML = u ? "Logged in as <strong>"+u.name+"</strong> ("+u.id+") — PREVIEW mode, browser-local only. <button class='btn ghost' onclick='localStorage.removeItem(\"c2s_main_user\");location.reload()'>Logout</button>" : "Not logged in. Use OTP login/signup above (preview mode until providers are connected).";
 }
-/* Demo login shown on the Main Login page — student demo only, browser-local demo only, no password, no real account. Admin login is NOT shown publicly; it will be via a separate admin URL later. */
-function demoLogin(role){
-  const users=store.get("c2s_main_users", []);
-  const demo = {id:"C2S-00001", name:"Demo Student", mobile:"9000000000", role:"student"};
-  if(!users.some(x=>x.id===demo.id)){ users.push(demo); store.set("c2s_main_users",users); }
-  store.set("c2s_main_user",demo); renderUser();
-  $("#loginMsg").innerHTML="<span class='ok'>Demo student login active: "+demo.name+" ("+demo.id+") — browser-local demo only.</span>";
-}
-function renderUser(){ $("#userBox").innerHTML = currentUser ? "" : ""; const u=store.get("c2s_main_user",null); $("#userBox").innerHTML = u ? "Logged in as <strong>"+u.name+"</strong> ("+u.id+")"+(u.role ? " — Role: "+u.role : "")+" — browser-local demo. <button class='btn ghost' onclick='localStorage.removeItem(\"c2s_main_user\");location.reload()'>Logout</button>" : "Not logged in. Register or login to take tests (local demo)."; }
 /* ---------- Exam mode ---------- */
 let exam=null, violations=0, timerInt=null, secondsLeft=0;
 function startTest(id){
-  const u=store.get("c2s_main_user",null); if(!u) return alert("Please register/login (Main Login) first.");
+  const u=store.get("c2s_main_user",null); if(!u) return alert("Please login with OTP (Main Login) first.");
   const t=TESTS.find(x=>x.id===id); if(!t) return;
   const given=store.get("c2s_main_given", []); if(given.some(g=>g.testId===id)) return alert("This test has already been given. See Given Tests.");
-  exam={test:t, answers:Array(t.qs.length).fill(null), idx:0};
+  exam={test:t, answers:Array(t.qs.length).fill(null), idx:0}; violations=0;
   $("#lockTitle").textContent=t.title+" — "+t.exam;
   $("#lockCalcNote").textContent = t.calculatorAllowed ? "Calculator: Allowed for this exam." : "Calculator: Not allowed for this exam. Use the scratch pad below.";
   $("#calcBox").classList.toggle("hidden", !t.calculatorAllowed);
@@ -138,7 +164,6 @@ function submitExam(reason){
   show("tests"); renderTests();
 }
 function calc(op){ const el=$("#calcOut"); try{ if(op==="C") el.value=""; else if(op==="=") el.value=eval(el.value.replace(/[^0-9+\-*/.() ]/g,""))||""; else el.value+=op; }catch(e){ el.value="Error"; } }
-/* ---------- Blog / Notices (browser-local) ---------- */
 function renderBlog(){
   const posts=store.get("c2s_main_blog", [{title:"Welcome to C2S",body:"Test series, exams and library updates will appear here."},{title:"Library open 24 hours",body:"C2S Library, Patrapada, Bhubaneswar — peaceful, A/C study space."}]);
   $("#blogList").innerHTML=posts.map(p=>`<div class="card"><strong>${p.title}</strong><p>${p.body}</p></div>`).join("");

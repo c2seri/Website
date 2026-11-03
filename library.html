@@ -8,18 +8,22 @@
 <header class="topbar"><div><div class="logo">C2S <span>Library</span></div><div class="tagline">C2S Premium Library • Online Membership &amp; Admission • Your Selection Our Mission</div></div>
 <button class="btn ghost" onclick="location.href='index.html'">← Back to Main Site</button></header>
 <main>
-<div class="card"><h1>C2S Library – Online Admission Form</h1><p class="small">This Library section is completely separate from the Main Login. Library data here is stored only in this browser (localStorage) until an external database is connected later. Photo/Aadhaar are private member records only, never public — do not upload them on this static demo.</p></div>
+<div class="card"><h1>C2S Library – Online Admission Form</h1><p class="small">This Library section is completely separate from the Main Login. Library data here is stored only in this browser (localStorage) in PREVIEW mode until DATABASE_URL and OTP providers are set in Vercel. Photo/Aadhaar are private member records only, never public — do not upload them on this preview version.</p>
+<div class="preview"><strong>PREVIEW mode:</strong> No live database or OTP provider is connected yet. No real SMS, WhatsApp or email is sent.</div></div>
 
-<div class="card" id="libLoginCard"><h2>Library Login (separate)</h2>
-<p class="small">Login with Mobile + Library Registration No. No Main Login account works here, and vice versa.</p>
-<div class="grid2"><div><h3>Library Login</h3><form onsubmit="libLogin(event)"><label>Mobile</label><input id="libMobile" required><label>Library Registration No (e.g. C2SLIB-00001)</label><input id="libRegNo" required><button class="btn">Library Login</button></form></div>
-<div><h3>Quick Admission</h3><p>New member? Fill the admission form below — a Library Registration No is auto-generated.</p><button class="btn orange" onclick="document.getElementById('admission').scrollIntoView()">Go to Admission Form</button></div></div>
-<div class="card"><h3>Demo Library Login — dikhane ke liye (koi password nahi, browser-local demo only)</h3>
-<p><button class="btn orange" onclick="demoLibLogin()">Library Login Dekho</button> — <strong>Demo Library Member</strong></p>
-<p class="small">Library Admin login yahan publicly nahi dikhaya jata — admin access alag URL se hoga, jo baad me set kiya jayega.</p>
-<p class="small">Mobile: <strong>9000000001</strong> &nbsp;•&nbsp; Library Registration No: <strong>C2SLIB-00001</strong> &nbsp;•&nbsp; Shift: Afternoon</p>
-<p class="small">Ye Main Login se bilkul alag hai — Main Login ka account yahan kaam nahi karega, aur Library ka account wahan nahi. Ye real member nahi hai, data sirf isi browser me save hoga.</p>
-<p id="libMsg"></p></div>
+<div class="card" id="libLoginCard"><h2>Library Login / Signup (separate, OTP based)</h2>
+<p class="small">Login with OTP — completely separate from Main Login. No Main Login account works here, and vice versa. No password is used.</p>
+<div class="grid2"><div><h3>1. Your details</h3><label>Name (for signup)</label><input id="libOtpName" placeholder="Your name"><label>Mobile (for SMS / WhatsApp OTP)</label><input id="libOtpMobile" placeholder="10-digit mobile"><label>Email (for Email OTP)</label><input type="email" id="libOtpEmail" placeholder="you@example.com"></div>
+<div><h3>2. Choose OTP channel</h3>
+<label><input type="radio" name="libOtpChannel" value="sms" checked> SMS OTP</label><br>
+<label><input type="radio" name="libOtpChannel" value="whatsapp"> WhatsApp OTP</label><br>
+<label><input type="radio" name="libOtpChannel" value="email"> Email OTP</label><br>
+<button class="btn" onclick="requestLibOtp()">Send OTP</button>
+<p id="libOtpStatus" class="small"></p>
+<label>Enter 6-digit OTP</label><input id="libOtpCode" inputmode="numeric" maxlength="6" placeholder="6-digit code">
+<button class="btn orange" onclick="verifyLibOtp()">Verify OTP &amp; Continue</button>
+<p id="libMsg"></p></div></div>
+<div><h3>Quick Admission</h3><p>New member? Fill the admission form below — a Library Registration No is auto-generated. Admission itself does not require OTP in preview mode; OTP login is for returning members.</p><button class="btn orange" onclick="document.getElementById('admission').scrollIntoView()">Go to Admission Form</button></div>
 <div id="libUserBox"></div></div>
 
 <div class="card" id="admission"><h2>Quick Admission — Joining Form</h2>
@@ -32,11 +36,10 @@
 <div><label>Mother Name</label><input id="motherName"></div><div><label>Date of Birth</label><input type="date" id="dob"></div>
 <div><label>Mobile No</label><input id="studMobile" required></div><div><label>Email</label><input type="email" id="studEmail"></div>
 <div><label>Qualification</label><input id="qualif"></div><div><label>Study Purpose / Exam Preferences</label><input id="examPref" placeholder="e.g. BANK, SSC, OSSC"></div>
-</div><p class="small">Photo and Aadhaar card are private records — this static demo does not collect or upload them.</p>
+</div><p class="small">Photo and Aadhaar card are private records — this preview version does not collect or upload them.</p>
 <h3>Present Address</h3><div class="grid2">
 <div><label>Plot No</label><input id="plotNo"></div><div><label>Lane / Village</label><input id="lane"></div>
 <div><label>District</label><input id="district"></div><div><label>State</label><input id="state"></div><div><label>Pin</label><input id="pin"></div></div>
-
 <h3>Shift Allocation (choose one)</h3><div id="shiftBtns"></div><p id="shiftInfo" class="small"></p>
 <h3>Payment Details (separate section)</h3>
 <p>Registration Fee: <strong>₹200, non-refundable</strong>, separate from Monthly Payment.</p>
@@ -55,12 +58,12 @@
 <p><button class="btn" type="submit">Submit Admission</button> <button class="btn ghost" type="reset" onclick="setTimeout(calcFees,0)">Reset</button> <button class="btn ghost" type="button" onclick="if(confirm('Cancel this admission form?')) this.form.reset()">Cancel</button></p>
 <p id="admitMsg"></p></form></div>
 
-<div class="card"><h2>Library Dashboard — Date-wise Analysis (local data)</h2><p id="dashStats"></p>
-<h3>Seat Map — 3 zones, 48 seats (2D grid view; 3D-style hall in the full platform)</h3><div id="seatMap"></div><p class="small">Click a free seat to select it. Blocked seats are grey. Seat status updates in this browser only.</p>
+<div class="card"><h2>Library Dashboard — Date-wise Analysis (preview, local data)</h2><p id="dashStats"></p>
+<h3>Seat Map — 3 zones, 48 seats (2D grid view in this GitHub/Vercel version; 3D-style hall lives in the hosted full platform)</h3><div id="seatMap"></div><p class="small">Click a free seat to select it. Blocked seats are grey. Seat status updates in this browser only in preview mode.</p>
 <h3>Members</h3><div id="memberList"></div>
-<h3>Income / Expense Ledger (local)</h3><table><thead><tr><th>Date</th><th>Description</th><th>Amount (₹)</th></tr></thead><tbody id="ledgerBody"></tbody></table>
+<h3>Income / Expense Ledger (preview, local)</h3><table><thead><tr><th>Date</th><th>Description</th><th>Amount (₹)</th></tr></thead><tbody id="ledgerBody"></tbody></table>
 <form onsubmit="addExpense(event)"><div class="grid2"><input id="expDesc" placeholder="Expense description" required><input type="number" id="expAmt" placeholder="Amount (negative for expense)" required></div><button class="btn ghost">Add Ledger Entry</button></form>
-<h3>Connections (placeholders only — not live)</h3><p>Cashfree: <em>settings placeholder — no API keys, merchant ID or live link.</em><br>WhatsApp (Whatsify): <em>placeholder — not connected.</em><br>Mail: <em>placeholder — not connected.</em><br>Auto-debit e-mandate: <em>option shown, not live, no mandate collected here.</em></p>
+<h3>Connections (placeholders only — not live)</h3><p>Cashfree: <em>settings placeholder — no API keys, merchant ID or live link.</em><br>WhatsApp: <em>placeholder — not connected.</em><br>Mail / SMS: <em>placeholder — not connected.</em><br>Auto-debit e-mandate: <em>option shown, not live, no mandate collected here.</em></p>
 </div>
 </main><footer>C2S Library • Patrapada, Bhubaneswar • Open 24 hours</footer>
 </body></html>
