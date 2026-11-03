@@ -183,3 +183,16 @@ input:focus,select:focus,textarea:focus{outline:3px solid rgba(249,115,22,.35);o
 }
 
 .libnav{display:flex;gap:4px;flex-wrap:wrap}.libnav a{color:#fff;text-decoration:none;font-weight:700;padding:9px 12px;border-radius:9px}.libnav a:hover{background:rgba(255,255,255,.18)}
+
+/* --- Static-rich homepage additions (king-level placement) --- */
+.stats-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:28px 0 8px}
+.stat-box{background:#fff;border:1px solid #e3e8f2;border-radius:16px;padding:18px 14px;text-align:center;box-shadow:0 8px 24px rgba(15,42,92,.07)}
+.stat-box strong{display:block;font-size:28px;color:#0a1f4a}
+.stat-box span{font-size:13px;color:#475569;font-weight:600}
+.category-head{font-size:22px;color:#0a1f4a;margin:28px 4px 12px}
+.exam-detail{background:#fff;border:1px solid #e3e8f2;border-radius:16px;padding:18px 20px;margin:0 0 14px;box-shadow:0 8px 24px rgba(15,42,92,.06)}
+.exam-detail summary{cursor:pointer;font-size:17px;color:#0a1f4a;list-style-position:outside}
+.exam-detail summary:hover{color:#ea580c}
+.exam-detail p{color:#334155}
+@media(max-width:1024px){.stats-strip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.stats-strip{grid-template-columns:repeat(2,1fr)}}

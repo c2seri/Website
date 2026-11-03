@@ -44,13 +44,23 @@
       <h3>Start here — everything in one place</h3>
       <p class="small" style="margin:0">Choose your exam, log in with OTP, purchase for ₹2, and start your test.</p>
       <div class="price-big">₹2 <small>/ Inaugural Offer</small></div>
-      <div class="visual-row"><span>Popular Exams</span><b><span class="counter" data-count="10">0</span> tracks</b></div>
-      <div class="visual-row"><span>Mock Tests</span><b><span class="counter" data-count="5">0</span> tests • 10 min each</b></div>
-      <div class="visual-row"><span>Premium Library</span><b>24 hours • <span class="counter" data-count="4">0</span> shifts</b></div>
-      <div class="visual-row"><span>OTP Login</span><b><span class="counter" data-count="3">0</span> options • SMS, WhatsApp, Email</b></div>
+      <div class="visual-row"><span>Popular Exams</span><b><span class="counter" data-count="10">10</span> tracks</b></div>
+      <div class="visual-row"><span>Mock Tests</span><b><span class="counter" data-count="5">5</span> tests • 10 min each</b></div>
+      <div class="visual-row"><span>Premium Library</span><b>24 hours • <span class="counter" data-count="4">4</span> shifts</b></div>
+      <div class="visual-row"><span>OTP Login</span><b><span class="counter" data-count="3">3</span> options • SMS, WhatsApp, Email</b></div>
       <p style="margin:14px 0 0"><button class="btn orange" onclick="show('tests')">Explore Test Series →</button></p>
     </div>
   </div>
+</div>
+
+
+<div class="stats-strip" aria-label="C2S at a glance">
+<div class="stat-box"><strong><span class="counter" data-count="10">10</span></strong><span>Exam Tracks</span></div>
+<div class="stat-box"><strong><span class="counter" data-count="5">5</span></strong><span>Mock Tests</span></div>
+<div class="stat-box"><strong><span class="counter" data-count="4">4</span></strong><span>Library Shifts</span></div>
+<div class="stat-box"><strong><span class="counter" data-count="3">3</span></strong><span>OTP Login Options</span></div>
+<div class="stat-box"><strong>24 hrs</strong><span>Library Open</span></div>
+<div class="stat-box"><strong>₹2</strong><span>Inaugural Offer Price</span></div>
 </div>
 
 <div class="band">
@@ -65,19 +75,117 @@
 
 <div class="band band-tint">
 <div class="section-head"><h2>Popular Exams</h2><p>Choose your exam — tap a card to view details, pattern and syllabus.</p><div class="rule"></div></div>
+<h3 class="category-head">All India Exams — 6 tracks</h3>
 <div class="exam-grid">
-<button class="exam-tile" onclick="filterExam('All India','BANK')"><span class="tile-initial">BANK</span><strong>BANK Exams</strong><span>All India • Clerk, PO, Specialist Officer</span><em>View details →</em></button>
+<button class="exam-tile" onclick="filterExam('All India','BANK')"><span class="tile-initial ">BANK</span><strong>BANK Exams</strong><span>All India • Clerk, PO, Specialist Officer</span><em>View details →</em></button>
 <button class="exam-tile" onclick="filterExam('All India','SSC')"><span class="tile-initial orange">SSC</span><strong>SSC Exams</strong><span>All India • CGL, CHSL, GD, MTS</span><em>View details →</em></button>
 <button class="exam-tile" onclick="filterExam('All India','RAILWAY')"><span class="tile-initial green">RLY</span><strong>Railway Exams</strong><span>All India • NTPC, ALP, Group D</span><em>View details →</em></button>
 <button class="exam-tile" onclick="filterExam('All India','UPSC')"><span class="tile-initial purple">UPSC</span><strong>UPSC Exams</strong><span>All India • IAS, IPS, IFS</span><em>View details →</em></button>
-<button class="exam-tile" onclick="filterExam('All India','DEFENCE')"><span class="tile-initial">DEF</span><strong>Defence Exams</strong><span>All India • NDA, CDS, AFCAT</span><em>View details →</em></button>
+<button class="exam-tile" onclick="filterExam('All India','DEFENCE')"><span class="tile-initial ">DEF</span><strong>Defence Exams</strong><span>All India • NDA, CDS, AFCAT</span><em>View details →</em></button>
 <button class="exam-tile" onclick="filterExam('All India','TEACHING')"><span class="tile-initial orange">TEACH</span><strong>Teaching Exams</strong><span>All India • TGT, PGT, PRT</span><em>View details →</em></button>
-<button class="exam-tile" onclick="filterExam('All India','OSSC')"><span class="tile-initial green">OSSC</span><strong>OSSC Exams</strong><span>Odisha State • Group B/C posts</span><em>View details →</em></button>
-<button class="exam-tile" onclick="filterExam('All India','OSSSC')"><span class="tile-initial purple">OSSSC</span><strong>OSSSC Exams</strong><span>Odisha State • Subordinate posts</span><em>View details →</em></button>
-<button class="exam-tile" onclick="filterExam('All India','OPSC')"><span class="tile-initial">OPSC</span><strong>OPSC Exams</strong><span>Odisha State • OAS, Group A/B</span><em>View details →</em></button>
-<button class="exam-tile" onclick="filterExam('All India','ODISHA-POLICE')"><span class="tile-initial orange">POL</span><strong>Odisha Police</strong><span>Odisha State • Constable, SI</span><em>View details →</em></button>
+</div>
+<h3 class="category-head">Odisha State Exams — 4 tracks</h3>
+<div class="exam-grid">
+<button class="exam-tile" onclick="filterExam('Odisha State','OSSC')"><span class="tile-initial green">OSSC</span><strong>OSSC Exams</strong><span>Odisha State • Group B/C posts</span><em>View details →</em></button>
+<button class="exam-tile" onclick="filterExam('Odisha State','OSSSC')"><span class="tile-initial purple">OSSSC</span><strong>OSSSC Exams</strong><span>Odisha State • Subordinate posts</span><em>View details →</em></button>
+<button class="exam-tile" onclick="filterExam('Odisha State','OPSC')"><span class="tile-initial ">OPSC</span><strong>OPSC Exams</strong><span>Odisha State • OAS, Group A/B</span><em>View details →</em></button>
+<button class="exam-tile" onclick="filterExam('Odisha State','ODISHA-POLICE')"><span class="tile-initial orange">POL</span><strong>Odisha Police</strong><span>Odisha State • Constable, SI</span><em>View details →</em></button>
 </div>
 <div class="cta-row"><button class="btn" onclick="show('exams')">All Exams — Search by keyword →</button></div>
+</div>
+
+<div class="band">
+<div class="section-head"><h2>Exam Details — Posts, Eligibility, Pattern &amp; Syllabus</h2><p>Full details for all 10 exam tracks. Open any exam to read its posts, eligibility, pattern, syllabus overview and state relation. No exam dates or fees are invented here.</p><div class="rule"></div></div>
+<details class="exam-detail"><summary><strong>BANK Exams</strong> <span class="pill">All India</span> — Clerk, Probationary Officer (PO), Specialist Officer</summary>
+<p><strong>Posts:</strong> Clerk, Probationary Officer (PO), Specialist Officer</p>
+<p><strong>Eligibility:</strong> Graduation in any discipline (exact age/qualification as per the official notification for that post).</p>
+<p><strong>Pattern:</strong> Prelims (objective) → Mains (objective + descriptive where applicable) → Interview / Language Proficiency Test, as per the specific bank exam.</p>
+<p><strong>Syllabus overview:</strong> Quantitative Aptitude, Reasoning Ability, English Language, General/Financial Awareness, Computer Aptitude.</p>
+<p><strong>State relation:</strong> All-India recruitment through national banks and IBPS; state-wise vacancies are notified in the official advertisement.</p>
+<p class="small">Dates, fees and vacancy numbers are not listed here — check the official notification for that exam.</p>
+<p><button class="btn ghost" onclick="filterExam('All India','BANK')">View in Exams search →</button> <button class="btn ghost" onclick="show('tests')">Go to Test Series →</button></p>
+</details>
+<details class="exam-detail"><summary><strong>SSC Exams</strong> <span class="pill">All India</span> — CGL, CHSL, GD Constable, MTS and other Group B/C posts</summary>
+<p><strong>Posts:</strong> CGL, CHSL, GD Constable, MTS and other Group B/C posts</p>
+<p><strong>Eligibility:</strong> 10th / 12th / Graduation depending on the post — check the official notification for that exam.</p>
+<p><strong>Pattern:</strong> Tier-based objective tests (and skill/descriptive tests where applicable), followed by document verification.</p>
+<p><strong>Syllabus overview:</strong> General Intelligence &amp; Reasoning, General Awareness, Quantitative Aptitude, English Comprehension.</p>
+<p><strong>State relation:</strong> All-India recruitment; regional vacancies and cut-offs vary by region — see the official notification.</p>
+<p class="small">Dates, fees and vacancy numbers are not listed here — check the official notification for that exam.</p>
+<p><button class="btn ghost" onclick="filterExam('All India','SSC')">View in Exams search →</button> <button class="btn ghost" onclick="show('tests')">Go to Test Series →</button></p>
+</details>
+<details class="exam-detail"><summary><strong>Railway Exams</strong> <span class="pill">All India</span> — NTPC, ALP, Technician, Group D and other RRB posts</summary>
+<p><strong>Posts:</strong> NTPC, ALP, Technician, Group D and other RRB posts</p>
+<p><strong>Eligibility:</strong> 10th / ITI / 12th / Graduation depending on the post — check the official RRB notification.</p>
+<p><strong>Pattern:</strong> CBT Stage 1 → CBT Stage 2 (where applicable) → Aptitude / Typing / Physical test → Document verification and medical.</p>
+<p><strong>Syllabus overview:</strong> Mathematics, General Intelligence &amp; Reasoning, General Awareness, General Science.</p>
+<p><strong>State relation:</strong> All-India recruitment through Railway Recruitment Boards; zones/regions are notified in the advertisement.</p>
+<p class="small">Dates, fees and vacancy numbers are not listed here — check the official notification for that exam.</p>
+<p><button class="btn ghost" onclick="filterExam('All India','RAILWAY')">View in Exams search →</button> <button class="btn ghost" onclick="show('tests')">Go to Test Series →</button></p>
+</details>
+<details class="exam-detail"><summary><strong>UPSC Exams</strong> <span class="pill">All India</span> — IAS, IPS, IFS and other All-India / Central Services</summary>
+<p><strong>Posts:</strong> IAS, IPS, IFS and other All-India / Central Services</p>
+<p><strong>Eligibility:</strong> Graduation in any discipline; age and attempt limits as per the official UPSC notification.</p>
+<p><strong>Pattern:</strong> Prelims (objective) → Mains (written) → Personality Test (interview).</p>
+<p><strong>Syllabus overview:</strong> General Studies, CSAT, Essay, Optional subject, Current Affairs.</p>
+<p><strong>State relation:</strong> All-India services; cadre allocation is state-related and notified by the government.</p>
+<p class="small">Dates, fees and vacancy numbers are not listed here — check the official notification for that exam.</p>
+<p><button class="btn ghost" onclick="filterExam('All India','UPSC')">View in Exams search →</button> <button class="btn ghost" onclick="show('tests')">Go to Test Series →</button></p>
+</details>
+<details class="exam-detail"><summary><strong>Defence Exams</strong> <span class="pill">All India</span> — NDA, CDS, AFCAT and other officer entries</summary>
+<p><strong>Posts:</strong> NDA, CDS, AFCAT and other officer entries</p>
+<p><strong>Eligibility:</strong> 12th (NDA) / Graduation (CDS, AFCAT) with subject conditions as per the official notification.</p>
+<p><strong>Pattern:</strong> Written test → SSB interview → Medical examination.</p>
+<p><strong>Syllabus overview:</strong> Mathematics, General Ability, English, General Knowledge.</p>
+<p><strong>State relation:</strong> All-India recruitment; no state quota in the written stage — see the official notification.</p>
+<p class="small">Dates, fees and vacancy numbers are not listed here — check the official notification for that exam.</p>
+<p><button class="btn ghost" onclick="filterExam('All India','DEFENCE')">View in Exams search →</button> <button class="btn ghost" onclick="show('tests')">Go to Test Series →</button></p>
+</details>
+<details class="exam-detail"><summary><strong>Teaching Exams</strong> <span class="pill">All India</span> — TGT, PGT, PRT and other teaching posts</summary>
+<p><strong>Posts:</strong> TGT, PGT, PRT and other teaching posts</p>
+<p><strong>Eligibility:</strong> Graduation / Post-graduation plus B.Ed. and TET/CTET qualification where required — check the official notification.</p>
+<p><strong>Pattern:</strong> Written test (subject + pedagogy + general) → Interview / Demo, where applicable.</p>
+<p><strong>Syllabus overview:</strong> Subject knowledge, Child Development &amp; Pedagogy, General Awareness, Language.</p>
+<p><strong>State relation:</strong> Central and state teaching recruitments exist; this track covers the All-India pattern — state TETs are separate.</p>
+<p class="small">Dates, fees and vacancy numbers are not listed here — check the official notification for that exam.</p>
+<p><button class="btn ghost" onclick="filterExam('All India','TEACHING')">View in Exams search →</button> <button class="btn ghost" onclick="show('tests')">Go to Test Series →</button></p>
+</details>
+<details class="exam-detail"><summary><strong>OSSC Exams</strong> <span class="pill">Odisha State</span> — Various Group B/C posts under the Government of Odisha</summary>
+<p><strong>Posts:</strong> Various Group B/C posts under the Government of Odisha</p>
+<p><strong>Eligibility:</strong> As per the OSSC notification for each post (qualification and age vary by post).</p>
+<p><strong>Pattern:</strong> Prelims → Mains → Skill / Document verification, where applicable.</p>
+<p><strong>Syllabus overview:</strong> General Awareness (with Odisha focus), Reasoning, Quantitative Aptitude, English, Odia where applicable.</p>
+<p><strong>State relation:</strong> Odisha state recruitment — OSSC, Government of Odisha.</p>
+<p class="small">Dates, fees and vacancy numbers are not listed here — check the official notification for that exam.</p>
+<p><button class="btn ghost" onclick="filterExam('Odisha State','OSSC')">View in Exams search →</button> <button class="btn ghost" onclick="show('tests')">Go to Test Series →</button></p>
+</details>
+<details class="exam-detail"><summary><strong>OSSSC Exams</strong> <span class="pill">Odisha State</span> — Various subordinate Group C/D posts under the Government of Odisha</summary>
+<p><strong>Posts:</strong> Various subordinate Group C/D posts under the Government of Odisha</p>
+<p><strong>Eligibility:</strong> As per the OSSSC notification for each post (qualification and age vary by post).</p>
+<p><strong>Pattern:</strong> Written test → Skill / Physical test where applicable → Document verification.</p>
+<p><strong>Syllabus overview:</strong> General Awareness (with Odisha focus), Reasoning, Arithmetic, English, Odia where applicable.</p>
+<p><strong>State relation:</strong> Odisha state recruitment — OSSSC, Government of Odisha.</p>
+<p class="small">Dates, fees and vacancy numbers are not listed here — check the official notification for that exam.</p>
+<p><button class="btn ghost" onclick="filterExam('Odisha State','OSSSC')">View in Exams search →</button> <button class="btn ghost" onclick="show('tests')">Go to Test Series →</button></p>
+</details>
+<details class="exam-detail"><summary><strong>OPSC Exams</strong> <span class="pill">Odisha State</span> — Odisha Administrative Service (OAS) and other Group A/B posts</summary>
+<p><strong>Posts:</strong> Odisha Administrative Service (OAS) and other Group A/B posts</p>
+<p><strong>Eligibility:</strong> Graduation in any discipline; age and attempt limits as per the official OPSC notification.</p>
+<p><strong>Pattern:</strong> Prelims → Mains (written) → Personality Test (interview).</p>
+<p><strong>Syllabus overview:</strong> General Studies, Odia/English, Essay, Optional subject, Current Affairs with Odisha focus.</p>
+<p><strong>State relation:</strong> Odisha state recruitment — OPSC, Government of Odisha.</p>
+<p class="small">Dates, fees and vacancy numbers are not listed here — check the official notification for that exam.</p>
+<p><button class="btn ghost" onclick="filterExam('Odisha State','OPSC')">View in Exams search →</button> <button class="btn ghost" onclick="show('tests')">Go to Test Series →</button></p>
+</details>
+<details class="exam-detail"><summary><strong>Odisha Police Exams</strong> <span class="pill">Odisha State</span> — Constable, Sub-Inspector and other Odisha Police posts</summary>
+<p><strong>Posts:</strong> Constable, Sub-Inspector and other Odisha Police posts</p>
+<p><strong>Eligibility:</strong> 10th / 12th / Graduation depending on the post, plus physical standards as per the official notification.</p>
+<p><strong>Pattern:</strong> Written test → Physical Measurement / Efficiency Test → Document verification and medical.</p>
+<p><strong>Syllabus overview:</strong> General Awareness (with Odisha focus), Reasoning, Arithmetic, English, Odia where applicable.</p>
+<p><strong>State relation:</strong> Odisha state recruitment — Odisha Police.</p>
+<p class="small">Dates, fees and vacancy numbers are not listed here — check the official notification for that exam.</p>
+<p><button class="btn ghost" onclick="filterExam('Odisha State','ODISHA-POLICE')">View in Exams search →</button> <button class="btn ghost" onclick="show('tests')">Go to Test Series →</button></p>
+</details>
 </div>
 
 <div class="band">
@@ -105,23 +213,23 @@
 <div class="band band-tint">
 <div class="section-head"><h2>Why C2S — Facilities</h2><p>The facilities shown on the poster, listed here as well.</p><div class="rule"></div></div>
 <div class="facility-grid">
-<div class="facility"><span class="tile-initial">BOOK</span><strong>Book &amp; Study Material</strong><span>Exam-focused material for every track.</span></div>
-<div class="facility"><span class="tile-initial orange">TEST</span><strong>Weekly Offline Test Series</strong><span>Regular practice in exam conditions.</span></div>
-<div class="facility"><span class="tile-initial green">SMART</span><strong>Smart Board Teaching</strong><span>Modern classroom teaching.</span></div>
-<div class="facility"><span class="tile-initial purple">A/C</span><strong>A/C Library with Wi-Fi</strong><span>Open 24 hours, peaceful and spacious.</span></div>
-<div class="facility"><span class="tile-initial">GUIDE</span><strong>Guidance Till Selection</strong><span>Support until you get selected.</span></div>
-<div class="facility"><span class="tile-initial orange">10+</span><strong>10+ Years Experience Teachers</strong><span>Experienced faculty for every exam.</span></div>
-<div class="facility"><span class="tile-initial green">MENTOR</span><strong>Mentorship by Govt Employees</strong><span>Guidance from people in government service.</span></div>
+<div class="facility"><span class="tile-initial">BOOK</span><strong>Book &amp; Study Material</strong><span>Books and study material chosen for each exam track, so preparation follows the exam pattern and syllabus.</span></div>
+<div class="facility"><span class="tile-initial orange">TEST</span><strong>Weekly Offline Test Series</strong><span>A weekly offline test series held in exam-like conditions, so students practise timing, accuracy and exam discipline every week.</span></div>
+<div class="facility"><span class="tile-initial green">SMART</span><strong>Smart Board Teaching</strong><span>Teaching on a smart board in the classroom, with visual explanations for subjects that need diagrams, maps and worked examples.</span></div>
+<div class="facility"><span class="tile-initial purple">A/C</span><strong>A/C Library with Wi-Fi</strong><span>A fully air-conditioned library with Wi-Fi, open 24 hours in a peaceful, spacious hall with comfortable seating and proper lighting.</span></div>
+<div class="facility"><span class="tile-initial">GUIDE</span><strong>Guidance Till Selection</strong><span>Guidance that continues through preparation, tests and revision until selection — not only for the duration of one course.</span></div>
+<div class="facility"><span class="tile-initial orange">10+</span><strong>10+ Years Experience Teachers</strong><span>Teachers with more than 10 years of experience, teaching the tracks they specialise in.</span></div>
+<div class="facility"><span class="tile-initial green">MENTOR</span><strong>Mentorship by Govt Employees</strong><span>Mentorship from government employees who have cleared competitive exams and know the selection process first-hand.</span></div>
 </div>
 </div>
 
 <div class="band">
 <div class="section-head"><h2>Notices &amp; Blog</h2><p>Latest updates and posts — staff keep adding to this section.</p><div class="rule"></div></div>
 <div class="facility-grid">
-<div class="facility"><span class="tile-initial">24 HRS</span><strong>Library open 24 hours</strong><span>C2S Premium Library, Patrapada, Bhubaneswar — open round the clock.</span><p style="margin-top:12px"><button class="btn ghost" onclick="show('notices')">Notices →</button></p></div>
-<div class="facility"><span class="tile-initial orange">TESTS</span><strong>New test series added here</strong><span>Tests appear under Test Series — a given test moves to Given Tests with marks and solutions.</span><p style="margin-top:12px"><button class="btn ghost" onclick="show('tests')">Test Series →</button></p></div>
+<div class="facility"><span class="tile-initial">24 HRS</span><strong>Library open 24 hours</strong><span>C2S Premium Library, Patrapada, Bhubaneswar — open round the clock, 24 hours a day, with Morning, Afternoon, Full Day and Night shifts. Admission is through the Library website, with a separate Library OTP login.</span><p style="margin-top:12px"><button class="btn ghost" onclick="show('notices')">Notices →</button></p></div>
+<div class="facility"><span class="tile-initial orange">TESTS</span><strong>New test series added here</strong><span>Five mock tests are live now — BANK Mock Test 1, SSC Mock Test 1, Railway Mock Test 1, OSSC Mock Test 1 and UPSC Mock Test 1 — each 10 minutes and 4 questions, for just ₹2 in the Inaugural Offer. A given test moves to Given Tests with marks and solutions and cannot be retaken.</span><p style="margin-top:12px"><button class="btn ghost" onclick="show('tests')">Test Series →</button></p></div>
 <div class="facility"><span class="tile-initial green">INFO</span><strong>Fees, timings &amp; exam dates</strong><span>For fees, batch timings and exam dates, check the official notification or contact C2S — no date or fee is invented on this site.</span><p style="margin-top:12px"><button class="btn ghost" onclick="show('help')">Help / Contact →</button></p></div>
-<div class="facility"><span class="tile-initial purple">BLOG</span><strong>C2S Blog</strong><span>Posts and updates from C2S — read the latest posts added by staff.</span><p style="margin-top:12px"><button class="btn ghost" onclick="show('blog')">Blog →</button></p></div>
+<div class="facility"><span class="tile-initial purple">BLOG</span><strong>C2S Blog</strong><span>Welcome to C2S — test series, exams and library updates appear here. Library open 24 hours — C2S Library, Patrapada, Bhubaneswar, a peaceful, air-conditioned study space. Staff keep adding posts and notices here.</span><p style="margin-top:12px"><button class="btn ghost" onclick="show('blog')">Blog →</button></p></div>
 </div>
 </div>
 </section>
@@ -129,11 +237,11 @@
 <div class="card"><h2>Exams — search by any keyword</h2>
 <input id="examSearch" placeholder="Search: e.g. bank, police, odisha, clerk, graduate…" oninput="renderExams()">
 <select id="examLevel" onchange="renderExams()"><option value="">All levels</option><option>All India</option><option>Odisha State</option></select>
-<div id="examList"></div></div>
+<div id="examList"><div class="card"><span class="pill">All India</span> <strong>BANK Exams</strong><p class="small">Clerk, Probationary Officer (PO), Specialist Officer</p><p>Pattern: Prelims → Mains → Interview / Language Proficiency Test, as per the specific bank exam. Syllabus: Quantitative Aptitude, Reasoning Ability, English Language, General/Financial Awareness, Computer Aptitude.</p></div><div class="card"><span class="pill">All India</span> <strong>SSC Exams</strong><p class="small">CGL, CHSL, GD Constable, MTS and other Group B/C posts</p><p>Pattern: Tier-based objective tests, followed by document verification. Syllabus: General Intelligence &amp; Reasoning, General Awareness, Quantitative Aptitude, English Comprehension.</p></div><div class="card"><span class="pill">Odisha State</span> <strong>OSSC Exams</strong><p class="small">Various Group B/C posts under the Government of Odisha</p><p>Pattern: Prelims → Mains → Skill / Document verification, where applicable. Syllabus: General Awareness (with Odisha focus), Reasoning, Quantitative Aptitude, English, Odia where applicable.</p></div><p class="small">Full details for all 10 tracks are in the Exam Details section on the homepage above; use the search box to filter this list.</p></div></div>
 </section>
 <section data-view="tests" class="hidden">
-<div class="card"><h2>Test Series — Available Tests</h2><div id="availTests"></div></div>
-<div class="card"><h2>✅ Given Tests</h2><p class="small">A test you have submitted moves here and cannot be retaken. Marks and solutions are shown here.</p><div id="givenTests"></div></div>
+<div class="card"><h2>Test Series — Available Tests</h2><div id="availTests"><div class="card"><strong>BANK Mock Test 1</strong> <span class="pill">BANK</span> <span class="pill">Inaugural Offer — ₹2</span><p class="small">10 minutes • 4 questions • Calculator: Allowed (shown in exam)</p></div><div class="card"><strong>SSC Mock Test 1</strong> <span class="pill">SSC</span> <span class="pill">Inaugural Offer — ₹2</span><p class="small">10 minutes • 4 questions • Calculator: Not allowed — scratch pad only</p></div><div class="card"><strong>Railway Mock Test 1</strong> <span class="pill">RAILWAY</span> <span class="pill">Inaugural Offer — ₹2</span><p class="small">10 minutes • 4 questions • Calculator: Not allowed — scratch pad only</p></div><div class="card"><strong>OSSC Mock Test 1</strong> <span class="pill">OSSC</span> <span class="pill">Inaugural Offer — ₹2</span><p class="small">10 minutes • 4 questions • Calculator: Not allowed — scratch pad only</p></div><div class="card"><strong>UPSC Mock Test 1</strong> <span class="pill">UPSC</span> <span class="pill">Inaugural Offer — ₹2</span><p class="small">10 minutes • 4 questions • Calculator: Not allowed — scratch pad only</p></div></div></div>
+<div class="card"><h2>✅ Given Tests</h2><p class="small">A test you have submitted moves here and cannot be retaken. Marks and solutions are shown here.</p><div id="givenTests"><p>No given tests yet.</p></div></div>
 </section>
 <section data-view="batches" class="hidden">
 <div class="card"><h2>Batches / Classes — Coming Soon</h2>
@@ -142,7 +250,7 @@
 <p class="small">For batch enquiries, call C2S at 9777481909 / 9658177712.</p></div>
 </section>
 <section data-view="blog" class="hidden">
-<div class="card"><h2>Blog</h2><div id="blogList"></div>
+<div class="card"><h2>Blog</h2><div id="blogList"><div class="card"><strong>Welcome to C2S</strong><p>Test series, exams and library updates will appear here.</p></div><div class="card"><strong>Library open 24 hours</strong><p>C2S Library, Patrapada, Bhubaneswar — peaceful, A/C study space.</p></div></div>
 <h3>Add a post (preview, saved in this browser)</h3>
 <form onsubmit="addPost(event)"><input id="postTitle" placeholder="Post title" required><textarea id="postBody" placeholder="Post body" required></textarea><button class="btn">Publish locally (preview)</button></form></div>
 </section>
@@ -177,7 +285,7 @@
 <footer class="site-footer"><div class="footer-grid">
 <div><div class="brand"><span class="logo-badge" role="img" aria-label="C2S logo"></span><div class="brand-text"><strong>C2S</strong><span>College to Service</span></div></div><p>Your Selection Our Mission.<br>NH-16, opposite Sani Mandir, Patrapada, Bhubaneswar, Odisha 751019<br>Phones: 9777481909 / 9658177712</p></div>
 <div><h4>Exams</h4><p><a href="#" onclick="filterExam('All India','BANK');return false">BANK</a> • <a href="#" onclick="filterExam('All India','SSC');return false">SSC</a> • <a href="#" onclick="filterExam('All India','RAILWAY');return false">Railway</a> • <a href="#" onclick="filterExam('All India','UPSC');return false">UPSC</a> • <a href="#" onclick="filterExam('Odisha State','OSSC');return false">OSSC</a> • <a href="#" onclick="filterExam('Odisha State','OSSSC');return false">OSSSC</a> • <a href="#" onclick="filterExam('Odisha State','OPSC');return false">OPSC</a> • <a href="#" onclick="filterExam('Odisha State','ODISHA-POLICE');return false">Odisha Police</a></p></div>
-<div><h4>Quick links</h4><p><a href="#" onclick="show('tests');return false">Test Series</a> • <a href="library/">Library</a> • <a href="#" onclick="show('batches');return false">Batches / Classes</a> • <a href="#" onclick="show('notices');return false">Notices</a> • <a href="#" onclick="show('blog');return false">Blog</a> • <a href="#" onclick="show('help');return false">Help / Contact</a> • <a href="#" onclick="show('login');return false">Login / Signup (OTP)</a></p><p class="small">Note: Login and payment setup is in progress — some features are shown in preview until then.</p></div>
+<div><h4>Quick links</h4><p><a href="#" onclick="show('tests');return false">Test Series</a> • <a href="library/">Library</a> • <a href="library/facilities.html">Library Facilities</a> • <a href="library/shifts.html">Library Shifts</a> • <a href="library/admission.html">Library Admission</a> • <a href="library/login.html">Library Login</a> • <a href="sitemap.xml">Sitemap</a> • <a href="#" onclick="show('batches');return false">Batches / Classes</a> • <a href="#" onclick="show('notices');return false">Notices</a> • <a href="#" onclick="show('blog');return false">Blog</a> • <a href="#" onclick="show('help');return false">Help / Contact</a> • <a href="#" onclick="show('login');return false">Login / Signup (OTP)</a></p><p class="small">Note: Login and payment setup is in progress — some features are shown in preview until then.</p></div>
 </div><p class="foot-base">C2S — College to Service • Your Selection Our Mission • Patrapada, Bhubaneswar</p></footer>
 <div id="examLock" class="hidden">
 <div class="panel">
