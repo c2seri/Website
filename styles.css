@@ -181,3 +181,5 @@ input:focus,select:focus,textarea:focus{outline:3px solid rgba(249,115,22,.35);o
   .offer-pill{animation:none}
   .btn,.exam-tile,.facility,.test-card,.step{transition:none}
 }
+
+.libnav{display:flex;gap:4px;flex-wrap:wrap}.libnav a{color:#fff;text-decoration:none;font-weight:700;padding:9px 12px;border-radius:9px}.libnav a:hover{background:rgba(255,255,255,.18)}

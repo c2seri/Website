@@ -13,21 +13,23 @@ const SHIFTS = {
 };
 let selShift = "Afternoon";
 function renderShifts(){
+  if(!$("#shiftBtns")) return;
   $("#shiftBtns").innerHTML = Object.keys(SHIFTS).map(s=>`<button type="button" class="btn ${selShift===s?"orange":"ghost"}" onclick="selShift='${s}';renderShifts();calcFees()">${s}</button>`).join(" ");
   const seats = store.get("c2s_lib_seats", {});
-  $("#shiftInfo").textContent = selShift+" — "+SHIFTS[selShift].time+" • Seat status: "+(seats[selShift]||"available to select below");
+  if($("#shiftInfo")) $("#shiftInfo").textContent = selShift+" — "+SHIFTS[selShift].time+" • Seat status: "+(seats[selShift]||"available to select below");
   calcFees();
 }
 function calcFees(){
+  if(!$("#shiftFees")) return;
   const price = Number(document.getElementById(SHIFTS[selShift].priceKey)?.value || 0);
   $("#shiftFees").value = price;
   const locker = Number($("#lockerFees").value||0);
   const discAmt = Number($("#discAmt").value||0), discPct = Number($("#discPct").value||0);
   const gross = 0 + price + locker; /* Inaugural offer: registration (was Rs 200) waived, shift fee Rs 2 = total Rs 2 */
   const total = Math.max(0, gross - discAmt - Math.round(gross*discPct/100));
-  $("#totalFees").value = total;
+  if($("#totalFees")) $("#totalFees").value = total;
   const paid = Number($("#paidFees").value||0);
-  $("#pendingFees").value = Math.max(0, total - paid);
+  if($("#pendingFees")) $("#pendingFees").value = Math.max(0, total - paid);
 }
 /* ---------- Library OTP login/signup — all three channels, no demo logins ---------- */
 async function requestLibOtp(){
@@ -107,7 +109,7 @@ function renderSeats(){
       html += `<button class="seat ${cls}" ${cls==="blocked"?"disabled":""} onclick="toggleSeat('${id}')">${id}</button>`; }
     html += "</div>";
   });
-  $("#seatMap").innerHTML = html;
+  if($("#seatMap")) $("#seatMap").innerHTML = html;
 }
 function toggleSeat(id){
   const taken = store.get("c2s_lib_taken", {});
@@ -128,9 +130,9 @@ function renderAll(){
   const income = ledger.filter(l=>l.amt>0).reduce((s,l)=>s+l.amt,0);
   const expense = ledger.filter(l=>l.amt<0).reduce((s,l)=>s-l.amt,0);
   const pending = members.reduce((s,m)=>s+m.pending,0);
-  $("#dashStats").innerHTML = "Today ("+today+"): admissions "+todayCount+" • Members total "+members.length+" • Income ₹"+income+" • Expense ₹"+expense+" • Pending ₹"+pending+" • (PREVIEW: local data only; full analytics need the external database later.)";
-  $("#memberList").innerHTML = members.length ? members.map(m=>`<p>${m.regNo} — ${m.name} (${m.mobile||m.email||""}) • ${m.shift} • Paid ₹${m.paid} / Pending ₹${m.pending} • ${m.date}</p>`).join("") : "<p>No members yet in this browser.</p>";
-  $("#ledgerBody").innerHTML = ledger.map(l=>`<tr><td>${l.date}</td><td>${l.desc}</td><td>₹${l.amt}</td></tr>`).join("") || "<tr><td colspan='3'>No entries yet.</td></tr>";
+  if($("#dashStats")) $("#dashStats").innerHTML = "Today ("+today+"): admissions "+todayCount+" • Members total "+members.length+" • Income ₹"+income+" • Expense ₹"+expense+" • Pending ₹"+pending+" • (PREVIEW: local data only; full analytics need the external database later.)";
+  if($("#memberList")) $("#memberList").innerHTML = members.length ? members.map(m=>`<p>${m.regNo} — ${m.name} (${m.mobile||m.email||""}) • ${m.shift} • Paid ₹${m.paid} / Pending ₹${m.pending} • ${m.date}</p>`).join("") : "<p>No members yet in this browser.</p>";
+  if($("#ledgerBody")) $("#ledgerBody").innerHTML = ledger.map(l=>`<tr><td>${l.date}</td><td>${l.desc}</td><td>₹${l.amt}</td></tr>`).join("") || "<tr><td colspan='3'>No entries yet.</td></tr>";
   const u=store.get("c2s_lib_user", null);
   const box=$("#libUserBox"); if(box) box.innerHTML = u ? "<p>Library logged in: <strong>"+u.name+"</strong> ("+u.regNo+") — PREVIEW mode.</p>" : "";
   renderSeats();

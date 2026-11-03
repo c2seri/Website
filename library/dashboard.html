@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C2S Library — Dashboard</title>
+<meta name="description" content="C2S Premium Library dashboard: date-wise analysis, 48-seat seat map, members list and income/expense ledger.">
+<link rel="stylesheet" href="../styles.css"><script src="../library.js"></script></head>
+<body>
+<header class="topbar"><div><div class="logo"><span class="logo-badge" role="img" aria-label="C2S logo"></span><span>C2S Premium Library</span></div><div class="tagline">C2S Premium Library • Online Membership &amp; Admission • Your Selection Our Mission</div></div><nav class="libnav"><a href="index.html">Overview</a><a href="facilities.html">Facilities</a><a href="shifts.html">Shifts &amp; Pricing</a><a href="admission.html">Admission</a><a href="login.html">Student Login</a><a href="dashboard.html">Dashboard</a><a href="index.html#contact">Contact</a></nav></header>
+<main>
+<div class="card"><h1>Library Dashboard</h1><p class="small">Two views on one page, clearly labelled. Member view shows your own library record; Admin analysis view shows date-wise library analysis. Both are preview and browser-local until a live database is connected.</p><div id="libUserBox"></div></div>
+<div class="card"><h2>Member View</h2><p>Your seat, payment and validity, once logged in. If you are not logged in yet, please use Student Login first.</p><p><button class="btn" onclick="location.href='login.html'">Student Login →</button></p></div>
+<div class="card"><h2>Library Dashboard — Date-wise Analysis (preview, local data)</h2><p id="dashStats"></p>
+<h3>Seat Map — 3 zones, 48 seats (2D grid view in this GitHub/Vercel version; 3D-style hall lives in the hosted full platform)</h3><div id="seatMap"></div><p class="small">Click a free seat to select it. Blocked seats are grey. Seat status updates in this browser only in preview mode.</p>
+<h3>Members</h3><div id="memberList"></div>
+<h3>Income / Expense Ledger (preview, local)</h3><table><thead><tr><th>Date</th><th>Description</th><th>Amount (₹)</th></tr></thead><tbody id="ledgerBody"></tbody></table>
+<form onsubmit="addExpense(event)"><div class="grid2"><input id="expDesc" placeholder="Expense description" required><input type="number" id="expAmt" placeholder="Amount (negative for expense)" required></div><button class="btn ghost">Add Ledger Entry</button></form>
+<h3>Connections (placeholders only — not live)</h3><p>Cashfree: <em>settings placeholder — no API keys, merchant ID or live link.</em><br>WhatsApp: <em>placeholder — not connected.</em><br>Mail / SMS: <em>placeholder — not connected.</em><br>Auto-debit e-mandate: <em>option shown, not live, no mandate collected here.</em></p>
+</div>
+
+</main><footer>C2S Premium Library • NH-16, opposite Sani Mandir, Patrapada, Bhubaneswar, Odisha 751019 • Phones: 9777481909 / 9658177712 • Open 24 hours • Login and payment setup is in progress — some features are shown in preview until then.</footer>
+</body></html>

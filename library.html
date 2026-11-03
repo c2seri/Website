@@ -1,71 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>C2S Library — Premium Library, Patrapada, Bhubaneswar</title>
-<meta name="description" content="C2S Library — Online Admission Form, C2S Premium Library, Quick Admission. 24-hour library in Patrapada, Bhubaneswar.">
-<link rel="stylesheet" href="styles.css"><script src="library.js"></script></head>
-<body>
-<header class="topbar"><div><div class="logo"><span class="logo-badge" role="img" aria-label="C2S logo"></span><span>C2S Library</span></div><div class="tagline">C2S Premium Library • Online Membership &amp; Admission • Your Selection Our Mission</div></div>
-</header>
-<main>
-<div class="card"><h1>C2S Library – Online Admission Form</h1><p class="small">This Library section is completely separate from the Main Login. Login and payment setup is in progress, so records here are preview only for now. Photo/Aadhaar are private member records only, never public — do not upload them on this preview version.</p>
-<div class="preview"><strong>Note:</strong> Library login and payment setup is in progress — no real SMS, WhatsApp or email is sent yet, and records here are preview only.</div>
-<div class="stats" style="margin-top:16px"><div class="stat"><strong>24 hrs</strong><span>Library open</span></div><div class="stat blue"><strong><span class="counter" data-count="4">0</span></strong><span>Shifts — Morning, Afternoon, Full Day, Night</span></div><div class="stat green"><strong>₹2</strong><span>Inaugural Offer — Everything for just ₹2</span></div><div class="stat purple"><strong><span class="counter" data-count="3">0</span></strong><span>OTP options — SMS, WhatsApp, Email</span></div></div></div>
-
-<div class="card" id="libLoginCard"><h2>Library Login / Signup (separate, OTP based)</h2>
-<p class="small">Login with OTP — completely separate from Main Login. No Main Login account works here, and vice versa. No password is used.</p>
-<div class="grid2"><div><h3>1. Your details</h3><label>Name (for signup)</label><input id="libOtpName" placeholder="Your name"><label>Mobile (for SMS / WhatsApp OTP)</label><input id="libOtpMobile" placeholder="10-digit mobile"><label>Email (for Email OTP)</label><input type="email" id="libOtpEmail" placeholder="you@example.com"></div>
-<div><h3>2. Choose OTP channel</h3>
-<label><input type="radio" name="libOtpChannel" value="sms" checked> SMS OTP</label><br>
-<label><input type="radio" name="libOtpChannel" value="whatsapp"> WhatsApp OTP</label><br>
-<label><input type="radio" name="libOtpChannel" value="email"> Email OTP</label><br>
-<button class="btn" onclick="requestLibOtp()">Send OTP</button>
-<p id="libOtpStatus" class="small"></p>
-<label>Enter 6-digit OTP</label><input id="libOtpCode" inputmode="numeric" maxlength="6" placeholder="6-digit code">
-<button class="btn orange" onclick="verifyLibOtp()">Verify OTP &amp; Continue</button>
-<p id="libMsg"></p></div></div>
-<div><h3>Quick Admission</h3><p>New member? Fill the admission form below — a Library Registration No is auto-generated. Admission itself does not require OTP in preview mode; OTP login is for returning members.</p><button class="btn orange" onclick="document.getElementById('admission').scrollIntoView()">Go to Admission Form</button></div>
-<div id="libUserBox"></div></div>
-
-<div class="card" id="admission"><h2>Quick Admission — Joining Form</h2>
-<form onsubmit="libAdmit(event)">
-<h3>Access Validation</h3><p class="small">For 1 month</p>
-<div class="grid2"><div><label>From Date</label><input type="date" id="fromDate" required></div><div><label>To Date</label><input type="date" id="toDate" required></div></div>
-<h3>Student Details</h3><div class="grid2">
-<div><label>Admission Date</label><input type="date" id="admDate" required></div><div><label>Candidate Name</label><input id="candName" required></div>
-<div><label>Gender</label><select id="gender"><option>Female</option><option>Male</option><option>Other</option></select></div><div><label>Father Name</label><input id="fatherName"></div>
-<div><label>Mother Name</label><input id="motherName"></div><div><label>Date of Birth</label><input type="date" id="dob"></div>
-<div><label>Mobile No</label><input id="studMobile" required></div><div><label>Email</label><input type="email" id="studEmail"></div>
-<div><label>Qualification</label><input id="qualif"></div><div><label>Study Purpose / Exam Preferences</label><input id="examPref" placeholder="e.g. BANK, SSC, OSSC"></div>
-</div><p class="small">Photo and Aadhaar card are private records — this preview version does not collect or upload them.</p>
-<h3>Present Address</h3><div class="grid2">
-<div><label>Plot No</label><input id="plotNo"></div><div><label>Lane / Village</label><input id="lane"></div>
-<div><label>District</label><input id="district"></div><div><label>State</label><input id="state"></div><div><label>Pin</label><input id="pin"></div></div>
-<h3>Shift Allocation (choose one)</h3><div id="shiftBtns"></div><p id="shiftInfo" class="small"></p>
-<h3>Payment Details (separate section)</h3>
-<p><strong>Inaugural Offer:</strong> Registration fee (normally ₹200, non-refundable) is waived during the inaugural offer, and every shift's monthly fee is ₹2 — so Library admission total is <strong>₹2</strong> (plus locker, if any).</p>
-<div class="grid2">
-<div><label>Shift Fees (monthly, configurable per shift)</label><input id="shiftFees" readonly></div>
-<div><label>Locker Fees</label><input type="number" id="lockerFees" value="0" oninput="calcFees()"></div>
-<div><label>Discount — Amount (₹)</label><input type="number" id="discAmt" value="0" oninput="calcFees()"></div>
-<div><label>Discount — Percent (%)</label><input type="number" id="discPct" value="0" oninput="calcFees()"></div>
-<div><label>Total Fees</label><input id="totalFees" readonly></div>
-<div><label>Paid Fees</label><input type="number" id="paidFees" value="0" oninput="calcFees()"></div>
-<div><label>Pending Fees</label><input id="pendingFees" readonly></div>
-<div><label>Payment Mode</label><select id="payMode"><option>Cash</option><option>UPI</option><option>Card</option><option>Cashfree (link — placeholder, not live)</option></select></div>
-</div>
-<p class="small">Inaugural Offer prices (staff-configurable): all shifts are set to ₹2 for now. Earlier, only Afternoon ₹800 was a known screenshot example — that price is superseded by this ₹2 inaugural offer until staff change it.</p>
-<div class="grid2"><div><label>Morning monthly price (₹) — Inaugural Offer</label><input type="number" id="priceMorning" value="2"></div><div><label>Afternoon monthly price (₹) — Inaugural Offer</label><input type="number" id="priceAfternoon" value="2"></div><div><label>Full Day monthly price (₹) — Inaugural Offer</label><input type="number" id="priceFullDay" value="2"></div><div><label>Night monthly price (₹) — Inaugural Offer</label><input type="number" id="priceNight" value="2"></div></div>
-<p><button class="btn" type="submit">Submit Admission</button> <button class="btn ghost" type="reset" onclick="setTimeout(calcFees,0)">Reset</button> <button class="btn ghost" type="button" onclick="if(confirm('Cancel this admission form?')) this.form.reset()">Cancel</button></p>
-<p id="admitMsg"></p></form></div>
-
-<div class="card"><h2>Library Dashboard — Date-wise Analysis (preview, local data)</h2><p id="dashStats"></p>
-<h3>Seat Map — 3 zones, 48 seats (2D grid view in this GitHub/Vercel version; 3D-style hall lives in the hosted full platform)</h3><div id="seatMap"></div><p class="small">Click a free seat to select it. Blocked seats are grey. Seat status updates in this browser only in preview mode.</p>
-<h3>Members</h3><div id="memberList"></div>
-<h3>Income / Expense Ledger (preview, local)</h3><table><thead><tr><th>Date</th><th>Description</th><th>Amount (₹)</th></tr></thead><tbody id="ledgerBody"></tbody></table>
-<form onsubmit="addExpense(event)"><div class="grid2"><input id="expDesc" placeholder="Expense description" required><input type="number" id="expAmt" placeholder="Amount (negative for expense)" required></div><button class="btn ghost">Add Ledger Entry</button></form>
-<h3>Connections (placeholders only — not live)</h3><p>Cashfree: <em>settings placeholder — no API keys, merchant ID or live link.</em><br>WhatsApp: <em>placeholder — not connected.</em><br>Mail / SMS: <em>placeholder — not connected.</em><br>Auto-debit e-mandate: <em>option shown, not live, no mandate collected here.</em></p>
-</div>
-<div class="card"><h2>More from C2S — Promotions (outside the Library)</h2><p class="small"><strong>This Library login is for the Library only</strong> — it shows only your seat, payment and validity. The items below are promotions / information only; library data is not mixed into the main site.</p><div class="grid2"><div><h3>Test Series</h3><p>Locked exam window, timer, marks + solutions. An attempted test moves to Given Tests.</p><p><button class="btn" onclick="location.href='index.html'">Explore Test Series on the main site →</button></p></div><div><h3>Batches / Classes</h3><p>Exam preparation batches — videos / live classes will be added to this section later (currently deferred).</p><p><button class="btn" onclick="location.href='index.html'">Explore Batches on the main site →</button></p></div></div><div><h3>Exams — BANK, SSC, Railway, OSSC, OSSSC, OPSC, Odisha Police and more</h3><p>State-wise exam details, pattern and syllabus are available on the main site.</p><p><button class="btn" onclick="location.href='index.html'">Explore Exams on the main site →</button></p></div><p class="small"><strong>Note:</strong> You will need a separate Main OTP login on the main site — the Library login does not work there, because both logins and their data are completely separate.</p></div>
-</main><footer>C2S Library • Patrapada, Bhubaneswar • Open 24 hours</footer>
-</body></html>
+<meta http-equiv="refresh" content="0; url=library/">
+<title>C2S Premium Library</title>
+<link rel="stylesheet" href="styles.css"></head>
+<body><main><div class="card"><h1>C2S Premium Library</h1><p>The Library is now a separate website. You are being redirected.</p><p><a href="library/">Go to the C2S Premium Library →</a></p></div></main></body></html>
