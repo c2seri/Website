@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C2S Library — Online Admission Form</title>
+<meta name="description" content="C2S Library Online Admission Form: access validation for 1 month, student details, address, shift and payment sections, auto-generated Registration No.">
+<link rel="stylesheet" href="../styles.css"><script src="../library.js"></script></head>
+<body>
+<header class="topbar"><div><div class="logo"><span class="logo-badge" role="img" aria-label="C2S logo"></span><span>C2S Premium Library</span></div><div class="tagline">C2S Premium Library • Online Membership &amp; Admission • Your Selection Our Mission</div></div><nav class="libnav"><a href="index.html">Overview</a><a href="facilities.html">Facilities</a><a href="shifts.html">Shifts &amp; Pricing</a><a href="admission.html">Admission</a><a href="login.html">Student Login</a><a href="dashboard.html">Dashboard</a><a href="index.html#contact">Contact</a></nav></header>
+<main>
+<div class="card"><h1>C2S Library – Online Admission Form</h1><p class="small">This Library site is completely separate from the Main site. Login and payment setup is in progress, so records here are preview only for now. Photo and Aadhaar are private member records only, never public — this preview version does not collect or upload them.</p></div>
+<div class="card" id="admission"><h2>Quick Admission — Joining Form</h2>
+<form onsubmit="libAdmit(event)">
+<h3>Access Validation</h3><p class="small">For 1 month</p>
+<div class="grid2"><div><label>From Date</label><input type="date" id="fromDate" required></div><div><label>To Date</label><input type="date" id="toDate" required></div></div>
+<h3>Student Details</h3><div class="grid2">
+<div><label>Admission Date</label><input type="date" id="admDate" required></div><div><label>Candidate Name</label><input id="candName" required></div>
+<div><label>Gender</label><select id="gender"><option>Female</option><option>Male</option><option>Other</option></select></div><div><label>Father Name</label><input id="fatherName"></div>
+<div><label>Mother Name</label><input id="motherName"></div><div><label>Date of Birth</label><input type="date" id="dob"></div>
+<div><label>Mobile No</label><input id="studMobile" required></div><div><label>Email</label><input type="email" id="studEmail"></div>
+<div><label>Qualification</label><input id="qualif"></div><div><label>Study Purpose / Exam Preferences</label><input id="examPref" placeholder="e.g. BANK, SSC, OSSC"></div>
+</div><p class="small">Photo and Aadhaar card are private records — this preview version does not collect or upload them.</p>
+<h3>Present Address</h3><div class="grid2">
+<div><label>Plot No</label><input id="plotNo"></div><div><label>Lane / Village</label><input id="lane"></div>
+<div><label>District</label><input id="district"></div><div><label>State</label><input id="state"></div><div><label>Pin</label><input id="pin"></div></div>
+<h3>Shift Allocation (choose one)</h3><div id="shiftBtns"></div><p id="shiftInfo" class="small"></p>
+<h3>Payment Details (separate section)</h3>
+<p><strong>Inaugural Offer:</strong> Registration fee (normally ₹200, non-refundable) is waived during the inaugural offer, and every shift's monthly fee is ₹2 — so Library admission total is <strong>₹2</strong> (plus locker, if any).</p>
+<div class="grid2">
+<div><label>Shift Fees (monthly, configurable per shift)</label><input id="shiftFees" readonly></div>
+<div><label>Locker Fees</label><input type="number" id="lockerFees" value="0" oninput="calcFees()"></div>
+<div><label>Discount — Amount (₹)</label><input type="number" id="discAmt" value="0" oninput="calcFees()"></div>
+<div><label>Discount — Percent (%)</label><input type="number" id="discPct" value="0" oninput="calcFees()"></div>
+<div><label>Total Fees</label><input id="totalFees" readonly></div>
+<div><label>Paid Fees</label><input type="number" id="paidFees" value="0" oninput="calcFees()"></div>
+<div><label>Pending Fees</label><input id="pendingFees" readonly></div>
+<div><label>Payment Mode</label><select id="payMode"><option>Cash</option><option>UPI</option><option>Card</option><option>Cashfree (link — placeholder, not live)</option></select></div>
+</div>
+<p class="small">Inaugural Offer prices (staff-configurable): all shifts are set to ₹2 for now. Earlier, only Afternoon ₹800 was a known screenshot example — that price is superseded by this ₹2 inaugural offer until staff change it.</p>
+<div class="grid2"><div><label>Morning monthly price (₹) — Inaugural Offer</label><input type="number" id="priceMorning" value="2"></div><div><label>Afternoon monthly price (₹) — Inaugural Offer</label><input type="number" id="priceAfternoon" value="2"></div><div><label>Full Day monthly price (₹) — Inaugural Offer</label><input type="number" id="priceFullDay" value="2"></div><div><label>Night monthly price (₹) — Inaugural Offer</label><input type="number" id="priceNight" value="2"></div></div>
+<p><button class="btn" type="submit">Submit Admission</button> <button class="btn ghost" type="reset" onclick="setTimeout(calcFees,0)">Reset</button> <button class="btn ghost" type="button" onclick="if(confirm('Cancel this admission form?')) this.form.reset()">Cancel</button></p>
+<p id="admitMsg"></p></form></div>
+
+
+</main><footer>C2S Premium Library • NH-16, opposite Sani Mandir, Patrapada, Bhubaneswar, Odisha 751019 • Phones: 9777481909 / 9658177712 • Open 24 hours • Login and payment setup is in progress — some features are shown in preview until then.</footer>
+</body></html>
