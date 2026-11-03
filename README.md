@@ -195,3 +195,6 @@ from inside this folder, then open `http://localhost:8000/`.
 Note: `/api/*` OTP endpoints need Vercel (or `vercel dev`) to run —
 on a plain static server they return unreachable and the frontend
 falls back to PREVIEW OTP, which is the honest behaviour for preview.
+
+## Post-login dashboard — separate next phase
+The public website above comes first. After OTP login, users currently reach the existing test and library views. A full after-login dashboard (in the Testbook/PW after-login pattern) is a separate next phase and is NOT mixed into this public landing page.
