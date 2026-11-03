@@ -238,3 +238,150 @@ function renderBlog(){
 }
 function addPost(e){ e.preventDefault(); const posts=store.get("c2s_main_blog", []); posts.unshift({title:$("#postTitle").value,body:$("#postBody").value}); store.set("c2s_main_blog",posts); renderBlog(); e.target.reset(); }
 document.addEventListener("DOMContentLoaded", ()=>{ renderUser(); renderExams(); renderTests(); renderBlog(); show("home"); });
+
+
+/* ==========================================================================
+   ULTRA-PREMIUM 3D & INTERACTIVE EDTECH LOGIC
+   ========================================================================== */
+
+/* 1. Interactive 3D Perspective Card Tilt */
+function init3DTilt() {
+  const cards = document.querySelectorAll('.tilt-3d');
+  cards.forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -7;
+      const rotateY = ((x - centerX) / centerX) * 7;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    });
+  });
+}
+
+/* 2. Interactive 3D Study Hall Shift Switcher & Ambient Lighting */
+const HALL_SHIFTS = {
+  morning: {
+    name: 'Morning Shift',
+    time: '06:00 AM – 12:00 PM',
+    price: 'Staff Configurable',
+    glow: 'radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.35) 0%, transparent 70%)',
+    available: 16,
+    total: 24
+  },
+  afternoon: {
+    name: 'Afternoon Shift',
+    time: '02:30 PM – 09:00 PM',
+    price: '₹800 / month (Screenshot Ref)',
+    glow: 'radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.4) 0%, transparent 70%)',
+    available: 12,
+    total: 24
+  },
+  fullday: {
+    name: 'Full Day Shift',
+    time: '24-Hour Unlimited Access',
+    price: 'Staff Configurable',
+    glow: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.35) 0%, transparent 70%)',
+    available: 8,
+    total: 24
+  },
+  night: {
+    name: 'Night Shift',
+    time: '09:00 PM – 06:00 AM',
+    price: 'Staff Configurable',
+    glow: 'radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.4) 0%, transparent 70%)',
+    available: 14,
+    total: 24
+  }
+};
+
+function setHallShift(shiftKey, btn) {
+  const data = HALL_SHIFTS[shiftKey];
+  if (!data) return;
+
+  document.querySelectorAll('.hall-shift-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const glowEl = document.getElementById('hallGlow');
+  if (glowEl) glowEl.style.background = data.glow;
+
+  const infoEl = document.getElementById('hallShiftMeta');
+  if (infoEl) {
+    infoEl.innerHTML = `
+      <strong>${data.name}</strong> • Timing: <span style="color:#fdba74;">${data.time}</span> • Monthly Fee: <span style="color:#34d399;font-weight:800;">${data.price}</span>
+      <br><span class="small" style="color:#94a3b8;">Registration Fee: ₹200 (One-time, non-refundable). Seats: ${data.available} Available / ${data.total} Total.</span>
+    `;
+  }
+}
+
+/* 3. Interactive Exam Modal Inspector */
+function inspectExam(id) {
+  const e = EXAMS.find(x => x.id === id);
+  if (!e) return;
+  const modal = document.getElementById('examModal');
+  const body = document.getElementById('examModalBody');
+  if (!modal || !body) return;
+
+  body.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid #e2e8f0;padding-bottom:12px;">
+      <div>
+        <span class="pill ${e.level==='Odisha State'?'green':'blue'}" style="margin-bottom:6px;">${e.level}</span>
+        <h2 style="margin:0;font-size:24px;color:var(--c2s-navy-900);">${e.name}</h2>
+      </div>
+      <button class="btn ghost" style="padding:6px 14px;font-size:16px;border-radius:50%;" onclick="closeExamModal()">✕</button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;font-size:14px;color:var(--c2s-slate-700);">
+      <div style="background:#f8fafc;padding:12px 16px;border-radius:10px;border-left:4px solid var(--c2s-orange-500);">
+        <strong style="color:var(--c2s-navy-900);">💼 Target Posts:</strong> ${e.posts}
+      </div>
+
+      <div>
+        <strong style="color:var(--c2s-navy-900);display:block;margin-bottom:4px;">📋 Selection Pattern:</strong>
+        <p style="margin:0;line-height:1.6;background:#fff;padding:12px;border:1px solid #e2e8f0;border-radius:8px;">${e.pattern}</p>
+      </div>
+
+      <div>
+        <strong style="color:var(--c2s-navy-900);display:block;margin-bottom:4px;">📖 Syllabus Overview:</strong>
+        <p style="margin:0;line-height:1.6;background:#fff;padding:12px;border:1px solid #e2e8f0;border-radius:8px;">${e.syllabus}</p>
+      </div>
+
+      <div>
+        <strong style="color:var(--c2s-navy-900);display:block;margin-bottom:4px;">🎓 Eligibility &amp; Criteria:</strong>
+        <p style="margin:0;line-height:1.6;background:#fff;padding:12px;border:1px solid #e2e8f0;border-radius:8px;">${e.eligibility}</p>
+      </div>
+
+      <div>
+        <strong style="color:var(--c2s-navy-900);display:block;margin-bottom:4px;">🏛️ State Relation &amp; Recruitment Body:</strong>
+        <p style="margin:0;line-height:1.6;background:#fff;padding:12px;border:1px solid #e2e8f0;border-radius:8px;">${e.state}</p>
+      </div>
+
+      <div class="preview" style="margin:6px 0;padding:10px 14px;font-size:12.5px;">
+        ℹ️ <strong>Official Notice Disclaimer:</strong> Specific notification dates, exam dates, application fees, and vacancy counts are NOT listed here — check the official notification or contact C2S desk.
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:20px;">
+      <button class="btn orange" onclick="closeExamModal();show('tests');">Practice Test Series →</button>
+      <button class="btn ghost" onclick="closeExamModal();show('help');">Enquire at Patrapada Desk</button>
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
+}
+
+function closeExamModal() {
+  const modal = document.getElementById('examModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+/* Run on load */
+document.addEventListener('DOMContentLoaded', () => {
+  init3DTilt();
+  setHallShift('afternoon');
+});

@@ -2214,3 +2214,342 @@ th {
 }
 
 .libnav{display:flex;gap:4px;flex-wrap:wrap}.libnav a{color:#fff;text-decoration:none;font-weight:700;padding:9px 12px;border-radius:9px}.libnav a:hover{background:rgba(255,255,255,.18)}
+
+
+/* ==========================================================================
+   ULTRA-PREMIUM 3D & AESTHETIC EDTECH SYSTEM
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap');
+
+:root {
+  --font-display: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: #f8fafc;
+  color: #0f172a;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .brand-title {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+}
+
+/* 3D Perspective Tilt Base */
+.tilt-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.25s ease;
+  will-change: transform;
+}
+
+/* Ambient Animated Glowing Mesh */
+.hero-3d-wrap {
+  position: relative;
+  background: linear-gradient(135deg, #07192f 0%, #0a2540 50%, #0f3460 100%);
+  border-radius: 28px;
+  padding: 56px 44px;
+  color: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 24px 60px -15px rgba(10, 37, 64, 0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+  margin-bottom: 40px;
+}
+
+@media (max-width: 900px) {
+  .hero-3d-wrap {
+    padding: 36px 20px;
+    border-radius: 20px;
+  }
+}
+
+.ambient-mesh {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mesh-orb-1 {
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, transparent 70%);
+  top: -150px; right: -100px;
+  filter: blur(60px);
+  animation: meshDrift 14s ease-in-out infinite alternate;
+}
+
+.mesh-orb-2 {
+  position: absolute;
+  width: 450px; height: 450px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.35) 0%, transparent 70%);
+  bottom: -120px; left: 5%;
+  filter: blur(70px);
+  animation: meshDrift 18s ease-in-out infinite alternate-reverse;
+}
+
+.mesh-orb-3 {
+  position: absolute;
+  width: 350px; height: 350px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%);
+  top: 30%; left: 40%;
+  filter: blur(80px);
+  animation: meshDrift 12s ease-in-out infinite alternate;
+}
+
+@keyframes meshDrift {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -30px) scale(1.08); }
+  100% { transform: translate(-30px, 40px) scale(0.95); }
+}
+
+/* Glassmorphic 3D Card */
+.glass-3d-card {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.3s ease;
+}
+
+.glass-3d-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 28px 50px -10px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Interactive 3D Study Hall Isometric Experience */
+.study-hall-interactive-card {
+  background: linear-gradient(135deg, #09172a 0%, #0f2444 100%);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  padding: 36px 32px;
+  margin: 36px 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 60px -15px rgba(15, 23, 42, 0.3);
+}
+
+.hall-shift-nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 18px 0 24px;
+}
+
+.hall-shift-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.hall-shift-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.hall-shift-btn.active {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  border-color: #fdba74;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.4);
+}
+
+/* 3D Isometric Seat Grid Canvas */
+.hall-viewport {
+  perspective: 900px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 10px;
+  position: relative;
+}
+
+.hall-isometric-floor {
+  width: 100%;
+  max-width: 680px;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 24px 20px;
+  transform: rotateX(20deg) rotateZ(-2deg);
+  transform-style: preserve-3d;
+  box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(0, 0, 0, 0.4);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hall-ambient-glow {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 20px;
+  pointer-events: none;
+  opacity: 0.3;
+  transition: background 0.6s ease, opacity 0.6s ease;
+}
+
+.hall-seat-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  transform: translateZ(12px);
+}
+
+.hall-seat-unit {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hall-seat-unit.avail {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #fff;
+  border: 1px solid #34d399;
+}
+
+.hall-seat-unit.avail:hover {
+  transform: translateZ(26px) scale(1.18);
+  box-shadow: 0 14px 28px rgba(16, 185, 129, 0.6);
+  z-index: 20;
+}
+
+.hall-seat-unit.taken {
+  background: #334155;
+  color: #64748b;
+  border: 1px solid #475569;
+  cursor: not-allowed;
+}
+
+.hall-seat-unit.reserved {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: #fff;
+  border: 1px solid #fdba74;
+}
+
+/* 3D Perspective Book Display */
+.book-3d-scene {
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.book-3d-object {
+  width: 200px;
+  height: 270px;
+  background: linear-gradient(135deg, #f97316 0%, #c2410c 100%);
+  border-radius: 4px 14px 14px 4px;
+  box-shadow: 20px 25px 40px -10px rgba(0, 0, 0, 0.5), inset 4px 0 8px rgba(255, 255, 255, 0.3);
+  transform: rotateY(-22deg) rotateX(10deg);
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.4s ease;
+  position: relative;
+  padding: 22px 18px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.book-3d-object:hover {
+  transform: rotateY(-8deg) rotateX(4deg) scale(1.06);
+  box-shadow: 28px 35px 50px -10px rgba(0, 0, 0, 0.6);
+}
+
+.book-spine-line {
+  position: absolute;
+  left: 12px;
+  top: 0; bottom: 0;
+  width: 3px;
+  background: rgba(0, 0, 0, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Micro-Interaction Shimmer on CTAs */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -60%;
+  width: 40%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: rotate(30deg);
+  animation: shimmerMove 3.5s infinite;
+}
+
+@keyframes shimmerMove {
+  0% { transform: translateX(-100%) rotate(30deg); }
+  35% { transform: translateX(450%) rotate(30deg); }
+  100% { transform: translateX(450%) rotate(30deg); }
+}
+
+/* 3D Floating Badges */
+.floating-3d-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.25);
+}
+
+.live-pulse-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  animation: pulseGreen 1.8s infinite;
+}
+
+@keyframes pulseGreen {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
