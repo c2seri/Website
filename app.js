@@ -21,7 +21,7 @@ const TESTS = [
 ];
 function show(view){
   document.querySelectorAll("[data-view]").forEach(el=>el.classList.toggle("hidden", el.dataset.view!==view));
-  document.querySelectorAll("nav a[data-nav]").forEach(a=>a.classList.toggle("active", a.dataset.nav===view));
+  document.querySelectorAll("[data-nav]").forEach(a=>a.classList.toggle("active", a.dataset.nav===view));
   if(view==="exams") renderExams();
   if(view==="tests") renderTests();
   if(view==="blog") renderBlog();
@@ -38,28 +38,58 @@ function renderExams(onlyId){
   let list=EXAMS.filter(e=>(!lvl||e.level===lvl) && (!q || (e.name+" "+e.posts+" "+e.eligibility+" "+e.pattern+" "+e.syllabus+" "+e.state+" "+e.keywords).toLowerCase().includes(q)));
   if(onlyId) list=list.filter(e=>e.id===onlyId);
   $("#examList").innerHTML = list.length ? list.map(e=>`
-   <div class="card"><span class="pill">${e.level}</span> <strong>${e.name}</strong>
-   <p class="small">${e.posts}</p>
-   <details><summary>Pattern</summary>${e.pattern}</details>
-   <details><summary>Syllabus overview</summary>${e.syllabus}</details>
-   <details><summary>Eligibility</summary>${e.eligibility}</details>
-   <details><summary>Posts</summary>${e.posts}</details>
-   <details><summary>State relation</summary>${e.state}</details>
-   <p class="small">Dates, fees and vacancy numbers are not listed here — check the official notification for that exam.</p>
-   <button class="btn ghost" onclick="show('tests')">Go to Test Series</button></div>`).join("") : "<p>No exam matches that search.</p>";
+   <div class="card" style="border-left:5px solid ${e.level==='Odisha State'?'var(--c2s-emerald-600)':'var(--c2s-blue-700)'};">
+     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+       <span class="pill ${e.level==='Odisha State'?'green':'blue'}">${e.level}</span>
+       <span class="small" style="font-weight:700;color:var(--c2s-slate-600);">${e.id} Track</span>
+     </div>
+     <h3 style="font-size:22px;color:var(--c2s-navy-800);margin:0 0 6px;">${e.name}</h3>
+     <p style="font-size:14px;color:var(--c2s-slate-600);margin-bottom:14px;"><strong>Target Posts:</strong> ${e.posts}</p>
+     <details open><summary>📋 Exam Pattern</summary><p style="margin:8px 0 4px;font-size:14px;color:var(--c2s-slate-700);">${e.pattern}</p></details>
+     <details><summary>📖 Syllabus Overview</summary><p style="margin:8px 0 4px;font-size:14px;color:var(--c2s-slate-700);">${e.syllabus}</p></details>
+     <details><summary>🎓 Eligibility &amp; Criteria</summary><p style="margin:8px 0 4px;font-size:14px;color:var(--c2s-slate-700);">${e.eligibility}</p></details>
+     <details><summary>💼 Posts Detail</summary><p style="margin:8px 0 4px;font-size:14px;color:var(--c2s-slate-700);">${e.posts}</p></details>
+     <details><summary>🏛️ State Relation &amp; Cadre</summary><p style="margin:8px 0 4px;font-size:14px;color:var(--c2s-slate-700);">${e.state}</p></details>
+     <div class="preview" style="margin:14px 0;padding:10px 14px;font-size:12.5px;">
+       ℹ️ <strong>Official Notice Disclaimer:</strong> Specific notification dates, exam dates, application fees, and vacancy counts are NOT listed here — check the official notification or contact C2S desk.
+     </div>
+     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+       <button class="btn orange" onclick="show('tests')">Practice Test Series →</button>
+       <button class="btn ghost" onclick="show('batches')">Enquire for Batches</button>
+     </div>
+   </div>`).join("") : "<div class='card'><p>No exam matches that search. Try searching for 'bank', 'police', 'ssc', 'odisha', 'clerk', or 'railway'.</p></div>";
 }
 function renderTests(){
   const given=store.get("c2s_main_given", []);
   const givenIds=new Set(given.map(g=>g.testId));
   const avail=TESTS.filter(t=>!givenIds.has(t.id));
-  $("#availTests").innerHTML = avail.length ? avail.map(t=>`
-    <div class="card"><strong>${t.title}</strong> <span class="pill">${t.exam}</span>
-    <p class="small">${t.minutes} minutes • ${t.qs.length} questions • Calculator: ${t.calculatorAllowed?"Allowed (shown in exam)":"Not allowed — scratch pad only"}</p>
-    <button class="btn" onclick="startTest('${t.id}')">Start Test</button></div>`).join("") : "<p>All available tests have been given — see Given Tests below.</p>";
+  $("#availTests").innerHTML = avail.length ? '<div class="test-grid">' + avail.map(t=>`
+      <div class="test-card">
+        <div>
+          <div class="test-card-header">
+            <span class="pill ${t.exam==='OSSC'?'green':'blue'}">${t.exam}</span>
+            <span class="small" style="font-weight:700;">⏱ ${t.minutes} Mins • ${t.qs.length} Qs</span>
+          </div>
+          <h3>${t.title}</h3>
+          <div class="test-meta-list">
+            <div class="test-meta-item"><span>🧮</span> <span>Calculator: <strong>${t.calculatorAllowed ? "Allowed (on-screen)" : "Not allowed — scratch pad only"}</strong></span></div>
+            <div class="test-meta-item"><span>⚖️</span> <span>Marking: <strong>Negative marking enabled</strong></span></div>
+            <div class="test-meta-item"><span>🔒</span> <span>Exam Lock: <strong>3 Violations Auto-Submit</strong></span></div>
+          </div>
+        </div>
+        <button class="btn orange" onclick="startTest('${t.id}')">Start Test Now →</button>
+      </div>`).join("") + '</div>' : "<p class='small'>All available mock tests have been completed. Check your scores and solutions in Given Tests below.</p>";
   $("#givenTests").innerHTML = given.length ? given.map(g=>`
-    <div class="card"><strong>${g.title}</strong> — ${g.score}/${g.total} marks
-    <p class="small">Correct ${g.correct} • Wrong ${g.wrong} • Skipped ${g.skipped} • Violations ${g.violations||0} • ${g.reason||"submitted"}</p>
-    <button class="btn ghost" onclick="reviewGiven('${g.testId}')">Marks & Solutions Dekho</button></div>`).join("") : "<p>No given tests yet.</p>";
+    <div class="card" style="border-left:5px solid var(--c2s-emerald-600);margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+        <h4 style="margin:0;font-size:18px;color:var(--c2s-navy-800);">${g.title}</h4>
+        <span class="pill green" style="font-size:14px;">Score: ${g.score} / ${g.total} marks</span>
+      </div>
+      <p class="small" style="margin:8px 0 12px;color:var(--c2s-slate-600);">
+        ✅ Correct: <strong>${g.correct}</strong> • ❌ Wrong: <strong>${g.wrong}</strong> • ⏭ Skipped: <strong>${g.skipped}</strong> • ⚠️ Violations: <strong>${g.violations||0}</strong> • Status: <em>${g.reason||"submitted"}</em>
+      </p>
+      <button class="btn ghost" onclick="reviewGiven('${g.testId}')">View Detailed Marks &amp; Solutions →</button>
+    </div>`).join("") : "<p class='small' style='color:var(--c2s-slate-500);'>No given tests yet. Take an available test above to view your score breakdown.</p>";
 }
 function reviewGiven(id){
   const g=store.get("c2s_main_given", []).find(x=>x.testId===id); if(!g) return;
