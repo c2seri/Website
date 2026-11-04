@@ -75,6 +75,25 @@ function show(view){
   window.scrollTo(0,0);
   document.querySelectorAll(".mobile-tab-item").forEach(b => { b.classList.toggle("active", b.dataset.bottomTab === view); });
 }
+window.resetToHomeView = function(e) {
+  if (e && !e.ctrlKey && !e.metaKey) {
+    const p = window.location.pathname;
+    if (p.endsWith("index.html") || p.endsWith("/") || p === "" || !p.includes(".html")) {
+      e.preventDefault();
+      if (typeof show === "function") show("home");
+      const heroSearch = document.getElementById("heroSearchInput");
+      if (heroSearch) heroSearch.value = "";
+      const panSearch = document.getElementById("panExamSearch");
+      if (panSearch) {
+        panSearch.value = "";
+        if (typeof handlePanSearch === "function") handlePanSearch("");
+      }
+      document.querySelectorAll(".modal.open, .c2s-modal.open, .modal-backdrop").forEach(m => m.classList.remove("open", "active"));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+};
+
 function filterExam(level, id){
   show("exams");
   const lvl=$("#examLevel"); if(lvl) lvl.value=level;
