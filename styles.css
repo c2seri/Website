@@ -6375,3 +6375,42 @@ section[data-view] {
   color: #ea580c !important;
   background: #fff7ed !important;
 }
+
+
+/* ==========================================================================
+   LEGAL PAGES & CONTACT FORM STYLING
+   ========================================================================== */
+.legal-content-card h2 {
+  font-size: 28px;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.legal-content-card h3 {
+  font-size: 18px;
+  color: #1e293b;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.legal-content-card p {
+  color: #334155;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.legal-content-card ul {
+  color: #334155;
+  line-height: 1.7;
+}
+
+.footer-legal-bar a:hover {
+  color: #f97316 !important;
+  text-decoration: underline !important;
+}
+
+@media (max-width: 768px) {
+  .grid2 {
+    grid-template-columns: 1fr !important;
+  }
+}

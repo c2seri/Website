@@ -62,6 +62,7 @@ const TESTS = [
 function show(view){
   document.querySelectorAll("[data-view]").forEach(el=>el.classList.toggle("hidden", el.dataset.view!==view));
   document.querySelectorAll("[data-nav]").forEach(a=>a.classList.toggle("active", a.dataset.nav===view));
+  if(view==="contact") view = "help";
   if(view==="exams") renderExams();
   if(view==="courses") renderCourses();
   if(view==="books") renderBooks();
@@ -1751,3 +1752,130 @@ if (document.readyState === 'loading') {
 }
 setTimeout(ensureAllHomepageCardsRendered, 300);
 setTimeout(ensureAllHomepageCardsRendered, 1000);
+
+
+/* ==========================================================================
+   OFFICIAL CONTACT DESK & ENQUIRY SUBMISSION HANDLER
+   Supports SMS, WhatsApp, RCS consent, localStorage & Supabase persistence
+   ========================================================================== */
+function handleContactSubmit(e) {
+  if (e) e.preventDefault();
+
+  const name = ($("#contactName") || {}).value || "";
+  const mobile = ($("#contactMobile") || {}).value || "";
+  const email = ($("#contactEmail") || {}).value || "";
+  const city = ($("#contactCity") || {}).value || "";
+  const goal = ($("#contactGoal") || {}).value || "General Enquiry";
+  const message = ($("#contactMessage") || {}).value || "";
+  const consentEl = $("#contactConsent");
+  const consent = consentEl ? consentEl.checked : false;
+  const feedback = $("#contactFeedback");
+  const btn = $("#contactSubmitBtn");
+
+  if (!name.trim()) {
+    alert("Please enter your full name.");
+    return false;
+  }
+  if (!mobile.match(/^[0-9]{10}$/)) {
+    alert("Please enter a valid 10-digit mobile number.");
+    return false;
+  }
+  if (!email.includes("@")) {
+    alert("Please enter a valid email address.");
+    return false;
+  }
+  if (!consent) {
+    alert("Please agree to receive SMS, WhatsApp, and RCS updates to proceed.");
+    return false;
+  }
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = "Submitting Enquiry...";
+  }
+
+  const enquiry = {
+    id: "ENQ-" + Date.now(),
+    name: name.trim(),
+    mobile: mobile.trim(),
+    email: email.trim(),
+    city: city.trim(),
+    goal: goal,
+    message: message.trim(),
+    consent_rcs_sms: consent,
+    source: "c2seri.com Website Form",
+    created_at: new Date().toISOString()
+  };
+
+  // 1. Save to local browser storage
+  const enquiries = store.get("c2s_enquiries", []);
+  enquiries.push(enquiry);
+  store.set("c2s_enquiries", enquiries);
+
+  // 2. Try Supabase cloud persistence if available
+  if (window.c2sSupabaseClient) {
+    try {
+      window.c2sSupabaseClient.from("contact_leads").insert([{
+        full_name: enquiry.name,
+        phone: enquiry.mobile,
+        email: enquiry.email,
+        city: enquiry.city,
+        target_exam: enquiry.goal,
+        message: enquiry.message,
+        consent_rcs_sms: true,
+        created_at: enquiry.created_at
+      }]).then(() => {}).catch(err => console.warn("Supabase lead error:", err));
+    } catch(err) {
+      console.warn("Lead cloud logging:", err);
+    }
+  }
+
+  // 3. Display affirmative confirmation
+  setTimeout(() => {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = "Submit Enquiry →";
+    }
+    if (feedback) {
+      feedback.style.display = "block";
+      feedback.innerHTML = `
+        <div style="background:#ecfdf5;border:1.5px solid #10b981;border-radius:10px;padding:16px;color:#065f46;line-height:1.5;">
+          <div style="font-weight:700;font-size:16px;margin-bottom:4px;display:flex;align-items:center;gap:6px;">
+            &#10003; Enquiry Received Successfully!
+          </div>
+          <p style="margin:0 0 6px;font-size:13.5px;">
+            Thank you, <strong>${escapeHtml(enquiry.name)}</strong>. Your enquiry for <strong>${escapeHtml(enquiry.goal)}</strong> has been registered at our Patrapada Centre desk.
+          </p>
+          <small style="color:#047857;display:block;">
+            Our academic counselling team will contact you via Phone call, WhatsApp, or RCS message within 2-4 working hours.
+          </small>
+        </div>
+      `;
+      // Clear inputs
+      const form = $("#c2sContactForm");
+      if (form) form.reset();
+      const consentBox = $("#contactConsent");
+      if (consentBox) consentBox.checked = true;
+    }
+  }, 400);
+
+  return false;
+}
+window.handleContactSubmit = handleContactSubmit;
+
+
+/* Auto-open legal & contact views when hash is in URL */
+function handleUrlHashView() {
+  const hash = (window.location.hash || "").replace("#", "").toLowerCase();
+  if (["terms", "privacy", "refund", "contact", "help", "batches", "tests", "exams", "notices", "blog"].includes(hash)) {
+    if (typeof show === "function") {
+      show(hash === "contact" ? "help" : hash);
+    }
+  }
+}
+window.addEventListener("hashchange", handleUrlHashView);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", handleUrlHashView);
+} else {
+  handleUrlHashView();
+}
