@@ -117,7 +117,7 @@ const libLocalSeoHead = `  <!-- Local SEO & Geo Meta Tags for Library (Patrapada
     "url": "https://c2seri.com/library/",
     "telephone": ["+91-9777481909", "+91-9658177712"],
     "email": "contact@c2seri.com",
-    "priceRange": "₹800 - ₹2000",
+    "priceRange": "₹1000 - ₹2000",
     "image": "https://c2seri.com/logo.jpg",
     "address": {
       "@type": "PostalAddress",

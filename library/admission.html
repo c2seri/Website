@@ -131,17 +131,17 @@
           5. Payment Details (Separate Section)
         </h3>
         <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px;margin-bottom:14px;">
-          <strong style="color:var(--c2s-orange-600);">Registration Fee: ₹200 (Non-refundable)</strong>, separate from monthly shift payment.
-          <br><span class="small" style="color:var(--c2s-slate-700);">Afternoon shift fee reference is <strong>₹800/mo</strong> (02:30 PM – 09:00 PM). Other shift prices start unset and are staff-configurable.</span>
+          <strong style="color:var(--c2s-orange-600);">Registration Fee: ₹200 (One-Time Non-refundable)</strong> • <strong style="color:var(--c2s-navy-900);">Monthly Seat Price: ₹1000/mo</strong>.
+          <br><span class="small" style="color:var(--c2s-slate-700);">First month total: <strong>₹1200</strong> (₹1000 seat + ₹200 registration). Subsequent months: ₹1000/mo.</span>
         </div>
 
         <div class="grid2">
-          <div><label>Shift Fees (₹₹ monthly)</label><input id="shiftFees" readonly></div>
+          <div><label>Shift Fees (₹ monthly)</label><input id="shiftFees" readonly></div>
           <div><label>Locker Fees (₹)</label><input type="number" id="lockerFees" value="0" oninput="calcFees()"></div>
           <div><label>Discount Amount (₹)</label><input type="number" id="discAmt" value="0" oninput="calcFees()"></div>
           <div><label>Discount Percent (%)</label><input type="number" id="discPct" value="0" oninput="calcFees()"></div>
           <div><label>Total Fees (₹)</label><input id="totalFees" readonly style="font-weight:800;color:var(--c2s-navy-900);"></div>
-          <div><label>Paid Fees (₹)</label><input type="number" id="paidFees" value="1000" oninput="calcFees()"></div>
+          <div><label>Paid Fees (₹)</label><input type="number" id="paidFees" value="1200" oninput="calcFees()"></div>
           <div><label>Pending Fees (₹)</label><input id="pendingFees" readonly style="color:#dc2626;font-weight:800;"></div>
           <div><label>Payment Mode</label>
             <select id="payMode">
@@ -156,10 +156,10 @@
         <div style="background:#f8fafc;padding:12px 16px;border-radius:10px;margin:16px 0;border:1px solid #e2e8f0;font-size:12.5px;">
           <strong>Staff Price Configuration:</strong>
           <div class="grid2" style="margin-top:8px;">
-            <div><label>Morning monthly price (₹)</label><input type="number" id="priceMorning" value="0" oninput="calcFees()"></div>
-            <div><label>Afternoon monthly price (₹₹ ref)</label><input type="number" id="priceAfternoon" value="800" oninput="calcFees()"></div>
-            <div><label>Full Day monthly price (₹)</label><input type="number" id="priceFullDay" value="0" oninput="calcFees()"></div>
-            <div><label>Night monthly price (₹)</label><input type="number" id="priceNight" value="0" oninput="calcFees()"></div>
+            <div><label>Morning monthly price (₹)</label><input type="number" id="priceMorning" value="1000" oninput="calcFees()"></div>
+            <div><label>Afternoon monthly price (₹)</label><input type="number" id="priceAfternoon" value="1000" oninput="calcFees()"></div>
+            <div><label>Full Day monthly price (₹)</label><input type="number" id="priceFullDay" value="1000" oninput="calcFees()"></div>
+            <div><label>Night monthly price (₹)</label><input type="number" id="priceNight" value="1000" oninput="calcFees()"></div>
           </div>
         </div>
 

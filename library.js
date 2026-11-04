@@ -54,10 +54,10 @@ const store = {
 };
 
 const SHIFTS = {
-  Morning: { time: "06:00 AM – 12:00 PM", priceKey: "priceMorning", defaultPrice: 0 },
-  Afternoon: { time: "02:30 PM – 09:00 PM", priceKey: "priceAfternoon", defaultPrice: 800 },
-  "Full Day": { time: "24-Hour Unlimited Access", priceKey: "priceFullDay", defaultPrice: 0 },
-  Night: { time: "09:00 PM – 06:00 AM", priceKey: "priceNight", defaultPrice: 0 }
+  Morning: { time: "06:00 AM – 12:00 PM", priceKey: "priceMorning", defaultPrice: 1000 },
+  Afternoon: { time: "02:30 PM – 09:00 PM", priceKey: "priceAfternoon", defaultPrice: 1000 },
+  "Full Day": { time: "24-Hour Unlimited Access", priceKey: "priceFullDay", defaultPrice: 1000 },
+  Night: { time: "09:00 PM – 06:00 AM", priceKey: "priceNight", defaultPrice: 1000 }
 };
 
 let selShift = "Afternoon";
@@ -72,7 +72,7 @@ function renderShifts() {
   ).join("");
 
   if ($("#shiftInfo")) {
-    $("#shiftInfo").textContent = selShift + " — " + SHIFTS[selShift].time + " • Verified Afternoon Ref: ₹800/mo";
+    $("#shiftInfo").textContent = selShift + " — " + SHIFTS[selShift].time + " • Verified Seat Price: ₹1000/mo (One-Time Registration: ₹200)";
   }
   calcFees();
 }
@@ -229,7 +229,7 @@ function updateInspectorHUD() {
     hudTitle.innerHTML = `<span style="color:#60a5fa;">Desk ${selectedSeat}</span> &bull; <span style="font-size:16px;color:#cbd5e1;font-weight:700;">${zoneName}</span>`;
     if (hudSpecs) hudSpecs.innerHTML = zoneSpecs + " &bull; ❄️ 22°C Central A/C";
 
-    const shiftPrice = SHIFTS[selShift]?.defaultPrice || 800;
+    const shiftPrice = SHIFTS[selShift]?.defaultPrice || 1000;
     if (hudPrice) hudPrice.textContent = selShift + ": ₹" + shiftPrice + "/mo";
   } else {
     hudTitle.textContent = "None Selected (Click any Green Desk Above)";
