@@ -251,18 +251,22 @@ function libAdmit(e) {
   const members = store.get("c2s_lib_members", []);
   const regNo = "C2S-LIB-2026-" + String(members.length + 101).padStart(4, "0");
 
+  const seatVal = ($("#allocSeat")?.value || selectedSeat || "Physically at Patrapada Front Desk").trim();
+  const isPhysical = seatVal.toLowerCase().includes("physic") || seatVal.toLowerCase().includes("front desk");
+
   const m = {
     regNo,
     name: $("#candName").value,
     mobile: $("#studMobile").value,
     email: $("#studEmail")?.value || "",
-    shift: selShift,
-    seat: $("#allocSeat")?.value || selectedSeat || "Unassigned",
-    from: $("#fromDate").value,
-    to: $("#toDate").value,
-    examPref: $("#examPref")?.value || "",
-    total: Number($("#totalFees")?.value || 0),
-    paid: Number($("#paidFees")?.value || 0),
+    shift: selShift || "Full Day (07:00 AM – 09:00 PM)",
+    seat: seatVal,
+    seatMode: isPhysical ? "physical" : "online",
+    from: $("#fromDate")?.value || new Date().toISOString().slice(0, 10),
+    to: $("#toDate")?.value || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+    examPref: $("#examPref")?.value || "OSSC CGL / Competitive Exams",
+    total: Number($("#totalFees")?.value || 1200),
+    paid: Number($("#paidFees")?.value || 1200),
     pending: Number($("#pendingFees")?.value || 0),
     mode: $("#payMode")?.value || "UPI",
     date: new Date().toISOString().slice(0, 10)
@@ -273,10 +277,12 @@ function libAdmit(e) {
   store.set("c2s_lib_user", m);
   syncMemberToSupabase(m);
 
-  // Mark seat as occupied
-  if (m.seat && m.seat !== "Unassigned") {
+  // Mark seat as occupied only if a specific desk was selected online
+  if (!isPhysical && m.seat) {
+    const match = m.seat.match(/([ABC]-\d+)/i);
+    const seatCode = match ? match[1].toUpperCase() : m.seat;
     const taken = store.get("c2s_lib_taken", {});
-    taken[m.seat] = true;
+    taken[seatCode] = true;
     store.set("c2s_lib_taken", taken);
   }
 
@@ -284,7 +290,7 @@ function libAdmit(e) {
   const ledger = store.get("c2s_lib_ledger", []);
   ledger.unshift({
     date: m.date,
-    desc: `Admission ${regNo} (${m.name}, ${m.shift}, Seat ${m.seat})`,
+    desc: `Admission ${regNo} (${m.name}, ${m.shift}, Seat: ${m.seat})`,
     amt: m.paid
   });
   store.set("c2s_lib_ledger", ledger);
@@ -292,12 +298,58 @@ function libAdmit(e) {
   const msg = $("#admitMsg");
   if (msg) {
     msg.innerHTML = `
-      <div style="background:#ecfdf5;border:1px solid #10b981;border-radius:12px;padding:16px;color:#065f46;">
-        <strong style="font-size:16px;">🎉 Admission Confirmed!</strong><br>
-        Registration No: <strong>${regNo}</strong> • Student: <strong>${m.name}</strong> • Seat: <strong>${m.seat}</strong> • Shift: <strong>${m.shift}</strong><br>
-        <span class="small" style="color:#047857;">Digital membership record saved. Login via the Member Portal with your mobile number to view your Digital ID card.</span>
+      <div style="background:linear-gradient(135deg,#0a192f,#0f2444);border:1.5px solid rgba(255,255,255,0.2);border-radius:18px;padding:24px;color:#fff;box-shadow:0 12px 36px rgba(0,0,0,0.4);margin-top:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+          <div>
+            <span style="background:rgba(16,185,129,0.2);color:#34d399;border:1px solid rgba(52,211,153,0.4);font-size:11px;font-weight:800;padding:4px 12px;border-radius:999px;">
+              🎉 ADMISSION CONFIRMED
+            </span>
+            <h3 style="color:#ffffff;font-size:22px;margin:8px 0 4px;font-family:'Outfit',sans-serif;">Welcome to C2S Library, ${m.name}!</h3>
+            <span style="color:#fdba74;font-size:13px;">Official Registration ID: <strong style="font-size:16px;color:#38bdf8;letter-spacing:1px;">${regNo}</strong></span>
+          </div>
+          <span style="background:rgba(56,189,248,0.15);color:#38bdf8;font-size:12px;font-weight:750;padding:6px 12px;border-radius:8px;">
+            14h Full Day Shift
+          </span>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:16px;margin-bottom:18px;display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;">
+          <div>
+            <span style="font-size:11.5px;color:#94a3b8;display:block;">Seat Allocation Mode:</span>
+            <strong style="font-size:14.5px;color:${isPhysical ? '#fdba74' : '#34d399'};">
+              ${isPhysical ? '🏛️ Choose Physically on Visit' : '🪑 ' + m.seat}
+            </strong>
+          </div>
+          <div>
+            <span style="font-size:11.5px;color:#94a3b8;display:block;">Fee Status:</span>
+            <strong style="font-size:14.5px;color:#34d399;">₹${m.paid} Paid (${m.mode})</strong>
+          </div>
+          <div>
+            <span style="font-size:11.5px;color:#94a3b8;display:block;">Target Goal:</span>
+            <strong style="font-size:13.5px;color:#fff;">🎯 ${m.examPref}</strong>
+          </div>
+        </div>
+
+        ${isPhysical ? `
+          <div style="background:rgba(249,115,22,0.12);border:1px dashed rgba(249,115,22,0.4);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#fed7aa;line-height:1.5;">
+            📍 <strong>Physical Seat Selection Instructions:</strong> Jab aap Patrapada centre visit karenge, front desk par apna Registration ID <strong>${regNo}</strong> dikhakar sabhi silent cubicles ko personally dekh lijiye aur apni choice ki desk biometric me link karwa lijiye.
+          </div>
+        ` : `
+          <div style="background:rgba(16,185,129,0.12);border:1px dashed rgba(52,211,153,0.4);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#a7f3d0;line-height:1.5;">
+            🪑 <strong>Online Desk Reserved:</strong> Aapka desk <strong>${m.seat}</strong> reserve kar diya gaya hai. Centre aakar sidhe apni desk par baithkar padhai shuru karein.
+          </div>
+        `}
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <a href="login.html" class="btn orange" style="padding:10px 20px;font-size:13.5px;font-weight:800;text-decoration:none;">
+            🔑 Open Member Portal &amp; View Digital Pass &rarr;
+          </a>
+          <button type="button" class="btn ghost" style="padding:10px 18px;font-size:13px;color:#fff;border-color:rgba(255,255,255,0.3);" onclick="window.print()">
+            🖨️ Print Admission Slip
+          </button>
+        </div>
       </div>
     `;
+    msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
 

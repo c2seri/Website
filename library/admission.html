@@ -116,7 +116,7 @@
           <div><label>District</label><input id="district" placeholder="e.g. Khordha, Cuttack"></div>
           <div><label>State</label><input id="state" value="Odisha"></div>
           <div><label>PIN Code</label><input id="pin" placeholder="e.g. 751019"></div>
-          <div><label>Allocated Desk / Seat No.</label><input id="allocSeat" placeholder="e.g. A-04 (Selected on 3D Map)"></div>
+          <div><label>Study Shift Preference</label><input value="07:00 AM – 09:00 PM (Full Day Shift)" readonly style="background:#f1f5f9;font-weight:700;color:#0f2a5c;"></div>
         </div>
 
         <!-- 4. Shift Allocation -->
@@ -126,9 +126,103 @@
         <div id="shiftBtns" style="margin-bottom:10px;"></div>
         <p id="shiftInfo" class="small" style="font-weight:700;color:var(--c2s-navy-900);"></p>
 
-        <!-- 5. Payment Details -->
+        <!-- 5. Study Desk / Seat Allocation Preference -->
         <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:28px 0 14px;color:var(--c2s-navy-900);">
-          5. Payment Details (Separate Section)
+          5. Study Seat / Desk Allocation Preference
+        </h3>
+        <p class="small" style="color:var(--c2s-slate-600);margin-bottom:14px;">
+          Aap chahein toh online 3D map se apni desk abhi reserve kar sakte hain, ya phir Patrapada centre par physically aakar inspection ke baad receptionist se allocate karwa sakte hain.
+        </p>
+
+        <!-- Choice Cards: Physical vs Online -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:14px;margin-bottom:18px;">
+          <!-- Choice 1: Physical Visit at Centre -->
+          <label style="cursor:pointer;position:relative;display:block;">
+            <input type="radio" name="seatAllocMode" value="physical" checked onchange="toggleSeatAllocMode(this.value)" style="position:absolute;opacity:0;">
+            <div id="cardPhysicalSeat" style="border:2px solid #ea580c;background:#fff7ed;border-radius:14px;padding:18px;height:100%;transition:all 0.2s ease;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <span style="font-size:24px;">🏛️</span>
+                <span style="background:#ea580c;color:#fff;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:999px;">RECOMMENDED</span>
+              </div>
+              <strong style="display:block;color:#0f2a5c;font-size:15px;margin-bottom:4px;">Select Physically at Front Desk</strong>
+              <span style="font-size:12.5px;color:#64748b;line-height:1.45;display:block;">
+                Patrapada centre visit karke study cubicles ko physically inspect karein aur apni manpasand desk choose karein.
+              </span>
+              <div style="margin-top:12px;font-size:12px;color:#c2410c;font-weight:750;">
+                ✓ Immediate Registration ID &bull; Seat confirmed on visit
+              </div>
+            </div>
+          </label>
+
+          <!-- Choice 2: Online 3D Matrix Selection -->
+          <label style="cursor:pointer;position:relative;display:block;">
+            <input type="radio" name="seatAllocMode" value="online" onchange="toggleSeatAllocMode(this.value)" style="position:absolute;opacity:0;">
+            <div id="cardOnlineSeat" style="border:1.5px solid #cbd5e1;background:#ffffff;border-radius:14px;padding:18px;height:100%;transition:all 0.2s ease;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <span style="font-size:24px;">🎯</span>
+                <span style="background:#2563eb;color:#fff;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:999px;">ONLINE 3D MATRIX</span>
+              </div>
+              <strong style="display:block;color:#0f2a5c;font-size:15px;margin-bottom:4px;">Choose Desk Online Now</strong>
+              <span style="font-size:12.5px;color:#64748b;line-height:1.45;display:block;">
+                Interactive seating layout se apni specific desk (Zone A, B ya C) abhi direct confirm karein.
+              </span>
+              <div style="margin-top:12px;font-size:12px;color:#2563eb;font-weight:750;">
+                Pick from 64 ergonomic desks &rarr;
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <!-- Hidden Input holding the allocated seat string for backend/storage -->
+        <input type="hidden" id="allocSeat" value="Physically at Patrapada Front Desk">
+
+        <!-- Physical Mode Explainer -->
+        <div id="physicalSeatInfo" style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:14px 18px;margin-bottom:20px;">
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <span style="font-size:22px;">📍</span>
+            <div>
+              <strong style="color:#0f2a5c;font-size:14px;display:block;margin-bottom:2px;">Front Desk Physical Seat Allocation Selected</strong>
+              <span style="color:#64748b;font-size:12.5px;line-height:1.45;display:block;">
+                Aapka official Admission aur Registration Number online instantly generate ho jayega. Jab aap NH-16 Patrapada centre pehle din visit karenge, reception desk par apna Registration ID dikhakar sabhi vacant cubicles dekh lijiye aur apni choice ki desk biometric me link karwa lijiye.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Online Interactive Seat Selector (Shown only when 'online' is chosen) -->
+        <div id="onlineSeatPicker" style="display:none;background:#f8fafc;border:1.5px solid #93c5fd;border-radius:14px;padding:18px;margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+            <div>
+              <strong style="color:#1e40af;font-size:15px;display:block;">Click to Pick Your Desk:</strong>
+              <span style="font-size:12px;color:#64748b;">Vacant desks are highlighted in green with personal LED lamp &amp; socket</span>
+            </div>
+            <div style="display:flex;gap:12px;font-size:12px;align-items:center;">
+              <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:#10b981;border-radius:3px;display:inline-block;"></span> Vacant</span>
+              <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:#94a3b8;border-radius:3px;display:inline-block;"></span> Occupied</span>
+              <a href="index.html#360Tour" target="_blank" style="color:#2563eb;text-decoration:none;font-weight:750;">🧭 View 360° Tour ↗</a>
+            </div>
+          </div>
+
+          <!-- Zone Tabs -->
+          <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;">
+            <button type="button" class="btn" id="btnZoneA" onclick="showSeatZone('A')" style="padding:7px 14px;font-size:12.5px;font-weight:800;background:#2563eb;color:#fff;border:none;border-radius:8px;">Zone A (Silent Cubicles)</button>
+            <button type="button" class="btn" id="btnZoneB" onclick="showSeatZone('B')" style="padding:7px 14px;font-size:12.5px;font-weight:800;background:#e2e8f0;color:#334155;border:none;border-radius:8px;">Zone B (Laptop Hub)</button>
+            <button type="button" class="btn" id="btnZoneC" onclick="showSeatZone('C')" style="padding:7px 14px;font-size:12.5px;font-weight:800;background:#e2e8f0;color:#334155;border:none;border-radius:8px;">Zone C (Acoustic Pods)</button>
+          </div>
+
+          <!-- Zone Grid of Desks -->
+          <div id="deskChipGrid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(76px, 1fr));gap:8px;"></div>
+
+          <!-- Currently Selected Desk Pill -->
+          <div id="selectedDeskDisplay" style="margin-top:14px;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+            <span style="font-size:13.5px;color:#1e40af;">Assigned Desk: <strong id="selectedDeskLabel" style="font-size:16px;color:#1d4ed8;">Desk A-14 (Zone A)</strong></span>
+            <span style="font-size:12px;color:#2563eb;font-weight:700;">✓ Ready to allocate on submission</span>
+          </div>
+        </div>
+
+        <!-- 6. Payment Details -->
+        <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:28px 0 14px;color:var(--c2s-navy-900);">
+          6. Payment Details &amp; Summary
         </h3>
         <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px;margin-bottom:14px;">
           <strong style="color:var(--c2s-orange-600);">Registration Fee: ₹200 (One-Time Non-refundable)</strong> • <strong style="color:var(--c2s-navy-900);">Monthly Seat Price: ₹1000/mo</strong>.
@@ -153,15 +247,16 @@
           </div>
         </div>
 
-        <div style="background:#f8fafc;padding:12px 16px;border-radius:10px;margin:16px 0;border:1px solid #e2e8f0;font-size:12.5px;">
-          <strong>Staff Price Configuration:</strong>
+        <!-- Collapsible Staff Price Configuration (Admin Only) -->
+        <details style="background:#f8fafc;padding:10px 14px;border-radius:10px;margin:16px 0;border:1px solid #e2e8f0;font-size:12px;color:#64748b;">
+          <summary style="cursor:pointer;font-weight:700;">⚙️ Staff Price Configuration (Optional Admin Overrides)</summary>
           <div class="grid2" style="margin-top:8px;">
             <div><label>Morning monthly price (₹)</label><input type="number" id="priceMorning" value="1000" oninput="calcFees()"></div>
             <div><label>Afternoon monthly price (₹)</label><input type="number" id="priceAfternoon" value="1000" oninput="calcFees()"></div>
             <div><label>Full Day monthly price (₹)</label><input type="number" id="priceFullDay" value="1000" oninput="calcFees()"></div>
             <div><label>Night monthly price (₹)</label><input type="number" id="priceNight" value="1000" oninput="calcFees()"></div>
           </div>
-        </div>
+        </details>
 
         <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;">
           <button class="btn orange btn-shimmer" type="submit" style="padding:13px 28px;font-size:15px;font-weight:800;">
@@ -176,14 +271,119 @@
   </main>
 
   <script>
+    // Seat Allocation Mode Toggle
+    window.toggleSeatAllocMode = function(mode) {
+      const cardPhysical = document.getElementById('cardPhysicalSeat');
+      const cardOnline = document.getElementById('cardOnlineSeat');
+      const physicalInfo = document.getElementById('physicalSeatInfo');
+      const onlinePicker = document.getElementById('onlineSeatPicker');
+      const allocInput = document.getElementById('allocSeat');
+
+      if (mode === 'physical') {
+        if (cardPhysical) { cardPhysical.style.borderColor = '#ea580c'; cardPhysical.style.background = '#fff7ed'; }
+        if (cardOnline) { cardOnline.style.borderColor = '#cbd5e1'; cardOnline.style.background = '#ffffff'; }
+        if (physicalInfo) physicalInfo.style.display = 'block';
+        if (onlinePicker) onlinePicker.style.display = 'none';
+        if (allocInput) allocInput.value = 'Physically at Patrapada Front Desk';
+      } else {
+        if (cardPhysical) { cardPhysical.style.borderColor = '#cbd5e1'; cardPhysical.style.background = '#ffffff'; }
+        if (cardOnline) { cardOnline.style.borderColor = '#2563eb'; cardOnline.style.background = '#eff6ff'; }
+        if (physicalInfo) physicalInfo.style.display = 'none';
+        if (onlinePicker) onlinePicker.style.display = 'block';
+        showSeatZone(currentZone || 'A');
+      }
+    };
+
+    let currentZone = 'A';
+    let chosenDesk = 'A-14';
+
+    const OCCUPIED_DESKS = new Set(["A-03", "A-07", "A-11", "B-02", "B-06", "B-09", "B-12", "C-05", "C-08", "C-11", "C-15"]);
+
+    window.showSeatZone = function(zoneKey) {
+      currentZone = zoneKey;
+      ['A', 'B', 'C'].forEach(z => {
+        const btn = document.getElementById('btnZone' + z);
+        if (btn) {
+          if (z === zoneKey) {
+            btn.style.background = '#2563eb';
+            btn.style.color = '#fff';
+          } else {
+            btn.style.background = '#e2e8f0';
+            btn.style.color = '#334155';
+          }
+        }
+      });
+
+      const grid = document.getElementById('deskChipGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      for (let i = 1; i <= 16; i++) {
+        const deskId = zoneKey + '-' + String(i).padStart(2, '0');
+        const isOccupied = OCCUPIED_DESKS.has(deskId);
+        const isSelected = deskId === chosenDesk;
+
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.style.padding = '8px 4px';
+        chip.style.borderRadius = '8px';
+        chip.style.fontSize = '12px';
+        chip.style.fontWeight = '800';
+        chip.style.textAlign = 'center';
+        chip.style.cursor = isOccupied ? 'not-allowed' : 'pointer';
+        chip.style.transition = 'all 0.15s ease';
+
+        if (isOccupied) {
+          chip.style.background = '#f1f5f9';
+          chip.style.border = '1px dashed #cbd5e1';
+          chip.style.color = '#94a3b8';
+          chip.disabled = true;
+          chip.innerHTML = `${deskId}<br><span style="font-size:9.5px;font-weight:600;">Taken</span>`;
+        } else if (isSelected) {
+          chip.style.background = '#10b981';
+          chip.style.border = '2px solid #059669';
+          chip.style.color = '#ffffff';
+          chip.style.boxShadow = '0 0 10px rgba(16,185,129,0.4)';
+          chip.innerHTML = `${deskId}<br><span style="font-size:9.5px;">Selected</span>`;
+        } else {
+          chip.style.background = '#ffffff';
+          chip.style.border = '1.5px solid #10b981';
+          chip.style.color = '#065f46';
+          chip.innerHTML = `${deskId}<br><span style="font-size:9.5px;color:#10b981;">Vacant</span>`;
+          chip.onclick = () => selectDeskChip(deskId, zoneKey);
+        }
+        grid.appendChild(chip);
+      }
+    };
+
+    window.selectDeskChip = function(deskId, zoneKey) {
+      chosenDesk = deskId;
+      const zoneNames = { A: "Zone A: Silent Cubicles", B: "Zone B: Laptop Hub", C: "Zone C: Acoustic Pods" };
+      const label = document.getElementById('selectedDeskLabel');
+      if (label) label.textContent = `Desk ${deskId} (${zoneNames[zoneKey] || 'Library Desk'})`;
+      
+      const allocInput = document.getElementById('allocSeat');
+      if (allocInput) allocInput.value = `Desk ${deskId} (${zoneNames[zoneKey] || ''})`;
+
+      showSeatZone(zoneKey);
+    };
+
     // Pre-populate seat if coming from 3D Seat Map
-    document.addEventListener('DOMContentLoaded',  () => {
+    document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const seat = urlParams.get('seat');
       if (seat) {
-        const allocInput = document.getElementById('allocSeat');
-        if (allocInput) allocInput.value = seat;
+        // If seat param is passed in URL, automatically switch to Online Mode and select it!
+        const radioOnline = document.querySelector('input[name="seatAllocMode"][value="online"]');
+        if (radioOnline) radioOnline.checked = true;
+        toggleSeatAllocMode('online');
+        const match = seat.match(/^([ABC])-(\d+)/i);
+        if (match) {
+          chosenDesk = match[0].toUpperCase();
+          selectDeskChip(chosenDesk, match[1].toUpperCase());
+        }
       }
+
       // Set default dates
       const today = new Date().toISOString().slice(0, 10);
       const oneMonth = new Date(Date.now() + 30*24*60*60*1000).toISOString().slice(0, 10);
