@@ -448,3 +448,4 @@ createPage('refund.html', 'Refund & Cancellation Policy', 'Transparent Refund an
 createPage('contact.html', 'Contact Us & Admission Desk', 'Contact C2S College to Service Patrapada Bhubaneswar. Helpline phone numbers, address, email, and online enquiry callback form.', contactContent);
 
 console.log('✓ All 4 standalone policy and contact pages created successfully!');
+

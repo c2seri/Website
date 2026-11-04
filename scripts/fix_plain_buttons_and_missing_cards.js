@@ -143,4 +143,3 @@ fs.writeFileSync(stylesCssPath, css, 'utf8');
 fs.writeFileSync(appJsPath, appJs, 'utf8');
 
 console.log('✓ Successfully wrote pill button styles and homepage cards fix!');
-

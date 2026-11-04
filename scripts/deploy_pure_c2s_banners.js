@@ -528,4 +528,3 @@ fs.writeFileSync(indexHtmlPath, html, 'utf8');
 fs.writeFileSync(stylesCssPath, css, 'utf8');
 
 console.log('✓ Successfully deployed 100% pure C2S banners and fixed header padding!');
-

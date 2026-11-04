@@ -588,3 +588,4 @@ if (!stylesCss.includes('.legal-content-card')) {
 }
 
 console.log('✓ All policy and contact updates completed successfully!');
+

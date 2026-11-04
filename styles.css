@@ -6414,3 +6414,329 @@ section[data-view] {
     grid-template-columns: 1fr !important;
   }
 }
+
+
+/* ==========================================================================
+   ULTRA-PREMIUM FLOATING WHATSAPP ACTION DESK
+   ========================================================================== */
+.c2s-wa-fab-wrap {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Radar pulse animation rings */
+.c2s-wa-radar-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(37, 211, 102, 0.45);
+  animation: waPulse 2.4s infinite cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+}
+.c2s-wa-radar-ring.delay {
+  animation-delay: 1.2s;
+}
+
+@keyframes waPulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.65); opacity: 0; }
+}
+
+/* Trigger container */
+.c2s-wa-trigger-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Tooltip Pill */
+.c2s-wa-pill-tooltip {
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(0,0,0,0.04);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  animation: waFloatPill 3s infinite ease-in-out;
+}
+
+.c2s-wa-pill-tooltip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
+  border-color: #25d366;
+  color: #15803d;
+}
+
+.c2s-wa-pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.25);
+  display: inline-block;
+  animation: waBlink 1.5s infinite;
+}
+
+@keyframes waBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+@keyframes waFloatPill {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Main FAB Button */
+.c2s-wa-fab-btn {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 8px 26px rgba(37, 211, 102, 0.42), 0 3px 8px rgba(0,0,0,0.12);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  touch-action: manipulation;
+}
+
+.c2s-wa-fab-btn:hover {
+  transform: translateY(-4px) scale(1.06);
+  box-shadow: 0 14px 32px rgba(37, 211, 102, 0.55), 0 4px 12px rgba(0,0,0,0.16);
+}
+
+.c2s-wa-fab-btn:active {
+  transform: translateY(1px) scale(0.96);
+}
+
+.c2s-wa-icon-svg {
+  width: 32px;
+  height: 32px;
+  z-index: 2;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+/* Notification live badge on the button */
+.c2s-wa-live-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 3;
+}
+
+/* Interactive Floating Popup Card */
+.c2s-wa-popup {
+  width: 320px;
+  max-width: calc(100vw - 40px);
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.22), 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  transform-origin: bottom right;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.85) translateY(20px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.c2s-wa-popup.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1) translateY(0);
+}
+
+.c2s-wa-popup-header {
+  background: linear-gradient(135deg, #075e54 0%, #128c7e 100%);
+  color: #ffffff;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.c2s-wa-popup-avatar-wrap {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.c2s-wa-avatar-ring {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+}
+
+.c2s-wa-status-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #25d366;
+  border: 2px solid #075e54;
+}
+
+.c2s-wa-popup-info {
+  flex: 1;
+}
+
+.c2s-wa-popup-info h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.c2s-wa-popup-info p {
+  margin: 2px 0 0;
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.c2s-wa-online-text {
+  color: #a7f3d0;
+  font-weight: 700;
+}
+
+.c2s-wa-close-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease;
+}
+
+.c2s-wa-close-btn:hover {
+  color: #ffffff;
+}
+
+.c2s-wa-popup-body {
+  padding: 16px;
+  background: #efeae2;
+  background-image: radial-gradient(#d1d7db 1px, transparent 1px);
+  background-size: 16px 16px;
+  min-height: 110px;
+}
+
+.c2s-wa-msg-bubble {
+  background: #ffffff;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border-top-left-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  font-size: 13px;
+  color: #1e293b;
+  line-height: 1.5;
+  position: relative;
+}
+
+.c2s-wa-msg-bubble p {
+  margin: 0 0 6px;
+}
+.c2s-wa-msg-bubble p:last-of-type {
+  margin-bottom: 4px;
+}
+
+.c2s-wa-msg-time {
+  font-size: 10px;
+  color: #94a3b8;
+  display: block;
+  text-align: right;
+  margin-top: 2px;
+}
+
+.c2s-wa-popup-footer {
+  padding: 12px 16px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+}
+
+.c2s-wa-start-chat-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 16px;
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 999px;
+  text-decoration: none !important;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+  transition: all 0.2s ease;
+}
+
+.c2s-wa-start-chat-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .c2s-wa-fab-wrap {
+    bottom: 74px !important; /* Floats safely above mobile bottom app bar */
+    right: 18px !important;
+  }
+  .c2s-wa-fab-btn {
+    width: 52px;
+    height: 52px;
+  }
+  .c2s-wa-icon-svg {
+    width: 28px;
+    height: 28px;
+  }
+  .c2s-wa-pill-tooltip {
+    display: none !important; /* Hide long pill on small mobile screens */
+  }
+}
