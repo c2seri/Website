@@ -1149,7 +1149,7 @@ const HALL_SHIFTS = {
   morning: {
     name: 'Morning Shift',
     time: '06:00 AM – 12:00 PM',
-    price: 'Staff Configurable',
+    price: '₹1000 / month',
     glow: 'radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.35) 0%, transparent 70%)',
     available: 16,
     total: 24
@@ -1157,14 +1157,14 @@ const HALL_SHIFTS = {
   afternoon: {
     name: 'Afternoon Shift',
     time: '02:30 PM – 09:00 PM',
-    price: '₹800 / month (Screenshot Ref)',
+    price: '₹1000 / month',
     glow: 'radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.4) 0%, transparent 70%)',
     available: 12,
     total: 24
   },
   fullday: {
     name: 'Full Day Shift',
-    time: '24-Hour Unlimited Access',
+    time: '07:00 AM – 09:00 PM (14 Hours)',
     price: 'Staff Configurable',
     glow: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.35) 0%, transparent 70%)',
     available: 8,
@@ -3261,7 +3261,7 @@ function renderUser() {
           <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:12px;">
             <span style="background:#fff;color:#1e40af;padding:4px 10px;border-radius:6px;font-weight:600;">Shift 1: Morning (6 AM &ndash; 12 PM)</span>
             <span style="background:#fff;color:#1e40af;padding:4px 10px;border-radius:6px;font-weight:600;">Shift 2: Afternoon (2:30 PM &ndash; 9 PM)</span>
-            <span style="background:#fff;color:#1e40af;padding:4px 10px;border-radius:6px;font-weight:600;">Shift 3: Full Day (24-Hour Access)</span>
+            <span style="background:#fff;color:#1e40af;padding:4px 10px;border-radius:6px;font-weight:600;">Shift 3: Full Day (07:00 AM – 09:00 PM • 14 Hours)</span>
             <span style="background:#fff;color:#1e40af;padding:4px 10px;border-radius:6px;font-weight:600;">Shift 4: Night (9 PM &ndash; 6 AM)</span>
           </div>
         </div>

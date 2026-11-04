@@ -56,7 +56,7 @@ const store = {
 const SHIFTS = {
   Morning: { time: "06:00 AM – 12:00 PM", priceKey: "priceMorning", defaultPrice: 1000 },
   Afternoon: { time: "02:30 PM – 09:00 PM", priceKey: "priceAfternoon", defaultPrice: 1000 },
-  "Full Day": { time: "24-Hour Unlimited Access", priceKey: "priceFullDay", defaultPrice: 1000 },
+  "Full Day": { time: "07:00 AM – 09:00 PM (14 Hours)", priceKey: "priceFullDay", defaultPrice: 1000 },
   Night: { time: "09:00 PM – 06:00 AM", priceKey: "priceNight", defaultPrice: 1000 }
 };
 
@@ -467,7 +467,7 @@ window.quickDemoMemberLogin = function() {
     name: "Prakash Behera",
     mobile: "9777481909",
     email: "prakash.member@gmail.com",
-    shift: "Full Day (24-Hour Sanctuary)",
+    shift: "Full Day (07:00 AM – 09:00 PM)",
     seat: "A-14",
     zone: "Zone A (Silent Cubicles)",
     validTill: "30 Nov 2026",
