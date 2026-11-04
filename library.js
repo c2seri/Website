@@ -332,3 +332,46 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTheatreSeats();
   renderDigitalID();
 });
+
+
+// ==========================================================================
+// LOCAL STUDY CENTRE & DISTANCE FINDER LOGIC (BHUBANESWAR LOCAL PACK)
+// ==========================================================================
+window.selectLocalArea = function(areaKey) {
+  const data = {
+    patrapada: {
+      dist: '0.2 km • 2 Mins Walking',
+      route: 'Located right on NH-16 highway service road, directly opposite Sani Mandir, Patrapada (751019). Walking distance from Patrapada square.'
+    },
+    aiims: {
+      dist: '1.5 km • 4 Mins Ride / 15 Mins Walk',
+      route: 'Head straight along Sijuha road towards NH-16 junction. Turn right onto NH-16 service road. C2S Library is right opposite Sani Mandir.'
+    },
+    khandagiri: {
+      dist: '2.8 km • 6 Mins Direct Ride',
+      route: 'Drive south on NH-16 towards Patrapada. Cross Jagamara flyover. C2S is on your right opposite Sani Mandir on the service lane.'
+    },
+    dumduma: {
+      dist: '3.2 km • 7 Mins Ride',
+      route: 'Take Dumduma Phase 1 / Jagamara main road to NH-16. Join the NH-16 service road heading south to Patrapada opposite Sani Mandir.'
+    },
+    iter: {
+      dist: '4.0 km • 8 Mins Ride',
+      route: 'From ITER campus, proceed via Jagamara road to NH-16 highway. 8-minute direct drive to C2S Patrapada centre.'
+    },
+    baramunda: {
+      dist: '4.5 km • 9 Mins Ride',
+      route: 'Direct straight drive down NH-16 from Baramunda Bus Terminal (ISBT) towards Khordha. C2S is 4.5 km down opposite Sani Mandir.'
+    },
+    nayapalli: {
+      dist: '7.2 km • 14 Mins Direct Highway Commute',
+      route: 'Take the fast NH-16 expressway from Nayapalli / CRPF square towards Patrapada. Smooth, signal-free 14-minute ride.'
+    }
+  };
+
+  const item = data[areaKey] || data.patrapada;
+  const distEl = document.getElementById('localDistanceDisplay');
+  const routeEl = document.getElementById('localRouteDisplay');
+  if (distEl) distEl.textContent = item.dist;
+  if (routeEl) routeEl.textContent = item.route;
+};

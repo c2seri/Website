@@ -1,3 +1,9 @@
 User-agent: *
 Allow: /
-Sitemap: /sitemap.xml
+Disallow: /admin.html
+Disallow: /api/
+Disallow: /library/dashboard.html
+
+# Official Sitemaps
+Sitemap: https://c2seri.com/sitemap.xml
+Sitemap: https://c2seri.com/library/sitemap.xml
