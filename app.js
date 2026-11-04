@@ -337,7 +337,141 @@ function renderNotices(){
   `).join("");
 }
 function addPost(e){ e.preventDefault(); const posts=store.get("c2s_main_blog", []); posts.unshift({title:$("#postTitle").value,body:$("#postBody").value}); store.set("c2s_main_blog",posts); renderBlog(); e.target.reset(); }
-document.addEventListener("DOMContentLoaded", ()=>{ renderUser(); renderExams(); renderTests(); renderBlog(); show("home"); });
+
+/* ==========================================================================
+   PAN-INDIA 204+ EXAMS EXPLORER ENGINE
+   ========================================================================== */
+let currentPanState = "";
+let currentPanCategory = "";
+let currentPanSearch = "";
+
+function setPanState(stateCode, btn) {
+  currentPanState = stateCode;
+  document.querySelectorAll(".state-tab-btn").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  renderPanIndiaExams();
+}
+
+function setPanCategory(cat, btn) {
+  currentPanCategory = cat;
+  document.querySelectorAll(".domain-tab-pill").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  renderPanIndiaExams();
+}
+
+function handlePanSearch(val) {
+  currentPanSearch = (val || "").trim().toLowerCase();
+  renderPanIndiaExams();
+}
+
+function handleHeroSearch(val) {
+  currentPanSearch = (val || "").trim().toLowerCase();
+  const panInput = document.getElementById("panSearchInput");
+  if (panInput) panInput.value = val || "";
+  renderPanIndiaExams();
+  scrollToPanIndiaExams();
+}
+
+function quickFilterTarget(examId) {
+  const e = EXAMS.find(x => x.id === examId);
+  if (e) {
+    currentPanSearch = e.name.toLowerCase();
+    const panInput = document.getElementById("panSearchInput");
+    if (panInput) panInput.value = e.name;
+    renderPanIndiaExams();
+    scrollToPanIndiaExams();
+  }
+}
+
+function scrollToPanIndiaExams() {
+  const el = document.getElementById("panIndiaExamsSection");
+  if (el) el.scrollIntoView({ behavior: "smooth" });
+}
+
+function renderPanIndiaExams() {
+  const container = document.getElementById("panIndiaExamGrid");
+  const countBadge = document.getElementById("panIndiaCountBadge");
+  if (!container) return;
+
+  let filtered = EXAMS.filter(e => {
+    // State matching: if currentPanState is CENTRAL, match CENTRAL or All India
+    let matchState = true;
+    if (currentPanState === "CENTRAL") {
+      matchState = e.stateCode === "CENTRAL" || e.state === "All India Central" || e.level === "All India";
+    } else if (currentPanState) {
+      matchState = e.stateCode === currentPanState || e.state === currentPanState;
+    }
+
+    const matchCat = !currentPanCategory || e.category === currentPanCategory;
+    const matchQ = !currentPanSearch || (
+      (e.name || "") + " " + (e.board || "") + " " + (e.posts || "") + " " + (e.keywords || "") + " " + (e.state || "")
+    ).toLowerCase().includes(currentPanSearch);
+    return matchState && matchCat && matchQ;
+  });
+
+  if (countBadge) {
+    countBadge.textContent = "Showing " + filtered.length + " of " + EXAMS.length + " Central & State Govt Examinations";
+  }
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:40px;background:#f8fafc;border-radius:12px;border:1px dashed #cbd5e1;">
+        <p style="font-size:16px;font-weight:700;color:#334155;margin:0 0 6px;">No exams found matching your search filter</p>
+        <p style="font-size:13.5px;color:#64748b;margin:0 0 12px;">Try clearing filters or search by broader keywords like "Police", "CGL", "SI", "Bank", "Patwari", "Teacher".</p>
+        <button class="btn ghost" onclick="currentPanState='';currentPanCategory='';currentPanSearch='';document.getElementById('panSearchInput').value='';renderPanIndiaExams();">Reset All Filters</button>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(e => `
+    <div class="pan-exam-card">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <span style="display:inline-block;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;text-transform:uppercase;">
+            ${e.board || e.level || 'Govt Board'}
+          </span>
+          <span style="font-size:11.5px;font-weight:700;color:${e.state === 'Odisha State' ? '#059669' : '#475569'};background:#f8fafc;padding:2px 8px;border-radius:999px;border:1px solid #e2e8f0;">
+            ${e.state || 'All India'}
+          </span>
+        </div>
+
+        <h4 style="font-size:16.5px;font-weight:850;color:#0a192f;margin:0 0 6px;line-height:1.3;">
+          ${e.name}
+        </h4>
+
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;font-size:11.5px;color:#475569;">
+          <span style="background:#f1f5f9;padding:2px 7px;border-radius:4px;font-weight:600;">🎓 ${e.qualification || 'Graduation'}</span>
+          <span style="background:#f1f5f9;padding:2px 7px;border-radius:4px;font-weight:600;">⏳ ${e.age || '18-32 Yrs'}</span>
+          <span style="background:#f1f5f9;padding:2px 7px;border-radius:4px;font-weight:600;">📂 ${e.category || 'Recruitment'}</span>
+        </div>
+
+        <p style="font-size:12.5px;line-height:1.45;color:#475569;margin:0 0 12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;" title="${e.posts || ''}">
+          <strong>Posts:</strong> ${e.posts || 'Multiple Central & State Govt vacancies'}
+        </p>
+
+        <!-- Collapsible Details -->
+        <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:6px 10px;margin-bottom:12px;font-size:12px;">
+          <summary style="font-weight:750;color:#1e3a8a;cursor:pointer;">📋 Syllabus & Exam Pattern ▾</summary>
+          <div style="margin-top:8px;padding-top:8px;border-top:1px solid #e2e8f0;color:#334155;line-height:1.5;">
+            <div style="margin-bottom:6px;"><strong style="color:#0f172a;">Pattern:</strong><br><span style="white-space:pre-line;">${e.pattern || 'Stage-wise CBT + Certificate Verification'}</span></div>
+            <div><strong style="color:#0f172a;">Core Subjects:</strong><br><span style="white-space:pre-line;">${e.syllabus || 'Quantitative, Reasoning, General Studies, Language'}</span></div>
+          </div>
+        </details>
+      </div>
+
+      <div style="display:flex;gap:8px;align-items:center;padding-top:10px;border-top:1px solid #f1f5f9;">
+        <button class="btn orange" style="padding:6px 12px;font-size:12px;flex:1;" onclick="show('tests')">
+          Mock Test →
+        </button>
+        <button class="btn ghost" style="padding:6px 12px;font-size:12px;flex:1;" onclick="show('pyq')">
+          PYQ Papers
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.addEventListener("DOMContentLoaded", ()=>{ renderPanIndiaExams(); renderUser(); renderExams(); renderTests(); renderBlog(); show("home"); });
 
 
 /* ==========================================================================
