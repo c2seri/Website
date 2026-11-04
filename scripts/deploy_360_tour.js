@@ -229,3 +229,4 @@ if (startIndex !== -1 && endIndex !== -1) {
 } else {
   console.error('Could not find markers in library/index.html');
 }
+

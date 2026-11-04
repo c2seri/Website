@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="0; url=/library/login.html">
+  <title>C2S Login Portal</title>
+  <script>
+    (function() {
+      var dest = '/library/login.html' + window.location.search + window.location.hash;
+      window.location.replace(dest);
+    })();
+  </script>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0a192f; color: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+    .card { text-align: center; padding: 30px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
+    a { color: #f97316; font-weight: 700; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Redirecting to C2S Login Portal...</h2>
+    <p>If your browser does not redirect automatically, <a href="/library/login.html">click here to continue &rarr;</a></p>
+  </div>
+</body>
+</html>

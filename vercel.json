@@ -1,6 +1,52 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/library",
+      "destination": "/library/index.html"
+    },
+    {
+      "source": "/admission",
+      "destination": "/library/admission.html"
+    },
+    {
+      "source": "/admission.html",
+      "destination": "/library/admission.html"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/library/dashboard.html"
+    },
+    {
+      "source": "/dashboard.html",
+      "destination": "/library/dashboard.html"
+    },
+    {
+      "source": "/shifts",
+      "destination": "/library/shifts.html"
+    },
+    {
+      "source": "/shifts.html",
+      "destination": "/library/shifts.html"
+    },
+    {
+      "source": "/facilities",
+      "destination": "/library/facilities.html"
+    },
+    {
+      "source": "/facilities.html",
+      "destination": "/library/facilities.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/library/login.html"
+    },
+    {
+      "source": "/login.html",
+      "destination": "/library/login.html"
+    }
+  ],
   "redirects": [
     {
       "source": "/index.html",

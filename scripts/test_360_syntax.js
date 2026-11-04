@@ -7,3 +7,4 @@ try {
 } catch (e) {
   console.error('Syntax error:', e);
 }
+
