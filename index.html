@@ -242,7 +242,16 @@
           </div>
         </div>
 
-        <!-- 3. Class Notes & Study Material -->
+        <!-- 2. Courses (PW Vidyapeeth Style Offline Batches) -->
+        <button class="nav-link" data-nav="courses" onclick="show('courses');closeMobileNav();">Courses (Vidyapeeth)</button>
+
+        <!-- 3. Books & Study Material Store -->
+        <button class="nav-link" data-nav="books" onclick="show('books');closeMobileNav();">Books &amp; Material</button>
+
+        <!-- 4. Current Affairs Portal -->
+        <button class="nav-link" data-nav="current-affairs" onclick="show('current-affairs');closeMobileNav();">Current Affairs</button>
+
+        <!-- 5. Class Notes -->
         <button class="nav-link" data-nav="notes" onclick="show('notes');closeMobileNav();">Class Notes</button>
 
         <!-- 4. PYQ Papers (Previous Year Questions) -->
@@ -458,200 +467,54 @@
         WhatsApp, or email was sent.
       </div>
 
-      <!-- SECTION: Popular Exam Tracks -->
-      <div class="section-header">
-        <span class="section-tag">COMPETITIVE EXAM TRACKS</span>
-        <h2>Explore Competitive Exams</h2>
-        <p>Select your target exam to view syllabus overview, criteria, eligibility, pattern, posts and state relation.
-          Zero invented dates or fees.</p>
+      <!-- SECTION: 204+ Pan-India Govt Exams Directory -->
+      <div id="panIndiaExamsSection" class="section-header" style="margin-top:36px;">
+        <span class="section-tag">PAN-INDIA 204+ GOVT EXAM DIRECTORY</span>
+        <h2>Explore Central &amp; State Govt Examinations</h2>
+        <p>Browse official syllabi, multi-stage selection patterns, eligibility criteria &amp; target posts for 204+ recruitments across Central commissions and 12+ Indian states.</p>
         <div class="section-divider"></div>
       </div>
 
-      <!-- Filter Chips for Level -->
-      <div class="filter-chips">
-        <button class="chip-btn active" onclick="applyExamFilter('', this)">All Exam Tracks (10)</button>
-        <button class="chip-btn" onclick="applyExamFilter('All India', this)">All India Exams (6)</button>
-        <button class="chip-btn" onclick="applyExamFilter('Odisha State', this)">Odisha State Exams (4)</button>
+      <!-- State Filter Tabs (Horizontal Scroll) -->
+      <div class="state-tabs-scroll">
+        <button type="button" class="state-tab-btn active" onclick="setPanState('', this)">🇮🇳 All India Central (75+)</button>
+        <button type="button" class="state-tab-btn" onclick="setPanState('ODISHA', this)">🏛️ Odisha State (25+)</button>
+        <button type="button" class="state-tab-btn" onclick="setPanState('WB', this)">📍 West Bengal (12)</button>
+        <button type="button" class="state-tab-btn" onclick="setPanState('BIHAR', this)">📍 Bihar (15)</button>
+        <button type="button" class="state-tab-btn" onclick="setPanState('UP', this)">📍 Uttar Pradesh (16)</button>
+        <button type="button" class="state-tab-btn" onclick="setPanState('RAJASTHAN', this)">📍 Rajasthan (14)</button>
+        <button type="button" class="state-tab-btn" onclick="setPanState('MP', this)">📍 Madhya Pradesh (12)</button>
+        <button type="button" class="state-tab-btn" onclick="setPanState('MAHARASHTRA', this)">📍 Maharashtra (12)</button>
+        <button type="button" class="state-tab-btn" onclick="setPanState('OTHER_STATES', this)">📍 Other States (23)</button>
       </div>
 
-      <!-- 10 Exam Cards Grid -->
-      <div class="exam-grid">
-        <!-- 1. BANK -->
-        <div class="exam-card" data-level="All India">
-          <div>
-            <div class="exam-card-top">
-              <span class="exam-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2l10 5H2l10-5z"/></svg></span>
-              <span class="pill blue">All India</span>
-            </div>
-            <h3>BANK Exams</h3>
-            <p class="exam-card-posts">Clerk, Probationary Officer (PO), Specialist Officer (IBPS / SBI / National
-              Banks)</p>
-          </div>
-          <div class="exam-card-actions">
-            <button class="exam-card-cta" onclick="filterExam('All India','BANK')">View Pattern &amp; Syllabus
-              →</button>
-            <span class="small" style="font-weight:700;color:var(--c2s-navy-800);">IBPS / SBI</span>
-          </div>
-        </div>
+      <!-- Domain Category Filter Pills -->
+      <div class="domain-tabs-scroll">
+        <button type="button" class="domain-tab-pill active" onclick="setPanCategory('', this)">All Domains</button>
+        <button type="button" class="domain-tab-pill" onclick="setPanCategory('Civil Services &amp; Admin', this)">Civil Services &amp; Admin</button>
+        <button type="button" class="domain-tab-pill" onclick="setPanCategory('Police &amp; Defence', this)">Police &amp; Defence</button>
+        <button type="button" class="domain-tab-pill" onclick="setPanCategory('Banking &amp; Insurance', this)">Banking &amp; Insurance</button>
+        <button type="button" class="domain-tab-pill" onclick="setPanCategory('SSC &amp; Central Staff', this)">SSC &amp; Staff Selection</button>
+        <button type="button" class="domain-tab-pill" onclick="setPanCategory('Railways', this)">Railways</button>
+        <button type="button" class="domain-tab-pill" onclick="setPanCategory('Teaching &amp; Education', this)">Teaching &amp; Education</button>
+        <button type="button" class="domain-tab-pill" onclick="setPanCategory('Technical &amp; Engineering', this)">Technical &amp; Engineering</button>
+        <button type="button" class="domain-tab-pill" onclick="setPanCategory('Revenue &amp; Clerical', this)">Revenue &amp; Clerical</button>
+      </div>
 
-        <!-- 2. SSC -->
-        <div class="exam-card" data-level="All India">
-          <div>
-            <div class="exam-card-top">
-              <span class="exam-icon orange"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
-              <span class="pill">All India</span>
-            </div>
-            <h3>SSC Exams</h3>
-            <p class="exam-card-posts">CGL, CHSL, GD Constable, MTS and other Group B/C Central Govt Posts</p>
-          </div>
-          <div class="exam-card-actions">
-            <button class="exam-card-cta" onclick="filterExam('All India','SSC')">View Pattern &amp; Syllabus →</button>
-            <span class="small" style="font-weight:700;color:var(--c2s-navy-800);">Tier 1 &amp; 2</span>
-          </div>
-        </div>
-
-        <!-- 3. Railway -->
-        <div class="exam-card" data-level="All India">
-          <div>
-            <div class="exam-card-top">
-              <span class="exam-icon green"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16M12 3v8M8 19l-3 3M16 19l3 3"/></svg></span>
-              <span class="pill green">All India</span>
-            </div>
-            <h3>Railway Exams</h3>
-            <p class="exam-card-posts">RRB NTPC, ALP, Technician, Group D and other Indian Railway recruitments</p>
-          </div>
-          <div class="exam-card-actions">
-            <button class="exam-card-cta" onclick="filterExam('All India','RAILWAY')">View Pattern &amp; Syllabus
-              →</button>
-            <span class="small" style="font-weight:700;color:var(--c2s-navy-800);">RRB CBT</span>
-          </div>
-        </div>
-
-        <!-- 4. UPSC -->
-        <div class="exam-card" data-level="All India">
-          <div>
-            <div class="exam-card-top">
-              <span class="exam-icon purple"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="22" x2="22" y2="22"/><line x1="12" y1="2" x2="12" y2="5"/><path d="M4 22V10l8-5 8 5v12M8 14h8M8 18h8"/></svg></span>
-              <span class="pill purple">All India</span>
-            </div>
-            <h3>UPSC Exams</h3>
-            <p class="exam-card-posts">Civil Services (IAS, IPS, IFS) and other Central Government Services</p>
-          </div>
-          <div class="exam-card-actions">
-            <button class="exam-card-cta" onclick="filterExam('All India','UPSC')">View Pattern &amp; Syllabus
-              →</button>
-            <span class="small" style="font-weight:700;color:var(--c2s-navy-800);">Prelims/Mains</span>
-          </div>
-        </div>
-
-        <!-- 5. Defence -->
-        <div class="exam-card" data-level="All India">
-          <div>
-            <div class="exam-card-top">
-              <span class="exam-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-              <span class="pill blue">All India</span>
-            </div>
-            <h3>Defence Exams</h3>
-            <p class="exam-card-posts">NDA, CDS, AFCAT and officer entries across Army, Navy &amp; Air Force</p>
-          </div>
-          <div class="exam-card-actions">
-            <button class="exam-card-cta" onclick="filterExam('All India','DEFENCE')">View Pattern &amp; Syllabus
-              →</button>
-            <span class="small" style="font-weight:700;color:var(--c2s-navy-800);">SSB Entry</span>
-          </div>
-        </div>
-
-        <!-- 6. Teaching -->
-        <div class="exam-card" data-level="All India">
-          <div>
-            <div class="exam-card-top">
-              <span class="exam-icon orange"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg></span>
-              <span class="pill">All India</span>
-            </div>
-            <h3>Teaching Exams</h3>
-            <p class="exam-card-posts">CTET, TGT, PGT, PRT and various All-India teaching examinations</p>
-          </div>
-          <div class="exam-card-actions">
-            <button class="exam-card-cta" onclick="filterExam('All India','TEACHING')">View Pattern &amp; Syllabus
-              →</button>
-            <span class="small" style="font-weight:700;color:var(--c2s-navy-800);">TET/CTET</span>
-          </div>
-        </div>
-
-        <!-- 7. OSSC (Odisha) -->
-        <div class="exam-card" data-level="Odisha State">
-          <div>
-            <div class="exam-card-top">
-              <span class="exam-icon green"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></span>
-              <span class="pill green">Odisha State</span>
-            </div>
-            <h3>OSSC Exams</h3>
-            <p class="exam-card-posts">Various Group B and Group C posts under the Government of Odisha</p>
-          </div>
-          <div class="exam-card-actions">
-            <button class="exam-card-cta" onclick="filterExam('Odisha State','OSSC')">View Pattern &amp; Syllabus
-              →</button>
-            <span class="small" style="font-weight:700;color:var(--c2s-emerald-600);">Odisha Govt</span>
-          </div>
-        </div>
-
-        <!-- 8. OSSSC (Odisha) -->
-        <div class="exam-card" data-level="Odisha State">
-          <div>
-            <div class="exam-card-top">
-              <span class="exam-icon purple"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></span>
-              <span class="pill purple">Odisha State</span>
-            </div>
-            <h3>OSSSC Exams</h3>
-            <p class="exam-card-posts">Subordinate Group C and Group D posts across Odisha state departments</p>
-          </div>
-          <div class="exam-card-actions">
-            <button class="exam-card-cta" onclick="filterExam('Odisha State','OSSSC')">View Pattern &amp; Syllabus
-              →</button>
-            <span class="small" style="font-weight:700;color:var(--c2s-purple-600);">Subordinate</span>
-          </div>
-        </div>
-
-        <!-- 9. OPSC (Odisha) -->
-        <div class="exam-card" data-level="Odisha State">
-          <div>
-            <div class="exam-card-top">
-              <span class="exam-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
-              <span class="pill blue">Odisha State</span>
-            </div>
-            <h3>OPSC Exams</h3>
-            <p class="exam-card-posts">Odisha Administrative Service (OAS), OFS, OPS and Group A/B state gazetted posts
-            </p>
-          </div>
-          <div class="exam-card-actions">
-            <button class="exam-card-cta" onclick="filterExam('Odisha State','OPSC')">View Pattern &amp; Syllabus
-              →</button>
-            <span class="small" style="font-weight:700;color:var(--c2s-blue-700);">OAS State Cadre</span>
-          </div>
-        </div>
-
-        <!-- 10. Odisha Police -->
-        <div class="exam-card" data-level="Odisha State">
-          <div>
-            <div class="exam-card-top">
-              <span class="exam-icon orange"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="11" r="3"/></svg></span>
-              <span class="pill">Odisha State</span>
-            </div>
-            <h3>Odisha Police</h3>
-            <p class="exam-card-posts">Constable, Sub-Inspector (SI) and specialist Odisha Police entries</p>
-          </div>
-          <div class="exam-card-actions">
-            <button class="exam-card-cta" onclick="filterExam('Odisha State','ODISHA-POLICE')">View Pattern &amp;
-              Syllabus →</button>
-            <span class="small" style="font-weight:700;color:var(--c2s-orange-600);">Constable / SI</span>
-          </div>
+      <!-- Live Search & Counter Bar -->
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:12px;background:#f8fafc;padding:10px 16px;border-radius:10px;border:1px solid #e2e8f0;">
+        <span id="panIndiaCountBadge" style="font-size:13px;font-weight:750;color:#1e3a8a;">
+          Showing 204 Central &amp; State Govt Examinations
+        </span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <input id="panSearchInput" type="search" placeholder="Quick filter by exam name or post..." oninput="handlePanSearch(this.value)" style="padding:6px 12px;font-size:13px;border:1px solid #cbd5e1;border-radius:8px;outline:none;width:240px;">
         </div>
       </div>
 
-      <p style="text-align:center;margin-bottom:40px;">
-        <button class="btn ghost" onclick="show('exams')">View All 10 Exam Tracks with Collapsible Accordions &amp;
-          Keyword Search →</button>
-      </p>
+      <!-- Pan-India Exam Cards Container -->
+      <div id="panIndiaExamGrid" class="pan-india-grid" style="margin-bottom:36px;">
+        <!-- Dynamically rendered by app.js from 204+ examinations database -->
+      </div>
 
       <!-- SECTION: Weekly Test Series (Testbook Style Mock Cards) -->
       <div class="section-header">
@@ -777,6 +640,118 @@
           <button class="btn ghost"
             onclick="show('tests');setTimeout(()=>document.getElementById('givenTests').scrollIntoView({behavior:'smooth'}),80)">View
             Given Tests &amp; Marks →</button>
+        </div>
+      </div>
+
+      <!-- SECTION: PW Vidyapeeth Model Classroom Courses Showcase -->
+      <div class="showcase-card" style="border-top:5px solid #059669;margin-bottom:28px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
+          <div>
+            <span class="badge" style="background:#ecfdf5;color:#059669;border-color:#a7f3d0;">🏛️ Vidyapeeth Model Offline Centre</span>
+            <h2 style="font-size:26px;font-weight:900;color:var(--c2s-navy-800);margin:8px 0 6px;">C2S Classroom Courses (Offline Vidyapeeth)</h2>
+            <p style="color:var(--c2s-slate-600);font-size:14.5px;margin:0 0 16px;">
+              Targeted classroom batches conducted at our NH-16 Patrapada centre with Smart Board technology, on-premise CBT computer labs, daily 1-on-1 faculty doubt counters, and complete printed textbooks.
+            </p>
+          </div>
+          <button class="btn orange" onclick="show('courses')">View All Classroom Batches &amp; Free Demo →</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px;">
+          <!-- Course Card 1 -->
+          <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;">
+            <span class="pill green" style="font-size:11px;font-weight:750;">Odisha Govt Exams</span>
+            <h4 style="font-size:16px;font-weight:800;color:#0f172a;margin:8px 0 4px;">Odisha Govt Super-Batch</h4>
+            <p style="font-size:12.5px;color:#64748b;margin:0 0 10px;">OSSC CGL, OSSSC CRE, RI, ARI, Amin, ICDS &amp; PEO (1-Year Foundation)</p>
+            <div style="font-size:12px;color:#334155;margin-bottom:12px;">
+              ⏱️ Morning &amp; Evening Batches • 👨‍🏫 12+ Yrs Faculty • 📚 4 Printed Books Included
+            </div>
+            <button class="btn ghost" style="width:100%;font-size:12px;padding:6px;" onclick="show('courses')">Course Details &amp; Demo →</button>
+          </div>
+
+          <!-- Course Card 2 -->
+          <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;">
+            <span class="pill blue" style="font-size:11px;font-weight:750;">Banking &amp; Insurance</span>
+            <h4 style="font-size:16px;font-weight:800;color:#0f172a;margin:8px 0 4px;">Banking Foundation Super-Batch</h4>
+            <p style="font-size:12.5px;color:#64748b;margin:0 0 10px;">IBPS PO/Clerk, SBI PO/Clerk, RRB Gramya Banks &amp; RBI Assistant</p>
+            <div style="font-size:12px;color:#334155;margin-bottom:12px;">
+              ⏱️ 6 Months Intensive • ⚡ Daily Vedic Math • 💻 Lab Timer Drills
+            </div>
+            <button class="btn ghost" style="width:100%;font-size:12px;padding:6px;" onclick="show('courses')">Course Details &amp; Demo →</button>
+          </div>
+
+          <!-- Course Card 3 -->
+          <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;">
+            <span class="pill orange" style="font-size:11px;font-weight:750;">Police &amp; Uniformed Forces</span>
+            <h4 style="font-size:16px;font-weight:800;color:#0f172a;margin:8px 0 4px;">Odisha Police SI &amp; Constable</h4>
+            <p style="font-size:12.5px;color:#64748b;margin:0 0 10px;">Physical Ground Training + Smart Board Written Classroom Batch</p>
+            <div style="font-size:12px;color:#334155;margin-bottom:12px;">
+              ⏱️ 4 Months Fast-Track • 🏃 1600m Running Guidance • 📝 Weekly OMR Mocks
+            </div>
+            <button class="btn ghost" style="width:100%;font-size:12px;padding:6px;" onclick="show('courses')">Course Details &amp; Demo →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: Books & Study Material Showcase -->
+      <div class="showcase-card" style="border-top:5px solid #ea580c;margin-bottom:28px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+          <div>
+            <span class="badge orange">Standard Publications</span>
+            <h2 style="font-size:26px;font-weight:900;color:var(--c2s-navy-800);margin:8px 0 6px;">C2S Books &amp; Study Material</h2>
+            <p style="color:var(--c2s-slate-600);font-size:14.5px;margin:0;">
+              Authored by senior faculty with 10+ years coaching experience. Available as printed copies at the Patrapada reception desk or downloadable sample handbooks.
+            </p>
+          </div>
+          <button class="btn ghost" onclick="show('books')">Explore All Textbooks &amp; Material →</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:14px;">
+          <div style="background:#ffffff;border:1px solid #fed7aa;border-radius:10px;padding:14px;">
+            <strong style="color:#0f172a;display:block;font-size:14.5px;">Quant Brahmastra (480 pgs)</strong>
+            <span style="font-size:12px;color:#64748b;">Arithmetic, Vedic Math &amp; DI • 3500+ MCQs</span>
+            <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-weight:800;color:#1e3a8a;">₹349</span>
+              <button class="btn ghost" style="padding:4px 8px;font-size:11px;" onclick="downloadSamplePdf('C2S Quantitative Aptitude Brahmastra')">Free Sample PDF ↓</button>
+            </div>
+          </div>
+
+          <div style="background:#ffffff;border:1px solid #fed7aa;border-radius:10px;padding:14px;">
+            <strong style="color:#0f172a;display:block;font-size:14.5px;">Odisha GK Compendium (360 pgs)</strong>
+            <span style="font-size:12px;color:#64748b;">History, Heritage, Schemes &amp; 500+ MCQs</span>
+            <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-weight:800;color:#1e3a8a;">₹280</span>
+              <button class="btn ghost" style="padding:4px 8px;font-size:11px;" onclick="downloadSamplePdf('Odisha General Knowledge Compendium')">Free Sample PDF ↓</button>
+            </div>
+          </div>
+
+          <div style="background:#ffffff;border:1px solid #fed7aa;border-radius:10px;padding:14px;">
+            <strong style="color:#0f172a;display:block;font-size:14.5px;">GS 5000+ MCQs Bank (540 pgs)</strong>
+            <span style="font-size:12px;color:#64748b;">Polity, Modern History, Science NCERT</span>
+            <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-weight:800;color:#1e3a8a;">₹370</span>
+              <button class="btn ghost" style="padding:4px 8px;font-size:11px;" onclick="downloadSamplePdf('GS 5000+ Chapterwise Solved Question Bank')">Free Sample PDF ↓</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: Current Affairs Weekly Digest Showcase -->
+      <div class="showcase-card" style="border-top:5px solid #1d4ed8;margin-bottom:28px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+              <span class="badge blue">Weekly Editorial Digest</span>
+              <span style="font-size:12px;font-weight:750;color:#059669;background:#ecfdf5;padding:2px 8px;border-radius:999px;">Issue #45 Live</span>
+            </div>
+            <h3 style="font-size:22px;font-weight:900;color:var(--c2s-navy-800);margin:0 0 4px;">Weekly Current Affairs (1st Nov – 7th Nov 2024)</h3>
+            <p style="color:var(--c2s-slate-600);font-size:13.5px;margin:0;">
+              Odisha State Policies, GST Revenue Records, RBI Monetary Stance, Ballistic Missile Tests &amp; 25 Practice MCQs with solutions.
+            </p>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn orange" onclick="downloadCaPdf('CA-WEEK-NOV-1-7-2024')">📥 Download Weekly PDF (Printable)</button>
+            <button class="btn ghost" onclick="show('current-affairs')">Read Full Article &amp; Quiz →</button>
+          </div>
         </div>
       </div>
 
@@ -1169,7 +1144,43 @@
       <div id="passGrid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:24px;margin-top:24px;"></div>
     </section>
 
-  </main>
+  
+    <!-- VIEW: All Courses (PW Vidyapeeth Model Offline Classroom Batches) -->
+    <div data-view="courses" class="hidden">
+      <div class="section-header">
+        <span class="section-tag">OFFLINE CLASSROOM PROGRAMMES • NH-16 PATRAPADA</span>
+        <h2>C2S Classroom Courses (Vidyapeeth Model)</h2>
+        <p>Comprehensive smart board classroom teaching, weekly locked CBT mock tests in dedicated lab, daily 1-on-1 doubt counters, and complete printed study material at NH-16 Patrapada Centre, Bhubaneswar.</p>
+        <div class="section-divider"></div>
+      </div>
+
+      <div id="coursesList"></div>
+    </div>
+
+    <!-- VIEW: Books & Study Material Store -->
+    <div data-view="books" class="hidden">
+      <div class="section-header">
+        <span class="section-tag">C2S ACADEMIC PUBLICATIONS &amp; HANDBOOKS</span>
+        <h2>Books &amp; Comprehensive Study Material</h2>
+        <p>Standard printed textbooks, smart board formula handbooks, and previous 5 years chapterwise solved question banks prepared by senior faculty with 10+ years teaching experience.</p>
+        <div class="section-divider"></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));gap:20px;" id="booksList"></div>
+    </div>
+
+    <!-- VIEW: Current Affairs Portal (Weekly Digests with PDF Download Engine) -->
+    <div data-view="current-affairs" class="hidden">
+      <div class="section-header">
+        <span class="section-tag">WEEKLY &amp; MONTHLY EDITORIAL DIGESTS</span>
+        <h2>Current Affairs &amp; Special State GK</h2>
+        <p>Authoritative weekly current affairs coverage across National, Odisha State, Banking, Economy, Science &amp; Defence with instant printable PDF download engine for rapid revision.</p>
+        <div class="section-divider"></div>
+      </div>
+
+      <div id="currentAffairsList"></div>
+    </div>
+</main>
 
   <!-- Footer (4 Columns, NO Home Button anywhere) -->
   <footer class="site-footer">

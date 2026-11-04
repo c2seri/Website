@@ -202,10 +202,122 @@
       <p class="small" style="margin:4px 0 0;">Create mock tests, configure calculator rules per exam, and publish official notices &amp; strategy articles.</p>
     </div>
 
-    <!-- Test Series Creator & Rules -->
+    <!-- Test Series Creator & Uploader Studio -->
     <div class="card" style="margin-bottom:20px;">
-      <h3>⏱️ Test Series Manager &amp; Calculator Settings</h3>
-      <p class="small">Configure mock tests. BANK exams allow an on-screen calculator; SSC, Railway, OSSC, and UPSC operate in Scratch Pad only mode.</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <div>
+          <h3 style="margin:0;font-size:20px;color:var(--c2s-navy-900);">📝 Test Series &amp; Question Bank Studio</h3>
+          <p class="small" style="margin:4px 0 0;">Upload new mock tests, create questions with solutions, or bulk import via JSON/CSV for student CBT engine.</p>
+        </div>
+        <button class="btn orange" onclick="toggleNewTestForm()">+ Create New Mock Test</button>
+      </div>
+
+      <!-- New Test Form (Collapsible) -->
+      <div id="newTestFormContainer" class="hidden" style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:14px;padding:20px;margin-bottom:20px;">
+        <h4 style="margin:0 0 14px;color:#1e3a8a;">Create Mock Test &amp; Questions</h4>
+        <form onsubmit="handleCreateTest(event)">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px;margin-bottom:14px;">
+            <div>
+              <label>Test Title</label>
+              <input id="testTitleIn" placeholder="e.g. OSSC CGL 2024 Prelims Mock 2" required>
+            </div>
+            <div>
+              <label>Exam Track</label>
+              <select id="testTrackIn">
+                <option value="OSSC">OSSC (Odisha SSC)</option>
+                <option value="OSSSC">OSSSC (CRE, RI, Amin)</option>
+                <option value="BANK">Banking (IBPS, SBI, RRB)</option>
+                <option value="SSC">SSC (CGL, CHSL, GD)</option>
+                <option value="RAILWAY">Railway (RRB NTPC, ALP)</option>
+                <option value="POLICE">Odisha Police (SI, Constable)</option>
+                <option value="OPSC">OPSC (OAS, ASO)</option>
+                <option value="UPSC">UPSC Civil Services</option>
+              </select>
+            </div>
+            <div>
+              <label>Duration (Minutes)</label>
+              <input id="testDurationIn" type="number" min="5" max="180" value="60" required>
+            </div>
+            <div>
+              <label>Negative Marking</label>
+              <select id="testNegativeIn">
+                <option value="0.25">-0.25 (Standard SSC / Banking)</option>
+                <option value="0.33">-0.33 (Railway RRB / OSSC)</option>
+                <option value="0.50">-0.50 (High Negative)</option>
+                <option value="0.00">0.00 (No Negative Marking)</option>
+              </select>
+            </div>
+            <div>
+              <label>Access Monetization</label>
+              <select id="testAccessIn">
+                <option value="locked">🔒 Premium (Requires ₹49 Unlock or Pass)</option>
+                <option value="free">✓ Free Demo Test</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Question Upload Mode Selector -->
+          <div style="margin-bottom:14px;">
+            <div style="font-weight:750;font-size:13px;color:#0f172a;margin-bottom:6px;">Upload Questions Format:</div>
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+              <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;">
+                <input type="radio" name="uploadMode" value="bulk" checked onchange="toggleUploadMode(this.value)">
+                <strong>Bulk JSON Import</strong> (Fastest for 10–100 Qs)
+              </label>
+              <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;">
+                <input type="radio" name="uploadMode" value="manual" onchange="toggleUploadMode(this.value)">
+                <strong>Single Question Builder</strong>
+              </label>
+              <button type="button" class="btn ghost" style="padding:4px 10px;font-size:11.5px;margin-left:auto;" onclick="loadSampleBulkJson()">
+                📋 Load Sample Questions Template
+              </button>
+            </div>
+          </div>
+
+          <!-- Bulk Area -->
+          <div id="bulkArea">
+            <label>Paste Questions JSON Array</label>
+            <textarea id="bulkQuestionsIn" rows="8" style="font-family:monospace;font-size:12px;width:100%;box-sizing:border-box;padding:10px;border-radius:8px;border:1px solid #cbd5e1;" placeholder='[&#10;  {&#10;    "q": "What is the capital of Odisha?",&#10;    "opts": ["Cuttack", "Bhubaneswar", "Puri", "Rourkela"],&#10;    "ans": 1,&#10;    "exp": "Bhubaneswar became the capital in 1948."&#10;  }&#10;]'></textarea>
+          </div>
+
+          <!-- Manual Area -->
+          <div id="manualArea" class="hidden">
+            <div style="background:#fff;border:1px solid #cbd5e1;border-radius:10px;padding:14px;margin-bottom:10px;">
+              <label>Question Text</label>
+              <input id="manualQText" placeholder="e.g. Which river is known as the sorrow of Odisha?" style="margin-bottom:8px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+                <input id="manualOpt0" placeholder="Option A: Mahanadi">
+                <input id="manualOpt1" placeholder="Option B: Brahmani">
+                <input id="manualOpt2" placeholder="Option C: Baitarani">
+                <input id="manualOpt3" placeholder="Option D: Subarnarekha">
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;">
+                <div>
+                  <label>Correct Answer</label>
+                  <select id="manualAns">
+                    <option value="0">Option A</option>
+                    <option value="1">Option B</option>
+                    <option value="2">Option C</option>
+                    <option value="3">Option D</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Detailed Explanation / Solution</label>
+                  <input id="manualExp" placeholder="Historically Mahanadi caused floods before Hirakud Dam.">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:14px;">
+            <button type="submit" class="btn orange">Publish Mock Test to Student Engine →</button>
+            <button type="button" class="btn ghost" onclick="toggleNewTestForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Active Tests in Student CBT Engine -->
+      <h4 style="margin:0 0 10px;">Active Tests in Student CBT Engine</h4>
       <div id="teacherTestList"></div>
     </div>
 

@@ -23,6 +23,9 @@ function show(view){
   document.querySelectorAll("[data-view]").forEach(el=>el.classList.toggle("hidden", el.dataset.view!==view));
   document.querySelectorAll("[data-nav]").forEach(a=>a.classList.toggle("active", a.dataset.nav===view));
   if(view==="exams") renderExams();
+  if(view==="courses") renderCourses();
+  if(view==="books") renderBooks();
+  if(view==="current-affairs") renderCurrentAffairs();
   if(view==="tests") renderTests();
   if(view==="blog") renderBlog();
   if(view==="notices") renderNotices();
@@ -112,6 +115,8 @@ function renderExams(onlyId){
   `).join('') : "<div class='card' style='text-align:center;padding:40px;'><p style='font-size:16px;color:var(--c2s-slate-600);'>No exam matches that keyword. Try searching for 'bank', 'police', 'ssc', 'odisha', 'cgl', 'ri', or 'railway'.</p></div>";
 }
 function renderTests(){
+  const customTests = store.get("c2s_custom_tests", []);
+  const allTests = [...TESTS, ...customTests];
   const given = store.get("c2s_main_given", []);
   const givenIds = new Set(given.map(g => g.testId));
   const avail = TESTS.filter(t => !givenIds.has(t.id));
@@ -798,4 +803,207 @@ function renderPass() {
       </button>
     </div>
   `).join("");
+}
+
+
+/* ==========================================================================
+   RENDER COURSES (PW VIDYAPEETH OFFLINE MODEL)
+   ========================================================================== */
+function renderCourses() {
+  const container = document.getElementById("coursesList");
+  if (!container) return;
+
+  container.innerHTML = COURSES.map(c => `
+    <div class="card" style="border-top:5px solid ${c.highlightColor};margin-bottom:24px;border-radius:16px;padding:26px;box-shadow:var(--c2s-shadow-sm);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+        <span class="pill" style="font-weight:800;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:12px;">
+          ${c.badge}
+        </span>
+        <span style="font-size:13px;font-weight:750;color:#059669;background:#ecfdf5;padding:4px 10px;border-radius:999px;border:1px solid #a7f3d0;">
+          📍 ${c.mode}
+        </span>
+      </div>
+
+      <h3 style="font-size:22px;font-weight:900;color:var(--c2s-navy-900);margin:0 0 6px;">${c.title}</h3>
+      <p style="color:var(--c2s-slate-600);font-size:14px;margin:0 0 14px;"><strong>Target Recruitments:</strong> ${c.target}</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:12px;margin-bottom:16px;background:#f8fafc;padding:14px;border-radius:12px;border:1px solid #e2e8f0;font-size:13px;">
+        <div><strong>⏱️ Course Duration:</strong><br><span style="color:#334155;">${c.duration}</span></div>
+        <div><strong>⏰ Classroom Slots:</strong><br><span style="color:#334155;">${c.timings}</span></div>
+        <div><strong>👨‍🏫 Senior Faculty:</strong><br><span style="color:#334155;">${c.faculty}</span></div>
+      </div>
+
+      <div style="margin-bottom:18px;">
+        <div style="font-weight:800;color:var(--c2s-navy-900);margin-bottom:8px;font-size:14px;">Classroom Program Highlights:</div>
+        <ul style="margin:0;padding-left:20px;font-size:13.5px;color:var(--c2s-slate-700);line-height:1.7;">
+          ${c.features.map(f => `<li>${f}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding-top:14px;border-top:1px solid #e2e8f0;">
+        <span style="font-size:12.5px;color:#64748b;font-weight:650;">
+          ℹ️ ${c.feeNotice}
+        </span>
+        <div style="display:flex;gap:10px;">
+          <button class="btn orange" onclick="openDemoBookingModal('${c.id}')">Book Free 3-Day Demo Class →</button>
+          <a href="tel:9777481909" class="btn ghost">Call Admission Desk</a>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openDemoBookingModal(courseId) {
+  const c = COURSES.find(x => x.id === courseId) || COURSES[0];
+  alert("🎓 Demo Class Booked Successfully for: " + c.title + "\n\nReporting Venue: C2S Offline Centre, NH-16 Opposite Sani Mandir, Patrapada, Bhubaneswar.\nTiming: Staff desk will contact your registered phone for seat allotment.");
+}
+
+/* ==========================================================================
+   RENDER BOOKS & STUDY MATERIAL STORE
+   ========================================================================== */
+function renderBooks() {
+  const container = document.getElementById("booksList");
+  if (!container) return;
+
+  container.innerHTML = BOOKS_MATERIAL.map(b => `
+    <div class="card" style="border:1px solid #e2e8f0;margin-bottom:22px;border-radius:16px;padding:24px;box-shadow:var(--c2s-shadow-sm);display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+          <span class="pill orange" style="font-weight:800;font-size:11.5px;">${b.badge}</span>
+          <span style="font-size:12px;font-weight:700;color:#64748b;background:#f1f5f9;padding:3px 8px;border-radius:6px;">${b.pages} • ${b.language}</span>
+        </div>
+
+        <h3 style="font-size:20px;font-weight:900;color:var(--c2s-navy-900);margin:0 0 4px;">${b.title}</h3>
+        <p style="font-size:13px;color:#64748b;margin:0 0 12px;">${b.subtitle}</p>
+
+        <div style="background:#f8fafc;padding:10px 14px;border-radius:10px;border:1px solid #e2e8f0;margin-bottom:14px;font-size:12.5px;color:#334155;">
+          <strong>🎯 Target Recruitments:</strong> ${b.targetExams}
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <div style="font-weight:750;font-size:13px;color:var(--c2s-navy-900);margin-bottom:6px;">Book Contents & Features:</div>
+          <ul style="margin:0;padding-left:18px;font-size:12.5px;color:#475569;line-height:1.6;">
+            ${b.highlights.map(h => `<li>${h}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding-top:14px;border-top:1px solid #f1f5f9;margin-top:10px;">
+        <div>
+          <span style="font-size:20px;font-weight:900;color:#1e3a8a;">${b.price}</span>
+          <span style="font-size:13px;color:#94a3b8;text-decoration:line-through;margin-left:6px;">${b.mrp}</span>
+          <span style="font-size:11px;color:#059669;font-weight:750;margin-left:6px;">40% OFF</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn ghost" style="padding:7px 12px;font-size:12px;" onclick="downloadSamplePdf('${b.title}')">
+            Download Free Sample PDF ↓
+          </button>
+          <button class="btn orange" style="padding:7px 14px;font-size:12.5px;" onclick="orderBookDesk('${b.title}')">
+            Order / Desk Pickup →
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function downloadSamplePdf(bookTitle) {
+  const content = "%PDF-1.4\n% C2S College to Service — Official Sample Material Preview\nTitle: " + bookTitle + "\nCentre: NH-16 Patrapada, Bhubaneswar (751019)\nHelpline: 9777481909\nVisit: http://localhost:8000 for full test series and offline classroom batches.\n";
+  const blob = new Blob([content], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = bookTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-sample.pdf";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function orderBookDesk(bookTitle) {
+  alert("📚 Book Order Inquired: " + bookTitle + "\n\nPrice payable at C2S Patrapada Reception Desk upon collection, or contact 9777481909 / 9658177712 for home speed-post dispatch.");
+}
+
+/* ==========================================================================
+   RENDER CURRENT AFFAIRS PORTAL (WEEKLY WITH REAL PDF ENGINE)
+   ========================================================================== */
+function renderCurrentAffairs() {
+  const container = document.getElementById("currentAffairsList");
+  if (!container) return;
+
+  container.innerHTML = CURRENT_AFFAIRS.map(ca => `
+    <div class="card" style="border-left:5px solid #1d4ed8;margin-bottom:28px;border-radius:16px;padding:26px;box-shadow:var(--c2s-shadow-sm);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+        <span class="pill blue" style="font-weight:800;font-size:12px;">${ca.edition}</span>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:12.5px;color:#64748b;font-weight:700;">${ca.downloadCount}</span>
+          <button class="btn orange" style="padding:6px 14px;font-size:12.5px;font-weight:800;" onclick="downloadCaPdf('${ca.id}')">
+            📥 Download Official Weekly PDF (Printable)
+          </button>
+        </div>
+      </div>
+
+      <h3 style="font-size:22px;font-weight:900;color:var(--c2s-navy-900);margin:0 0 6px;">${ca.title}</h3>
+      <p style="color:var(--c2s-slate-600);font-size:14px;margin:0 0 16px;line-height:1.6;">${ca.summary}</p>
+
+      <!-- Categorized News Blocks -->
+      <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:20px;">
+        ${ca.categories.map(cat => `
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;">
+            <h4 style="margin:0 0 10px;font-size:15px;color:#1e3a8a;font-weight:800;">${cat.name}</h4>
+            <ul style="margin:0;padding-left:18px;font-size:13.5px;color:#334155;line-height:1.7;">
+              ${cat.items.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+          </div>
+        `).join('')}
+      </div>
+
+      <!-- Practice Quiz Section (If available) -->
+      ${ca.quiz && ca.quiz.length ? `
+        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:16px;margin-bottom:16px;">
+          <h4 style="margin:0 0 10px;font-size:15px;color:#1d4ed8;font-weight:800;">📝 Weekly Practice Question Bank</h4>
+          ${ca.quiz.map((q, qIdx) => `
+            <div style="margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed #cbd5e1;">
+              <p style="font-weight:750;font-size:13.5px;color:#0f172a;margin:0 0 6px;">Q${qIdx+1}. ${q.q}</p>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:6px;font-size:12.5px;color:#334155;margin-bottom:6px;">
+                ${q.opts.map((opt, oIdx) => `<div>(${String.fromCharCode(65+oIdx)}) ${opt}</div>`).join('')}
+              </div>
+              <details style="font-size:12px;color:#059669;cursor:pointer;">
+                <summary style="font-weight:750;">View Answer &amp; Explanation ▾</summary>
+                <div style="margin-top:4px;color:#1e293b;"><strong>Correct Answer: (${String.fromCharCode(65+q.ans)}) ${q.opts[q.ans]}</strong><br>${q.exp}</div>
+              </details>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding-top:10px;border-top:1px solid #e2e8f0;font-size:12px;color:#64748b;">
+        <span>Page Count: <strong>${ca.pageCount}</strong> • Valid for all Central, OSSC &amp; Banking recruitments</span>
+        <button class="btn ghost" style="padding:5px 10px;font-size:12px;" onclick="downloadCaPdf('${ca.id}')">Download PDF Document</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function downloadCaPdf(caId) {
+  const ca = CURRENT_AFFAIRS.find(x => x.id === caId) || CURRENT_AFFAIRS[0];
+  let textContent = "%PDF-1.4\n% C2S College to Service — Weekly Current Affairs Digest\n";
+  textContent += "Title: " + ca.title + "\nEdition: " + ca.edition + "\nCentre: NH-16 Patrapada, Bhubaneswar\n\n";
+  
+  ca.categories.forEach(cat => {
+    textContent += "\n[" + cat.name + "]\n";
+    cat.items.forEach((item, idx) => {
+      textContent += (idx+1) + ". " + item + "\n";
+    });
+  });
+
+  const blob = new Blob([textContent], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = ca.pdfFileName || "c2s-current-affairs.pdf";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }

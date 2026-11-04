@@ -4855,3 +4855,362 @@ const TEST_PASS_PLANS = [
     ]
   }
 ];
+
+
+/* ==========================================================================
+   C2S OFFLINE CLASSROOM COURSES (PW VIDYAPEETH MODEL)
+   Smart board classroom batches at NH-16 Patrapada Centre, Bhubaneswar
+   ========================================================================== */
+const COURSES = [
+  {
+    id: "COURSE-ODISHA-SUPER",
+    title: "Odisha Govt Super-Batch (OSSC CGL + OSSSC CRE + RI/Amin)",
+    badge: "🏛️ Vidyapeeth Model • Classroom Centre",
+    mode: "Offline Classroom at NH-16 Patrapada",
+    target: "OSSC CGL, CHSL, CTSRE & OSSSC CRE (RI, ARI, Amin, ICDS, PEO)",
+    duration: "1 Year Comprehensive",
+    timings: "Morning Batch: 08:00 AM – 11:30 AM | Evening Batch: 04:30 PM – 08:00 PM",
+    faculty: "Odisha GS & History by 12+ Yrs Faculty, Quant by Selected Banking Mentors",
+    features: [
+      "Daily 3.5 Hours Smart Board Interactive Classroom Lectures",
+      "Comprehensive Printed Booklets (Quant, Reasoning, Odia & Odisha GK)",
+      "Weekly Locked OMR & Computer Lab Mock Tests with State Ranking",
+      "Dedicated 1-on-1 Faculty Doubt Clearing Counters (Post-class)",
+      "Daily Current Affairs & Editorial Handouts"
+    ],
+    feeNotice: "Registration ₹500 • Transparent Fee Structure at Reception Desk • Free 3-Day Demo",
+    highlightColor: "#059669"
+  },
+  {
+    id: "COURSE-BANKING-FOUNDATION",
+    title: "Banking & Insurance Foundation Batch (IBPS / SBI / RRB / RBI)",
+    badge: "🏦 Vidyapeeth Model • Speed & Accuracy Lab",
+    mode: "Offline Classroom at NH-16 Patrapada",
+    target: "SBI PO/Clerk, IBPS PO/Clerk, RRB Officer & Office Assistant, RBI Assistant",
+    duration: "6 Months Intensive + Mains Mentorship",
+    timings: "Morning: 07:30 AM – 10:30 AM | Afternoon: 02:00 PM – 05:00 PM",
+    faculty: "Ex-Bank PO Mentors & Senior Quantitative Aptitude Specialists",
+    features: [
+      "Vedic Math & Speed Calculation Drills (Daily 30 Mins)",
+      "High-Level Seating Arrangement & Puzzles Workshop",
+      "Special Financial & Banking Awareness Masterclasses",
+      "Sectional Timer Tests in On-Premise Computer Lab",
+      "Interview Guidance & Group Discussion Sessions by Senior Bank Officers"
+    ],
+    feeNotice: "Includes All 6 Printed Volumes + Weekly Test Pass",
+    highlightColor: "#1d4ed8"
+  },
+  {
+    id: "COURSE-ODISHA-POLICE",
+    title: "Odisha Police SI & Constable Special Mission Batch",
+    badge: "🛡️ Physical Ground Training + Smart Board Written",
+    mode: "Classroom + Ground Coaching (Patrapada Centre)",
+    target: "Odisha Police Sub-Inspector (SI Civil), Constable, OSAP & IRB Sepoy",
+    duration: "4 Months Target Fast-Track",
+    timings: "Physical Fitness: 06:00 AM – 07:30 AM | Classroom: 11:00 AM – 02:00 PM",
+    faculty: "Physical Training by Ex-Armed Forces Instructor + General Studies Faculty",
+    features: [
+      "Morning Physical Efficiency Guidance (1600m Run, Long Jump, High Jump)",
+      "Odia Grammar & English Comprehension Specialised Modules",
+      "Indian Polity & Odisha Criminal Law Overview",
+      "Weekly Full-Length OMR Model Exams matching Official Police Board Pattern"
+    ],
+    feeNotice: "Complete Uniformed Services Kit Included",
+    highlightColor: "#ea580c"
+  },
+  {
+    id: "COURSE-SSC-MAHAPACK",
+    title: "SSC Complete Foundation (CGL, CHSL, MTS, GD & CPO)",
+    badge: "📋 Tier 1 + Tier 2 Master Classroom Program",
+    mode: "Offline Classroom at NH-16 Patrapada",
+    target: "SSC CGL (Inspector/ASO), SSC CHSL, GD Constable, MTS, CPO SI",
+    duration: "9 Months Comprehensive",
+    timings: "Morning: 08:30 AM – 12:00 PM | Evening: 05:00 PM – 08:30 PM",
+    faculty: "Advanced Maths by SSC Toppers, English Grammar by Senior Faculty",
+    features: [
+      "Tier 1 + Tier 2 Integrated Preparation from Day 1",
+      "Algebra, Trigonometry & Geometry Advanced Visual Derivations",
+      "Vocabulary Builder: 3000+ Idioms, Synonyms & One-Word Substitutions",
+      "TCS Pattern CBT Practice in Dedicated Lab"
+    ],
+    feeNotice: "Complete Chapter-wise Solved PYQ Compilations Included",
+    highlightColor: "#7c3aed"
+  },
+  {
+    id: "COURSE-RAILWAY-MISSION",
+    title: "Railway NTPC & ALP / Technician Mission Batch",
+    badge: "🚆 CBT 1 + CBT 2 + Trade Specialization",
+    mode: "Offline Classroom at NH-16 Patrapada",
+    target: "RRB NTPC Graduate & Undergraduate, ALP (Loco Pilot), Technician Gr 1 & 3",
+    duration: "6 Months Target",
+    timings: "Batch Slot: 10:00 AM – 01:30 PM",
+    faculty: "General Science & Technical Engineering Specialists",
+    features: [
+      "NCERT 6th to 10th Science In-depth Concept Building",
+      "Basic Science & Engineering Drawing for ALP / Technician",
+      "CBAT / Computer Aptitude Test Psycho Training",
+      "Previous 10 Years RRB Exam Solved Question Compilations"
+    ],
+    feeNotice: "Free 3-Day Demo Class Available",
+    highlightColor: "#0284c7"
+  },
+  {
+    id: "COURSE-OPSC-OAS",
+    title: "OPSC OAS & Civil Services Foundation (Prelims + Mains)",
+    badge: "🏛️ Comprehensive State Civil Services Program",
+    mode: "Offline Classroom at NH-16 Patrapada",
+    target: "OPSC Odisha Administrative Service (OAS), OPS, OFS, ASO",
+    duration: "15 Months Intensive Foundation",
+    timings: "Special Weekend & Evening Batches Available",
+    faculty: "Mentored by Selected State Officers & Senior UPSC Faculty",
+    features: [
+      "GS Paper 1 to 4 Complete Syllabus Breakdown + Answer Writing Sessions",
+      "Odisha Special History, Art, Culture, Geography & Economy Modules",
+      "Weekly Mains Answer Evaluation within 48 Hours with Faculty Feedback",
+      "Monthly Current Affairs Compilation & Discussion"
+    ],
+    feeNotice: "Installment Facility Available at Office Reception",
+    highlightColor: "#b45309"
+  }
+];
+
+/* ==========================================================================
+   C2S BOOKS & STUDY MATERIAL STORE
+   Standard textbooks, handwritten notes & solved question banks
+   ========================================================================== */
+const BOOKS_MATERIAL = [
+  {
+    id: "BOOK-QUANT-BRAHMASTRA",
+    title: "C2S Quantitative Aptitude Brahmastra",
+    subtitle: "Complete Arithmetic & Advanced Maths with 3500+ Practice MCQs",
+    badge: "Printed Book + E-Book",
+    pages: "480 Pages",
+    edition: "2024–2025 Revised Edition",
+    language: "Bilingual (English & Odia)",
+    targetExams: "OSSC CGL, OSSSC CRE, SSC CGL/CHSL, Banking PO/Clerk, Railway NTPC",
+    price: "₹349",
+    mrp: "₹599",
+    samplePdf: "c2s-quant-brahmastra-sample.pdf",
+    highlights: [
+      "Short-trick formulas & Vedic math methods for 30-second problem solving",
+      "Chapterwise Type-1 to Type-5 graded difficulty questions",
+      "Previous 5 years TCS & OSSC actual exam questions with step-by-step solutions",
+      "Data Interpretation special chapter (Bar, Pie, Radar & Caselets)"
+    ]
+  },
+  {
+    id: "BOOK-ODISHA-GK",
+    title: "Odisha General Knowledge & State Heritage Compendium",
+    subtitle: "The Most Authoritative State Reference for OPSC, OSSC & OSSSC",
+    badge: "Bestseller Handbook",
+    pages: "360 Pages",
+    edition: "2024 Edition with Latest Govt Schemes",
+    language: "Available in English & Odia Medium",
+    targetExams: "OPSC OAS, OSSC CGL, OSSSC RI, ARI, Amin, Odisha Police SI",
+    price: "₹280",
+    mrp: "₹450",
+    samplePdf: "c2s-odisha-gk-compendium-sample.pdf",
+    highlights: [
+      "Detailed Ancient, Medieval & Modern History of Odisha (Kalinga, Somavamsi, Ganga, Gajapati)",
+      "River systems, Dams, Biosphere Reserves (Similipal, Bhitarkanika, Chilika)",
+      "Odisha Panchayati Raj & District Administrative setups",
+      "500+ High-Yield Odisha State MCQs with official board answer keys"
+    ]
+  },
+  {
+    id: "BOOK-REASONING-PUZZLES",
+    title: "Reasoning Ability & High-Level Puzzles Handbook",
+    subtitle: "Verbal, Analytical & Seating Arrangements Master Guide",
+    badge: "Printed + Smart Notes",
+    pages: "420 Pages",
+    edition: "2024–2025 Edition",
+    language: "English Medium",
+    targetExams: "IBPS / SBI PO & Clerk, RRB Officer, SSC CGL, OSSC CGL",
+    price: "₹310",
+    mrp: "₹520",
+    samplePdf: "c2s-reasoning-puzzles-sample.pdf",
+    highlights: [
+      "Step-by-step approach to Floor, Box, Circular & Triangular Puzzles",
+      "New pattern Syllogisms (Only a Few, Does Not Follow, Reverse Syllogism)",
+      "Input-Output machine logic & Coded Inequalities",
+      "Critical reasoning for Banking Mains & Civil Services"
+    ]
+  },
+  {
+    id: "BOOK-GS-5000-MCQS",
+    title: "General Studies 5000+ Chapterwise Solved Question Bank",
+    subtitle: "Indian Polity, Modern History, Geography & General Science",
+    badge: "Official Question Bank",
+    pages: "540 Pages",
+    edition: "2024 Edition",
+    language: "Bilingual",
+    targetExams: "Railway NTPC & Group D, SSC CGL/CHSL/MTS, Odisha Police, OSSSC",
+    price: "₹370",
+    mrp: "₹650",
+    samplePdf: "c2s-gs-5000-mcqs-sample.pdf",
+    highlights: [
+      "Strictly NCERT 6th–12th aligned conceptual one-liners",
+      "Subject-wise categorization: Polity (1200 Qs), History (1400 Qs), Geography (1100 Qs), Science (1300 Qs)",
+      "Repeated questions from SSC, Railways & State PSCs highlighted with star marks",
+      "Quick revision charts and fact tables at the end of each unit"
+    ]
+  },
+  {
+    id: "BOOK-ODIA-GRAMMAR",
+    title: "Odia Vyakaran & Sahitya Darpan",
+    subtitle: "Standard Grammar & Vocabulary Guide for All Odisha State Examinations",
+    badge: "State Special",
+    pages: "290 Pages",
+    edition: "2024 Revised Edition",
+    language: "Odia Medium",
+    targetExams: "OSSC CGL, OSSSC CRE, RI, ARI, Amin, Police Constable, OTET",
+    price: "₹220",
+    mrp: "₹350",
+    samplePdf: "c2s-odia-vyakaran-sample.pdf",
+    highlights: [
+      "Sandhi, Samasa, Kridanta, Taddhita, Karaka & Vibhakti with clear rules",
+      "Rudhi & Lokabani (Idioms & Proverbs) comprehensive collection",
+      "Précis writing & official Odia letter drafting templates",
+      "1000+ Previous Year Odia MCQs from OSSC & OSSSC"
+    ]
+  }
+];
+
+/* ==========================================================================
+   C2S CURRENT AFFAIRS PORTAL (WEEKLY DIGESTS & PRINTABLE PDFS)
+   High-yield editorial text + instant PDF download engine
+   ========================================================================== */
+const CURRENT_AFFAIRS = [
+  {
+    id: "CA-WEEK-NOV-1-7-2024",
+    title: "Weekly Current Affairs Digest: 1st Nov – 7th Nov 2024",
+    edition: "Weekly Issue #45 (November 2024)",
+    dateRange: "01 Nov 2024 – 07 Nov 2024",
+    pdfFileName: "C2S-Weekly-Current-Affairs-1-to-7-Nov-2024.pdf",
+    pageCount: "18 Pages (Printable)",
+    downloadCount: "2,420+ Downloads",
+    summary: "Complete week's coverage of National policies, Odisha state cabinet decisions, RBI announcements, sports achievements, and 25 practice MCQs with solutions.",
+    categories: [
+      {
+        name: "🏛️ Odisha State Current Affairs",
+        items: [
+          "Odisha Cabinet approves New Industrial Policy Resolution (IPR) incentive roadmap to boost green energy manufacturing in Ganjam and Jharsuguda.",
+          "Subhadra Yojana: State government announces milestone dispatch of 3rd phase financial assistance to eligible women beneficiaries.",
+          "Bhubaneswar Metro Rail Project: First underground tunnel boring machine (TBM) successfully commissioned near Capital Hospital corridor.",
+          "Odisha State Disaster Management Authority (OSDMA) recognized at National Level for zero casualty management during recent coastal cyclonic systems."
+        ]
+      },
+      {
+        name: "🇮🇳 National & Governance News",
+        items: [
+          "Union Ministry of Finance reports gross GST revenue collection of ₹1.87 lakh crore, registering an 8.9% year-on-year growth.",
+          "Election Commission of India issues comprehensive guidelines on model code of conduct and webcasting protocols for upcoming state assembly elections.",
+          "Supreme Court bench delivers landmark judgment on sub-classification within Scheduled Castes and Scheduled Tribes for state reservations.",
+          "PM-Vidyalaxmi Scheme cleared by Union Cabinet to provide collateral-free, guarantor-free education loans up to ₹7.5 Lakhs for higher studies."
+        ]
+      },
+      {
+        name: "💼 Banking, Economy & Finance",
+        items: [
+          "Reserve Bank of India (RBI) holds Monetary Policy Committee (MPC) meeting; maintains repo rate at 6.50% while shifting stance to 'Neutral'.",
+          "UPI transactions cross record 16.58 Billion count in monthly volume, processed by National Payments Corporation of India (NPCI).",
+          "SEBI introduces relaxed disclosure norms for Foreign Portfolio Investors (FPIs) to facilitate ease of doing business in Indian equity markets."
+        ]
+      },
+      {
+        name: "🚀 Science, Tech & Defence",
+        items: [
+          "ISRO announces target launch schedule for Proba-3 mission in collaboration with European Space Agency (ESA) aboard PSLV-C59.",
+          "DRDO successfully flight-tests Phase-II Ballistic Missile Defence (BMD) interceptor missile off the coast of Odisha (Dr APJ Abdul Kalam Island).",
+          "Indian Army inducts indigenous AI-enabled surveillance quadcopters along high-altitude northern border operational sectors."
+        ]
+      },
+      {
+        name: "🏆 Awards, Appointments & Sports",
+        items: [
+          "Senior advocate appointed as next Solicitor General committee member by Ministry of Law and Justice.",
+          "India finishes campaign at Asian Shooting Championship with 14 Gold medals, securing top rank on the overall medal tally.",
+          "ICC announces Players of the Month nominations for outstanding performances across bilateral series."
+        ]
+      }
+    ],
+    quiz: [
+      {
+        q: "Which state government launched the Subhadra Yojana for financial empowerment of women?",
+        opts: ["West Bengal", "Odisha", "Bihar", "Jharkhand"],
+        ans: 1,
+        exp: "Subhadra Yojana is a flagship initiative of the Odisha Government providing direct annual cash transfers to eligible women."
+      },
+      {
+        q: "What is the primary objective of the newly approved PM-Vidyalaxmi Scheme?",
+        opts: ["Free School Uniforms", "Collateral-free higher education loans", "Skill training for farmers", "Rural health insurance"],
+        ans: 1,
+        exp: "PM-Vidyalaxmi provides collateral-free and guarantor-free education loans for students admitted to top 860 higher education institutions."
+      },
+      {
+        q: "Off the coast of which Indian state is the Dr. APJ Abdul Kalam Island (missile test facility) located?",
+        opts: ["Andhra Pradesh", "Odisha", "Tamil Nadu", "Kerala"],
+        ans: 1,
+        exp: "Dr APJ Abdul Kalam Island (formerly Wheeler Island) is located off the coast of Odisha near Bhadrak/Balasore."
+      }
+    ]
+  },
+  {
+    id: "CA-WEEK-OCT-24-31-2024",
+    title: "Weekly Current Affairs Digest: 24th Oct – 31st Oct 2024",
+    edition: "Weekly Issue #44 (October 2024)",
+    dateRange: "24 Oct 2024 – 31 Oct 2024",
+    pdfFileName: "C2S-Weekly-Current-Affairs-24-to-31-Oct-2024.pdf",
+    pageCount: "16 Pages (Printable)",
+    downloadCount: "3,180+ Downloads",
+    summary: "Full analysis of BRICS Summit 2024, National Unity Day milestones, Cyclonic Storm Dana impact & relief measures in coastal Odisha, and 25 practice MCQs.",
+    categories: [
+      {
+        name: "🏛️ Odisha State Focus",
+        items: [
+          "Odisha Government successfully implements zero casualty mission during Cyclone Dana landfall near Dhamra port.",
+          "Special relief package approved for paddy crop compensation in Kendrapara, Bhadrak and Balasore districts.",
+          "Puri Jagannath Temple: Archaeological Survey of India (ASI) completes preliminary laser scanning of Natamandap and Ratna Bhandar."
+        ]
+      },
+      {
+        name: "🇮🇳 National & International",
+        items: [
+          "16th BRICS Summit concluded in Kazan, Russia; leaders adopt Kazan Declaration emphasizing reformed multilateralism.",
+          "India and China reach consensus on patrolling arrangements along the Line of Actual Control (LAC) in eastern Ladakh.",
+          "Rashtriya Ekta Diwas (National Unity Day) celebrated nationwide on 31st October to commemorate 149th birth anniversary of Sardar Vallabhbhai Patel."
+        ]
+      }
+    ],
+    quiz: [
+      {
+        q: "The 16th BRICS Summit 2024 was hosted under the presidency of which country?",
+        opts: ["Brazil", "South Africa", "Russia", "India"],
+        ans: 2,
+        exp: "The 16th BRICS Summit was held in Kazan, Russia from October 22 to 24, 2024."
+      }
+    ]
+  },
+  {
+    id: "CA-MONTH-OCT-2024",
+    title: "Odisha & All-India Monthly Current Affairs Magazine (October 2024)",
+    edition: "Monthly Compendium #10 (October 2024)",
+    dateRange: "01 Oct 2024 – 31 Oct 2024",
+    pdfFileName: "C2S-Monthly-Current-Affairs-October-2024.pdf",
+    pageCount: "54 Pages (Complete Magazine)",
+    downloadCount: "5,890+ Downloads",
+    summary: "54-Page comprehensive monthly revision magazine covering 150+ one-liners, 100 practice MCQs, Union Cabinet decisions, Odisha state schemes, and economic indicators.",
+    categories: [
+      {
+        name: "📖 Monthly Mega-Digest Highlights",
+        items: [
+          "Nobel Prizes 2024: Complete breakdown across Physics, Chemistry, Medicine, Literature, Peace & Economic Sciences.",
+          "Odisha State Economy & Annual Financial Indicators 2024–25 overview.",
+          "Major Military Exercises: MILAN 2024, Yudh Abhyas, and Maritime Security Dialogues.",
+          "Special 100-Question Comprehensive Practice Mock Test with detailed solutions."
+        ]
+      }
+    ],
+    quiz: []
+  }
+];

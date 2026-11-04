@@ -239,67 +239,57 @@ function markAllAttendance() {
 function renderTeacher() {
   const testList = document.getElementById('teacherTestList');
   if (testList) {
-    testList.innerHTML = `
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">
-          <div>
-            <strong>🏦 BANK Mock Test 1</strong>
-            <span class="pill blue" style="margin-left:8px;">10 Mins • 4 Qs</span>
-            <div class="small" style="color:var(--c2s-slate-600);margin-top:4px;">Rule: On-Screen Calculator ALLOWED • Negative marking: -0.25</div>
-          </div>
-          <span class="pill green">Active in Engine</span>
-        </div>
+    const customTests = store.get("c2s_custom_tests", []);
 
-        <div style="background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">
-          <div>
-            <strong>📋 SSC Mock Test 1</strong>
-            <span class="pill" style="margin-left:8px;">10 Mins • 4 Qs</span>
-            <div class="small" style="color:var(--c2s-slate-600);margin-top:4px;">Rule: Calculator NOT ALLOWED (Scratch Pad only) • Negative marking: -0.25</div>
-          </div>
-          <span class="pill green">Active in Engine</span>
-        </div>
+    const defaultTests = [
+      { id: "BANK-MOCK-1", title: "Banking Foundation Mock Test 1", exam: "BANK", mins: 10, qCount: 4, isFree: true },
+      { id: "SSC-MOCK-1", title: "SSC CGL Full Tier 1 Mock Test 1", exam: "SSC", mins: 60, qCount: 100, isFree: false }
+    ];
 
-        <div style="background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">
-          <div>
-            <strong>🚆 Railway Mock Test 1</strong>
-            <span class="pill green" style="margin-left:8px;">10 Mins • 4 Qs</span>
-            <div class="small" style="color:var(--c2s-slate-600);margin-top:4px;">Rule: Calculator NOT ALLOWED (Scratch Pad only) • Negative marking: -0.33</div>
-          </div>
-          <span class="pill green">Active in Engine</span>
-        </div>
+    let html = '<div style="display:flex;flex-direction:column;gap:12px;">';
 
-        <div style="background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">
+    // Show Custom Tests first
+    customTests.forEach(t => {
+      html += `
+        <div style="background:#ffffff;padding:14px 18px;border-radius:12px;border:1.5px solid #bfdbfe;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
           <div>
-            <strong>📝 OSSC Odisha Mock Test 1</strong>
-            <span class="pill green" style="margin-left:8px;">10 Mins • 4 Qs</span>
-            <div class="small" style="color:var(--c2s-slate-600);margin-top:4px;">Rule: Calculator NOT ALLOWED (Scratch Pad only) • Negative marking: -0.25</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <strong style="color:#1e3a8a;font-size:15px;">${t.title}</strong>
+              <span class="pill blue">${t.exam}</span>
+              <span class="pill" style="background:#ecfdf5;color:#059669;border-color:#a7f3d0;">${t.isFreeDemo ? '✓ Free Demo' : '🔒 Premium'}</span>
+            </div>
+            <div class="small" style="color:var(--c2s-slate-600);margin-top:4px;">
+              ⏱️ ${t.mins} Mins • ❓ ${t.questions.length} Questions • Neg Marking: -${t.negMarking}
+            </div>
           </div>
-          <span class="pill green">Active in Engine</span>
+          <div style="display:flex;gap:8px;">
+            <a href="index.html#tests" target="_blank" class="btn ghost" style="padding:6px 12px;font-size:12px;">Preview in CBT Engine ↗</a>
+            <button class="btn ghost" style="padding:6px 10px;font-size:12px;color:#dc2626;border-color:#fca5a5;" onclick="deleteCustomTest('${t.id}')">Delete</button>
+          </div>
         </div>
+      `;
+    });
 
-        <div style="background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">
+    // Default Tests
+    defaultTests.forEach(t => {
+      html += `
+        <div style="background:#f8fafc;padding:14px 18px;border-radius:12px;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
           <div>
-            <strong>🏛️ UPSC Mock Test 1</strong>
-            <span class="pill purple" style="margin-left:8px;">10 Mins • 4 Qs</span>
-            <div class="small" style="color:var(--c2s-slate-600);margin-top:4px;">Rule: Calculator NOT ALLOWED (Scratch Pad only) • Negative marking: -0.33</div>
+            <strong>${t.title}</strong>
+            <span class="pill blue" style="margin-left:8px;">${t.mins} Mins • ${t.qCount} Qs</span>
+            <span class="pill ${t.isFree ? 'green' : 'orange'}" style="margin-left:6px;">${t.isFree ? '✓ Demo' : '🔒 Premium'}</span>
+            <div class="small" style="color:var(--c2s-slate-600);margin-top:4px;">Default Core Test Engine</div>
           </div>
           <span class="pill green">Active in Engine</span>
         </div>
-      </div>
-    `;
+      `;
+    });
+
+    html += '</div>';
+    testList.innerHTML = html;
   }
 
-  // Render published posts
-  const postsList = document.getElementById('teacherPostsList');
-  if (postsList) {
-    const posts = store.get('c2s_main_blog', []);
-    postsList.innerHTML = posts.length ? posts.map(p => `
-      <div style="background:#f8fafc;padding:12px 16px;border-radius:10px;border-left:4px solid var(--c2s-orange-500);margin-bottom:10px;">
-        <strong>${p.title}</strong>
-        <p class="small" style="margin:4px 0 0;color:var(--c2s-slate-600);">${p.body}</p>
-      </div>
-    `).join('') : '<p class="small" style="color:#94a3b8;">No published notices yet.</p>';
-  }
+  renderTeacherPosts();
 }
 
 function teacherPublishPost(e) {
@@ -320,3 +310,137 @@ function teacherPublishPost(e) {
 document.addEventListener('DOMContentLoaded', () => {
   switchRole('admin');
 });
+
+
+/* ==========================================================================
+   TEST SERIES & QUESTION BUILDER STUDIO LOGIC
+   ========================================================================== */
+function toggleNewTestForm() {
+  const c = document.getElementById('newTestFormContainer');
+  if (c) c.classList.toggle('hidden');
+}
+
+function toggleUploadMode(mode) {
+  const bulkArea = document.getElementById('bulkArea');
+  const manualArea = document.getElementById('manualArea');
+  if (mode === 'bulk') {
+    if (bulkArea) bulkArea.classList.remove('hidden');
+    if (manualArea) manualArea.classList.add('hidden');
+  } else {
+    if (bulkArea) bulkArea.classList.add('hidden');
+    if (manualArea) manualArea.classList.remove('hidden');
+  }
+}
+
+function loadSampleBulkJson() {
+  const textarea = document.getElementById('bulkQuestionsIn');
+  if (!textarea) return;
+  const sample = [
+    {
+      q: "Who was the first Chief Minister of Odisha?",
+      opts: ["Harekrushna Mahatab", "Biju Patnaik", "Nabakrushna Choudhury", "Gopabandhu Das"],
+      ans: 0,
+      exp: "Dr. Harekrushna Mahatab served as the first Chief Minister of Odisha after independence."
+    },
+    {
+      q: "In which year was the Hirakud Dam on the Mahanadi River inaugurated?",
+      opts: ["1947", "1953", "1957", "1962"],
+      ans: 2,
+      exp: "Hirakud Dam was officially inaugurated by Prime Minister Jawaharlal Nehru on 13 January 1957."
+    },
+    {
+      q: "Which constitutional amendment introduced the Goods and Services Tax (GST) in India?",
+      opts: ["99th Amendment", "101st Amendment", "103rd Amendment", "105th Amendment"],
+      ans: 1,
+      exp: "The 101st Constitutional Amendment Act 2016 paved the way for GST implementation."
+    }
+  ];
+  textarea.value = JSON.stringify(sample, null, 2);
+}
+
+function handleCreateTest(e) {
+  e.preventDefault();
+  const title = document.getElementById('testTitleIn')?.value.trim();
+  const exam = document.getElementById('testTrackIn')?.value || 'OSSC';
+  const duration = parseInt(document.getElementById('testDurationIn')?.value) || 60;
+  const negMarking = parseFloat(document.getElementById('testNegativeIn')?.value) || 0.25;
+  const access = document.getElementById('testAccessIn')?.value || 'locked';
+
+  let questions = [];
+  const mode = document.querySelector('input[name="uploadMode"]:checked')?.value || 'bulk';
+
+  if (mode === 'bulk') {
+    const raw = document.getElementById('bulkQuestionsIn')?.value.trim();
+    if (!raw) {
+      alert("Please paste questions in JSON format or click 'Load Sample Questions Template'.");
+      return;
+    }
+    try {
+      questions = JSON.parse(raw);
+      if (!Array.isArray(questions) || !questions.length) {
+        throw new Error("Must be a non-empty array");
+      }
+    } catch(err) {
+      alert("Invalid JSON format! Error: " + err.message + "\nClick 'Load Sample Questions Template' to see the correct structure.");
+      return;
+    }
+  } else {
+    const qText = document.getElementById('manualQText')?.value.trim();
+    const opt0 = document.getElementById('manualOpt0')?.value.trim();
+    const opt1 = document.getElementById('manualOpt1')?.value.trim();
+    const opt2 = document.getElementById('manualOpt2')?.value.trim();
+    const opt3 = document.getElementById('manualOpt3')?.value.trim();
+    const ans = parseInt(document.getElementById('manualAns')?.value) || 0;
+    const exp = document.getElementById('manualExp')?.value.trim() || 'Official solution.';
+
+    if (!qText || !opt0 || !opt1 || !opt2 || !opt3) {
+      alert("Please fill question text and all 4 options.");
+      return;
+    }
+    questions.push({
+      q: qText,
+      opts: [opt0, opt1, opt2, opt3],
+      ans: ans,
+      exp: exp
+    });
+  }
+
+  const customTests = store.get("c2s_custom_tests", []);
+  const newTestId = "TEST-CUSTOM-" + Date.now();
+
+  const newTestObj = {
+    id: newTestId,
+    exam: exam,
+    title: title,
+    mins: duration,
+    questions: questions,
+    marksPerQuestion: 1,
+    negMarking: negMarking,
+    isFreeDemo: (access === 'free'),
+    createdAt: new Date().toISOString()
+  };
+
+  customTests.unshift(newTestObj);
+  store.set("c2s_custom_tests", customTests);
+
+  // If test was marked free, also add to unlocked list
+  if (access === 'free') {
+    const unlocked = store.get("c2s_unlocked_tests", []);
+    if (!unlocked.includes(newTestId)) {
+      unlocked.push(newTestId);
+      store.set("c2s_unlocked_tests", unlocked);
+    }
+  }
+
+  alert("🎉 Success! Test '" + title + "' published to Student CBT Engine with " + questions.length + " questions!");
+  toggleNewTestForm();
+  renderTeacher();
+}
+
+function deleteCustomTest(testId) {
+  if (!confirm("Are you sure you want to delete this custom test?")) return;
+  let customTests = store.get("c2s_custom_tests", []);
+  customTests = customTests.filter(t => t.id !== testId);
+  store.set("c2s_custom_tests", customTests);
+  renderTeacher();
+}
