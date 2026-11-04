@@ -511,3 +511,4 @@ const facilitiesHtml = `<!doctype html>
 
 fs.writeFileSync('library/facilities.html', facilitiesHtml, 'utf8');
 console.log('library/facilities.html rewritten successfully!');
+
