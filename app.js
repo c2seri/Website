@@ -100,7 +100,10 @@ function filterExam(level, id){
   const s=$("#examSearch"); if(s) s.value="";
   renderExams(id);
 }
-function renderExams(onlyId){
+
+let directoryDisplayLimit = 12;
+
+function renderExams(onlyId) {
   const q = ($("#examSearch")?.value || "").toLowerCase();
   const lvl = $("#examLevel")?.value || "";
 
@@ -126,70 +129,35 @@ function renderExams(onlyId){
   const container = $("#examList");
   if (!container) return;
 
-  container.innerHTML = list.length ? list.map(e => `
-    <div class="card" style="border-left:6px solid ${e.level === 'Odisha State' ? 'var(--c2s-emerald-600)' : 'var(--c2s-blue-700)'};margin-bottom:24px;border-radius:18px;padding:24px;box-shadow:var(--c2s-shadow-sm);">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
-        <div style="display:flex;align-items:center;gap:14px;">
-          <div style="width:52px;height:52px;min-width:52px;border-radius:12px;background:#f8fafc;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 3px rgba(0,0,0,0.03);">
-            ${getExamEmblem(e, 48)}
-          </div>
-          <div>
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
-              <span class="pan-board-badge">${e.board || 'Govt Board'}</span>
-              <span class="pill ${e.level === 'Odisha State' ? 'green' : 'blue'}" style="font-weight:800;font-size:11px;">${e.level}</span>
-              <span class="pill" style="font-size:11px;font-weight:750;background:#f1f5f9;color:var(--c2s-navy-900);">
-                ${e.category || 'Govt Exam'}
-              </span>
-            </div>
-            <h3 style="font-size:22px;font-weight:900;color:var(--c2s-navy-900);margin:0;letter-spacing:-0.02em;">${e.name}</h3>
-          </div>
-        </div>
-        <button class="btn ghost" style="padding:7px 12px;font-size:12px;font-weight:750;" onclick="openExamModal('${e.id}')">
-          📋 Full Inspector
-        </button>
-      </div>
+  const totalMatching = list.length;
+  const displayed = onlyId ? list : list.slice(0, directoryDisplayLimit);
 
-      <!-- Sub-Exams Covered Pills -->
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
-        ${(e.subExams || []).map(sub => `<span style="background:#f8fafc;border:1px solid #e2e8f0;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;color:var(--c2s-slate-700);">${sub}</span>`).join('')}
-      </div>
+  if (!displayed.length) {
+    container.innerHTML = "<div style='grid-column:1/-1;text-align:center;padding:40px;background:#f8fafc;border-radius:12px;border:1px dashed #cbd5e1;'><p style='font-size:16px;color:var(--c2s-slate-600);'>No exam matches that keyword. Try searching for 'bank', 'police', 'ssc', 'odisha', 'cgl', 'ri', or 'railway'.</p></div>";
+    const dirLoadMore = document.getElementById("dirLoadMoreWrap");
+    if (dirLoadMore) dirLoadMore.style.display = "none";
+    return;
+  }
 
-      <div style="background:#f8fafc;padding:12px 16px;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:16px;font-size:13.5px;color:var(--c2s-slate-700);">
-        <strong style="color:var(--c2s-navy-900);">💼 Key Target Posts:</strong> ${e.posts}
-      </div>
+  container.innerHTML = displayed.map(e => renderExamCardHtml(e)).join('');
 
-      <!-- Collapsible Detailed Sections -->
-      <details open style="margin-bottom:8px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;">
-        <summary style="font-weight:800;color:var(--c2s-navy-900);cursor:pointer;font-size:14.5px;">📋 Multi-Stage Selection Pattern</summary>
-        <p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:var(--c2s-slate-700);white-space:pre-line;">${e.pattern}</p>
-      </details>
-
-      <details style="margin-bottom:8px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;">
-        <summary style="font-weight:800;color:var(--c2s-navy-900);cursor:pointer;font-size:14.5px;">📖 Comprehensive Subject-Wise Syllabus</summary>
-        <p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:var(--c2s-slate-700);white-space:pre-line;">${e.syllabus}</p>
-      </details>
-
-      <details style="margin-bottom:8px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;">
-        <summary style="font-weight:800;color:var(--c2s-navy-900);cursor:pointer;font-size:14.5px;">🎓 Eligibility Criteria &amp; Age Standards</summary>
-        <p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:var(--c2s-slate-700);white-space:pre-line;">${e.eligibility}</p>
-      </details>
-
-      <details style="margin-bottom:14px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;">
-        <summary style="font-weight:800;color:var(--c2s-navy-900);cursor:pointer;font-size:14.5px;">🏛️ State Relation, Cadre &amp; Authority</summary>
-        <p style="margin:8px 0 0;font-size:13.5px;line-height:1.7;color:var(--c2s-slate-700);white-space:pre-line;">${e.state}</p>
-      </details>
-
-      <div class="preview" style="margin:12px 0 16px;padding:10px 14px;font-size:12px;line-height:1.5;">
-        ℹ️ <strong>Official Notification Policy:</strong> Specific notification dates, exam dates, application fees, and vacancy counts are subject to official notifications issued by respective boards. C2S does not publish unverified or invented dates.
-      </div>
-
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <button class="btn orange" onclick="show('tests')">Practice Test Series →</button>
-        <button class="btn ghost" onclick="show('batches')">Smart Board Batch Schedule</button>
-      </div>
-    </div>
-  `).join('') : "<div class='card' style='text-align:center;padding:40px;'><p style='font-size:16px;color:var(--c2s-slate-600);'>No exam matches that keyword. Try searching for 'bank', 'police', 'ssc', 'odisha', 'cgl', 'ri', or 'railway'.</p></div>";
+  const dirLoadMore = document.getElementById("dirLoadMoreWrap");
+  const dirLoadMoreBtn = document.getElementById("dirLoadMoreBtn");
+  if (dirLoadMore && dirLoadMoreBtn) {
+    if (totalMatching > directoryDisplayLimit && !onlyId) {
+      dirLoadMore.style.display = "flex";
+      dirLoadMoreBtn.textContent = "Load Next 12 Exams (+" + Math.min(12, totalMatching - displayed.length) + " of " + (totalMatching - displayed.length) + " Remaining) ↓";
+    } else {
+      dirLoadMore.style.display = "none";
+    }
+  }
 }
+
+window.loadMoreDirectoryExams = function() {
+  directoryDisplayLimit += 12;
+  renderExams();
+};
+
 function renderTests(){
   const customTests = store.get("c2s_custom_tests", []);
   const allTests = [...TESTS, ...customTests];
@@ -469,9 +437,93 @@ function scrollToPanIndiaExams() {
   if (el) el.scrollIntoView({ behavior: "smooth" });
 }
 
+
+// ==========================================================================
+// UNIFIED PREMIUM EXAM CARD HTML RENDERER
+// ==========================================================================
+function renderExamCardHtml(e) {
+  const isOdisha = e.stateCode === 'ODISHA' || (e.state && e.state.includes('Odisha'));
+  const isCentral = e.stateCode === 'CENTRAL' || (e.state && e.state.includes('Central')) || e.level === 'All India';
+  const stateClass = isOdisha ? 'state-odisha' : (isCentral ? 'state-central' : '');
+  const stateLabel = isOdisha ? '🏛️ Odisha' : (isCentral ? '🇮🇳 All India' : '📍 ' + (e.state || 'State'));
+
+  return `
+    <div class="pan-exam-card">
+      <div>
+        <!-- Header with HD Official Logo & Authority Badges -->
+        <div class="pan-exam-card-header">
+          <div class="pan-exam-logo-wrap" title="${e.board || 'Govt Board'}">
+            ${getExamEmblem(e, 46)}
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:4px;flex-wrap:wrap;">
+              <span class="pan-board-badge">${e.board || 'Govt Board'}</span>
+              <span class="pan-state-badge ${stateClass}">${stateLabel}</span>
+            </div>
+            <h4 class="pan-exam-title" title="${e.name}">${e.name}</h4>
+          </div>
+        </div>
+
+        <!-- 4-Metric Key Info Strip -->
+        <div class="pan-exam-meta-grid">
+          <div class="pan-exam-meta-item">
+            <span class="pan-exam-meta-label">🎓 Eligibility</span>
+            <span class="pan-exam-meta-val" title="${e.qualification}">${e.qualification || 'Graduation'}</span>
+          </div>
+          <div class="pan-exam-meta-item">
+            <span class="pan-exam-meta-label">⏳ Age Limit</span>
+            <span class="pan-exam-meta-val" title="${e.age}">${e.age || '18 - 32 Yrs'}</span>
+          </div>
+          <div class="pan-exam-meta-item">
+            <span class="pan-exam-meta-label">💼 Domain Cadre</span>
+            <span class="pan-exam-meta-val" title="${e.category}">${e.category || 'Recruitment'}</span>
+          </div>
+          <div class="pan-exam-meta-item">
+            <span class="pan-exam-meta-label">📋 Selection Stages</span>
+            <span class="pan-exam-meta-val">${e.subExams && e.subExams.length ? e.subExams.length + ' Sub-Posts' : 'Prelims + Mains'}</span>
+          </div>
+        </div>
+
+        <!-- Key Designated Posts Box -->
+        <div class="pan-exam-posts-box">
+          <strong style="color:#0f172a;display:block;margin-bottom:2px;">Target Posts:</strong>
+          <span style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;" title="${e.posts}">
+            ${e.posts || 'Multiple Central & State Govt vacancies'}
+          </span>
+        </div>
+
+        <!-- Syllabus & Pattern Summary Box -->
+        <div class="pan-exam-pattern-box">
+          <div style="font-weight:750;color:#1e3a8a;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;">
+            <span>📋 Exam Pattern & Negative Marking</span>
+            <span style="font-size:10.5px;color:#dc2626;font-weight:800;background:#fee2e2;padding:1px 6px;border-radius:4px;">-0.25 Mark</span>
+          </div>
+          <div style="font-size:11.5px;color:#475569;line-height:1.4;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+            ${e.pattern ? e.pattern.replace(/•/g, '').trim() : 'Stage-wise CBT examination with objective multiple choice questions.'}
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons Strip -->
+      <div class="pan-exam-actions">
+        <button class="btn ghost" style="padding:7px 10px;font-size:12px;flex:1.2;font-weight:750;" onclick="openExamModal('${e.id}')">
+          📋 View Syllabus & Details
+        </button>
+        <button class="btn orange" style="padding:7px 10px;font-size:12px;flex:1;font-weight:750;" onclick="startOrFilterMock('${e.id}')">
+          🎯 Mock Test →
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+
+let panExamDisplayLimit = 6;
+
 function renderPanIndiaExams() {
   const container = document.getElementById("panIndiaExamGrid");
   const countBadge = document.getElementById("panIndiaCountBadge");
+  const loadMoreBtn = document.getElementById("panLoadMoreBtn");
   if (!container) return;
 
   let filtered = EXAMS.filter(e => {
@@ -489,96 +541,52 @@ function renderPanIndiaExams() {
     return matchState && matchCat && matchQ;
   });
 
+  const totalMatching = filtered.length;
+  const displayed = filtered.slice(0, panExamDisplayLimit);
+
   if (countBadge) {
-    countBadge.textContent = "Showing " + filtered.length + " of " + EXAMS.length + " Central & State Govt Examinations";
+    countBadge.textContent = "Showing " + displayed.length + " of " + totalMatching + " Examinations (" + EXAMS.length + "+ Total Covered)";
   }
 
-  if (!filtered.length) {
+  if (!displayed.length) {
     container.innerHTML = `
       <div style="grid-column:1/-1;text-align:center;padding:40px;background:#f8fafc;border-radius:12px;border:1px dashed #cbd5e1;">
         <p style="font-size:16px;font-weight:700;color:#334155;margin:0 0 6px;">No exams found matching your search filter</p>
         <p style="font-size:13.5px;color:#64748b;margin:0 0 12px;">Try clearing filters or search by broader keywords like "Police", "CGL", "SI", "Bank", "Patwari", "Teacher".</p>
-        <button class="btn ghost" onclick="currentPanState='';currentPanCategory='';currentPanSearch='';document.getElementById('panSearchInput').value='';renderPanIndiaExams();">Reset All Filters</button>
+        <button class="btn ghost" onclick="resetPanFilters()">Reset All Filters</button>
       </div>`;
+    if (loadMoreBtn) loadMoreBtn.style.display = "none";
     return;
   }
 
-  container.innerHTML = filtered.map(e => {
-    const isOdisha = e.stateCode === 'ODISHA' || (e.state && e.state.includes('Odisha'));
-    const isCentral = e.stateCode === 'CENTRAL' || (e.state && e.state.includes('Central')) || e.level === 'All India';
-    const stateClass = isOdisha ? 'state-odisha' : (isCentral ? 'state-central' : '');
-    const stateLabel = isOdisha ? '🏛️ Odisha' : (isCentral ? '🇮🇳 All India' : '📍 ' + (e.state || 'State'));
+  container.innerHTML = displayed.map(e => renderExamCardHtml(e)).join('');
 
-    return `
-      <div class="pan-exam-card">
-        <div>
-          <!-- Header with HD Official Logo & Authority Badges -->
-          <div class="pan-exam-card-header">
-            <div class="pan-exam-logo-wrap" title="${e.board || 'Govt Board'}">
-              ${getExamEmblem(e, 46)}
-            </div>
-            <div style="flex:1;min-width:0;">
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:4px;flex-wrap:wrap;">
-                <span class="pan-board-badge">${e.board || 'Govt Board'}</span>
-                <span class="pan-state-badge ${stateClass}">${stateLabel}</span>
-              </div>
-              <h4 class="pan-exam-title" title="${e.name}">${e.name}</h4>
-            </div>
-          </div>
-
-          <!-- 4-Metric Key Info Strip -->
-          <div class="pan-exam-meta-grid">
-            <div class="pan-exam-meta-item">
-              <span class="pan-exam-meta-label">🎓 Eligibility</span>
-              <span class="pan-exam-meta-val" title="${e.qualification}">${e.qualification || 'Graduation'}</span>
-            </div>
-            <div class="pan-exam-meta-item">
-              <span class="pan-exam-meta-label">⏳ Age Limit</span>
-              <span class="pan-exam-meta-val" title="${e.age}">${e.age || '18 - 32 Yrs'}</span>
-            </div>
-            <div class="pan-exam-meta-item">
-              <span class="pan-exam-meta-label">💼 Domain Cadre</span>
-              <span class="pan-exam-meta-val" title="${e.category}">${e.category || 'Recruitment'}</span>
-            </div>
-            <div class="pan-exam-meta-item">
-              <span class="pan-exam-meta-label">📋 Selection Stages</span>
-              <span class="pan-exam-meta-val">${e.subExams && e.subExams.length ? e.subExams.length + ' Sub-Posts' : 'Prelims + Mains'}</span>
-            </div>
-          </div>
-
-          <!-- Key Designated Posts Box -->
-          <div class="pan-exam-posts-box">
-            <strong style="color:#0f172a;display:block;margin-bottom:2px;">Target Posts:</strong>
-            <span style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;" title="${e.posts}">
-              ${e.posts || 'Multiple Central & State Govt vacancies'}
-            </span>
-          </div>
-
-          <!-- Syllabus & Pattern Summary Box -->
-          <div class="pan-exam-pattern-box">
-            <div style="font-weight:750;color:#1e3a8a;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;">
-              <span>📋 Exam Pattern & Negative Marking</span>
-              <span style="font-size:10.5px;color:#dc2626;font-weight:800;background:#fee2e2;padding:1px 6px;border-radius:4px;">-0.25 Mark</span>
-            </div>
-            <div style="font-size:11.5px;color:#475569;line-height:1.4;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
-              ${e.pattern ? e.pattern.replace(/•/g, '').trim() : 'Stage-wise CBT examination with objective multiple choice questions.'}
-            </div>
-          </div>
-        </div>
-
-        <!-- Action Buttons Strip -->
-        <div class="pan-exam-actions">
-          <button class="btn ghost" style="padding:7px 10px;font-size:12px;flex:1.2;font-weight:750;" onclick="openExamModal('${e.id}')">
-            📋 View Syllabus & Details
-          </button>
-          <button class="btn orange" style="padding:7px 10px;font-size:12px;flex:1;font-weight:750;" onclick="startOrFilterMock('${e.id}')">
-            🎯 Mock Test →
-          </button>
-        </div>
-      </div>
-    `;
-  }).join('');
+  if (loadMoreBtn) {
+    if (totalMatching > panExamDisplayLimit) {
+      loadMoreBtn.style.display = "inline-flex";
+      loadMoreBtn.textContent = "Load More Exams (+" + Math.min(6, totalMatching - displayed.length) + " of " + (totalMatching - displayed.length) + " Remaining) ↓";
+    } else {
+      loadMoreBtn.style.display = "none";
+    }
+  }
 }
+
+window.loadMorePanExams = function() {
+  panExamDisplayLimit += 6;
+  renderPanIndiaExams();
+};
+
+window.resetPanFilters = function() {
+  currentPanState = '';
+  currentPanCategory = '';
+  currentPanSearch = '';
+  panExamDisplayLimit = 6;
+  const input = document.getElementById('panSearchInput');
+  if (input) input.value = '';
+  document.querySelectorAll('.state-tab-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+  document.querySelectorAll('.domain-tab-pill').forEach((b, i) => b.classList.toggle('active', i === 0));
+  renderPanIndiaExams();
+};
 
 document.addEventListener("DOMContentLoaded", ()=>{ renderPanIndiaExams(); renderCourses(); renderDynamicTestGrid(); renderBooks(); renderCurrentAffairs(); renderUser(); renderExams(); renderTests(); renderBlog(); show("home"); });
 
