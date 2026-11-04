@@ -222,3 +222,4 @@ if (oldHeroStylesRegex.test(css)) {
   css += '\n' + newHeroStyles;
   fs.writeFileSync('styles.css', css, 'utf8');
 }
+

@@ -1568,3 +1568,22 @@ window.startOrFilterMock = function(examId) {
   const testsSection = document.getElementById("homeTestsGrid") || document.getElementById("tests");
   if (testsSection) testsSection.scrollIntoView({ behavior: "smooth" });
 };
+
+// PW Vidyapeeth Showcase Tab Switcher
+function switchHeroShowcaseTab(tabKey, btn) {
+  document.querySelectorAll('.hero-tab-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  ['classroom', 'library', 'cbt'].forEach(k => {
+    const el = document.getElementById('heroTabContent_' + k);
+    if (el) {
+      if (k === tabKey) {
+        el.style.display = 'block';
+        el.classList.add('active');
+      } else {
+        el.style.display = 'none';
+        el.classList.remove('active');
+      }
+    }
+  });
+}
+window.switchHeroShowcaseTab = switchHeroShowcaseTab;
