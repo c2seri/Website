@@ -55,3 +55,4 @@ if (!appJs.includes('"info.c2seri@gmail.com"')) {
 }
 
 console.log('All emails updated successfully to info.c2seri@gmail.com!');
+
