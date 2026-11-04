@@ -17,3 +17,4 @@ allATags.forEach((a, i) => {
     console.log(`${i}: href="${a.href}" | text="${a.text}" | ${a.snippet}`);
   }
 });
+

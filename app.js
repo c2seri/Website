@@ -83,7 +83,7 @@ window.closeMobileNav = function() {
 
 window.navigateToLibrary = function() {
   if (typeof window.closeMobileNav === 'function') window.closeMobileNav();
-  window.location.href = 'library/';
+  window.location.href = '/library';
 };
 
 // Global click-outside listener to close open dropdowns

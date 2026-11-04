@@ -60,3 +60,4 @@ html = html.replace(oldCol4.replace(/\r?\n/g, '\n'), newCol4.replace(/\r?\n/g, '
 
 fs.writeFileSync('index.html', html, 'utf8');
 console.log('Fixed footer links in index.html!');
+

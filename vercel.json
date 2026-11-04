@@ -9,7 +9,7 @@
     },
     {
       "source": "/library/index.html",
-      "destination": "/library/",
+      "destination": "/library",
       "permanent": true
     }
   ]

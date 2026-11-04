@@ -59,3 +59,4 @@ app = app.replace(oldDom, newDom);
 
 fs.writeFileSync('app.js', app, 'utf8');
 console.log('Successfully patched app.js for hash routing & URL sync!');
+

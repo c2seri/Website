@@ -22,3 +22,4 @@ function fetch(url) {
 }
 
 fetch('https://c2seri.com/');
+
