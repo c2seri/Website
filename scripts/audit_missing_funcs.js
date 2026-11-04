@@ -42,3 +42,4 @@ for (const { fn, code } of calls) {
 console.log('Found functions count:', found.size);
 console.log('Missing functions count:', missing.size);
 console.log('Missing functions list:\n' + Array.from(missing).join('\n'));
+

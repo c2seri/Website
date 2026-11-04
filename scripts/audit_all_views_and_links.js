@@ -51,3 +51,4 @@ internalLinks.forEach(l => {
   }
 });
 console.log("\nBroken hash links (neither an ID nor a data-view exists):", missingHashTargets);
+

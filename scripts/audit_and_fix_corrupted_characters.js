@@ -68,3 +68,4 @@ fixCorruptedRupee('library/shifts.html');
 fixCorruptedRupee('library/facilities.html');
 fixCorruptedRupee('library/dashboard.html');
 fixCorruptedRupee('styles.css');
+

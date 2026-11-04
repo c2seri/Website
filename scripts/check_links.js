@@ -29,3 +29,4 @@ checkHtmlLinks('library/admission.html');
 checkHtmlLinks('library/dashboard.html');
 checkHtmlLinks('library/facilities.html');
 checkHtmlLinks('library/shifts.html');
+

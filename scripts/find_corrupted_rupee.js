@@ -18,3 +18,4 @@ files.forEach(file => {
   });
   console.log(`\nTotal corrupted ₹ in JS/attributes in ${file}: ${count}`);
 });
+

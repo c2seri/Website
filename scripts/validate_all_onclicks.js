@@ -50,3 +50,4 @@ calledFunctions.forEach(fn => {
 
 console.log("\nFound functions (" + foundFns.length + "):", foundFns);
 console.log("\nMISSING / UNDEFINED FUNCTIONS (" + missingFns.length + "):", missingFns);
+
