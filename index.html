@@ -560,8 +560,18 @@
       </div>
 
       <!-- Pan-India Exam Cards Container -->
-      <div id="panIndiaExamGrid" class="pan-india-grid" style="margin-bottom:36px;">
+      <div id="panIndiaExamGrid" class="pan-india-grid" style="margin-bottom:20px;">
         <!-- Dynamically rendered by app.js from 204+ examinations database -->
+      </div>
+
+      <!-- Clean Pagination & Navigation Bar (Eliminates Endless Scrolling) -->
+      <div style="display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;margin:10px 0 44px;padding:16px;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 2px 8px rgba(15,23,42,0.03);">
+        <button id="panLoadMoreBtn" type="button" class="btn ghost" style="padding:10px 22px;font-size:13.5px;font-weight:800;" onclick="loadMorePanExams()">
+          Load More Exams (+6 Remaining) ↓
+        </button>
+        <button type="button" class="btn orange" style="padding:10px 22px;font-size:13.5px;font-weight:800;" onclick="show('exams')">
+          Explore Complete 204 Exams Directory →
+        </button>
       </div>
 
       <!-- SECTION: Weekly Test Series (Testbook Style Mock Cards) -->
@@ -947,62 +957,61 @@
       </div>
     </section>
 
-    <!-- VIEW: Exams Detailed Catalogue (Collapsible Accordions & Keyword Search) -->
+    <!-- VIEW: Exams Detailed Catalogue (Standardized Layout & Unified 3-Col Grid) -->
     <section data-view="exams" class="hidden">
-      <div class="card">
-        <div class="section-header" style="margin-top:0;">
-          <span class="section-tag">204 CENTRAL &amp; STATE RECRUITMENTS</span>
-          <h2>Pan-India 204+ Govt Examinations Directory</h2>
-          <p>Search any keyword (e.g. bank, ssc, clerk, po, police, odisha, graduate, cgl). Each exam features
-            collapsible sections for criteria, eligibility, state relation, pattern, posts and syllabus overview.
-            Official dates and fees are as per official notifications.</p>
-          <div class="section-divider"></div>
-        </div>
+      <div class="section-header" style="margin-top:10px;">
+        <span class="section-tag">OFFICIAL 204+ RECRUITMENT DIRECTORY</span>
+        <h2>Pan-India Govt Examinations Catalogue</h2>
+        <p>Complete directory of 204+ recruitments across Central and State boards with authentic emblems, multi-stage selection patterns, eligibility criteria, and syllabus breakdowns.</p>
+        <div class="section-divider"></div>
+      </div>
 
-        <div class="grid2" style="margin-bottom:16px;">
-          <div>
-            <label for="examSearch">Search Keyword</label>
-            <input id="examSearch" placeholder="Type keyword: e.g. bank, police, odisha, clerk, graduate, reasoning…"
-              oninput="renderExams()">
-          </div>
-          <div>
-            <label for="examLevel">Filter by Recruitment Level</label>
-            <select id="examLevel" onchange="renderExams()">
-              <option value="">All levels (All India + Odisha State)</option>
-              <option value="All India">All India</option>
-              <option value="Odisha State">Odisha State</option>
-            </select>
-          </div>
+      <!-- Quick Filter Bar -->
+      <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:12px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;box-shadow:0 2px 8px rgba(15,23,42,0.03);">
+        <div style="flex:1;min-width:260px;">
+          <label for="examSearch" style="font-size:12px;font-weight:750;color:#64748b;text-transform:uppercase;margin-bottom:4px;display:block;">Search Keyword or Post</label>
+          <input id="examSearch" style="width:100%;padding:8px 14px;font-size:13.5px;border:1px solid #cbd5e1;border-radius:8px;outline:none;" placeholder="Type exam: e.g. OSSC CGL, SBI PO, Police SI, Railway NTPC, Patwari..." oninput="renderExams()">
         </div>
+        <div style="min-width:220px;">
+          <label for="examLevel" style="font-size:12px;font-weight:750;color:#64748b;text-transform:uppercase;margin-bottom:4px;display:block;">Recruitment Authority Level</label>
+          <select id="examLevel" style="width:100%;padding:8px 12px;font-size:13.5px;border:1px solid #cbd5e1;border-radius:8px;outline:none;" onchange="renderExams()">
+            <option value="">All Levels (All India &amp; All States)</option>
+            <option value="CENTRAL">All India Central Boards</option>
+            <option value="ODISHA">Odisha State Boards</option>
+          </select>
+        </div>
+      </div>
 
-        <!-- Container for dynamic exam list -->
-        <div id="examList"></div>
+      <!-- Container for dynamic exam list (Standardized 3-column pan-india-grid) -->
+      <div id="examList" class="pan-india-grid" style="margin-bottom:24px;"></div>
+
+      <!-- Load Next 12 Exams Toolbar -->
+      <div id="dirLoadMoreWrap" style="display:flex;justify-content:center;margin:16px 0 40px;">
+        <button id="dirLoadMoreBtn" type="button" class="btn ghost" style="padding:10px 24px;font-size:14px;font-weight:800;" onclick="loadMoreDirectoryExams()">
+          Load Next 12 Exams ↓
+        </button>
       </div>
     </section>
 
-    <!-- VIEW: Test Series Page -->
+    <!-- VIEW: Test Series Page (Standardized Unified Layout) -->
     <section data-view="tests" class="hidden">
-      <div class="card">
-        <div class="section-header" style="margin-top:0;">
-          <span class="section-tag">TEST ENGINE</span>
-          <h2>Available Mock Tests</h2>
-          <p>Exam engine with timer, negative marking, and real exam centre window lock. OTP login is required before
-            starting a test. A submitted test moves to Given Tests and cannot be retaken.</p>
-          <div class="section-divider"></div>
-        </div>
-        <div id="availTests"></div>
+      <div class="section-header" style="margin-top:10px;">
+        <span class="section-tag">TEST ENGINE &bull; REAL EXAM CENTRE ENVIRONMENT</span>
+        <h2>Available Mock Test Series</h2>
+        <p>Full-length mock tests with real-time countdown timer, negative marking, on-screen calculator, and anti-cheat locked window. Attempted tests move to Given Tests with complete solutions.</p>
+        <div class="section-divider"></div>
       </div>
 
-      <div class="card" id="givenTestsCard">
-        <div class="section-header" style="margin-top:0;">
-          <span class="section-tag">PERFORMANCE &amp; SOLUTIONS</span>
-          <h2>✅ Given Tests / Attempted Tests</h2>
-          <p>Once you submit a test, it moves here permanently with complete question-by-question breakdown, marks,
-            correct answers and full solutions. Retake is strictly blocked.</p>
-          <div class="section-divider"></div>
-        </div>
-        <div id="givenTests"></div>
+      <div id="availTests" class="test-grid" style="margin-bottom:36px;"></div>
+
+      <div class="section-header" style="margin-top:36px;">
+        <span class="section-tag">PERFORMANCE &bull; ATTEMPTED PAPERS &bull; FULL SOLUTIONS</span>
+        <h2>✅ Attempted Tests &amp; Scorecards</h2>
+        <p>Your completed tests with marks, negative marking deduction, correct answer keys, and in-depth step-by-step explanations.</p>
+        <div class="section-divider"></div>
       </div>
+
+      <div id="givenTests" style="margin-bottom:40px;"></div>
     </section>
 
     <!-- VIEW: Batches / Classes -->
@@ -1246,7 +1255,7 @@
 
   
     <!-- VIEW: All Courses (PW Vidyapeeth Model Offline Classroom Batches) -->
-    <div data-view="courses" class="hidden">
+    <section data-view="courses" class="hidden">
       <div class="section-header">
         <span class="section-tag">OFFLINE CLASSROOM PROGRAMMES • NH-16 PATRAPADA</span>
         <h2>C2S Classroom Courses (Vidyapeeth Model)</h2>
@@ -1255,10 +1264,10 @@
       </div>
 
       <div id="coursesList"></div>
-    </div>
+    </section>
 
     <!-- VIEW: Books & Study Material Store -->
-    <div data-view="books" class="hidden">
+    <section data-view="books" class="hidden">
       <div class="section-header">
         <span class="section-tag">C2S ACADEMIC PUBLICATIONS &amp; HANDBOOKS</span>
         <h2>Books &amp; Comprehensive Study Material</h2>
@@ -1267,10 +1276,10 @@
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));gap:20px;" id="booksList"></div>
-    </div>
+    </section>
 
     <!-- VIEW: Current Affairs Portal (Weekly Digests with PDF Download Engine) -->
-    <div data-view="current-affairs" class="hidden">
+    <section data-view="current-affairs" class="hidden">
       <div class="section-header">
         <span class="section-tag">WEEKLY &amp; MONTHLY EDITORIAL DIGESTS</span>
         <h2>Current Affairs &amp; Special State GK</h2>
@@ -1279,7 +1288,7 @@
       </div>
 
       <div id="currentAffairsList"></div>
-    </div>
+    </section>
 </main>
 
   <!-- Footer (4 Columns, NO Home Button anywhere) -->
