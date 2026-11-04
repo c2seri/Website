@@ -3420,6 +3420,14 @@ h1, h2, h3, h4, .brand-title {
   }
 }
 
+/* ==========================================================================
+   PERSISTENT MOBILE BOTTOM BAR (DESKTOP HIDDEN RULE)
+   Ensures the mobile app bottom bar NEVER renders below footer on desktop
+   ========================================================================== */
+.c2s-mobile-bottom-bar {
+  display: none !important;
+}
+
 /* MOBILE APP SPECIFIC (max-width: 767px) — Smartphones */
 @media (max-width: 767px) {
   /* Prevent horizontal screen shaking */
