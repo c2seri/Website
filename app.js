@@ -105,10 +105,17 @@ function renderExams(onlyId){
   const lvl = $("#examLevel")?.value || "";
 
   let list = EXAMS.filter(e => {
-    const matchLvl = !lvl || e.level === lvl;
+    let matchLvl = true;
+    if (lvl === "CENTRAL" || lvl === "All India") {
+      matchLvl = e.stateCode === "CENTRAL" || e.state === "All India Central" || e.level === "All India";
+    } else if (lvl === "ODISHA") {
+      matchLvl = e.stateCode === "ODISHA" || (e.state && e.state.includes("Odisha"));
+    } else if (lvl) {
+      matchLvl = e.stateCode === lvl || e.state === lvl || (e.state && e.state.includes(lvl));
+    }
     const matchQuery = !q || (
-      e.name + " " + e.posts + " " + e.eligibility + " " + e.pattern + " " +
-      e.syllabus + " " + e.state + " " + (e.keywords || "") + " " +
+      (e.name || "") + " " + (e.board || "") + " " + (e.posts || "") + " " + (e.eligibility || "") + " " + (e.pattern || "") + " " +
+      (e.syllabus || "") + " " + (e.state || "") + " " + (e.keywords || "") + " " +
       (e.subExams ? e.subExams.join(" ") : "")
     ).toLowerCase().includes(q);
     return matchLvl && matchQuery;

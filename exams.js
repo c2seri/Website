@@ -4510,7 +4510,9 @@ const EXAMS = [
     "mockAvailable": true,
     "pyqAvailable": true
   }
-];\n\nconst EXAM_NOTIFICATIONS = [
+];
+
+const EXAM_NOTIFICATIONS = [
   {
     id: "notif-1",
     examId: "OSSC",
