@@ -4323,3 +4323,34 @@ window.renderAdminActivity = function() {
     `;
   }).join("");
 };
+
+
+window.quickDemoStudentLogin = function() {
+  const demoStudent = {
+    regNo: "C2S-2026-0101",
+    name: "Soumya Ranjan Mohapatra",
+    mobile: "9777481909",
+    email: "soumya.c2s@gmail.com",
+    targetExam: "OSSC CGL (Group B/C)",
+    prepMode: "Patrapada Centre (Classroom + 24h Library)",
+    district: "Khurda (Bhubaneswar)",
+    enrolledAt: new Date(Date.now() - 35 * 24 * 3600 * 1000).toISOString(),
+    feePaid: 8500,
+    feePending: 0,
+    status: "Active Enrolled"
+  };
+  store.set("c2s_main_user", demoStudent);
+
+  const existingGiven = store.get("c2s_main_given", []);
+  if (!existingGiven || existingGiven.length === 0) {
+    const demoGiven = [
+      { id: "ossc-cgl-mock-1", title: "OSSC CGL Tier-1 Full Length Mock 1", date: "02 Nov 2026", score: 118, maxMarks: 150, correct: 124, wrong: 24, skipped: 2, accuracy: 84, timeSpent: 5200 },
+      { id: "ssc-cgl-tier1-mock-3", title: "SSC CGL Tier 1 All-India Mock 3", date: "28 Oct 2026", score: 156, maxMarks: 200, correct: 80, wrong: 16, skipped: 4, accuracy: 83, timeSpent: 3500 },
+      { id: "odisha-gk-special", title: "Odisha History, Geography & Current Affairs 50 Qs", date: "24 Oct 2026", score: 44, maxMarks: 50, correct: 44, wrong: 6, skipped: 0, accuracy: 88, timeSpent: 1680 }
+    ];
+    store.set("c2s_main_given", demoGiven);
+  }
+
+  renderUser();
+  alert("✓ Welcome Soumya Ranjan Mohapatra! Student Roll Number C2S-2026-0101 verified.");
+};

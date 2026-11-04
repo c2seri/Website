@@ -99,12 +99,13 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="logo.jpg">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <script src="exams.js"></script>
-  <script src="app.js"></script>
+  <script src="exams.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
 
 <body>
@@ -167,11 +168,11 @@
                 <div class="mega-col-title">🏦 Banking &amp; Insurance</div>
                 <div class="mega-link-list">
                   <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
-                    <span class="mega-link-icon"><img src="images/logos/sbi.svg" alt="SBI" style="width:20px;height:20px;border-radius:50%;object-fit:contain;"></span>
+                    <span class="mega-link-icon"><img src="images/logos/sbi.svg" alt="SBI" style="width:20px;height:20px;border-radius:50%;object-fit:contain;" decoding="async"></span>
                     <div><strong>SBI PO &amp; Clerk</strong><span class="mega-link-desc">Probationary Officer &amp; JA</span></div>
                   </button>
                   <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
-                    <span class="mega-link-icon"><img src="images/logos/ibps.png" alt="IBPS" style="width:20px;height:20px;border-radius:4px;object-fit:contain;"></span>
+                    <span class="mega-link-icon"><img src="images/logos/ibps.png" alt="IBPS" style="width:20px;height:20px;border-radius:4px;object-fit:contain;" decoding="async"></span>
                     <div><strong>IBPS PO &amp; Clerk</strong><span class="mega-link-desc">11 Participating Banks</span></div>
                   </button>
                   <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
@@ -236,7 +237,7 @@
                 <div class="mega-col-title">🏛️ Odisha State Exams</div>
                 <div class="mega-link-list">
                   <button class="mega-link" onclick="filterExam('Odisha State', 'OSSC');closeMobileNav();">
-                    <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="OSSC" style="width:22px;height:22px;border-radius:50%;object-fit:contain;"></span>
+                    <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="OSSC" style="width:22px;height:22px;border-radius:50%;object-fit:contain;" decoding="async"></span>
                     <div><strong>OSSC CGL &amp; Group B/C</strong><span class="mega-link-desc">Auditor, Supplies, Excise</span></div>
                   </button>
                   <button class="mega-link" onclick="filterExam('Odisha State', 'OSSSC');closeMobileNav();">
@@ -244,11 +245,11 @@
                     <div><strong>OSSSC CRE (RI, ARI, Amin)</strong><span class="mega-link-desc">Forester &amp; Forest Guard</span></div>
                   </button>
                   <button class="mega-link" onclick="filterExam('Odisha State', 'OPSC');closeMobileNav();">
-                    <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="OPSC" style="width:22px;height:22px;border-radius:50%;object-fit:contain;"></span>
+                    <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="OPSC" style="width:22px;height:22px;border-radius:50%;object-fit:contain;" decoding="async"></span>
                     <div><strong>OPSC OAS (Odisha Civil Services)</strong><span class="mega-link-desc">OAS, OFS, OPS Group A/B</span></div>
                   </button>
                   <button class="mega-link" onclick="filterExam('Odisha State', 'ODISHA-POLICE');closeMobileNav();">
-                    <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="Police" style="width:22px;height:22px;border-radius:50%;object-fit:contain;"></span>
+                    <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="Police" style="width:22px;height:22px;border-radius:50%;object-fit:contain;" decoding="async"></span>
                     <div><strong>Odisha Police Constable &amp; SI</strong><span class="mega-link-desc">Written + 1.6km PET Prep</span></div>
                   </button>
                 </div>
@@ -356,6 +357,10 @@
             <div class="dropdown-item" onclick="window.navigateToLibrary()">
               <span>📖</span>
               <div><strong>24h Study Library Sanctuary</strong><span class="small" style="display:block">4 AC Shifts • Ergonomic Desks • Wi-Fi</span></div>
+            </div>
+            <div class="dropdown-item" onclick="window.location.href='admin.html';closeMobileNav();">
+              <span>👑</span>
+              <div><strong>Super Admin &amp; Front Desk Portal</strong><span class="small" style="display:block">Daily P&amp;L • Seat Allocations • Inquiries</span></div>
             </div>
             <div class="dropdown-item" onclick="show('notices');closeMobileNav();">
               <span>📢</span>
@@ -623,27 +628,27 @@
                 <!-- Adda247 Quick Keyword Chips with Authentic Official Board Logos -->
                 <div class="adda-quick-chips">
                   <button type="button" class="adda-chip" onclick="quickFilterTarget('OSSC-CGL')">
-                    <img src="images/logos/odisha.svg" alt="OSSC" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;">
+                    <img src="images/logos/odisha.svg" alt="OSSC" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;" decoding="async">
                     <span>OSSC CGL</span>
                   </button>
                   <button type="button" class="adda-chip" onclick="quickFilterTarget('ODISHA-POLICE-SI')">
-                    <img src="images/logos/odisha.svg" alt="Odisha Police" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;">
+                    <img src="images/logos/odisha.svg" alt="Odisha Police" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;" decoding="async">
                     <span>Odisha Police SI</span>
                   </button>
                   <button type="button" class="adda-chip" onclick="quickFilterTarget('IBPS-PO')">
-                    <img src="images/logos/sbi.svg" alt="Banking" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;">
+                    <img src="images/logos/sbi.svg" alt="Banking" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;" decoding="async">
                     <span>Bank PO (SBI/IBPS)</span>
                   </button>
                   <button type="button" class="adda-chip" onclick="quickFilterTarget('SSC-CGL')">
-                    <img src="images/logos/ssc.webp" alt="SSC" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;">
+                    <img src="images/logos/ssc.webp" alt="SSC" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;" decoding="async">
                     <span>SSC CGL</span>
                   </button>
                   <button type="button" class="adda-chip" onclick="quickFilterTarget('RRB-NTPC-GRAD')">
-                    <img src="images/logos/railways.jpg" alt="Railway" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;">
+                    <img src="images/logos/railways.jpg" alt="Railway" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;" decoding="async">
                     <span>Railway NTPC</span>
                   </button>
                   <button type="button" class="adda-chip" onclick="quickFilterTarget('OPSC-OAS')">
-                    <img src="images/logos/odisha.svg" alt="OPSC" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;">
+                    <img src="images/logos/odisha.svg" alt="OPSC" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;" decoding="async">
                     <span>OPSC OAS</span>
                   </button>
                   <button type="button" class="adda-chip library-chip" onclick="window.navigateToLibrary()">
@@ -1822,7 +1827,23 @@
             </div>
 
             <form onsubmit="return false">
-              <label for="loginTarget" style="font-weight:700;font-size:13.5px;color:#334155;">Registered Mobile Number or Email</label>
+              <!-- 1-Click Demo Quick Logins for Instant Inspection -->
+            <div style="background:#eff6ff;border:1.5px dashed #93c5fd;border-radius:12px;padding:12px 14px;margin-bottom:16px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                <span style="font-size:12.5px;font-weight:750;color:#1e40af;">⚡ Instant 1-Click Demo Logins:</span>
+                <span style="font-size:11.5px;color:#3b82f6;">No OTP typing required</span>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+                <button type="button" class="btn" style="background:#2563eb;color:#fff;padding:6px 12px;font-size:12px;font-weight:750;border-radius:6px;box-shadow:none;" onclick="quickDemoStudentLogin()">
+                  🎓 Demo Student Dashboard (Soumya - OSSC CGL)
+                </button>
+                <a href="admin.html" class="btn" style="background:#0f172a;color:#fff;padding:6px 12px;font-size:12px;font-weight:750;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+                  👑 Super Admin &amp; Front Desk P&amp;L &rarr;
+                </a>
+              </div>
+            </div>
+
+            <label for="loginTarget" style="font-weight:700;font-size:13.5px;color:#334155;">Registered Mobile Number or Email</label>
               <input id="loginTarget" placeholder="e.g. 9777481909 or student@gmail.com" style="margin-bottom:14px;font-size:15px;padding:12px 14px;">
 
               <label style="font-weight:700;font-size:13px;color:#334155;margin-bottom:8px;display:block;">Choose OTP Delivery Channel:</label>
@@ -2434,7 +2455,7 @@
                   </label>
                   <span id="expFileName" style="font-size:12px;color:#64748b;display:block;margin-top:4px;">No receipt attached yet (Optional)</span>
                   <div id="expImagePreviewBox" style="display:none;margin-top:10px;">
-                    <img id="expImagePreview" src="" alt="Bill Preview" style="max-height:90px;border-radius:6px;border:1px solid #cbd5e1;">
+                    <img id="expImagePreview" src="" alt="Bill Preview" style="max-height:90px;border-radius:6px;border:1px solid #cbd5e1;" decoding="async">
                   </div>
                 </div>
 
@@ -2885,6 +2906,7 @@
           <a href="#" onclick="show('blog');return false;">Student Blog</a>
           <a href="#" onclick="show('help');return false;">Help &amp; Contact</a>
           <a href="#" onclick="show('login');return false;">Main Student Login</a>
+          <a href="admin.html" style="color:#f59e0b;font-weight:750;">👑 Super Admin &amp; Front Office P&amp;L</a>
         </div>
         <p class="small" style="color:#64748b;margin-top:14px;line-height:1.4;">
           Post-login dashboard is a separate phase. This is the public portal. No Home link exists anywhere on this

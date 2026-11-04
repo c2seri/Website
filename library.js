@@ -459,3 +459,40 @@ window.selectLocalArea = function(areaKey) {
   if (distEl) distEl.textContent = item.dist;
   if (routeEl) routeEl.textContent = item.route;
 };
+
+
+window.quickDemoMemberLogin = function() {
+  const demoMember = {
+    regNo: "C2SLIB-00104",
+    name: "Prakash Behera",
+    mobile: "9777481909",
+    email: "prakash.member@gmail.com",
+    shift: "Full Day (24-Hour Sanctuary)",
+    seat: "A-14",
+    zone: "Zone A (Silent Cubicles)",
+    validTill: "30 Nov 2026",
+    wifiPassword: "C2S@Study#2026",
+    status: "Active Allocated",
+    paid: 1800,
+    pending: 0
+  };
+  
+  store.set("c2s_lib_current_user", demoMember);
+  
+  const members = store.get("c2s_lib_members", []);
+  if (!members.some(m => m.regNo === demoMember.regNo)) {
+    members.unshift(demoMember);
+    store.set("c2s_lib_members", members);
+  }
+  
+  if (typeof renderDigitalIdCard === "function") {
+    renderDigitalIdCard();
+  } else if (typeof renderUser === "function") {
+    renderUser();
+  }
+  
+  const box = document.getElementById("libLoginBox");
+  if (box) box.style.display = "none";
+  
+  alert("✓ Welcome Prakash Behera! Your 24-Hour Digital Pass & Assigned Desk A-14 are ready.");
+};
