@@ -5,3 +5,4 @@ console.log('tabs start at line:', start + 1);
 for (let i = start - 2; i < start + 30; i++) {
   console.log(lines[i]);
 }
+

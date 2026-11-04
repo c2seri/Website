@@ -3358,11 +3358,11 @@ window.handleSuperAdminLogin = function() {
   const email = (emailEl ? emailEl.value : "").trim().toLowerCase();
   const pass = (passEl ? passEl.value : "").trim();
 
-  const validUser = (email === "admin@c2seri.com" || email === "9777481909" || email === "director@c2seri.com" || email === "admin" || email === "frontdesk");
+  const validUser = (email === "info.c2seri@gmail.com" || email === "9777481909" || email === "director@c2seri.com" || email === "admin" || email === "frontdesk");
   const validPass = (pass === "c2s@admin2026" || pass === "977748" || pass === "admin123");
 
   if (!validUser || !validPass) {
-    alert("❌ Invalid Super Admin / Staff Credentials.\n\nPlease check pre-filled ID (admin@c2seri.com) and Password (c2s@admin2026) or PIN (977748).");
+    alert("❌ Invalid Super Admin / Staff Credentials.\n\nPlease check pre-filled ID (info.c2seri@gmail.com) and Password (c2s@admin2026) or PIN (977748).");
     return;
   }
 

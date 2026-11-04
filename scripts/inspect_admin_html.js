@@ -5,3 +5,4 @@ console.log('admin section at line:', idx + 1);
 for (let i = idx; i < idx + 35; i++) {
   console.log(lines[i]);
 }
+

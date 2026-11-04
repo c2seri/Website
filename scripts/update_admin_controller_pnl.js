@@ -923,3 +923,4 @@ window.openAddSituationModal = function() {
 appJs = appJs.substring(0, startIdx) + newAdminJs;
 fs.writeFileSync('app.js', appJs, 'utf8');
 console.log('app.js updated with comprehensive Super Admin & Front Desk controller!');
+

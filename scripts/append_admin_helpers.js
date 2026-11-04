@@ -138,3 +138,4 @@ window.renderAdminActivity = function() {
 appJs += missingFns;
 fs.writeFileSync('app.js', appJs, 'utf8');
 console.log('Appended missing helpers to app.js');
+

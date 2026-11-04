@@ -754,3 +754,4 @@ const newAdminHtml = `    <!-- VIEW: Super Admin Command Center (Institutional O
 indexHtml = indexHtml.substring(0, startIndex) + newAdminHtml + '\n' + indexHtml.substring(endIndex);
 fs.writeFileSync('index.html', indexHtml, 'utf8');
 console.log('index.html updated with upgraded Super Admin & Front Desk console!');
+
