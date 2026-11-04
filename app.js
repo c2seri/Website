@@ -73,6 +73,7 @@ function show(view){
   if(view==="notes") renderNotes();
   if(view==="pass") renderPass();
   window.scrollTo(0,0);
+  document.querySelectorAll(".mobile-tab-item").forEach(b => { b.classList.toggle("active", b.dataset.bottomTab === view); });
 }
 function filterExam(level, id){
   show("exams");
@@ -1046,4 +1047,27 @@ function downloadCaPdf(caId) {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+
+/* ==========================================================================
+   MOBILE BOTTOM BAR HANDLER
+   ========================================================================== */
+function handleBottomNav(target) {
+  document.querySelectorAll(".mobile-tab-item").forEach(b => {
+    b.classList.toggle("active", b.dataset.bottomTab === target);
+  });
+
+  if (target === "home") {
+    show("home");
+  } else if (target === "exams") {
+    show("home");
+    scrollToPanIndiaExams();
+  } else if (target === "tests") {
+    show("tests");
+  } else if (target === "courses") {
+    show("courses");
+  } else if (target === "books") {
+    show("books");
+  }
 }
