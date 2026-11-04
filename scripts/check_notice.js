@@ -11,3 +11,4 @@ if (noticeMatch) {
 const startIdx = html.indexOf('Offline Library Notice');
 console.log('Surrounding code:');
 console.log(html.slice(startIdx - 100, startIdx + 800));
+

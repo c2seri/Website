@@ -9,3 +9,4 @@ inlineScripts.forEach((s, i) => {
   const firstLine = content.split('\n')[0];
   console.log(`Script ${i+1} (${content.length} chars):`, firstLine.substring(0, 90));
 });
+

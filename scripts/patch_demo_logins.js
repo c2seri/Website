@@ -111,3 +111,4 @@ window.quickDemoStudentLogin = function() {
   fs.writeFileSync('app.js', appJs, 'utf8');
   console.log('✓ Added quickDemoStudentLogin function to app.js');
 }
+

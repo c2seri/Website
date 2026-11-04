@@ -15,3 +15,4 @@ try {
 } catch (e) {
   console.error('app.js syntax error:', e);
 }
+

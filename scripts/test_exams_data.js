@@ -11,3 +11,4 @@ if (EXAMS) {
   console.log('Looking for BANK:');
   console.log(EXAMS.filter(e => e.id === 'BANK' || e.category === 'BANK' || (e.board && e.board.includes('BANK'))).map(e => e.id));
 }
+

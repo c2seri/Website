@@ -165,3 +165,4 @@ function proceedToAdmissionWithSeat() {
 libJs = libJs.substring(0, sIdx) + new3dJs + '\n' + libJs.substring(eIdx);
 fs.writeFileSync('library.js', libJs, 'utf8');
 console.log('library.js updated with 3D Sanctuary Engine & HUD inspector!');
+

@@ -56,3 +56,4 @@ files.forEach(f => {
   const hasPreconnect = content.includes('rel="preconnect" href="https://fonts.googleapis.com"') || content.includes('rel="preconnect" href="https://fonts.gstatic.com"');
   console.log(`  Has Preconnect: ${hasPreconnect}`);
 });
+

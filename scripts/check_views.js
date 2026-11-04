@@ -7,3 +7,4 @@ while ((m = regex.exec(html)) !== null) {
   views.push(m[1]);
 }
 console.log('Registered views in index.html:', views);
+

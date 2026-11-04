@@ -18,3 +18,4 @@ funcs.forEach(fn => {
   const presentInApp = fs.readFileSync('app.js', 'utf8').includes(fn);
   console.log(`${fn}: present in app.js? ${presentInApp}`);
 });
+

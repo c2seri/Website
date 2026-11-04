@@ -57,3 +57,4 @@ if (html.includes(footerLogin) && !html.includes('👑 Super Admin &amp; Front O
 
 fs.writeFileSync('index.html', html, 'utf8');
 console.log('index.html updated successfully!');
+

@@ -7,3 +7,4 @@ lines.forEach((l, i) => {
     console.log(lines.slice(Math.max(0, i - 10), i + 35).join('\n'));
   }
 });
+

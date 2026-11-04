@@ -159,3 +159,4 @@ const new3dFloorHtml = `<div id="floorPlanSection" style="background:#ffffff;bor
 libHtml = libHtml.substring(0, startIndex) + new3dFloorHtml + libHtml.substring(endIndex);
 fs.writeFileSync('library/index.html', libHtml, 'utf8');
 console.log('library/index.html updated with 3D Sanctuary Engine & Performance fixes!');
+

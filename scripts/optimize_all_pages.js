@@ -90,3 +90,4 @@ allHtmlFiles.forEach(file => {
 });
 
 console.log('\nAll pages optimized for speed and high-performance rendering!');
+
