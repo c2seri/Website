@@ -442,33 +442,75 @@ function scrollToPanIndiaExams() {
 // UNIFIED PREMIUM EXAM CARD HTML RENDERER
 // ==========================================================================
 function renderExamCardHtml(e) {
+  const cat = (e.category || '').toUpperCase();
+  const board = (e.board || '').toUpperCase();
+  const id = (e.id || '').toUpperCase();
   const isOdisha = e.stateCode === 'ODISHA' || (e.state && e.state.includes('Odisha'));
   const isCentral = e.stateCode === 'CENTRAL' || (e.state && e.state.includes('Central')) || e.level === 'All India';
-  const stateClass = isOdisha ? 'state-odisha' : (isCentral ? 'state-central' : '');
-  const stateLabel = isOdisha ? '🏛️ Odisha' : (isCentral ? '🇮🇳 All India' : '📍 ' + (e.state || 'State'));
+
+  // Distinct Color & Cadre Branding per Board
+  let themeClass = 'theme-central';
+  let cadreTag = '🇮🇳 All India Recruitment';
+  let badgeStyle = 'background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;';
+
+  if (isOdisha || id.includes('OSSC') || id.includes('OSSSC') || id.includes('OPSC') || id.includes('ODISHA')) {
+    themeClass = 'theme-odisha';
+    cadreTag = '🏛️ Odisha Govt Official';
+    badgeStyle = 'background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;';
+  } else if (cat.includes('BANK') || id.includes('SBI') || id.includes('IBPS') || id.includes('RBI')) {
+    themeClass = 'theme-bank';
+    cadreTag = '🏦 Banking & Finance Cadre';
+    badgeStyle = 'background:#eff6ff;color:#1d4ed8;border:1px solid #93c5fd;';
+  } else if (cat.includes('SSC') || id.includes('SSC')) {
+    themeClass = 'theme-ssc';
+    cadreTag = '🛡️ SSC Central Staff (Pay L4–L8)';
+    badgeStyle = 'background:#fff7ed;color:#c2410c;border:1px solid #fed7aa;';
+  } else if (cat.includes('RAILWAY') || id.includes('RRB')) {
+    themeClass = 'theme-railway';
+    cadreTag = '🚆 Indian Railways Cadre';
+    badgeStyle = 'background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;';
+  } else if (cat.includes('POLICE') || id.includes('POLICE')) {
+    themeClass = 'theme-police';
+    cadreTag = '👮 Police & Law Enforcement';
+    badgeStyle = 'background:#fefce8;color:#854d0e;border:1px solid #fef08a;';
+  } else if (cat.includes('DEFENCE') || id.includes('NDA') || id.includes('CDS')) {
+    themeClass = 'theme-defence';
+    cadreTag = '⚔️ Armed Forces Officer';
+    badgeStyle = 'background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;';
+  } else if (cat.includes('TEACHING') || id.includes('TET')) {
+    themeClass = 'theme-teaching';
+    cadreTag = '📚 Teaching Cadre (PRT/TGT/PGT)';
+    badgeStyle = 'background:#faf5ff;color:#7e22ce;border:1px solid #e9d5ff;';
+  } else if (cat.includes('CIVIL') || id.includes('UPSC') || id.includes('PSC')) {
+    themeClass = 'theme-civil';
+    cadreTag = '⚖️ State / Union Civil Services';
+    badgeStyle = 'background:#fdf4ff;color:#a21caf;border:1px solid #f5d0fe;';
+  }
+
+  const emblemSvg = getExamEmblem(e, 52);
 
   return `
-    <div class="pan-exam-card">
+    <div class="pan-exam-card ${themeClass}">
       <div>
-        <!-- Header with HD Official Logo & Authority Badges -->
+        <!-- Top Board Strip with Distinct Board Logo & Authority Badge -->
         <div class="pan-exam-card-header">
-          <div class="pan-exam-logo-wrap" title="${e.board || 'Govt Board'}">
-            ${getExamEmblem(e, 46)}
+          <div class="pan-exam-logo-wrap" title="${e.board || 'Official Board'}">
+            ${emblemSvg}
           </div>
           <div style="flex:1;min-width:0;">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:4px;flex-wrap:wrap;">
-              <span class="pan-board-badge">${e.board || 'Govt Board'}</span>
-              <span class="pan-state-badge ${stateClass}">${stateLabel}</span>
+              <span class="pan-board-badge" style="${badgeStyle}">${e.board || 'Govt Board'}</span>
+              <span class="pan-state-badge">${cadreTag}</span>
             </div>
             <h4 class="pan-exam-title" title="${e.name}">${e.name}</h4>
           </div>
         </div>
 
-        <!-- 4-Metric Key Info Strip -->
+        <!-- 4-Pillar Information Grid (Clear Eligibility, Age, Posts & Stages) -->
         <div class="pan-exam-meta-grid">
           <div class="pan-exam-meta-item">
-            <span class="pan-exam-meta-label">🎓 Eligibility</span>
-            <span class="pan-exam-meta-val" title="${e.qualification}">${e.qualification || 'Graduation'}</span>
+            <span class="pan-exam-meta-label">🎓 Qualification</span>
+            <span class="pan-exam-meta-val" title="${e.qualification}">${e.qualification || 'Graduation in any stream'}</span>
           </div>
           <div class="pan-exam-meta-item">
             <span class="pan-exam-meta-label">⏳ Age Limit</span>
@@ -476,41 +518,43 @@ function renderExamCardHtml(e) {
           </div>
           <div class="pan-exam-meta-item">
             <span class="pan-exam-meta-label">💼 Domain Cadre</span>
-            <span class="pan-exam-meta-val" title="${e.category}">${e.category || 'Recruitment'}</span>
+            <span class="pan-exam-meta-val" title="${e.category}">${e.category || 'Govt Service'}</span>
           </div>
           <div class="pan-exam-meta-item">
-            <span class="pan-exam-meta-label">📋 Selection Stages</span>
-            <span class="pan-exam-meta-val">${e.subExams && e.subExams.length ? e.subExams.length + ' Sub-Posts' : 'Prelims + Mains'}</span>
+            <span class="pan-exam-meta-label">📋 Selection Pattern</span>
+            <span class="pan-exam-meta-val">${e.subExams && e.subExams.length ? e.subExams.length + ' Sub-Stages' : 'Prelims + Mains'}</span>
           </div>
         </div>
 
-        <!-- Key Designated Posts Box -->
+        <!-- Designated Target Posts -->
         <div class="pan-exam-posts-box">
-          <strong style="color:#0f172a;display:block;margin-bottom:2px;">Target Posts:</strong>
-          <span style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;" title="${e.posts}">
+          <strong style="color:#0f172a;display:block;margin-bottom:2px;font-size:11.5px;text-transform:uppercase;letter-spacing:0.4px;">
+            Target Posts:
+          </strong>
+          <span class="posts-clamp-text" title="${e.posts}">
             ${e.posts || 'Multiple Central & State Govt vacancies'}
           </span>
         </div>
 
-        <!-- Syllabus & Pattern Summary Box -->
+        <!-- Exam Pattern & Negative Marking Box -->
         <div class="pan-exam-pattern-box">
-          <div style="font-weight:750;color:#1e3a8a;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;">
-            <span>📋 Exam Pattern & Negative Marking</span>
+          <div style="font-weight:750;color:#1e3a8a;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;font-size:11.5px;">
+            <span>📋 Pattern &amp; Negative Marking</span>
             <span style="font-size:10.5px;color:#dc2626;font-weight:800;background:#fee2e2;padding:1px 6px;border-radius:4px;">-0.25 Mark</span>
           </div>
           <div style="font-size:11.5px;color:#475569;line-height:1.4;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
-            ${e.pattern ? e.pattern.replace(/•/g, '').trim() : 'Stage-wise CBT examination with objective multiple choice questions.'}
+            ${e.pattern ? e.pattern.replace(/•/g, '').trim() : 'Objective multiple-choice CBT examination followed by descriptive paper and skill verification.'}
           </div>
         </div>
       </div>
 
-      <!-- Action Buttons Strip -->
+      <!-- Action Strip: Deep Syllabus Modal + Direct CBT Mock Test + Patrapada Batch -->
       <div class="pan-exam-actions">
-        <button class="btn ghost" style="padding:7px 10px;font-size:12px;flex:1.2;font-weight:750;" onclick="openExamModal('${e.id}')">
-          📋 View Syllabus & Details
+        <button type="button" class="btn ghost btn-view-exam-details" onclick="openExamModal('${e.id}')">
+          📋 Full Syllabus &amp; Details
         </button>
-        <button class="btn orange" style="padding:7px 10px;font-size:12px;flex:1;font-weight:750;" onclick="startOrFilterMock('${e.id}')">
-          🎯 Mock Test →
+        <button type="button" class="btn orange btn-start-mock-cta" onclick="startOrFilterMock('${e.id}')">
+          🎯 CBT Mock →
         </button>
       </div>
     </div>
