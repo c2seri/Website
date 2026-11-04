@@ -452,6 +452,7 @@
           if (vpBar) vpBar.style.display = 'flex';
           if (b360) { b360.style.background = '#1e3a8a'; b360.style.color = '#fff'; }
           if (b2d) { b2d.style.background = 'transparent'; b2d.style.color = '#475569'; }
+          window.dispatchEvent(new Event('resize'));
         } else {
           if (c360) c360.style.display = 'none';
           if (c2d) c2d.style.display = 'block';

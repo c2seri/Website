@@ -88,3 +88,4 @@ if (issues.length === 0) {
   console.log(`❌ Found ${issues.length} issues:`);
   issues.forEach(i => console.log(' - ' + i));
 }
+
