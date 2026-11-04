@@ -106,3 +106,4 @@ if (!content.includes('window.shareStudentReferralWhatsapp')) {
 // Save back
 fs.writeFileSync('app.js', content, 'utf8');
 console.log('Saved app.js successfully.');
+

@@ -7,6 +7,10 @@
       "destination": "/library/index.html"
     },
     {
+      "source": "/library-360.js",
+      "destination": "/library/library-360.js"
+    },
+    {
       "source": "/admission",
       "destination": "/library/admission.html"
     },

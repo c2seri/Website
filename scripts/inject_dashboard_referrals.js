@@ -177,3 +177,4 @@ if (content.includes(userBoxEndTarget) && !content.includes('id="dashTabReferral
 
 fs.writeFileSync('app.js', content, 'utf8');
 console.log('Finished updating app.js');
+
