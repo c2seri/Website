@@ -65,3 +65,4 @@ if (!html.includes('id="homeCoursesGrid"')) {
 } else {
   console.log('Dynamic showcases already present in index.html');
 }
+

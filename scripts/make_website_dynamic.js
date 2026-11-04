@@ -356,3 +356,4 @@ js = js.replace(
 
 fs.writeFileSync('app.js', js, 'utf8');
 console.log('app.js updated with fully dynamic homepage renderers and autocomplete search!');
+
