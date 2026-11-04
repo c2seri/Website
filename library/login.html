@@ -1,5 +1,18 @@
 <!doctype html>
 <html lang="en"><head>
+  <!-- Instant Clean URL Canonicalizer: Automatically strips /index.html from the address bar -->
+  <script>
+    (function() {
+      try {
+        if (window.location.pathname.endsWith('/index.html') || window.location.pathname === '/index.html') {
+          var cleanPath = window.location.pathname.replace(/\/index\.html$/, '/');
+          var cleanUrl = cleanPath + window.location.search + window.location.hash;
+          window.history.replaceState(null, document.title, cleanUrl);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ59JX1P5N"></script>
   <script>
@@ -14,7 +27,7 @@
 <meta name="description" content="C2S Premium Library student login and signup with OTP: SMS, WhatsApp or Email. Library-only login, separate from the Main site login.">
 <link rel="stylesheet" href="../styles.css"><script src="../library.js"></script></head>
 <body>
-<header class="topbar"><div><div class="logo"><span class="logo-badge" role="img" aria-label="C2S logo"></span><span>C2S Premium Library</span></div><div class="tagline">C2S Premium Library • Online Membership &amp; Admission • Your Selection Our Mission</div></div><nav class="libnav"><a href="index.html">Overview</a><a href="facilities.html">Facilities</a><a href="shifts.html">Shifts &amp; Pricing</a><a href="admission.html">Admission</a><a href="login.html">Student Login</a><a href="dashboard.html">Dashboard</a><a href="index.html#contact">Contact</a></nav></header>
+<header class="topbar"><div><div class="logo"><span class="logo-badge" role="img" aria-label="C2S logo"></span><span>C2S Premium Library</span></div><div class="tagline">C2S Premium Library • Online Membership &amp; Admission • Your Selection Our Mission</div></div><nav class="libnav"><a href="/">Overview</a><a href="facilities.html">Facilities</a><a href="shifts.html">Shifts &amp; Pricing</a><a href="admission.html">Admission</a><a href="login.html">Student Login</a><a href="dashboard.html">Dashboard</a><a href="/#contact">Contact</a></nav></header>
 <main>
 <div class="card"><h1>Student Login / Signup — Library Only</h1><p class="small"><strong>This login is for library members only.</strong> It does NOT log you into the main C2S site and does NOT show main-site data. For exams, test series and batches on the main site, a separate Main OTP login is needed there.</p><div class="preview"><strong>Note:</strong> Library login and payment setup is in progress — no real SMS, WhatsApp or email is sent yet, and records here are preview only.</div></div>
 <div class="card" id="libLoginCard"><h2>Library Login / Signup (separate, OTP based)</h2>

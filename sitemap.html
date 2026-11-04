@@ -1,6 +1,19 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Instant Clean URL Canonicalizer: Automatically strips /index.html from the address bar -->
+  <script>
+    (function() {
+      try {
+        if (window.location.pathname.endsWith('/index.html') || window.location.pathname === '/index.html') {
+          var cleanPath = window.location.pathname.replace(/\/index\.html$/, '/');
+          var cleanUrl = cleanPath + window.location.search + window.location.hash;
+          window.history.replaceState(null, document.title, cleanUrl);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ59JX1P5N"></script>
   <script>
@@ -32,7 +45,7 @@
   <header style="background:#ffffff;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:100;padding:12px 0;box-shadow:0 2px 10px rgba(15,23,42,0.03);">
     <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
       <div style="display:flex;align-items:center;gap:16px;">
-        <a href="index.html" class="brand" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+        <a href="/" class="brand" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
           <span class="logo-badge" role="img" aria-label="C2S logo"></span>
           <div>
             <div style="font-size:20px;font-weight:900;color:#0f172a;letter-spacing:-0.02em;">C2S</div>
@@ -44,7 +57,7 @@
         </a>
       </div>
       <div>
-        <a href="index.html" class="btn ghost" style="padding:7px 16px;font-size:13px;font-weight:750;text-decoration:none;">← Back to Home</a>
+        <a href="/" class="btn ghost" style="padding:7px 16px;font-size:13px;font-weight:750;text-decoration:none;">← Back to Home</a>
       </div>
     </div>
   </header>
@@ -53,7 +66,7 @@
   <main class="container" style="padding:40px 16px 60px;">
     <!-- Breadcrumb -->
     <div style="font-size:12.5px;color:#64748b;margin-bottom:16px;">
-      <a href="index.html" style="color:#2563eb;text-decoration:none;font-weight:600;">Home</a> / <span style="color:#0f172a;font-weight:700;">Platform Sitemap</span>
+      <a href="/" style="color:#2563eb;text-decoration:none;font-weight:600;">Home</a> / <span style="color:#0f172a;font-weight:700;">Platform Sitemap</span>
     </div>
 
     <!-- Title Header -->
@@ -84,17 +97,17 @@
           <h2 style="font-size:18px;font-weight:850;color:#0f172a;margin:0;">Core Platform</h2>
         </div>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;font-size:14px;">
-          <li><a href="index.html" style="color:#1e293b;text-decoration:none;font-weight:600;">🏠 Homepage &amp; Exam Ecosystem</a></li>
-          <li><a href="index.html#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">📑 204+ Pan-India Exam Directory</a></li>
-          <li><a href="index.html#homeTestsGrid" style="color:#1e293b;text-decoration:none;font-weight:600;">🎯 Weekly CBT Mock Test Series</a></li>
-          <li><a href="index.html#homeCoursesGrid" style="color:#1e293b;text-decoration:none;font-weight:600;">🏫 Classroom Batches (Vidyapeeth Model)</a></li>
-          <li><a href="index.html#homeBooksGrid" style="color:#1e293b;text-decoration:none;font-weight:600;">📚 Books &amp; Study Material Store</a></li>
-          <li><a href="index.html#homeCaGrid" style="color:#1e293b;text-decoration:none;font-weight:600;">📰 Weekly Current Affairs &amp; PDF Engine</a></li>
-          <li><a href="index.html" onclick="if(window.show){show('pyq');return false;}" style="color:#1e293b;text-decoration:none;font-weight:600;">📥 Previous Year Questions (PYQ) Hub</a></li>
-          <li><a href="index.html" onclick="if(window.show){show('notes');return false;}" style="color:#1e293b;text-decoration:none;font-weight:600;">📝 Handwritten Faculty Smart Notes</a></li>
-          <li><a href="index.html" onclick="if(window.show){show('notices');return false;}" style="color:#1e293b;text-decoration:none;font-weight:600;">📢 Official Board Notifications</a></li>
-          <li><a href="index.html" onclick="if(window.show){show('blog');return false;}" style="color:#1e293b;text-decoration:none;font-weight:600;">💡 Exam Strategy &amp; Toppers Blog</a></li>
-          <li><a href="index.html" onclick="if(window.show){show('help');return false;}" style="color:#1e293b;text-decoration:none;font-weight:600;">📞 Helpdesk &amp; Patrapada Centre Contact</a></li>
+          <li><a href="/" style="color:#1e293b;text-decoration:none;font-weight:600;">🏠 Homepage &amp; Exam Ecosystem</a></li>
+          <li><a href="/#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">📑 204+ Pan-India Exam Directory</a></li>
+          <li><a href="/#homeTestsGrid" style="color:#1e293b;text-decoration:none;font-weight:600;">🎯 Weekly CBT Mock Test Series</a></li>
+          <li><a href="/#homeCoursesGrid" style="color:#1e293b;text-decoration:none;font-weight:600;">🏫 Classroom Batches (Vidyapeeth Model)</a></li>
+          <li><a href="/#homeBooksGrid" style="color:#1e293b;text-decoration:none;font-weight:600;">📚 Books &amp; Study Material Store</a></li>
+          <li><a href="/#homeCaGrid" style="color:#1e293b;text-decoration:none;font-weight:600;">📰 Weekly Current Affairs &amp; PDF Engine</a></li>
+          <li><a href="/" onclick="if(window.show){show('pyq');return false;}" style="color:#1e293b;text-decoration:none;font-weight:600;">📥 Previous Year Questions (PYQ) Hub</a></li>
+          <li><a href="/" onclick="if(window.show){show('notes');return false;}" style="color:#1e293b;text-decoration:none;font-weight:600;">📝 Handwritten Faculty Smart Notes</a></li>
+          <li><a href="/" onclick="if(window.show){show('notices');return false;}" style="color:#1e293b;text-decoration:none;font-weight:600;">📢 Official Board Notifications</a></li>
+          <li><a href="/" onclick="if(window.show){show('blog');return false;}" style="color:#1e293b;text-decoration:none;font-weight:600;">💡 Exam Strategy &amp; Toppers Blog</a></li>
+          <li><a href="/" onclick="if(window.show){show('help');return false;}" style="color:#1e293b;text-decoration:none;font-weight:600;">📞 Helpdesk &amp; Patrapada Centre Contact</a></li>
         </ul>
       </div>
 
@@ -122,14 +135,14 @@
           <h2 style="font-size:18px;font-weight:850;color:#0f172a;margin:0;">204+ Govt Exams</h2>
         </div>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;font-size:14px;">
-          <li><a href="index.html#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">🏦 Banking: SBI, IBPS, RBI, RRB, LIC (29 Exams)</a></li>
-          <li><a href="index.html#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">📑 SSC: CGL, CHSL, GD, MTS, CPO, Stenographer</a></li>
-          <li><a href="index.html#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">🚆 Railways: RRB NTPC, Group D, ALP, JE</a></li>
-          <li><a href="index.html#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">🏛️ Odisha OSSC: CGL, CTSRE, CHSL, Auditor</a></li>
-          <li><a href="index.html#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">🌾 Odisha OSSSC: RI, ARI, Amin, PEO, Forest Guard</a></li>
-          <li><a href="index.html#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">⚖️ Odisha OPSC: Civil Services (OAS), Judicial</a></li>
-          <li><a href="index.html#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">👮 Police &amp; Defence: Odisha SI, NDA, CDS, CAPF</a></li>
-          <li><a href="index.html#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">📍 State Commissions: Bihar, UP, Rajasthan, MP, WB</a></li>
+          <li><a href="/#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">🏦 Banking: SBI, IBPS, RBI, RRB, LIC (29 Exams)</a></li>
+          <li><a href="/#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">📑 SSC: CGL, CHSL, GD, MTS, CPO, Stenographer</a></li>
+          <li><a href="/#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">🚆 Railways: RRB NTPC, Group D, ALP, JE</a></li>
+          <li><a href="/#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">🏛️ Odisha OSSC: CGL, CTSRE, CHSL, Auditor</a></li>
+          <li><a href="/#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">🌾 Odisha OSSSC: RI, ARI, Amin, PEO, Forest Guard</a></li>
+          <li><a href="/#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">⚖️ Odisha OPSC: Civil Services (OAS), Judicial</a></li>
+          <li><a href="/#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">👮 Police &amp; Defence: Odisha SI, NDA, CDS, CAPF</a></li>
+          <li><a href="/#panIndiaExamsSection" style="color:#1e293b;text-decoration:none;font-weight:600;">📍 State Commissions: Bihar, UP, Rajasthan, MP, WB</a></li>
         </ul>
       </div>
 

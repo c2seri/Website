@@ -1,6 +1,19 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Instant Clean URL Canonicalizer: Automatically strips /index.html from the address bar -->
+  <script>
+    (function() {
+      try {
+        if (window.location.pathname.endsWith('/index.html') || window.location.pathname === '/index.html') {
+          var cleanPath = window.location.pathname.replace(/\/index\.html$/, '/');
+          var cleanUrl = cleanPath + window.location.search + window.location.hash;
+          window.history.replaceState(null, document.title, cleanUrl);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js&bull;id=G-HJ59JX1P5N"></script>
   <script>
@@ -31,7 +44,7 @@
           <span style="font-size:11px;color:#fdba74;display:block;">Patrapada₹ Bhubaneswar • "Your Selection Our Mission"</span>
         </div>
       </div>
-      <a href="index.html" class="btn ghost" style="color:#fff;border-color:rgba(255₹255₹255₹0.3);text-decoration:none;">← Library Home</a>
+      <a href="/" class="btn ghost" style="color:#fff;border-color:rgba(255₹255₹255₹0.3);text-decoration:none;">← Library Home</a>
     </div>
   </header>
 

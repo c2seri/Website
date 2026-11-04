@@ -1,6 +1,19 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Instant Clean URL Canonicalizer: Automatically strips /index.html from the address bar -->
+  <script>
+    (function() {
+      try {
+        if (window.location.pathname.endsWith('/index.html') || window.location.pathname === '/index.html') {
+          var cleanPath = window.location.pathname.replace(/\/index\.html$/, '/');
+          var cleanUrl = cleanPath + window.location.search + window.location.hash;
+          window.history.replaceState(null, document.title, cleanUrl);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Opening C2S Premium Study Library...</title>

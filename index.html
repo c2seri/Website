@@ -2,6 +2,19 @@
 <html lang="en">
 
 <head>
+  <!-- Instant Clean URL Canonicalizer: Automatically strips /index.html from the address bar -->
+  <script>
+    (function() {
+      try {
+        if (window.location.pathname.endsWith('/index.html') || window.location.pathname === '/index.html') {
+          var cleanPath = window.location.pathname.replace(/\/index\.html$/, '/');
+          var cleanUrl = cleanPath + window.location.search + window.location.hash;
+          window.history.replaceState(null, document.title, cleanUrl);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js&bull;id=G-HJ59JX1P5N"></script>
   <script>
@@ -122,7 +135,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <!-- Brand Logo on Left -->
-      <a href="index.html" class="brand" title="C2S — College to Service | Return to Home" onclick="if(window.resetToHomeView){window.resetToHomeView(event);}" style="text-decoration:none;cursor:pointer;">
+      <a href="/" class="brand" title="C2S — College to Service | Return to Home" onclick="if(window.resetToHomeView){window.resetToHomeView(event);}" style="text-decoration:none;cursor:pointer;">
         <span class="logo-badge" role="img" aria-label="C2S official logo"></span>
         <div class="brand-text">
           <div class="brand-title">
@@ -1791,7 +1804,7 @@
     <div class="footer-grid">
       <!-- Col 1: Brand & Contact -->
       <div class="footer-contact">
-        <a href="index.html" class="brand" style="margin-bottom:12px;text-decoration:none;cursor:pointer;" title="C2S — College to Service | Return to Home" onclick="if(window.resetToHomeView){window.resetToHomeView(event);}" style="text-decoration:none;">
+        <a href="/" class="brand" style="margin-bottom:12px;text-decoration:none;cursor:pointer;" title="C2S — College to Service | Return to Home" onclick="if(window.resetToHomeView){window.resetToHomeView(event);}" style="text-decoration:none;">
           <span class="logo-badge" role="img" aria-label="C2S official logo"></span>
           <div class="brand-text">
             <div class="brand-title">

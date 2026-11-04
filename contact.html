@@ -1,6 +1,19 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Instant Clean URL Canonicalizer: Automatically strips /index.html from the address bar -->
+  <script>
+    (function() {
+      try {
+        if (window.location.pathname.endsWith('/index.html') || window.location.pathname === '/index.html') {
+          var cleanPath = window.location.pathname.replace(/\/index\.html$/, '/');
+          var cleanUrl = cleanPath + window.location.search + window.location.hash;
+          window.history.replaceState(null, document.title, cleanUrl);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Contact Us & Admission Desk | C2S &mdash; College to Service, Bhubaneswar</title>
@@ -29,7 +42,7 @@
           <span class="pill-dot"></span>
           <span>24h Study Library &bull; Patrapada</span>
         </a>
-        <a href="index.html#login" class="top-bar-login-btn">Student Login</a>
+        <a href="/#login" class="top-bar-login-btn">Student Login</a>
       </div>
     </div>
   </div>
@@ -37,7 +50,7 @@
   <!-- Main Sticky Brand Header (Line 2: Logo + 5 Clean Navigation Menus) -->
   <header class="site-header">
     <div class="header-inner">
-      <a href="index.html" class="brand" title="C2S &mdash; College to Service | Return to Home">
+      <a href="/" class="brand" title="C2S &mdash; College to Service | Return to Home">
         <span class="logo-badge" role="img" aria-label="C2S official logo"></span>
         <div class="brand-text">
           <div class="brand-title">
@@ -49,9 +62,9 @@
       </a>
 
       <nav class="topnav" id="topnav" aria-label="Main Navigation">
-        <a href="index.html#exams">Exams</a>
-        <a href="index.html#tests">Test Series</a>
-        <a href="index.html#batches">Classroom Batches</a>
+        <a href="/#exams">Exams</a>
+        <a href="/#tests">Test Series</a>
+        <a href="/#batches">Classroom Batches</a>
         <a href="library.html">24h Study Library</a>
         <a href="contact.html" class="active">Contact Us</a>
       </nav>
@@ -210,7 +223,7 @@
     <div class="footer-grid">
       <!-- Col 1: Brand & Contact -->
       <div class="footer-contact">
-        <a href="index.html" class="brand" style="margin-bottom:12px;text-decoration:none;">
+        <a href="/" class="brand" style="margin-bottom:12px;text-decoration:none;">
           <span class="logo-badge" role="img" aria-label="C2S official logo"></span>
           <div class="brand-text">
             <div class="brand-title">
@@ -231,12 +244,12 @@
       <div>
         <h4>All India Exams</h4>
         <div class="footer-links">
-          <a href="index.html#exams">BANK (PO / Clerk / SO)</a>
-          <a href="index.html#exams">SSC (CGL / CHSL / GD / MTS)</a>
-          <a href="index.html#exams">Railway (NTPC / ALP / Group D)</a>
-          <a href="index.html#exams">UPSC Civil Services (IAS / IPS)</a>
-          <a href="index.html#exams">Defence (NDA / CDS / AFCAT)</a>
-          <a href="index.html#exams">Teaching (CTET / TGT / PGT)</a>
+          <a href="/#exams">BANK (PO / Clerk / SO)</a>
+          <a href="/#exams">SSC (CGL / CHSL / GD / MTS)</a>
+          <a href="/#exams">Railway (NTPC / ALP / Group D)</a>
+          <a href="/#exams">UPSC Civil Services (IAS / IPS)</a>
+          <a href="/#exams">Defence (NDA / CDS / AFCAT)</a>
+          <a href="/#exams">Teaching (CTET / TGT / PGT)</a>
         </div>
       </div>
 
@@ -244,11 +257,11 @@
       <div>
         <h4>Odisha State Exams</h4>
         <div class="footer-links">
-          <a href="index.html#exams">OSSC (Group B / C Posts)</a>
-          <a href="index.html#exams">OSSSC (Subordinate Posts)</a>
-          <a href="index.html#exams">OPSC (OAS / Group A/B)</a>
-          <a href="index.html#exams">Odisha Police (Constable / SI)</a>
-          <a href="index.html#exams">All 10 Exam Tracks</a>
+          <a href="/#exams">OSSC (Group B / C Posts)</a>
+          <a href="/#exams">OSSSC (Subordinate Posts)</a>
+          <a href="/#exams">OPSC (OAS / Group A/B)</a>
+          <a href="/#exams">Odisha Police (Constable / SI)</a>
+          <a href="/#exams">All 10 Exam Tracks</a>
         </div>
       </div>
 
@@ -256,14 +269,14 @@
       <div>
         <h4>Quick Links</h4>
         <div class="footer-links">
-          <a href="index.html#tests">Weekly Test Series</a>
+          <a href="/#tests">Weekly Test Series</a>
           <a href="library.html">24-Hour Premium Library</a>
-          <a href="index.html#batches">Batches &amp; Smart Classes</a>
+          <a href="/#batches">Batches &amp; Smart Classes</a>
           <a href="contact.html">Help &amp; Contact Desk</a>
           <a href="terms.html">Terms &amp; Conditions</a>
           <a href="privacy.html">Privacy Policy</a>
           <a href="refund.html">Refund &amp; Cancellation</a>
-          <a href="index.html#login">Main Student Login</a>
+          <a href="/#login">Main Student Login</a>
         </div>
       </div>
     </div>

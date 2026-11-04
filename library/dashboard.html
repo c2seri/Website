@@ -1,6 +1,19 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Instant Clean URL Canonicalizer: Automatically strips /index.html from the address bar -->
+  <script>
+    (function() {
+      try {
+        if (window.location.pathname.endsWith('/index.html') || window.location.pathname === '/index.html') {
+          var cleanPath = window.location.pathname.replace(/\/index\.html$/, '/');
+          var cleanUrl = cleanPath + window.location.search + window.location.hash;
+          window.history.replaceState(null, document.title, cleanUrl);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js&bull;id=G-HJ59JX1P5N"></script>
   <script>
@@ -28,7 +41,7 @@
         <span class="logo-badge" role="img" aria-label="C2S logo"></span>
         <strong style="font-size:18px;color:#fff;">C2S Library Student Portal</strong>
       </div>
-      <a href="index.html" class="btn ghost" style="color:#cbd5e1;text-decoration:none;">← Library Home</a>
+      <a href="/" class="btn ghost" style="color:#cbd5e1;text-decoration:none;">← Library Home</a>
     </div>
   </header>
 
