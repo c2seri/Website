@@ -59,23 +59,96 @@ const TESTS = [
  {id:"UPSC-MOCK-1", exam:"UPSC", title:"UPSC Mock Test 1", minutes:10, calculatorAllowed:false,
   qs:[["Which article deals with Fundamental Rights?",["Art. 12–35","Art. 36–51","Art. 52–78","Art. 1–4"],0],["First President of India?",["Dr. Rajendra Prasad","Dr. Kalam","Dr. Radhakrishnan","Zakir Husain"],0],["Photosynthesis occurs in?",["Root","Stem","Leaf","Flower"],2],["Ganga flows into?",["Arabian Sea","Bay of Bengal","Indian Ocean","Pacific"],1]]}
 ];
-function show(view){
-  document.querySelectorAll("[data-view]").forEach(el=>el.classList.toggle("hidden", el.dataset.view!==view));
-  document.querySelectorAll("[data-nav]").forEach(a=>a.classList.toggle("active", a.dataset.nav===view));
-  if(view==="contact") view = "help";
-  if(view==="exams") renderExams();
-  if(view==="courses") renderCourses();
-  if(view==="books") renderBooks();
-  if(view==="current-affairs") renderCurrentAffairs();
-  if(view==="tests") renderTests();
-  if(view==="blog") renderBlog();
-  if(view==="notices") renderNotices();
-  if(view==="pyq") renderPyq();
-  if(view==="notes") renderNotes();
-  if(view==="pass") renderPass();
-  window.scrollTo(0,0);
-  document.querySelectorAll(".mobile-tab-item").forEach(b => { b.classList.toggle("active", b.dataset.bottomTab === view); });
+// Top Navigation Dropdown & Mobile Drawer Controllers
+window.toggleDropdown = function(btn) {
+  if (!btn) return;
+  const parent = btn.closest('.nav-item');
+  if (!parent) return;
+  const wasOpen = parent.classList.contains('open') || parent.classList.contains('open-mobile');
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('open', 'open-mobile');
+  });
+  if (!wasOpen) {
+    parent.classList.add('open', 'open-mobile');
+  }
+};
+
+window.closeMobileNav = function() {
+  const topnav = document.getElementById('topnav');
+  if (topnav) topnav.classList.remove('open', 'active');
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('open', 'open-mobile');
+  });
+};
+
+window.navigateToLibrary = function() {
+  if (typeof window.closeMobileNav === 'function') window.closeMobileNav();
+  window.location.href = 'library/';
+};
+
+// Global click-outside listener to close open dropdowns
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nav-item') && !e.target.closest('.hamburger')) {
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.classList.remove('open', 'open-mobile');
+    });
+  }
+});
+
+function show(view) {
+  if (!view) view = "home";
+  if (view === "contact") view = "help";
+  if (view === "batches") view = "courses";
+
+  // Auto-close any open mobile navigation drawer or dropdown
+  if (typeof window.closeMobileNav === "function") {
+    window.closeMobileNav();
+  }
+
+  // Toggle active views
+  let matched = false;
+  document.querySelectorAll("[data-view]").forEach(el => {
+    const isTarget = el.dataset.view === view;
+    el.classList.toggle("hidden", !isTarget);
+    if (isTarget) matched = true;
+  });
+
+  // Fallback if target view element wasn't found
+  if (!matched && view !== "home") {
+    const homeEl = document.querySelector('[data-view="home"]');
+    if (homeEl) homeEl.classList.remove("hidden");
+    view = "home";
+  }
+
+  // Update top navigation bar active links
+  document.querySelectorAll("[data-nav]").forEach(a => {
+    const isActive = a.dataset.nav === view || (view === "courses" && a.dataset.nav === "batches");
+    a.classList.toggle("active", isActive);
+  });
+
+  // Trigger content rendering per view
+  if (view === "exams") renderExams();
+  if (view === "courses") renderCourses();
+  if (view === "books") renderBooks();
+  if (view === "current-affairs") renderCurrentAffairs();
+  if (view === "tests") renderTests();
+  if (view === "blog") renderBlog();
+  if (view === "notices") renderNotices();
+  if (view === "pyq") renderPyq();
+  if (view === "notes") renderNotes();
+  if (view === "pass") renderPass();
+  if (view === "login") {
+    if (typeof renderUser === "function") renderUser();
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  // Update bottom tab active indicators
+  document.querySelectorAll(".mobile-tab-item").forEach(b => {
+    b.classList.toggle("active", b.dataset.bottomTab === view || (view === "courses" && b.dataset.bottomTab === "batches"));
+  });
 }
+window.show = show;
 window.resetToHomeView = function(e) {
   if (e && !e.ctrlKey && !e.metaKey) {
     const p = window.location.pathname;
@@ -2239,10 +2312,16 @@ window.handleContactSubmit = handleContactSubmit;
 
 /* Auto-open legal & contact views when hash is in URL */
 function handleUrlHashView() {
-  const hash = (window.location.hash || "").replace("#", "").toLowerCase();
-  if (["terms", "privacy", "refund", "contact", "help", "batches", "tests", "exams", "notices", "blog"].includes(hash)) {
+  const hash = (window.location.hash || "").replace("#", "").toLowerCase().trim();
+  if (!hash) return;
+  const knownViews = [
+    "home", "exams", "tests", "batches", "courses", "blog", "notices",
+    "help", "contact", "terms", "privacy", "refund", "login", "pyq",
+    "notes", "pass", "books", "current-affairs"
+  ];
+  if (knownViews.includes(hash)) {
     if (typeof show === "function") {
-      show(hash === "contact" ? "help" : hash);
+      show(hash === "contact" ? "help" : (hash === "batches" ? "courses" : hash));
     }
   }
 }
