@@ -3186,8 +3186,8 @@ function renderUser() {
             <div style="font-size:12px;color:#94a3b8;text-decoration:line-through;">₹25,000</div>
             <div style="font-size:28px;font-weight:900;color:#38bdf8;line-height:1;">₹12,000 <span style="font-size:12px;color:#34d399;font-weight:800;background:rgba(52,211,153,0.15);padding:2px 6px;border-radius:4px;">52% OFF</span></div>
           </div>
-          <button type="button" class="btn orange" onclick="openCohortSelection()" style="padding:12px 24px;font-size:14.5px;font-weight:850;border-radius:10px;box-shadow:0 6px 20px rgba(234,88,12,0.4);">
-            Explore Goals &amp; Batches ❯
+          <button type="button" class="btn orange" onclick="show('pass')" style="padding:12px 24px;font-size:14.5px;font-weight:850;border-radius:10px;box-shadow:0 6px 20px rgba(234,88,12,0.4);">
+            Explore Career Pass &amp; 30+ Goals ❯
           </button>
         </div>
       </div>

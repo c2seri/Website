@@ -7763,3 +7763,88 @@ html, body {
   margin-top: 20px;
   text-align: center;
 }
+
+/* ==========================================================================
+   C2S OFFICIAL CAREER PASS EXPERIENCE (PW / EDTECH MODEL)
+   ========================================================================== */
+.c2s-career-pass-view {
+  background: #030712 !important;
+  color: #ffffff !important;
+  border-radius: 24px;
+  padding: 36px 24px 60px;
+  margin-bottom: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  border: 1.5px solid #1e293b;
+  position: relative;
+  overflow: hidden;
+}
+
+.c2s-cp-marquee-wrap {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  padding: 16px 0;
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+.c2s-cp-marquee-track {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  animation: c2sMarqueeScroll 35s linear infinite;
+}
+
+.c2s-cp-marquee-wrap:hover .c2s-cp-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes c2sMarqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.c2s-cp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #0b1329;
+  border: 1px solid #1e293b;
+  color: #93c5fd;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.c2s-cp-badge:hover {
+  background: #1e293b;
+  border-color: #38bdf8;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
+}
+
+.c2s-cp-feature-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  color: #0f172a;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e2e8f0;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.c2s-cp-feature-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
+}
+

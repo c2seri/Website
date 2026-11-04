@@ -209,6 +209,7 @@
         </span>
       `;
       btn.title = `Target Exam: ${selectedCohortExam.name} (Click to change goal)`;
+      btn.onclick = function() { openCohortSelection(); };
       btn.classList.add("cohort-selected");
     } else {
       btn.innerHTML = `
@@ -218,7 +219,8 @@
           <span style="font-size:11px;font-weight:900;">❯</span>
         </span>
       `;
-      btn.title = "Explore Career Pass & Select Your Goal / Exam";
+      btn.title = "Explore 30+ Career Choices in One Career Pass";
+      btn.onclick = function() { if (typeof show === 'function') show('pass'); else openCohortSelection(); };
       btn.classList.remove("cohort-selected");
     }
   };
@@ -608,9 +610,11 @@
     alert(`🎓 Batch Enrollment\n\nBatch: ${batchName}\nFees: ₹${price.toLocaleString('en-IN')}\n\nVenue: C2S NH-16 Patrapada Centre, Bhubaneswar.\nFree 3-Day Live Classroom Demo is activated on your phone number!`);
   };
 
-  // CAREER PASS MODAL
+  // CAREER PASS MODAL / VIEW ROUTER
   window.openCareerPassModal = function() {
-    alert("🎟️ C2S VIP CAREER PASS\n\n• ₹1L+ worth of all 30+ Exam Batches Unlocked\n• 204+ Pan-India & Odisha CBT Mock Test Series\n• Complete Khazana Lecture Vault & Printable PDF Handouts\n• 24-Hour Study Sanctuary Member Privileges at Patrapada\n\nSpecial Aspirant Price: ₹12,000 (52% OFF)\nContact Admission Desk: 9777481909 to activate instant VIP pass!");
+    if (typeof show === 'function') {
+      show('pass');
+    }
   };
 
   // FILTER SEARCH IN COHORT LIST
@@ -677,3 +681,4 @@
   }
 
 })();
+
