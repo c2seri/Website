@@ -8,3 +8,4 @@ appJs = appJs.replace("Shift 3: Full Day (24-Hour Access)", "Shift 3: Full Day (
 fs.writeFileSync('app.js', appJs, 'utf8');
 
 console.log('✅ app.js shift timings updated successfully');
+

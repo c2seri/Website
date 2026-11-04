@@ -1858,21 +1858,44 @@
               </div>
             </div>
 
-            <label for="loginTarget" style="font-weight:700;font-size:13.5px;color:#334155;">Registered Mobile Number or Email</label>
-              <input id="loginTarget" placeholder="e.g. 9777481909 or student@gmail.com" style="margin-bottom:14px;font-size:15px;padding:12px 14px;">
+            <div class="c2s-field-wrap">
+              <label class="c2s-field-label" for="loginTarget" style="color:#1e293b;">Registered Mobile Number or Email</label>
+              <div class="c2s-phone-input-box" style="background:#ffffff;border:1.5px solid #cbd5e1;">
+                <div class="c2s-phone-prefix" style="background:#f8fafc;border-right:1.5px solid #e2e8f0;color:#0f172a;">
+                  <span>🇮🇳</span>
+                  <span>+91</span>
+                </div>
+                <input id="loginTarget" placeholder="10-digit mobile number or email" style="color:#0f172a !important;">
+              </div>
+            </div>
 
-              <label style="font-weight:700;font-size:13px;color:#334155;margin-bottom:8px;display:block;">Choose OTP Delivery Channel:</label>
-              <div style="background:#ffffff;border:1px solid #cbd5e1;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:18px;">
-                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;color:#1e293b;">
-                  <input type="radio" name="loginOtpChannel" value="sms" checked> 📱 <strong>SMS OTP</strong>
+            <div class="c2s-field-wrap">
+              <label class="c2s-field-label" style="color:#1e293b;">Choose OTP Delivery Channel:</label>
+              <div class="c2s-channel-grid">
+                <label class="c2s-channel-card">
+                  <input type="radio" name="loginOtpChannel" value="whatsapp" checked>
+                  <div class="c2s-channel-inner" style="background:#ffffff;border:1.5px solid #cbd5e1;">
+                    <div class="c2s-channel-icon wa">💬</div>
+                    <div class="c2s-channel-details">
+                      <span class="c2s-channel-name" style="color:#0f172a;">WhatsApp OTP</span>
+                      <span class="c2s-channel-hint">Instant • Recommended</span>
+                    </div>
+                    <div class="c2s-channel-check" style="border-color:#cbd5e1;">✓</div>
+                  </div>
                 </label>
-                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;color:#1e293b;">
-                  <input type="radio" name="loginOtpChannel" value="whatsapp"> 💬 <strong>WhatsApp OTP</strong>
-                </label>
-                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;color:#1e293b;">
-                  <input type="radio" name="loginOtpChannel" value="email"> ✉️ <strong>Email OTP</strong>
+                <label class="c2s-channel-card">
+                  <input type="radio" name="loginOtpChannel" value="sms">
+                  <div class="c2s-channel-inner" style="background:#ffffff;border:1.5px solid #cbd5e1;">
+                    <div class="c2s-channel-icon sms">📱</div>
+                    <div class="c2s-channel-details">
+                      <span class="c2s-channel-name" style="color:#0f172a;">SMS OTP</span>
+                      <span class="c2s-channel-hint">Direct network SMS</span>
+                    </div>
+                    <div class="c2s-channel-check" style="border-color:#cbd5e1;">✓</div>
+                  </div>
                 </label>
               </div>
+            </div>
 
               <button type="button" class="btn" style="width:100%;padding:12px;font-size:15px;font-weight:800;" onclick="requestStudentLoginOtp()">Send 6-Digit Login OTP →</button>
               <p id="loginOtpStatus" class="small" style="margin:12px 0 6px;text-align:center;"></p>
@@ -1975,17 +1998,30 @@
                 </div>
               </div>
 
-              <div style="margin-top:16px;">
-                <label style="font-weight:700;font-size:13px;color:#334155;margin-bottom:6px;display:block;">Choose Verification Channel:</label>
-                <div style="background:#ffffff;border:1px solid #cbd5e1;border-radius:10px;padding:12px 16px;display:flex;flex-wrap:wrap;gap:18px;">
-                  <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;color:#1e293b;">
-                    <input type="radio" name="signupOtpChannel" value="sms" checked> 📱 <strong>SMS OTP</strong>
+              <div class="c2s-field-wrap" style="margin-top:16px;">
+                <label class="c2s-field-label" style="color:#1e293b;">Choose Verification Channel:</label>
+                <div class="c2s-channel-grid">
+                  <label class="c2s-channel-card">
+                    <input type="radio" name="signupOtpChannel" value="whatsapp" checked>
+                    <div class="c2s-channel-inner" style="background:#ffffff;border:1.5px solid #cbd5e1;">
+                      <div class="c2s-channel-icon wa">💬</div>
+                      <div class="c2s-channel-details">
+                        <span class="c2s-channel-name" style="color:#0f172a;">WhatsApp OTP</span>
+                        <span class="c2s-channel-hint">Instant • Recommended</span>
+                      </div>
+                      <div class="c2s-channel-check" style="border-color:#cbd5e1;">✓</div>
+                    </div>
                   </label>
-                  <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;color:#1e293b;">
-                    <input type="radio" name="signupOtpChannel" value="whatsapp"> 💬 <strong>WhatsApp OTP</strong>
-                  </label>
-                  <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;color:#1e293b;">
-                    <input type="radio" name="signupOtpChannel" value="email"> ✉️ <strong>Email OTP</strong>
+                  <label class="c2s-channel-card">
+                    <input type="radio" name="signupOtpChannel" value="sms">
+                    <div class="c2s-channel-inner" style="background:#ffffff;border:1.5px solid #cbd5e1;">
+                      <div class="c2s-channel-icon sms">📱</div>
+                      <div class="c2s-channel-details">
+                        <span class="c2s-channel-name" style="color:#0f172a;">SMS OTP</span>
+                        <span class="c2s-channel-hint">Direct network SMS</span>
+                      </div>
+                      <div class="c2s-channel-check" style="border-color:#cbd5e1;">✓</div>
+                    </div>
                   </label>
                 </div>
               </div>

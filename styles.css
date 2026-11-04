@@ -1595,7 +1595,7 @@ a:hover {
 }
 
 /* Forms & Inputs */
-input, select, textarea {
+input:not([type="radio"]):not([type="checkbox"]), select, textarea {
   width: 100%;
   padding: 12px 14px;
   border: 1px solid var(--c2s-slate-300);
@@ -1606,6 +1606,17 @@ input, select, textarea {
   color: var(--c2s-slate-800);
   margin: 6px 0 14px;
   transition: var(--c2s-transition);
+}
+
+input[type="radio"], input[type="checkbox"] {
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  cursor: pointer !important;
+  accent-color: var(--c2s-orange) !important;
 }
 
 input:focus, select:focus, textarea:focus {
@@ -5926,19 +5937,19 @@ section[data-view] {
 }
 
 .overlay-blue {
-  background: linear-gradient(90deg, rgba(7, 26, 56, 0.96) 0%, rgba(7, 26, 56, 0.88) 45%, rgba(7, 26, 56, 0.55) 75%, rgba(7, 26, 56, 0.30) 100%);
+  background: linear-gradient(90deg, rgba(7, 26, 56, 0.92) 0%, rgba(7, 26, 56, 0.72) 42%, rgba(7, 26, 56, 0.25) 75%, rgba(7, 26, 56, 0.08) 100%);
 }
 
 .overlay-emerald {
-  background: linear-gradient(90deg, rgba(2, 44, 34, 0.96) 0%, rgba(2, 44, 34, 0.88) 45%, rgba(2, 44, 34, 0.55) 75%, rgba(2, 44, 34, 0.30) 100%);
+  background: linear-gradient(90deg, rgba(2, 44, 34, 0.92) 0%, rgba(2, 44, 34, 0.72) 42%, rgba(2, 44, 34, 0.25) 75%, rgba(2, 44, 34, 0.08) 100%);
 }
 
 .overlay-navy {
-  background: linear-gradient(90deg, rgba(15, 23, 42, 0.96) 0%, rgba(15, 23, 42, 0.88) 45%, rgba(15, 23, 42, 0.55) 75%, rgba(15, 23, 42, 0.30) 100%);
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.72) 42%, rgba(15, 23, 42, 0.25) 75%, rgba(15, 23, 42, 0.08) 100%);
 }
 
 .overlay-purple {
-  background: linear-gradient(90deg, rgba(30, 27, 75, 0.96) 0%, rgba(30, 27, 75, 0.88) 45%, rgba(30, 27, 75, 0.55) 75%, rgba(30, 27, 75, 0.30) 100%);
+  background: linear-gradient(90deg, rgba(30, 27, 75, 0.92) 0%, rgba(30, 27, 75, 0.72) 42%, rgba(30, 27, 75, 0.25) 75%, rgba(30, 27, 75, 0.08) 100%);
 }
 
 @media (max-width: 850px) {
@@ -5946,16 +5957,16 @@ section[data-view] {
     object-position: center center;
   }
   .overlay-blue {
-    background: linear-gradient(180deg, rgba(7, 26, 56, 0.95) 0%, rgba(7, 26, 56, 0.88) 60%, rgba(7, 26, 56, 0.70) 100%);
+    background: linear-gradient(180deg, rgba(7, 26, 56, 0.90) 0%, rgba(7, 26, 56, 0.72) 55%, rgba(7, 26, 56, 0.35) 100%);
   }
   .overlay-emerald {
-    background: linear-gradient(180deg, rgba(2, 44, 34, 0.95) 0%, rgba(2, 44, 34, 0.88) 60%, rgba(2, 44, 34, 0.70) 100%);
+    background: linear-gradient(180deg, rgba(2, 44, 34, 0.90) 0%, rgba(2, 44, 34, 0.72) 55%, rgba(2, 44, 34, 0.35) 100%);
   }
   .overlay-navy {
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.88) 60%, rgba(15, 23, 42, 0.70) 100%);
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.90) 0%, rgba(15, 23, 42, 0.72) 55%, rgba(15, 23, 42, 0.35) 100%);
   }
   .overlay-purple {
-    background: linear-gradient(180deg, rgba(30, 27, 75, 0.95) 0%, rgba(30, 27, 75, 0.88) 60%, rgba(30, 27, 75, 0.70) 100%);
+    background: linear-gradient(180deg, rgba(30, 27, 75, 0.90) 0%, rgba(30, 27, 75, 0.72) 55%, rgba(30, 27, 75, 0.35) 100%);
   }
 }
 
@@ -6143,15 +6154,15 @@ section[data-view] {
 }
 
 .c2s-banner-card {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  background: rgba(15, 23, 42, 0.42);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 18px;
-  padding: 22px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
 }
 
@@ -7332,4 +7343,383 @@ html, body {
   gap: 16px;
   margin-top: 24px;
   transition: all 0.3s ease;
+}
+
+/* ==========================================================================
+   C2S ULTRA-PREMIUM AUTHENTICATION & LOGIN UI SYSTEM (HUMAN CRAFTED)
+   ========================================================================== */
+.c2s-auth-container {
+  max-width: 540px;
+  margin: 20px auto 40px;
+  padding: 0 12px;
+}
+
+.c2s-auth-card {
+  background: linear-gradient(165deg, rgba(15, 23, 42, 0.96) 0%, rgba(10, 25, 47, 0.98) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  padding: 32px 28px;
+  color: #f8fafc;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.c2s-auth-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ea580c, #38bdf8, transparent);
+  pointer-events: none;
+}
+
+.c2s-auth-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.c2s-auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.c2s-auth-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  font-size: 11px;
+  font-weight: 750;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+}
+
+.c2s-auth-title {
+  font-family: 'Outfit', var(--c2s-font);
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 6px;
+  letter-spacing: -0.3px;
+}
+
+.c2s-auth-sub {
+  font-size: 13.5px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0 0 20px;
+}
+
+/* Fast 1-Click VIP Demo Pass Pill */
+.c2s-vip-demo-banner {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(30, 64, 175, 0.08) 100%);
+  border: 1px dashed rgba(96, 165, 250, 0.4);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.c2s-vip-demo-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.c2s-vip-demo-btn {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff !important;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 12.5px;
+  font-weight: 750;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.c2s-vip-demo-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+
+/* Luxury Input Field */
+.c2s-field-wrap {
+  margin-bottom: 18px;
+}
+
+.c2s-field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 750;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+.c2s-phone-input-box {
+  display: flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.c2s-phone-input-box:focus-within {
+  border-color: #ea580c;
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.2);
+}
+
+.c2s-phone-prefix {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-right: 1.5px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  font-weight: 700;
+  font-size: 14px;
+  height: 48px;
+  user-select: none;
+}
+
+.c2s-phone-input-box input {
+  flex: 1;
+  border: none !important;
+  background: transparent !important;
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px !important;
+  padding: 12px 14px !important;
+  margin: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.c2s-phone-input-box input::placeholder {
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Modern Channel Selectors (NO MORE UGLY RADIO DOTS) */
+.c2s-channel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.c2s-channel-card {
+  position: relative;
+  cursor: pointer;
+  display: block;
+  user-select: none;
+}
+
+.c2s-channel-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.c2s-channel-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.c2s-channel-card:hover .c2s-channel-inner {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(234, 88, 12, 0.35);
+}
+
+.c2s-channel-card input[type="radio"]:checked + .c2s-channel-inner,
+.c2s-channel-card:has(input[type="radio"]:checked) .c2s-channel-inner {
+  background: linear-gradient(135deg, rgba(234, 88, 12, 0.14) 0%, rgba(249, 115, 22, 0.06) 100%);
+  border-color: #ea580c;
+  box-shadow: 0 0 16px rgba(234, 88, 12, 0.25);
+}
+
+.c2s-channel-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.c2s-channel-icon.wa {
+  background: rgba(37, 211, 102, 0.15);
+  color: #25d366;
+}
+
+.c2s-channel-icon.sms {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.c2s-channel-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.c2s-channel-name {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #ffffff;
+  display: block;
+}
+
+.c2s-channel-hint {
+  font-size: 11px;
+  color: #94a3b8;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c2s-channel-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: transparent;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.c2s-channel-card input[type="radio"]:checked + .c2s-channel-inner .c2s-channel-check,
+.c2s-channel-card:has(input[type="radio"]:checked) .c2s-channel-check {
+  background: #ea580c;
+  border-color: #ea580c;
+  color: #ffffff;
+}
+
+/* Request OTP Action Button */
+.c2s-btn-send-otp {
+  width: 100%;
+  padding: 13px 20px;
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.35);
+  transition: all 0.2s ease;
+  margin-top: 4px;
+}
+
+.c2s-btn-send-otp:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(234, 88, 12, 0.45);
+}
+
+/* OTP Code Verification Box */
+.c2s-otp-verify-zone {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1.5px dashed rgba(255, 255, 255, 0.12);
+}
+
+.c2s-otp-code-input {
+  width: 100% !important;
+  background: rgba(15, 23, 42, 0.8) !important;
+  border: 2px solid rgba(234, 88, 12, 0.5) !important;
+  border-radius: 12px !important;
+  color: #ffffff !important;
+  font-size: 26px !important;
+  font-weight: 900 !important;
+  letter-spacing: 12px !important;
+  text-align: center !important;
+  padding: 12px !important;
+  margin: 6px 0 14px !important;
+  outline: none !important;
+  font-family: 'Outfit', monospace !important;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4) !important;
+}
+
+.c2s-otp-code-input:focus {
+  border-color: #ea580c !important;
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.25), inset 0 2px 6px rgba(0, 0, 0, 0.4) !important;
+}
+
+.c2s-btn-verify-otp {
+  width: 100%;
+  padding: 13px 20px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+  transition: all 0.2s ease;
+}
+
+.c2s-btn-verify-otp:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45);
+}
+
+.c2s-auth-footer-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 20px;
+  text-align: center;
 }

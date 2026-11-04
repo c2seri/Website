@@ -83,7 +83,12 @@
         libraryPhoto = img;
         panoramaCache = {}; // Invalidate cache so texture updates with real photo
       };
-      // Try local relative path first
+      img.onerror = function() {
+        if (!img._retried) {
+          img._retried = true;
+          img.src = '/images/hero-library-desktop.jpg';
+        }
+      };
       img.src = '../images/hero-library-desktop.jpg';
     } catch (e) {}
   }

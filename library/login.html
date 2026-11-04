@@ -52,88 +52,144 @@
     <!-- Digital ID Card Container (Rendered when member is logged in) -->
     <div id="digitalIdContainer" style="margin-bottom:24px;"></div>
 
-    <!-- Login Card (Shown when member is not logged in) -->
-    <div class="card" id="libLoginBox" style="border-radius:18px;box-shadow:var(--c2s-shadow-md);padding:28px;">
-      <div class="section-head" style="text-align:left;margin-bottom:20px;">
-        <span class="pill orange">LIBRARY MEMBER ACCESS</span>
-        <h1 style="font-size:26px;margin:8px 0 4px;color:var(--c2s-navy-900);">Library Member Login &amp; Pass</h1>
-        <p class="small" style="color:var(--c2s-slate-600);margin:0;">
+    <!-- Ultra-Premium Authentication & Member Access Card (Human Crafted) -->
+    <div class="c2s-auth-container" id="libLoginBox" style="max-width:620px;margin:0 auto;">
+      <div class="c2s-auth-card">
+        <!-- Brand Header Strip -->
+        <div class="c2s-auth-header">
+          <div class="c2s-auth-brand">
+            <span class="logo-badge" style="width:38px;height:38px;box-shadow:0 0 12px rgba(234,88,12,0.4);" role="img" aria-label="C2S logo"></span>
+            <div>
+              <strong style="font-size:15px;color:#fff;display:block;font-family:'Outfit',sans-serif;letter-spacing:-0.2px;">C2S Member Access</strong>
+              <span style="font-size:11px;color:#94a3b8;">NH-16 Patrapada Centre</span>
+            </div>
+          </div>
+          <span class="c2s-auth-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            256-Bit SSL Encrypted
+          </span>
+        </div>
+
+        <h1 class="c2s-auth-title">Library Member Login &amp; Pass</h1>
+        <p class="c2s-auth-sub">
           For enrolled library members. Enter your registered mobile number to access your Digital Pass, assigned desk number, and shift timings.
         </p>
-      </div>
 
-      <!-- Tab Switcher -->
-      <div style="display:flex;background:#f1f5f9;border-radius:10px;padding:4px;gap:6px;margin-bottom:22px;">
-        <button type="button" id="tabLibLogin" class="btn" style="flex:1;background:#fff;color:#0f2a5c;font-weight:800;border:none;box-shadow:0 2px 6px rgba(15,23,42,0.06);" onclick="document.getElementById('libLoginForm').style.display='block';document.getElementById('libNewPane').style.display='none';this.style.background='#fff';this.style.color='#0f2a5c';document.getElementById('tabLibNew').style.background='transparent';document.getElementById('tabLibNew').style.color='#64748b';">
-          🔑 Enrolled Member Login
-        </button>
-        <button type="button" id="tabLibNew" class="btn" style="flex:1;background:transparent;color:#64748b;font-weight:800;border:none;" onclick="document.getElementById('libLoginForm').style.display='none';document.getElementById('libNewPane').style.display='block';this.style.background='#fff';this.style.color='#ea580c';document.getElementById('tabLibLogin').style.background='transparent';document.getElementById('tabLibLogin').style.color='#64748b';">
-          📝 New Admission &amp; Seat Booking
-        </button>
-      </div>
+        <!-- Modern Segmented Tab Switcher -->
+        <div style="display:flex;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:4px;gap:6px;margin-bottom:22px;">
+          <button type="button" id="tabLibLogin" class="btn" style="flex:1;background:#2563eb;color:#fff;font-weight:800;border:none;box-shadow:0 2px 8px rgba(37,99,235,0.3);padding:9px;" onclick="document.getElementById('libLoginForm').style.display='block';document.getElementById('libNewPane').style.display='none';this.style.background='#2563eb';this.style.color='#fff';document.getElementById('tabLibNew').style.background='transparent';document.getElementById('tabLibNew').style.color='#94a3b8';">
+            🔑 Enrolled Member Login
+          </button>
+          <button type="button" id="tabLibNew" class="btn" style="flex:1;background:transparent;color:#94a3b8;font-weight:800;border:none;padding:9px;" onclick="document.getElementById('libLoginForm').style.display='none';document.getElementById('libNewPane').style.display='block';this.style.background='#ea580c';this.style.color='#fff';document.getElementById('tabLibLogin').style.background='transparent';document.getElementById('tabLibLogin').style.color='#94a3b8';">
+            📝 New Admission &amp; Seat Booking
+          </button>
+        </div>
 
-      <!-- Tab 1: Member Login Form -->
-      <div id="libLoginForm">
-        <!-- 1-Click Demo Member Login -->
-        <div style="background:#eff6ff;border:1.5px dashed #93c5fd;border-radius:12px;padding:12px 14px;margin-bottom:16px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-            <span style="font-size:12.5px;font-weight:750;color:#1e40af;">⚡ Instant 1-Click Demo Member Pass:</span>
-            <span style="font-size:11.5px;color:#3b82f6;">No OTP required</span>
+        <!-- Tab 1: Member Login Form -->
+        <div id="libLoginForm">
+          <!-- Fast 1-Click VIP Demo Pass Access -->
+          <div class="c2s-vip-demo-banner">
+            <div class="c2s-vip-demo-top">
+              <span style="color:#60a5fa;">⚡ Instant 1-Click Demo Evaluation:</span>
+              <span style="color:#93c5fd;font-size:11px;">No OTP required</span>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button type="button" class="c2s-vip-demo-btn" style="flex:1;" onclick="quickDemoMemberLogin()">
+                📖 Demo Member Digital Pass (Prakash &bull; Desk A-14 &bull; Full Day)
+              </button>
+              <a href="../admin.html" class="btn" style="background:rgba(255,255,255,0.08);color:#fff;padding:8px 14px;font-size:12px;font-weight:750;border-radius:8px;text-decoration:none;border:1px solid rgba(255,255,255,0.15);display:inline-flex;align-items:center;">
+                👑 Super Admin &rarr;
+              </a>
+            </div>
           </div>
-          <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
-            <button type="button" class="btn" style="background:#2563eb;color:#fff;padding:7px 14px;font-size:12px;font-weight:750;border-radius:6px;box-shadow:none;" onclick="quickDemoMemberLogin()">
-              📖 Demo Member Digital Pass (Prakash - Desk A-14 • Full Day)
+
+          <!-- Phone Input Group with +91 Flag -->
+          <div class="c2s-field-wrap">
+            <label class="c2s-field-label" for="libOtpMobile">Registered Mobile Number</label>
+            <div class="c2s-phone-input-box">
+              <div class="c2s-phone-prefix">
+                <span>🇮🇳</span>
+                <span>+91</span>
+              </div>
+              <input id="libOtpMobile" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" autocomplete="tel">
+            </div>
+          </div>
+
+          <!-- Sleek OTP Delivery Channel Selectors (Segmented Cards, Zero Raw Dots) -->
+          <div class="c2s-field-wrap">
+            <label class="c2s-field-label">Choose OTP Channel</label>
+            <div class="c2s-channel-grid">
+              <label class="c2s-channel-card">
+                <input type="radio" name="libOtpChannel" value="whatsapp" checked>
+                <div class="c2s-channel-inner">
+                  <div class="c2s-channel-icon wa">💬</div>
+                  <div class="c2s-channel-details">
+                    <span class="c2s-channel-name">WhatsApp OTP</span>
+                    <span class="c2s-channel-hint">Instant • Recommended</span>
+                  </div>
+                  <div class="c2s-channel-check">✓</div>
+                </div>
+              </label>
+
+              <label class="c2s-channel-card">
+                <input type="radio" name="libOtpChannel" value="sms">
+                <div class="c2s-channel-inner">
+                  <div class="c2s-channel-icon sms">📱</div>
+                  <div class="c2s-channel-details">
+                    <span class="c2s-channel-name">SMS OTP</span>
+                    <span class="c2s-channel-hint">Direct network SMS</span>
+                  </div>
+                  <div class="c2s-channel-check">✓</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Request OTP Action Button -->
+          <button type="button" class="c2s-btn-send-otp" onclick="requestLibOtp()">
+            <span>Send 6-Digit Verification Code</span>
+            <span>&rarr;</span>
+          </button>
+
+          <!-- Live Status Message -->
+          <div id="libOtpStatus" style="margin-top:12px;font-size:12.5px;text-align:center;"></div>
+
+          <!-- OTP Code Verification Zone -->
+          <div class="c2s-otp-verify-zone">
+            <label class="c2s-field-label" for="libOtpCode" style="text-align:center;">Enter 6-Digit OTP</label>
+            <input id="libOtpCode" class="c2s-otp-code-input" inputmode="numeric" maxlength="6" placeholder="------" autocomplete="one-time-code">
+            
+            <button type="button" class="c2s-btn-verify-otp" onclick="verifyLibOtp()">
+              <span>Verify OTP &amp; View Digital Pass 🏛️</span>
             </button>
-            <a href="../admin.html" class="btn" style="background:#0f172a;color:#fff;padding:7px 14px;font-size:12px;font-weight:750;border-radius:6px;text-decoration:none;">
-              👑 Super Admin &amp; Desk P&amp;L &rarr;
+            
+            <div id="libMsg" style="margin-top:10px;text-align:center;font-size:13px;"></div>
+          </div>
+        </div>
+
+        <!-- Tab 2: New Admission Shortcut -->
+        <div id="libNewPane" style="display:none;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;text-align:center;margin-top:10px;">
+          <span style="font-size:36px;display:block;margin-bottom:8px;">🪑</span>
+          <h3 style="margin:0 0 8px;color:#fff;font-size:20px;font-family:'Outfit',sans-serif;">Join C2S 24-Hour AC Study Library</h3>
+          <p style="color:#94a3b8;font-size:13.5px;max-width:480px;margin:0 auto 18px;line-height:1.6;">
+            Select your dedicated desk on the interactive 3D seating layout, pick your shift (07:00 AM – 09:00 PM Full Day), and auto-generate your Official Library Registration Number.
+          </p>
+          <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+            <a href="admission.html" class="c2s-btn-send-otp" style="width:auto;padding:11px 22px;text-decoration:none;">
+              Fill Online Admission Form &rarr;
+            </a>
+            <a href="/#library-seats" class="btn ghost" style="padding:11px 20px;text-decoration:none;font-weight:700;color:#cbd5e1;border-color:rgba(255,255,255,0.2);">
+              View 3D Seat Map
             </a>
           </div>
         </div>
 
-        <label for="libOtpMobile" style="font-weight:700;font-size:13.5px;color:#334155;">Registered Mobile Number</label>
-        <input id="libOtpMobile" type="tel" placeholder="10-digit mobile number" style="margin-bottom:14px;padding:12px;font-size:15px;">
-
-        <label style="font-weight:700;font-size:13px;color:#334155;margin-bottom:8px;display:block;">Choose OTP Channel:</label>
-        <div style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;gap:18px;">
-          <label style="cursor:pointer;font-size:13.5px;display:flex;align-items:center;gap:6px;">
-            <input type="radio" name="libOtpChannel" value="sms" checked> 📱 <strong>SMS OTP</strong>
-          </label>
-          <label style="cursor:pointer;font-size:13.5px;display:flex;align-items:center;gap:6px;">
-            <input type="radio" name="libOtpChannel" value="whatsapp"> 💬 <strong>WhatsApp OTP</strong>
-          </label>
+        <!-- Trust & Security Footer -->
+        <div class="c2s-auth-footer-trust">
+          <span>🔒 C2S 256-bit encrypted student session</span>
+          <span>&bull;</span>
+          <span>Help: 9777481909 / 9658177712</span>
         </div>
-
-        <button class="btn" type="button" style="width:100%;padding:12px;font-weight:800;" onclick="requestLibOtp()">Send 6-Digit OTP Code →</button>
-        <p id="libOtpStatus" class="small" style="margin:12px 0;text-align:center;"></p>
-
-        <div style="margin-top:14px;padding-top:14px;border-top:1px dashed #cbd5e1;">
-          <label for="libOtpCode" style="font-weight:700;font-size:13.5px;color:#334155;">Enter 6-Digit OTP</label>
-          <input id="libOtpCode" inputmode="numeric" maxlength="6" placeholder="6-digit code" style="font-size:18px;letter-spacing:4px;text-align:center;padding:12px;font-weight:800;margin-bottom:12px;">
-
-          <button class="btn orange" type="button" style="width:100%;padding:12px;font-weight:800;" onclick="verifyLibOtp()">Verify OTP &amp; View Digital Pass 🏛️</button>
-          <p id="libMsg" style="margin-top:10px;text-align:center;"></p>
-        </div>
-      </div>
-
-      <!-- Tab 2: New Admission Shortcut -->
-      <div id="libNewPane" style="display:none;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px;text-align:center;">
-        <span style="font-size:32px;">🪑</span>
-        <h3 style="margin:10px 0 6px;color:#0f2a5c;">Join C2S 24-Hour AC Study Library</h3>
-        <p style="color:#64748b;font-size:13.5px;max-width:480px;margin:0 auto 16px;">
-          Select your dedicated desk on the interactive 3D seating layout, pick your shift (Morning, Afternoon, Evening, or 24H Full Day), and auto-generate your Official Library Registration Number.
-        </p>
-        <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
-          <a href="admission.html" class="btn orange" style="padding:10px 20px;text-decoration:none;font-weight:800;">
-            Fill Online Admission Form →
-          </a>
-          <a href="/#library-seats" class="btn ghost" style="padding:10px 18px;text-decoration:none;font-weight:700;">
-            View 3D Seat Map
-          </a>
-        </div>
-      </div>
-
-      <div class="preview" style="margin-top:22px;">
-        <strong>PREVIEW MODE:</strong> Library member login generates a browser-local OTP preview code until active SMS/WhatsApp provider environment variables are configured.
       </div>
     </div>
 

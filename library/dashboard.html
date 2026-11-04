@@ -48,40 +48,114 @@
 
   <main class="container" style="padding:36px 16px 60px;max-width:900px;">
     
-    <!-- OTP Login Card for Returning Members -->
-    <div id="libLoginBox" class="card" style="background:#0f2444;border:1px solid rgba(255, 255, 255, 0.15);color:#fff;margin-bottom:28px;">
-      <h2 style="margin:0 0 8px;font-size:22px;color:#fff;">Library Member Login (OTP Only)</h2>
-      <p class="small" style="color:#94a3b8;margin-bottom:16px;">Login with your registered mobile or email. No password needed. Covers library seat, shift and payment data only.</p>
-
-      <div class="grid2">
-        <div>
-          <label style="color:#cbd5e1;">Mobile Number (for SMS / WhatsApp OTP)</label>
-          <input id="libOtpMobile" placeholder="10-digit mobile number" style="background:rgba(255, 255, 255, 0.08);border-color:rgba(255, 255, 255, 0.2);color:#fff;">
-          
-          <label style="color:#cbd5e1;margin-top:10px;">Email Address (for Email OTP)</label>
-          <input type="email" id="libOtpEmail" placeholder="you@example.com" style="background:rgba(255, 255, 255, 0.08);border-color:rgba(255, 255, 255, 0.2);color:#fff;">
+    <!-- Ultra-Premium Authentication & Member Access Card (Human Crafted) -->
+    <div id="libLoginBox" class="c2s-auth-container">
+      <div class="c2s-auth-card">
+        <!-- Brand Header Strip -->
+        <div class="c2s-auth-header">
+          <div class="c2s-auth-brand">
+            <span class="logo-badge" style="width:38px;height:38px;box-shadow:0 0 12px rgba(234,88,12,0.4);" role="img" aria-label="C2S logo"></span>
+            <div>
+              <strong style="font-size:15px;color:#fff;display:block;font-family:'Outfit',sans-serif;letter-spacing:-0.2px;">C2S Member Access</strong>
+              <span style="font-size:11px;color:#94a3b8;">NH-16 Patrapada Centre</span>
+            </div>
+          </div>
+          <span class="c2s-auth-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            256-Bit SSL Encrypted
+          </span>
         </div>
 
-        <div>
-          <label style="color:#cbd5e1;">Select OTP Delivery Channel</label>
-          <div style="background:rgba(0, 0, 0, 0.25);border:1px solid rgba(255, 255, 255, 0.1);border-radius:10px;padding:12px;margin-bottom:12px;">
-            <label style="display:block;margin-bottom:6px;cursor:pointer;"><input type="radio" name="libOtpChannel" value="sms" checked> 📱 SMS OTP</label>
-            <label style="display:block;margin-bottom:6px;cursor:pointer;"><input type="radio" name="libOtpChannel" value="whatsapp"> 💬 WhatsApp OTP</label>
-            <label style="display:block;cursor:pointer;"><input type="radio" name="libOtpChannel" value="email"> ✉️ Email OTP</label>
+        <h1 class="c2s-auth-title">Library Student Login</h1>
+        <p class="c2s-auth-sub">
+          Enter your registered 10-digit mobile number to view your Digital ID Pass, assigned desk number, and shift timings.
+        </p>
+
+        <!-- Fast 1-Click VIP Demo Pass Access -->
+        <div class="c2s-vip-demo-banner">
+          <div class="c2s-vip-demo-top">
+            <span style="color:#60a5fa;">⚡ Instant 1-Click Demo Evaluation:</span>
+            <span style="color:#93c5fd;font-size:11px;">No OTP needed</span>
           </div>
+          <button type="button" class="c2s-vip-demo-btn" onclick="quickDemoMemberLogin()">
+            <span>📖 Open Demo Member Pass (Prakash &bull; Desk A-14 &bull; Full Day) &rarr;</span>
+          </button>
+        </div>
 
-          <button class="btn orange" onclick="requestLibOtp()">Request 6-Digit OTP</button>
-          <p id="libOtpStatus" class="small" style="margin:8px 0;"></p>
+        <!-- Phone Input Group with +91 Flag -->
+        <div class="c2s-field-wrap">
+          <label class="c2s-field-label" for="libOtpMobile">Registered Mobile Number</label>
+          <div class="c2s-phone-input-box">
+            <div class="c2s-phone-prefix">
+              <span>🇮🇳</span>
+              <span>+91</span>
+            </div>
+            <input id="libOtpMobile" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" autocomplete="tel">
+          </div>
+        </div>
 
-          <input id="libOtpCode" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit OTP code" style="background:rgba(255, 255, 255, 0.08);border-color:rgba(255, 255, 255, 0.2);color:#fff;margin-top:8px;">
-          <button class="btn" style="background:#00b4d8;color:#fff;margin-top:8px;" onclick="verifyLibOtp()">Verify &amp; Open Portal</button>
-          <p id="libMsg" class="small" style="margin-top:6px;"></p>
+        <!-- Sleek OTP Delivery Channel Selectors (Segmented Cards, Zero Raw Dots) -->
+        <div class="c2s-field-wrap">
+          <label class="c2s-field-label">Select OTP Delivery Channel</label>
+          <div class="c2s-channel-grid">
+            <label class="c2s-channel-card">
+              <input type="radio" name="libOtpChannel" value="whatsapp" checked>
+              <div class="c2s-channel-inner">
+                <div class="c2s-channel-icon wa">💬</div>
+                <div class="c2s-channel-details">
+                  <span class="c2s-channel-name">WhatsApp</span>
+                  <span class="c2s-channel-hint">Instant • Recommended</span>
+                </div>
+                <div class="c2s-channel-check">✓</div>
+              </div>
+            </label>
+
+            <label class="c2s-channel-card">
+              <input type="radio" name="libOtpChannel" value="sms">
+              <div class="c2s-channel-inner">
+                <div class="c2s-channel-icon sms">📱</div>
+                <div class="c2s-channel-details">
+                  <span class="c2s-channel-name">SMS OTP</span>
+                  <span class="c2s-channel-hint">Direct network SMS</span>
+                </div>
+                <div class="c2s-channel-check">✓</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Request OTP Action Button -->
+        <button type="button" class="c2s-btn-send-otp" onclick="requestLibOtp()">
+          <span>Request 6-Digit Verification Code</span>
+          <span>&rarr;</span>
+        </button>
+
+        <!-- Live Status Message -->
+        <div id="libOtpStatus" style="margin-top:12px;font-size:12.5px;text-align:center;"></div>
+
+        <!-- OTP Code Verification Zone -->
+        <div class="c2s-otp-verify-zone">
+          <label class="c2s-field-label" for="libOtpCode" style="text-align:center;">Enter 6-Digit OTP Code</label>
+          <input id="libOtpCode" class="c2s-otp-code-input" inputmode="numeric" maxlength="6" placeholder="------" autocomplete="one-time-code">
+          
+          <button type="button" class="c2s-btn-verify-otp" onclick="verifyLibOtp()">
+            <span>Verify OTP &amp; Open Digital Pass 🏛️</span>
+          </button>
+          
+          <div id="libMsg" style="margin-top:10px;text-align:center;font-size:13px;"></div>
+        </div>
+
+        <!-- Trust & Security Footer -->
+        <div class="c2s-auth-footer-trust">
+          <span>🔒 C2S 256-bit encrypted student session</span>
+          <span>&bull;</span>
+          <span>Help: 9777481909 / 9658177712</span>
         </div>
       </div>
     </div>
 
     <!-- Member Portal Dashboard (Shown when logged in) -->
-    <div id="libMemberPortal">
+    <div id="libMemberPortal" style="display:none;">
 
       <!-- Official Digital Library Access Pass -->
       <div style="background:linear-gradient(135deg,#0a192f,#0f2444);border:1.5px solid rgba(255,255,255,0.2);border-radius:18px;padding:26px;color:#fff;box-shadow:0 12px 36px rgba(0,0,0,0.4);margin-bottom:24px;">

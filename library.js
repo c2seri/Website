@@ -306,54 +306,67 @@ function renderDigitalID() {
   const u = store.get("c2s_lib_user", null);
   const container = document.getElementById("digitalIdContainer");
   const loginBox = document.getElementById("libLoginBox");
+  const portal = document.getElementById("libMemberPortal");
+
+  if (portal) {
+    portal.style.display = u ? "block" : "none";
+  }
+
+  if (loginBox) {
+    if (u) {
+      loginBox.style.display = "none";
+      loginBox.classList.add("hidden");
+    } else {
+      loginBox.style.display = "block";
+      loginBox.classList.remove("hidden");
+    }
+  }
 
   if (!container) return;
 
   if (u) {
-    if (loginBox) loginBox.classList.add("hidden");
     container.innerHTML = `
-      <div class="digital-id-card tilt-3d">
-        <div class="digital-id-top">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span class="logo-badge" style="width:36px;height:36px;"></span>
+      <div class="digital-id-card tilt-3d" style="background:linear-gradient(135deg,#0a192f,#0f2444);border:1.5px solid rgba(255,255,255,0.2);box-shadow:0 16px 40px rgba(0,0,0,0.5);border-radius:20px;padding:24px;">
+        <div class="digital-id-top" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span class="logo-badge" style="width:40px;height:40px;box-shadow:0 0 14px rgba(234,88,12,0.4);" role="img" aria-label="C2S logo"></span>
             <div>
-              <strong style="font-size:15px;color:#fff;display:block;">C2S Premium Library</strong>
-              <span style="font-size:10px;color:#fdba74;font-weight:700;">DIGITAL MEMBER PASS</span>
+              <strong style="font-size:16px;color:#fff;display:block;font-family:'Outfit',sans-serif;">C2S 24h Study Library</strong>
+              <span style="font-size:11px;color:#fdba74;font-weight:700;">OFFICIAL DIGITAL MEMBER PASS</span>
             </div>
           </div>
-          <span class="pill green" style="font-size:11px;">Active</span>
+          <span class="pill green" style="font-size:11.5px;padding:4px 12px;font-weight:800;">✓ ACTIVE PASS</span>
         </div>
 
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
           <div>
-            <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;">Member Name</div>
-            <div style="font-size:19px;font-weight:900;color:#fff;margin-bottom:8px;">${u.name}</div>
+            <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;">Member Name</div>
+            <div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:8px;font-family:'Outfit',sans-serif;">${u.name}</div>
 
-            <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;">Registration ID</div>
-            <div style="font-size:15px;font-weight:800;color:#00b4d8;margin-bottom:8px;">${u.regNo}</div>
+            <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;">Official Registration ID</div>
+            <div style="font-size:15px;font-weight:800;color:#38bdf8;margin-bottom:8px;letter-spacing:1px;">${u.regNo}</div>
 
-            <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;">Assigned Shift &amp; Seat</div>
-            <div style="font-size:14px;color:#fff;margin-bottom:6px;">${u.shift || 'Afternoon'} • Desk ${u.seat || 'A-04'}</div>
-            ${u.examPref ? `<div style="font-size:10px;color:#94a3b8;text-transform:uppercase;">Target Exam</div><div style="font-size:12.5px;color:#38bdf8;font-weight:700;">🎯 ${u.examPref}</div>` : ''}
+            <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;">Assigned Shift &amp; Seat</div>
+            <div style="font-size:14.5px;color:#fff;font-weight:700;margin-bottom:6px;">${u.shift || 'Full Day (07:00 AM – 09:00 PM)'} &bull; ${u.seat || 'Desk A-14'}</div>
+            ${u.examPref ? `<div style="font-size:11px;color:#94a3b8;text-transform:uppercase;margin-top:6px;">Target Goal</div><div style="font-size:13px;color:#34d399;font-weight:750;">🎯 ${u.examPref}</div>` : ''}
           </div>
 
-          <div class="digital-qr-mockup">
-            <div style="text-align:center;font-size:9px;color:#0f172a;font-weight:800;">
-              QR PASS<br>
-              <div style="font-size:24px;margin:2px 0;">🏛️</div>
+          <div class="digital-qr-mockup" style="background:#fff;border-radius:12px;padding:12px;box-shadow:0 4px 12px rgba(0,0,0,0.3);">
+            <div style="text-align:center;font-size:9.5px;color:#0f172a;font-weight:800;">
+              STUDENT QR PASS<br>
+              <div style="font-size:28px;margin:2px 0;">🏛️</div>
               VERIFIED
             </div>
           </div>
         </div>
 
-        <div style="margin-top:16px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.15);font-size:11px;color:#cbd5e1;display:flex;justify-content:space-between;">
-          <span>Patrapada, Bhubaneswar</span>
-          <button class="btn ghost" style="padding:2px 8px;font-size:11px;color:#fdba74;" onclick="logoutLib()">Logout</button>
+        <div style="margin-top:20px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.15);font-size:12px;color:#cbd5e1;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+          <span>📍 NH-16 Patrapada Centre, Bhubaneswar (751019)</span>
+          <button class="btn ghost" style="padding:4px 14px;font-size:12px;color:#fdba74;border-color:rgba(253,186,116,0.3);" onclick="logoutLib()">Logout Pass</button>
         </div>
       </div>
     `;
   } else {
-    if (loginBox) loginBox.classList.remove("hidden");
     container.innerHTML = "";
   }
 }
@@ -365,22 +378,44 @@ function logoutLib() {
 
 /* 5. Library OTP Login */
 async function requestLibOtp() {
-  const channel = (document.querySelector('input[name="libOtpChannel"]:checked') || {}).value || "sms";
-  const target = channel === "email" ? ($("#libOtpEmail").value || "") : ($("#libOtpMobile").value || "");
-  if (!target) return alert(channel === "email" ? "Email enter karo." : "Mobile number enter karo.");
+  const channel = (document.querySelector('input[name="libOtpChannel"]:checked') || {}).value || "whatsapp";
+  const mobileInput = $("#libOtpMobile");
+  const target = (mobileInput ? mobileInput.value : "").trim();
+  if (!target) {
+    alert("Please enter your 10-digit registered mobile number.");
+    if (mobileInput) mobileInput.focus();
+    return;
+  }
+  const cleanPhone = target.replace(/[^0-9]/g, "");
+  if (cleanPhone.length < 10) {
+    alert("Please enter a valid 10-digit mobile number.");
+    if (mobileInput) mobileInput.focus();
+    return;
+  }
 
   store.set("c2s_lib_otp_mode", "preview");
   const code = String(Math.floor(100000 + Math.random() * 900000));
-  store.set("c2s_lib_preview_otp", { code, channel, target, expires: Date.now() + 5 * 60 * 1000, attempts: 0 });
+  store.set("c2s_lib_preview_otp", { code, channel, target: cleanPhone, expires: Date.now() + 5 * 60 * 1000, attempts: 0 });
 
   const status = $("#libOtpStatus");
   if (status) {
-    status.innerHTML = `<span style="color:#fdba74;font-weight:700;">PREVIEW OTP: ${code}</span> (Testing code — valid for 5 mins)`;
+    status.innerHTML = `
+      <div style="background:rgba(234,88,12,0.15);border:1px solid rgba(234,88,12,0.4);border-radius:10px;padding:10px 14px;color:#fdba74;display:inline-block;">
+        <span style="color:#ffffff;font-weight:700;">OTP Sent to +91 ${cleanPhone} via ${channel.toUpperCase()}:</span>
+        <strong style="font-size:17px;color:#f97316;letter-spacing:2px;margin-left:6px;">${code}</strong>
+        <span style="display:block;font-size:11px;color:#cbd5e1;margin-top:2px;">(Active preview code &bull; Valid for 5 mins)</span>
+      </div>
+    `;
+  }
+  const codeInput = $("#libOtpCode");
+  if (codeInput) {
+    codeInput.value = code;
+    codeInput.focus();
   }
 }
 
 function verifyLibOtp() {
-  const code = $("#libOtpCode")?.value || "";
+  const code = ($("#libOtpCode")?.value || "").trim();
   const preview = store.get("c2s_lib_preview_otp", null);
 
   if (!preview || code !== preview.code) {
@@ -388,25 +423,25 @@ function verifyLibOtp() {
   }
 
   const members = store.get("c2s_lib_members", []);
-  let m = members.find(x => x.mobile === preview.target || x.email === preview.target);
+  let m = members.find(x => x.mobile === preview.target);
 
   if (!m) {
     m = {
       regNo: "C2SLIB-" + String(members.length + 1).padStart(5, "0"),
-      name: "Student Member",
-      mobile: preview.channel === "email" ? "" : preview.target,
-      email: preview.channel === "email" ? preview.target : "",
-      shift: "Afternoon",
-      seat: "A-04",
+      name: "Enrolled Student Member",
+      mobile: preview.target,
+      shift: "Full Day (07:00 AM – 09:00 PM)",
+      seat: "Desk A-14",
       paid: 1000,
-      pending: 0
+      pending: 0,
+      examPref: "OSSC CGL / Odisha Police SI"
     };
     members.unshift(m);
     store.set("c2s_lib_members", members);
   }
 
   store.set("c2s_lib_user", m);
-  alert("Logged in as " + m.name + " (" + m.regNo + ")");
+  alert("🎉 Verified! Welcome " + m.name + " (" + m.regNo + ")");
   renderDigitalID();
 }
 
@@ -477,6 +512,7 @@ window.quickDemoMemberLogin = function() {
     pending: 0
   };
   
+  store.set("c2s_lib_user", demoMember);
   store.set("c2s_lib_current_user", demoMember);
   
   const members = store.get("c2s_lib_members", []);
@@ -485,6 +521,9 @@ window.quickDemoMemberLogin = function() {
     store.set("c2s_lib_members", members);
   }
   
+  if (typeof renderDigitalID === "function") {
+    renderDigitalID();
+  }
   if (typeof renderDigitalIdCard === "function") {
     renderDigitalIdCard();
   } else if (typeof renderUser === "function") {
@@ -493,6 +532,8 @@ window.quickDemoMemberLogin = function() {
   
   const box = document.getElementById("libLoginBox");
   if (box) box.style.display = "none";
+  const portal = document.getElementById("libMemberPortal");
+  if (portal) portal.style.display = "block";
   
-  alert("✓ Welcome Prakash Behera! Your 24-Hour Digital Pass & Assigned Desk A-14 are ready.");
+  alert("🏛️ Welcome Prakash Behera! Your Digital Pass & Assigned Desk A-14 are ready.");
 };
