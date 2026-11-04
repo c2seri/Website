@@ -799,30 +799,217 @@ function submitExam(reason){
   show("tests"); renderTests();
 }
 function calc(op){ const el=$("#calcOut"); try{ if(op==="C") el.value=""; else if(op==="=") el.value=eval(el.value.replace(/[^0-9+\-*/.() ]/g,""))||""; else el.value+=op; }catch(e){ el.value="Error"; } }
-function renderBlog(){
-  const customPosts = store.get("c2s_main_blog", []);
-  const allBlogs = typeof STRATEGY_BLOGS !== 'undefined' ? [...STRATEGY_BLOGS, ...customPosts] : customPosts;
+let c2sBlogCategory = 'all';
+let c2sBlogSearch = '';
 
+function filterBlogByCategory(cat, btn) {
+  c2sBlogCategory = cat;
+  if (btn) {
+    document.querySelectorAll('.c2s-blog-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  renderBlog();
+}
+
+function handleBlogSearch(query) {
+  c2sBlogSearch = (query || '').toLowerCase().trim();
+  renderBlog();
+}
+
+function renderBlog() {
   const container = $("#blogList");
   if (!container) return;
 
-  container.innerHTML = allBlogs.map(b => `
-    <div class="card" style="border-radius:16px;margin-bottom:20px;padding:24px;border-left:5px solid var(--c2s-orange-500);box-shadow:var(--c2s-shadow-sm);">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
-        <span class="pill" style="font-weight:800;background:#fff7ed;color:var(--c2s-orange-600);border-color:#fed7aa;">
-          🎯 ${b.examId || 'EXAM STRATEGY'}
-        </span>
-        <span class="small" style="color:var(--c2s-slate-500);font-weight:600;">${b.date || 'Updated'} • By ${b.author || 'C2S Mentors'}</span>
-      </div>
+  const baseBlogs = (typeof window !== 'undefined' && window.C2S_BLOGS_DATABASE) ? window.C2S_BLOGS_DATABASE : (typeof STRATEGY_BLOGS !== 'undefined' ? STRATEGY_BLOGS : []);
+  const customPosts = store.get("c2s_main_blog", []);
+  const allBlogs = [...baseBlogs, ...customPosts];
 
-      <h3 style="font-size:20px;font-weight:900;color:var(--c2s-navy-900);margin:0 0 8px;line-height:1.35;">${b.title}</h3>
-      <p style="font-size:14px;color:var(--c2s-slate-600);line-height:1.6;margin-bottom:12px;"><strong>Summary:</strong> ${b.summary || ''}</p>
+  // Apply filters
+  const filtered = allBlogs.filter(b => {
+    const matchesCat = c2sBlogCategory === 'all' || b.category === c2sBlogCategory;
+    const matchesSearch = !c2sBlogSearch || 
+      (b.title && b.title.toLowerCase().includes(c2sBlogSearch)) || 
+      (b.tag && b.tag.toLowerCase().includes(c2sBlogSearch)) || 
+      (b.summary && b.summary.toLowerCase().includes(c2sBlogSearch));
+    return matchesCat && matchesSearch;
+  });
 
-      <div style="background:#f8fafc;padding:14px 16px;border-radius:12px;border:1px solid #e2e8f0;font-size:13.5px;line-height:1.7;color:var(--c2s-slate-700);">
-        ${b.content || b.body || ''}
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:48px 20px;background:#f8fafc;border-radius:18px;border:1.5px dashed #cbd5e1;">
+        <span style="font-size:36px;display:block;margin-bottom:10px;">🔍</span>
+        <h3 style="margin:0 0 6px;font-size:18px;color:#0f2a5c;">No Articles Found</h3>
+        <p style="color:#64748b;font-size:13.5px;margin:0 0 16px;">Try adjusting your keyword or reset filters to view all 50 blogs.</p>
+        <button type="button" class="btn orange" onclick="filterBlogByCategory('all', document.querySelector('.c2s-blog-tab'));">Reset All Filters</button>
       </div>
+    `;
+    return;
+  }
+
+  // Top Featured Blog (if showing 'all' and no active search)
+  const featured = (c2sBlogCategory === 'all' && !c2sBlogSearch) ? filtered[0] : null;
+  const listToRender = featured ? filtered.slice(1) : filtered;
+
+  container.innerHTML = `
+    ${featured ? `
+      <!-- TOP FEATURED MASTER BLUEPRINT -->
+      <div style="background:linear-gradient(135deg, #09132b, #1e293b);border-radius:20px;padding:32px 28px;color:#ffffff;margin-bottom:32px;border:1.5px solid #334155;box-shadow:0 15px 40px rgba(15,23,42,0.18);position:relative;overflow:hidden;display:grid;grid-template-columns:1.4fr 0.8fr;gap:24px;align-items:center;">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+            <span style="background:#ea580c;color:#ffffff;font-size:11px;font-weight:900;padding:3px 10px;border-radius:6px;letter-spacing:0.5px;">⭐ FEATURED GUIDE</span>
+            <span style="background:rgba(255,255,255,0.15);color:#93c5fd;font-size:11.5px;font-weight:800;padding:3px 10px;border-radius:6px;">${featured.tag || featured.category}</span>
+            <span style="font-size:12px;color:#cbd5e1;">⏱️ ${featured.readTime || '7 min read'} &bull; ${featured.date || 'Updated'}</span>
+          </div>
+
+          <h3 style="margin:0 0 12px;font-size:24px;font-weight:900;color:#ffffff;line-height:1.35;cursor:pointer;" onclick="openBlogArticle('${featured.id}')">${featured.title}</h3>
+          <p style="margin:0 0 20px;font-size:14px;color:#cbd5e1;line-height:1.6;">${featured.summary}</p>
+
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+            <button type="button" class="btn orange" onclick="openBlogArticle('${featured.id}')" style="padding:10px 22px;font-size:14px;font-weight:850;border-radius:8px;box-shadow:0 4px 14px rgba(234,88,12,0.4);">
+              Read Complete Blueprint →
+            </button>
+            <span style="font-size:12.5px;color:#94a3b8;">✍️ By ${featured.author}</span>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05);border:1.5px dashed rgba(255,255,255,0.18);border-radius:16px;padding:22px;text-align:center;">
+          <span style="font-size:38px;display:block;margin-bottom:10px;">🏛️</span>
+          <strong style="color:#fde68a;font-size:16px;display:block;margin-bottom:6px;">Odisha &amp; Central Recruitment Cell</strong>
+          <span style="font-size:12.5px;color:#cbd5e1;line-height:1.5;display:block;">Verified exam patterns, cut-offs, syllabus matrices &amp; daily study routines curated at C2S Patrapada.</span>
+        </div>
+      </div>
+    ` : ''}
+
+    <!-- Result Count Bar -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <span style="font-size:14px;font-weight:800;color:#0f2a5c;">Showing ${filtered.length} Articles &bull; Knowledge Hub</span>
+      <span style="font-size:12px;color:#64748b;">Click any card to read full article</span>
     </div>
-  `).join("");
+
+    <!-- 50 BLOG CARDS GRID -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:20px;">
+      ${listToRender.map(b => `
+        <div class="c2s-blog-card" onclick="openBlogArticle('${b.id}')">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;">
+              <span style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;font-weight:800;padding:2px 8px;border-radius:4px;">
+                ${b.tag || b.category}
+              </span>
+              <span style="font-size:11.5px;color:#64748b;font-weight:600;">⏱️ ${b.readTime || '5 min read'}</span>
+            </div>
+
+            <h4 style="margin:0 0 8px;font-size:17.5px;font-weight:850;color:#0f172a;line-height:1.4;">${b.title}</h4>
+            <p style="margin:0 0 16px;font-size:13px;color:#475569;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
+              ${b.summary}
+            </p>
+          </div>
+
+          <div style="border-top:1.5px solid #f1f5f9;padding-top:12px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:11.5px;color:#64748b;">${b.date || 'Updated'} &bull; ${b.author || 'C2S Faculty'}</span>
+            <span style="font-size:13px;font-weight:800;color:#2563eb;">Read Article →</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+// OPEN FULL BLOG ARTICLE READER MODAL (DESCRIPTION & DETAIL VIEW)
+function openBlogArticle(blogId) {
+  const baseBlogs = (typeof window !== 'undefined' && window.C2S_BLOGS_DATABASE) ? window.C2S_BLOGS_DATABASE : (typeof STRATEGY_BLOGS !== 'undefined' ? STRATEGY_BLOGS : []);
+  const customPosts = store.get("c2s_main_blog", []);
+  const allBlogs = [...baseBlogs, ...customPosts];
+
+  const blog = allBlogs.find(b => b.id === blogId) || allBlogs[0];
+  if (!blog) return;
+
+  let modal = document.getElementById("c2sBlogModal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "c2sBlogModal";
+    modal.style.cssText = "display:none;position:fixed;inset:0;background:rgba(15,23,42,0.72);backdrop-filter:blur(8px);z-index:999999;align-items:center;justify-content:center;padding:16px;";
+    document.body.appendChild(modal);
+  }
+
+  const encodedUrl = encodeURIComponent(window.location.href);
+  const encodedTitle = encodeURIComponent(blog.title);
+  const waShareUrl = `https://api.whatsapp.com/send?text=${encodedTitle}%0A%0ARead%20complete%20guide%20on%20C2S%20Portal:%20${encodedUrl}`;
+
+  modal.innerHTML = `
+    <div style="background:#ffffff;border-radius:24px;max-width:840px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,0.35);border:1.5px solid #e2e8f0;padding:32px 36px;position:relative;font-family:'Plus Jakarta Sans',system-ui,sans-serif;">
+      
+      <!-- Top Action Bar -->
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px solid #f1f5f9;padding-bottom:16px;margin-bottom:20px;">
+        <button type="button" onclick="closeBlogArticle()" style="background:#f1f5f9;border:1px solid #cbd5e1;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:800;color:#0f2a5c;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+          ← Back to All Blogs
+        </button>
+        <button type="button" onclick="closeBlogArticle()" style="background:#f1f5f9;border:none;border-radius:50%;width:34px;height:34px;font-size:16px;color:#64748b;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:800;">
+          ✕
+        </button>
+      </div>
+
+      <!-- Article Header -->
+      <div style="margin-bottom:24px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+          <span style="background:#eff6ff;color:#1d4ed8;font-size:11.5px;font-weight:800;padding:3px 10px;border-radius:6px;border:1px solid #bfdbfe;">
+            ${blog.tag || blog.category}
+          </span>
+          <span style="font-size:12.5px;color:#64748b;">⏱️ ${blog.readTime || '6 min read'}</span>
+          <span style="font-size:12.5px;color:#64748b;">&bull;</span>
+          <span style="font-size:12.5px;color:#64748b;">📅 ${blog.date || 'Updated'}</span>
+        </div>
+
+        <h1 style="font-size:28px;font-weight:900;color:#0f172a;line-height:1.35;margin:0 0 16px;">
+          ${blog.title}
+        </h1>
+
+        <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:12px 16px;border-radius:12px;border:1px solid #e2e8f0;">
+          <div style="width:40px;height:40px;border-radius:50%;background:#1e3a8a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;">
+            🎓
+          </div>
+          <div>
+            <strong style="font-size:13.5px;color:#0f172a;display:block;">${blog.author || 'C2S Faculty Team'}</strong>
+            <span style="font-size:12px;color:#64748b;">C2S College to Service Academic &amp; Research Cell &bull; NH-16 Patrapada Centre</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article Body Description -->
+      <div style="font-size:15px;line-height:1.8;color:#334155;border-bottom:1.5px solid #f1f5f9;padding-bottom:28px;margin-bottom:28px;">
+        ${blog.content || `<p>${blog.summary}</p>`}
+      </div>
+
+      <!-- Actionable CTAs: Attempt Test / Demo Class / WhatsApp Share -->
+      <div style="background:#f8fafc;border-radius:16px;padding:22px;border:1.5px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+        <div>
+          <strong style="font-size:15px;color:#0f2a5c;display:block;margin-bottom:4px;">Put Strategy Into Practice Today</strong>
+          <span style="font-size:13px;color:#64748b;">Attempt related CBT mock test or reserve your free 3-day demo class at Patrapada.</span>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="${waShareUrl}" target="_blank" rel="noopener noreferrer" class="btn" style="background:#25d366;color:#ffffff;font-size:13px;font-weight:800;padding:9px 16px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+            <span>💬 Share on WhatsApp</span>
+          </a>
+          <button type="button" class="btn" onclick="closeBlogArticle();show('tests');" style="background:#1e3a8a;color:#ffffff;font-size:13px;font-weight:800;padding:9px 16px;border-radius:8px;">
+            Attempt CBT Mock Test →
+          </button>
+          <button type="button" class="btn orange" onclick="closeBlogArticle();openDemoBookingModal('COURSE-ODISHA-SUPER');" style="font-size:13px;font-weight:800;padding:9px 16px;border-radius:8px;">
+            Book Free Demo Class
+          </button>
+        </div>
+      </div>
+
+    </div>
+  `;
+
+  modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+
+function closeBlogArticle() {
+  const modal = document.getElementById("c2sBlogModal");
+  if (modal) modal.style.display = "none";
+  document.body.style.overflow = "";
 }
 
 function renderNotices(){

@@ -105,6 +105,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="exams.js" defer></script>
+  <script src="blogs-data.js" defer></script>
   <script src="app.js" defer></script>
   <script src="cohort-engine.js" defer></script>
 </head>
@@ -138,252 +139,289 @@
     </div>
   </div>
 
-  <!-- Sticky Site Header (Line 2: Pure Branding on Left + 5 Clean Menus on Right) -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <!-- Brand Logo on Left -->
-      <a href="/" class="brand" title="C2S — College to Service | Return to Home" onclick="if(window.resetToHomeView){window.resetToHomeView(event);}" style="text-decoration:none;cursor:pointer;">
-        <span class="logo-badge" role="img" aria-label="C2S official logo"></span>
-        <div class="brand-text">
-          <div class="brand-title">
-            <span class="brand-blue">C2S</span>
-            <span class="brand-sub">College to Service</span>
+  <!-- Sticky Site Header (2-Tier Header: Tier 1 Brand & Utility Actions + Tier 2 Full-Width Category Navigation) -->
+  <header class="site-header" id="siteHeader">
+    <!-- Tier 1: Brand Logo, Career Pass Goal Pill, Super Admin, Library, Student Login -->
+    <div class="header-tier-1">
+      <div class="container header-tier-1-inner">
+        <!-- Brand Logo on Left -->
+        <a href="/" class="brand" title="C2S — College to Service | Return to Home" onclick="if(window.resetToHomeView){window.resetToHomeView(event);}" style="text-decoration:none;cursor:pointer;">
+          <span class="logo-badge" role="img" aria-label="C2S official logo"></span>
+          <div class="brand-text">
+            <div class="brand-title">
+              <span class="brand-blue">C2S</span>
+              <span class="brand-sub">College to Service</span>
+            </div>
+            <span class="brand-tagline">Your Selection Our Mission</span>
+            <span class="brand-legal-badge" style="display:block;font-size:10px;color:#64748b;font-weight:700;letter-spacing:0.2px;margin-top:1px;">Unit of: COLLEGE FOR COMPETITIVE STUDIES (C2S)</span>
           </div>
-          <span class="brand-tagline">Your Selection Our Mission</span>
-          <span class="brand-legal-badge" style="display:block;font-size:10px;color:#64748b;font-weight:700;letter-spacing:0.2px;margin-top:1px;">Unit of: COLLEGE FOR COMPETITIVE STUDIES (C2S)</span>
-        </div>
-      </a>
+        </a>
 
-      <!-- Cohort / Career Pass Goal Selector Pill (PhysicsWallah / EdTech Style) -->
-      <button type="button" id="c2sCohortHeaderBtn" onclick="openCohortSelection()" class="c2s-cohort-pill-btn" style="background:#0f172a;color:#ffffff;border:1.5px solid #334155;border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:800;display:inline-flex;align-items:center;gap:6px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.15s;margin-left:14px;" onmouseover="this.style.borderColor='#38bdf8';this.style.background='#1e293b';" onmouseout="this.style.borderColor='#334155';this.style.background='#0f172a';">
-        <span style="font-size:14px;">🎓</span>
-        <span>Career Pass</span>
-        <span style="font-size:11px;font-weight:900;">❯</span>
-      </button>
+        <!-- Cohort / Career Pass Goal Selector Pill (PhysicsWallah / EdTech Style) -->
+        <button type="button" id="c2sCohortHeaderBtn" onclick="openCohortSelection()" class="c2s-cohort-pill-btn" title="Choose your Target Exam Goal">
+          <span style="font-size:15px;">🎓</span>
+          <span class="cohort-text">Select Goal / Career Pass</span>
+          <span style="font-size:11px;font-weight:900;opacity:0.8;">❯</span>
+        </button>
 
-      <!-- Mobile Hamburger Toggle -->
-      <button class="hamburger" aria-label="Toggle navigation menu"
-        onclick="document.getElementById('topnav').classList.toggle('open')">&#9776;</button>
-
-      <!-- Navigation Bar (5 Structured Menus with Massive Breathing Room) -->
-      <nav class="topnav" id="topnav">
-        <!-- 1. Exams (Mega-Menu) -->
-        <div class="nav-item has-mega">
-          <button class="nav-link" data-nav="exams" onclick="toggleDropdown(this)">
-            Exams <span class="nav-arrow">&#9662;</span>
+        <!-- Tier 1 Quick Access Actions & Mobile Hamburger -->
+        <div class="header-tier-1-actions">
+          <a href="admin.html" class="header-admin-btn" title="Open Super Admin & Front Desk Operations">
+            <span>👑 Super Admin</span>
+          </a>
+          <a href="/library" class="header-library-btn" title="Open 24-Hour Study Sanctuary">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2l10 5H2l10-5z"/></svg>
+            <span>24h Study Library</span>
+            <span class="live-dot-green"></span>
+          </a>
+          <button type="button" class="header-login-btn" onclick="show('login')" title="Open Student & Member Portal">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Student Login</span>
           </button>
-          <div class="mega-menu">
-            <div class="mega-grid" style="grid-template-columns: repeat(4, 1fr) 1.2fr; gap: 16px;">
-              <!-- Col 1: Banking & Insurance -->
-              <div>
-                <div class="mega-col-title">🏦 Banking &amp; Insurance</div>
-                <div class="mega-link-list">
-                  <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
-                    <span class="mega-link-icon"><img src="images/logos/sbi.svg" alt="SBI" style="width:20px;height:20px;border-radius:50%;object-fit:contain;" decoding="async"></span>
-                    <div><strong>SBI PO &amp; Clerk</strong><span class="mega-link-desc">Probationary Officer &amp; JA</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
-                    <span class="mega-link-icon"><img src="images/logos/ibps.png" alt="IBPS" style="width:20px;height:20px;border-radius:4px;object-fit:contain;" decoding="async"></span>
-                    <div><strong>IBPS PO &amp; Clerk</strong><span class="mega-link-desc">11 Participating Banks</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
-                    <span class="mega-link-icon">🌾</span>
-                    <div><strong>IBPS RRB Officer &amp; Assistant</strong><span class="mega-link-desc">Gramin Banks (Odisha)</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
-                    <span class="mega-link-icon">🪙</span>
-                    <div><strong>RBI Grade B &amp; Assistant</strong><span class="mega-link-desc">Apex Central Bank</span></div>
+          
+          <!-- Mobile Hamburger Toggle -->
+          <button class="hamburger" aria-label="Toggle navigation menu"
+            onclick="document.getElementById('topnav').classList.toggle('open')">&#9776;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tier 2: Category Navigation Bar (Clean horizontal strip across container width) -->
+    <div class="header-tier-2">
+      <div class="container header-tier-2-inner">
+        <nav class="topnav" id="topnav">
+          <!-- 1. Exams (Mega-Menu) -->
+          <div class="nav-item has-mega">
+            <button class="nav-link" data-nav="exams" onclick="toggleDropdown(this)">
+              <span>🎯 Exams Directory (204+)</span> <span class="nav-arrow">&#9662;</span>
+            </button>
+            <div class="mega-menu">
+              <div class="mega-grid" style="grid-template-columns: repeat(4, 1fr) 1.2fr; gap: 16px;">
+                <!-- Col 1: Banking & Insurance -->
+                <div>
+                  <div class="mega-col-title">🏦 Banking &amp; Insurance</div>
+                  <div class="mega-link-list">
+                    <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
+                      <span class="mega-link-icon"><img src="images/logos/sbi.svg" alt="SBI" style="width:20px;height:20px;border-radius:50%;object-fit:contain;" decoding="async"></span>
+                      <div><strong>SBI PO &amp; Clerk</strong><span class="mega-link-desc">Probationary Officer &amp; JA</span></div>
+                    </button>
+                    <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
+                      <span class="mega-link-icon"><img src="images/logos/ibps.png" alt="IBPS" style="width:20px;height:20px;border-radius:4px;object-fit:contain;" decoding="async"></span>
+                      <div><strong>IBPS PO &amp; Clerk</strong><span class="mega-link-desc">11 Participating Banks</span></div>
+                    </button>
+                    <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
+                      <span class="mega-link-icon">🌾</span>
+                      <div><strong>IBPS RRB Officer &amp; Assistant</strong><span class="mega-link-desc">Gramin Banks (Odisha)</span></div>
+                    </button>
+                    <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
+                      <span class="mega-link-icon">🪙</span>
+                      <div><strong>RBI Grade B &amp; Assistant</strong><span class="mega-link-desc">Apex Central Bank</span></div>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Col 2: SSC -->
+                <div>
+                  <div class="mega-col-title">🛡️ Staff Selection (SSC)</div>
+                  <div class="mega-link-list">
+                    <button class="mega-link" onclick="filterExam('All India', 'SSC');closeMobileNav();">
+                      <span class="mega-link-icon">⭐</span>
+                      <div><strong>SSC CGL (Tier 1 &amp; 2)</strong><span class="mega-link-desc">ASO, Income Tax, Excise</span></div>
+                    </button>
+                    <button class="mega-link" onclick="filterExam('All India', 'SSC');closeMobileNav();">
+                      <span class="mega-link-icon">📑</span>
+                      <div><strong>SSC CHSL (10+2)</strong><span class="mega-link-desc">LDC, DEO, PA/SA</span></div>
+                    </button>
+                    <button class="mega-link" onclick="filterExam('All India', 'SSC');closeMobileNav();">
+                      <span class="mega-link-icon">🛡️</span>
+                      <div><strong>SSC GD Constable &amp; CPO SI</strong><span class="mega-link-desc">Central Armed Police</span></div>
+                    </button>
+                    <button class="mega-link" onclick="filterExam('All India', 'SSC');closeMobileNav();">
+                      <span class="mega-link-icon">📝</span>
+                      <div><strong>SSC MTS &amp; Havaldar</strong><span class="mega-link-desc">Non-Technical Staff</span></div>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Col 3: Railways, UPSC & Defence -->
+                <div>
+                  <div class="mega-col-title">🚆 Railway, UPSC &amp; Defence</div>
+                  <div class="mega-link-list">
+                    <button class="mega-link" onclick="filterExam('All India', 'RAILWAY');closeMobileNav();">
+                      <span class="mega-link-icon">🚆</span>
+                      <div><strong>RRB NTPC, ALP &amp; Group D</strong><span class="mega-link-desc">Station Master, Loco Pilot</span></div>
+                    </button>
+                    <button class="mega-link" onclick="filterExam('All India', 'UPSC');closeMobileNav();">
+                      <span class="mega-link-icon">🏛️</span>
+                      <div><strong>UPSC Civil Services</strong><span class="mega-link-desc">IAS, IPS, IFS (GS + CSAT)</span></div>
+                    </button>
+                    <button class="mega-link" onclick="filterExam('All India', 'DEFENCE');closeMobileNav();">
+                      <span class="mega-link-icon">⚔️</span>
+                      <div><strong>NDA, CDS &amp; AFCAT</strong><span class="mega-link-desc">Army, Navy, Air Force + SSB</span></div>
+                    </button>
+                    <button class="mega-link" onclick="filterExam('All India', 'TEACHING');closeMobileNav();">
+                      <span class="mega-link-icon">📚</span>
+                      <div><strong>CTET, KVS &amp; NVS</strong><span class="mega-link-desc">PRT, TGT, PGT Teaching</span></div>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Col 4: Odisha State Recruitments -->
+                <div>
+                  <div class="mega-col-title">🏛️ Odisha State Exams</div>
+                  <div class="mega-link-list">
+                    <button class="mega-link" onclick="filterExam('Odisha State', 'OSSC');closeMobileNav();">
+                      <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="OSSC" style="width:22px;height:22px;border-radius:50%;object-fit:contain;" decoding="async"></span>
+                      <div><strong>OSSC CGL &amp; Group B/C</strong><span class="mega-link-desc">Auditor, Supplies, Excise</span></div>
+                    </button>
+                    <button class="mega-link" onclick="filterExam('Odisha State', 'OSSSC');closeMobileNav();">
+                      <span class="mega-link-icon">📋</span>
+                      <div><strong>OSSSC CRE (RI, ARI, Amin)</strong><span class="mega-link-desc">Forester &amp; Forest Guard</span></div>
+                    </button>
+                    <button class="mega-link" onclick="filterExam('Odisha State', 'OPSC');closeMobileNav();">
+                      <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="OPSC" style="width:22px;height:22px;border-radius:50%;object-fit:contain;" decoding="async"></span>
+                      <div><strong>OPSC OAS (Odisha Civil Services)</strong><span class="mega-link-desc">OAS, OFS, OPS Group A/B</span></div>
+                    </button>
+                    <button class="mega-link" onclick="filterExam('Odisha State', 'ODISHA-POLICE');closeMobileNav();">
+                      <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="Police" style="width:22px;height:22px;border-radius:50%;object-fit:contain;" decoding="async"></span>
+                      <div><strong>Odisha Police Constable &amp; SI</strong><span class="mega-link-desc">Written + 1.6km PET Prep</span></div>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Col 5: Featured Authority Card -->
+                <div class="mega-featured-card" style="background:linear-gradient(135deg, #0a2540 0%, #1e3a8a 100%);color:#fff;border-radius:14px;padding:20px;">
+                  <h4 style="color:#fdba74;font-size:16px;margin:0 0 8px;">🎯 All India &amp; Odisha Exam Directory</h4>
+                  <p style="font-size:13px;color:#cbd5e1;line-height:1.5;margin:0 0 16px;">204 Central &amp; State exam syllabi, multi-stage selection patterns &amp; eligibility.</p>
+                  <button class="btn orange" style="width:100%;padding:10px;font-size:13px;font-weight:750;" onclick="show('exams');closeMobileNav();">
+                    Explore Complete 204 Directory →
                   </button>
                 </div>
-              </div>
-
-              <!-- Col 2: SSC -->
-              <div>
-                <div class="mega-col-title">🛡️ Staff Selection (SSC)</div>
-                <div class="mega-link-list">
-                  <button class="mega-link" onclick="filterExam('All India', 'SSC');closeMobileNav();">
-                    <span class="mega-link-icon">⭐</span>
-                    <div><strong>SSC CGL (Tier 1 &amp; 2)</strong><span class="mega-link-desc">ASO, Income Tax, Excise</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('All India', 'SSC');closeMobileNav();">
-                    <span class="mega-link-icon">📑</span>
-                    <div><strong>SSC CHSL (10+2)</strong><span class="mega-link-desc">LDC, DEO, PA/SA</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('All India', 'SSC');closeMobileNav();">
-                    <span class="mega-link-icon">🛡️</span>
-                    <div><strong>SSC GD Constable &amp; CPO SI</strong><span class="mega-link-desc">Central Armed Police</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('All India', 'SSC');closeMobileNav();">
-                    <span class="mega-link-icon">📝</span>
-                    <div><strong>SSC MTS &amp; Havaldar</strong><span class="mega-link-desc">Non-Technical Staff</span></div>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Col 3: Railways, UPSC & Defence -->
-              <div>
-                <div class="mega-col-title">🚆 Railway, UPSC &amp; Defence</div>
-                <div class="mega-link-list">
-                  <button class="mega-link" onclick="filterExam('All India', 'RAILWAY');closeMobileNav();">
-                    <span class="mega-link-icon">🚆</span>
-                    <div><strong>RRB NTPC, ALP &amp; Group D</strong><span class="mega-link-desc">Station Master, Loco Pilot</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('All India', 'UPSC');closeMobileNav();">
-                    <span class="mega-link-icon">🏛️</span>
-                    <div><strong>UPSC Civil Services</strong><span class="mega-link-desc">IAS, IPS, IFS (GS + CSAT)</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('All India', 'DEFENCE');closeMobileNav();">
-                    <span class="mega-link-icon">⚔️</span>
-                    <div><strong>NDA, CDS &amp; AFCAT</strong><span class="mega-link-desc">Army, Navy, Air Force + SSB</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('All India', 'TEACHING');closeMobileNav();">
-                    <span class="mega-link-icon">📚</span>
-                    <div><strong>CTET, KVS &amp; NVS</strong><span class="mega-link-desc">PRT, TGT, PGT Teaching</span></div>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Col 4: Odisha State Recruitments -->
-              <div>
-                <div class="mega-col-title">🏛️ Odisha State Exams</div>
-                <div class="mega-link-list">
-                  <button class="mega-link" onclick="filterExam('Odisha State', 'OSSC');closeMobileNav();">
-                    <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="OSSC" style="width:22px;height:22px;border-radius:50%;object-fit:contain;" decoding="async"></span>
-                    <div><strong>OSSC CGL &amp; Group B/C</strong><span class="mega-link-desc">Auditor, Supplies, Excise</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('Odisha State', 'OSSSC');closeMobileNav();">
-                    <span class="mega-link-icon">📋</span>
-                    <div><strong>OSSSC CRE (RI, ARI, Amin)</strong><span class="mega-link-desc">Forester &amp; Forest Guard</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('Odisha State', 'OPSC');closeMobileNav();">
-                    <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="OPSC" style="width:22px;height:22px;border-radius:50%;object-fit:contain;" decoding="async"></span>
-                    <div><strong>OPSC OAS (Odisha Civil Services)</strong><span class="mega-link-desc">OAS, OFS, OPS Group A/B</span></div>
-                  </button>
-                  <button class="mega-link" onclick="filterExam('Odisha State', 'ODISHA-POLICE');closeMobileNav();">
-                    <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="Police" style="width:22px;height:22px;border-radius:50%;object-fit:contain;" decoding="async"></span>
-                    <div><strong>Odisha Police Constable &amp; SI</strong><span class="mega-link-desc">Written + 1.6km PET Prep</span></div>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Col 5: Featured Authority Card -->
-              <div class="mega-featured-card" style="background:linear-gradient(135deg,  #0a2540 0%,  #1e3a8a 100%);color:#fff;border-radius:14px;padding:20px;">
-                <h4 style="color:#fdba74;font-size:16px;margin:0 0 8px;">🎯 All India &amp; Odisha Exam Directory</h4>
-                <p style="font-size:13px;color:#cbd5e1;line-height:1.5;margin:0 0 16px;">204 Central &amp; State exam syllabi, multi-stage selection patterns &amp; eligibility.</p>
-                <button class="btn orange" style="width:100%;padding:10px;font-size:13px;font-weight:750;" onclick="show('exams');closeMobileNav();">
-                  Explore Complete 204 Directory →
-                </button>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- 2. Test Series (Mega Dropdown) -->
-        <div class="nav-item has-mega">
-          <button class="nav-link" data-nav="tests" onclick="toggleDropdown(this)">
-            Test Series <span class="nav-arrow">&#9662;</span>
+          <!-- 2. Test Series (Mega Dropdown) -->
+          <div class="nav-item has-mega">
+            <button class="nav-link" data-nav="tests" onclick="toggleDropdown(this)">
+              <span>⚡ CBT Test Series Pro</span> <span class="nav-arrow">&#9662;</span>
+            </button>
+            <div class="mega-menu">
+              <div class="mega-grid" style="grid-template-columns: repeat(3, 1fr) 1.2fr; gap: 16px;">
+                <div>
+                  <div class="mega-col-title">📋 Live &amp; Full Mock Tests</div>
+                  <div class="mega-link-list">
+                    <button class="mega-link" onclick="show('tests');closeMobileNav();">
+                      <span class="mega-link-icon">⚡</span>
+                      <div><strong>All-India Full Length Mocks</strong><span class="mega-link-desc">Timer + Negative Marking</span></div>
+                    </button>
+                    <button class="mega-link" onclick="show('tests');closeMobileNav();">
+                      <span class="mega-link-icon">📊</span>
+                      <div><strong>Sectional &amp; Topic Tests</strong><span class="mega-link-desc">Quant, Reasoning, English, GS</span></div>
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <div class="mega-col-title">🔒 CBT Exam Simulation</div>
+                  <div class="mega-link-list">
+                    <button class="mega-link" onclick="show('tests');closeMobileNav();">
+                      <span class="mega-link-icon">🖥️</span>
+                      <div><strong>Locked TCS/NTA Interface</strong><span class="mega-link-desc">Fullscreen Anti-Cheat Engine</span></div>
+                    </button>
+                    <button class="mega-link" onclick="show('tests');closeMobileNav();">
+                      <span class="mega-link-icon">📝</span>
+                      <div><strong>Given Tests &amp; Analysis</strong><span class="mega-link-desc">Marks, percentile &amp; solutions</span></div>
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <div class="mega-col-title">📚 Solved PYQ Papers</div>
+                  <div class="mega-link-list">
+                    <button class="mega-link" onclick="show('pyq');closeMobileNav();">
+                      <span class="mega-link-icon">📑</span>
+                      <div><strong>5 Years Solved PYQ Papers</strong><span class="mega-link-desc">OSSC, SSC, Bank &amp; Police</span></div>
+                    </button>
+                  </div>
+                </div>
+                <div class="mega-featured-card" style="background:linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);color:#fff;border-radius:14px;padding:20px;">
+                  <h4 style="color:#a5b4fc;font-size:16px;margin:0 0 8px;">⚡ C2S CBT Mock Pass</h4>
+                  <p style="font-size:13px;color:#cbd5e1;line-height:1.5;margin:0 0 16px;">100+ locked mock tests with All-India ranking and step-by-step solutions.</p>
+                  <button class="btn" style="background:#4f46e5;color:#fff;width:100%;padding:10px;font-size:13px;font-weight:750;" onclick="show('tests');closeMobileNav();">
+                    Open CBT Test Engine →
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Classroom Batches & Courses -->
+          <button class="nav-link" data-nav="batches" onclick="show('batches');closeMobileNav();">
+            <span>🏫 Classroom Batches</span>
           </button>
-          <div class="mega-menu">
-            <div class="mega-grid" style="grid-template-columns: repeat(3, 1fr) 1.2fr; gap: 16px;">
-              <div>
-                <div class="mega-col-title">📋 Live &amp; Full Mock Tests</div>
-                <div class="mega-link-list">
-                  <button class="mega-link" onclick="show('tests');closeMobileNav();">
-                    <span class="mega-link-icon">⚡</span>
-                    <div><strong>All-India Full Length Mocks</strong><span class="mega-link-desc">Timer + Negative Marking</span></div>
-                  </button>
-                  <button class="mega-link" onclick="show('tests');closeMobileNav();">
-                    <span class="mega-link-icon">📊</span>
-                    <div><strong>Sectional &amp; Topic Tests</strong><span class="mega-link-desc">Quant, Reasoning, English, GS</span></div>
-                  </button>
-                </div>
+
+          <!-- 4. Study Material Dropdown -->
+          <div class="nav-item">
+            <button class="nav-link" onclick="toggleDropdown(this)">
+              <span>📖 Study Material &amp; PYQs</span> <span class="nav-arrow">&#9662;</span>
+            </button>
+            <div class="dropdown-menu">
+              <div class="dropdown-item" onclick="show('books');closeMobileNav();">
+                <span>📚</span>
+                <div><strong>Printed Books &amp; Formula Compendiums</strong><span class="small" style="display:block">Doorstep delivery &amp; desk pickup</span></div>
               </div>
-              <div>
-                <div class="mega-col-title">🔒 CBT Exam Simulation</div>
-                <div class="mega-link-list">
-                  <button class="mega-link" onclick="show('tests');closeMobileNav();">
-                    <span class="mega-link-icon">🖥️</span>
-                    <div><strong>Locked TCS/NTA Interface</strong><span class="mega-link-desc">Fullscreen Anti-Cheat Engine</span></div>
-                  </button>
-                  <button class="mega-link" onclick="show('tests');closeMobileNav();">
-                    <span class="mega-link-icon">📝</span>
-                    <div><strong>Given Tests &amp; Analysis</strong><span class="mega-link-desc">Marks, percentile &amp; solutions</span></div>
-                  </button>
-                </div>
+              <div class="dropdown-item" onclick="show('notes');closeMobileNav();">
+                <span>✍️</span>
+                <div><strong>Smart Board Handwritten Class Notes</strong><span class="small" style="display:block">Theory summaries by 10+ yrs faculty</span></div>
               </div>
-              <div>
-                <div class="mega-col-title">📚 Solved PYQ Papers</div>
-                <div class="mega-link-list">
-                  <button class="mega-link" onclick="show('pyq');closeMobileNav();">
-                    <span class="mega-link-icon">📑</span>
-                    <div><strong>5 Years Solved PYQ Papers</strong><span class="mega-link-desc">OSSC, SSC, Bank &amp; Police</span></div>
-                  </button>
-                </div>
+              <div class="dropdown-item" onclick="show('current-affairs');closeMobileNav();">
+                <span>📰</span>
+                <div><strong>Weekly Current Affairs Digest</strong><span class="small" style="display:block">Digest + 25 weekly MCQs (PDF download)</span></div>
               </div>
-              <div class="mega-featured-card" style="background:linear-gradient(135deg,  #1e1b4b 0%,  #312e81 100%);color:#fff;border-radius:14px;padding:20px;">
-                <h4 style="color:#a5b4fc;font-size:16px;margin:0 0 8px;">⚡ C2S CBT Mock Pass</h4>
-                <p style="font-size:13px;color:#cbd5e1;line-height:1.5;margin:0 0 16px;">100+ locked mock tests with All-India ranking and step-by-step solutions.</p>
-                <button class="btn" style="background:#4f46e5;color:#fff;width:100%;padding:10px;font-size:13px;font-weight:750;" onclick="show('tests');closeMobileNav();">
-                  Open CBT Test Engine →
-                </button>
+              <div class="dropdown-item" onclick="show('pyq');closeMobileNav();">
+                <span>📑</span>
+                <div><strong>Previous Year Solved Papers (PYQ)</strong><span class="small" style="display:block">Official question papers with solutions</span></div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- 3. Classroom Batches & Courses -->
-        <button class="nav-link" data-nav="batches" onclick="show('batches');closeMobileNav();">Classroom Batches</button>
-
-        <!-- 4. Study Material Dropdown -->
-        <div class="nav-item">
-          <button class="nav-link" onclick="toggleDropdown(this)">
-            Study Material <span class="nav-arrow">&#9662;</span>
+          <!-- 5. Dedicated Blog & Exam Updates (50+) - Direct Link -->
+          <button class="nav-link blog-highlight-nav-link" data-nav="blog" onclick="show('blog');closeMobileNav();">
+            <span>📰 Blog &amp; Exam Updates (50+)</span>
+            <span class="nav-badge-new">NEW</span>
           </button>
-          <div class="dropdown-menu">
-            <div class="dropdown-item" onclick="show('books');closeMobileNav();">
-              <span>📚</span>
-              <div><strong>Printed Books &amp; Formula Compendiums</strong><span class="small" style="display:block">Doorstep delivery &amp; desk pickup</span></div>
-            </div>
-            <div class="dropdown-item" onclick="show('notes');closeMobileNav();">
-              <span>✍️</span>
-              <div><strong>Smart Board Handwritten Class Notes</strong><span class="small" style="display:block">Theory summaries by 10+ yrs faculty</span></div>
-            </div>
-            <div class="dropdown-item" onclick="show('current-affairs');closeMobileNav();">
-              <span>📰</span>
-              <div><strong>Weekly Current Affairs Digest</strong><span class="small" style="display:block">Digest + 25 weekly MCQs (PDF download)</span></div>
-            </div>
-            <div class="dropdown-item" onclick="show('pyq');closeMobileNav();">
-              <span>📑</span>
-              <div><strong>Previous Year Solved Papers (PYQ)</strong><span class="small" style="display:block">Official question papers with solutions</span></div>
-            </div>
-          </div>
-        </div>
 
-        <!-- 5. Patrapada Centre & Library -->
-        <div class="nav-item">
-          <button class="nav-link" onclick="toggleDropdown(this)">
-            Patrapada Centre <span class="nav-arrow">&#9662;</span>
+          <!-- 6. Career Pass (All Batches & Test Series) - Direct Link -->
+          <button class="nav-link pass-highlight-nav-link" data-nav="pass" onclick="openCohortSelection();closeMobileNav();">
+            <span>🎟️ Career Pass</span>
+            <span class="nav-badge-pass">PW STYLE</span>
           </button>
-          <div class="dropdown-menu">
-            <div class="dropdown-item" onclick="window.navigateToLibrary()">
-              <span>📖</span>
-              <div><strong>24h Study Library Sanctuary</strong><span class="small" style="display:block">4 AC Shifts • Ergonomic Desks • Wi-Fi</span></div>
-            </div>
-            <div class="dropdown-item" onclick="window.location.href='admin.html';closeMobileNav();">
-              <span>👑</span>
-              <div><strong>Super Admin &amp; Front Desk Portal</strong><span class="small" style="display:block">Daily P&amp;L • Seat Allocations • Inquiries</span></div>
-            </div>
-            <div class="dropdown-item" onclick="show('notices');closeMobileNav();">
-              <span>📢</span>
-              <div><strong>Official Recruitment Notices</strong><span class="small" style="display:block">Live updates from OSSC, SSC, Banking</span></div>
-            </div>
-            <div class="dropdown-item" onclick="show('help');closeMobileNav();">
-              <span>📍</span>
-              <div><strong>Centre Location &amp; Academic Help</strong><span class="small" style="display:block">NH-16 Opp. Sani Mandir, Bhubaneswar</span></div>
+
+          <!-- 7. Patrapada Centre & Library -->
+          <div class="nav-item">
+            <button class="nav-link" onclick="toggleDropdown(this)">
+              <span>📍 Patrapada Centre</span> <span class="nav-arrow">&#9662;</span>
+            </button>
+            <div class="dropdown-menu">
+              <div class="dropdown-item" onclick="window.navigateToLibrary()">
+                <span>📖</span>
+                <div><strong>24h Study Library Sanctuary</strong><span class="small" style="display:block">4 AC Shifts • Ergonomic Desks • Wi-Fi</span></div>
+              </div>
+              <div class="dropdown-item" onclick="window.location.href='admin.html';closeMobileNav();">
+                <span>👑</span>
+                <div><strong>Super Admin &amp; Front Desk Portal</strong><span class="small" style="display:block">Daily P&amp;L • Seat Allocations • Inquiries</span></div>
+              </div>
+              <div class="dropdown-item" onclick="show('notices');closeMobileNav();">
+                <span>📢</span>
+                <div><strong>Official Recruitment Notices</strong><span class="small" style="display:block">Live updates from OSSC, SSC, Banking</span></div>
+              </div>
+              <div class="dropdown-item" onclick="show('help');closeMobileNav();">
+                <span>📍</span>
+                <div><strong>Centre Location &amp; Academic Help</strong><span class="small" style="display:block">NH-16 Opp. Sani Mandir, Bhubaneswar</span></div>
+              </div>
             </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
     </div>
   </header>
 
@@ -1321,27 +1359,51 @@
       </div>
     </section>
 
-    <!-- VIEW: Blog -->
+    <!-- VIEW: C2S Knowledge Hub & 50 Exam Preparation Blogs -->
     <section data-view="blog" class="hidden">
-      <div class="card">
-        <div class="section-header" style="margin-top:0;">
-          <span class="section-tag">STUDENT BLOG</span>
-          <h2>C2S Preparation Blog</h2>
-          <p>Guidance articles and exam updates. Staff and students can view posts below.</p>
-          <div class="section-divider"></div>
+      <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:24px;padding:32px 28px;box-shadow:0 10px 30px rgba(15,23,42,0.06);margin-bottom:32px;">
+        
+        <!-- Blog Top Header -->
+        <div class="section-header" style="margin-top:0;text-align:center;">
+          <span class="section-tag">C2S ACADEMIC &amp; EXAM RESEARCH CELL</span>
+          <h2 style="font-size:32px;color:var(--c2s-navy-900);margin:8px 0;">Official Examination Updates &amp; Preparation Guides</h2>
+          <p style="max-width:760px;margin:8px auto 0;font-size:15px;color:var(--c2s-slate-600);line-height:1.6;">
+            Phase-wise preparation blueprints, official notification breakdowns, syllabus analysis, and high-yield study hacks curated by 10+ years experienced faculty at NH-16 Patrapada Centre.
+          </p>
+          <div class="section-divider" style="margin:18px auto 24px;"></div>
         </div>
+
+        <!-- Filter Category Tabs & Live Search Bar -->
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:28px;padding-bottom:18px;border-bottom:1.5px solid #f1f5f9;">
+          
+          <!-- Category Chips -->
+          <div style="display:flex;gap:8px;flex-wrap:wrap;" id="blogCategoryChips">
+            <button type="button" class="c2s-blog-tab active" onclick="filterBlogByCategory('all', this)">All Articles (50)</button>
+            <button type="button" class="c2s-blog-tab" onclick="filterBlogByCategory('Odisha Govt Exams', this)">🏛️ Odisha State (12)</button>
+            <button type="button" class="c2s-blog-tab" onclick="filterBlogByCategory('Central Govt Exams', this)">🛡️ Central &amp; SSC (10)</button>
+            <button type="button" class="c2s-blog-tab" onclick="filterBlogByCategory('Banking &amp; Insurance', this)">🏦 Banking &amp; LIC (10)</button>
+            <button type="button" class="c2s-blog-tab" onclick="filterBlogByCategory('College Entrance', this)">🎓 College &amp; MBA (8)</button>
+            <button type="button" class="c2s-blog-tab" onclick="filterBlogByCategory('Study Hacks &amp; Library', this)">💡 Study Hacks &amp; Library (10)</button>
+          </div>
+
+          <!-- Search Input -->
+          <div style="position:relative;width:280px;max-width:100%;">
+            <input type="text" id="blogSearchInput" placeholder="Search 50 blogs &amp; exams..." oninput="handleBlogSearch(this.value)" style="width:100%;box-sizing:border-box;padding:9px 14px 9px 36px;border:1.5px solid #cbd5e1;border-radius:999px;font-size:13px;outline:none;background:#f8fafc;">
+            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;color:#94a3b8;">🔍</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Blog Container (Featured Article + 50 Cards Grid) -->
         <div id="blogList"></div>
 
-        <h3 style="margin-top:28px;">Add a post (Preview, saved in this browser)</h3>
-        <form onsubmit="addPost(event)">
-          <label for="postTitle">Post Title</label>
-          <input id="postTitle" placeholder="e.g. How to prepare Quantitative Aptitude for Bank PO" required>
-          <label for="postBody">Post Content</label>
-          <textarea id="postBody" rows="4" placeholder="Write post body here…" required></textarea>
-          <button class="btn orange" type="submit">Publish Locally (Preview)</button>
-        </form>
       </div>
     </section>
+
+    <!-- Full Article Modal Reader (#c2sBlogModal) -->
+    <div id="c2sBlogModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.72);backdrop-filter:blur(8px);z-index:999999;align-items:center;justify-content:center;padding:16px;">
+      <div style="background:#ffffff;border-radius:24px;max-width:840px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,0.35);border:1.5px solid #e2e8f0;padding:32px 36px;position:relative;" id="c2sBlogModalContent">
+      </div>
+    </div>
 
     <!-- VIEW: Notices & Live Exam Notifications -->
     <section data-view="notices" class="hidden">
