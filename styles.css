@@ -6416,6 +6416,46 @@ section[data-view] {
   box-shadow: 0 4px 12px rgba(234, 88, 12, 0.45) !important;
 }
 
+/* Career Pass & Cohort Goal Selector Pill (PhysicsWallah / EdTech Style) */
+.c2s-cohort-pill-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: #0f172a !important;
+  color: #ffffff !important;
+  border: 1.5px solid #334155 !important;
+  border-radius: 999px !important;
+  padding: 6px 14px !important;
+  font-size: 12.5px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+  transition: all 0.2s ease !important;
+  white-space: nowrap !important;
+}
+
+.c2s-cohort-pill-btn:hover {
+  background: #1e293b !important;
+  border-color: #38bdf8 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.25) !important;
+}
+
+.c2s-cohort-pill-btn.cohort-selected {
+  background: linear-gradient(135deg, #1e3a8a, #0f172a) !important;
+  border-color: #60a5fa !important;
+  color: #eff6ff !important;
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.3) !important;
+}
+
+@media (max-width: 640px) {
+  .c2s-cohort-pill-btn {
+    padding: 5px 10px !important;
+    font-size: 11.5px !important;
+    margin-left: 6px !important;
+  }
+}
+
 /* Line 2: Sticky Site Header (Pure Logo on Left + 5 Navigation Links on Right) */
 .site-header {
   position: sticky !important;

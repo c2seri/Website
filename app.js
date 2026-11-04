@@ -3160,10 +3160,43 @@ function renderUser() {
         </div>
       ` : ''}
 
+      <!-- FEATURED CAREER PASS CARD (PW / EDTECH MODEL - SCREEN 1) -->
+      <div style="background:linear-gradient(135deg, #09132b, #111e38);border:1.5px solid #1e293b;border-radius:18px;padding:22px 24px;margin-bottom:22px;color:#ffffff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;box-shadow:0 12px 30px rgba(15,23,42,0.15);position:relative;overflow:hidden;">
+        <div style="position:absolute;right:-20px;bottom:-20px;font-size:120px;opacity:0.04;pointer-events:none;">🎟️</div>
+        <div style="max-width:560px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <span style="font-size:11px;font-weight:900;letter-spacing:1px;background:#2563eb;color:#fff;padding:2px 8px;border-radius:4px;text-transform:uppercase;">VIP PASS</span>
+            <h3 style="margin:0;font-size:22px;font-weight:900;letter-spacing:0.5px;color:#ffffff;">CAREER PASS</h3>
+          </div>
+          <p style="margin:0 0 12px;font-size:13.5px;color:#94a3b8;font-weight:600;">Your Next Step Towards the Future &bull; All 30+ Batches &amp; 204+ CBT Test Series</p>
+          
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;">
+            <div style="font-size:12px;font-weight:800;color:#38bdf8;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Pass Highlights:</div>
+            <ul style="margin:0;padding-left:18px;font-size:12.5px;color:#cbd5e1;line-height:1.6;">
+              <li>Unlock ₹1L+ Worth of Paid Live &amp; Classroom Courses</li>
+              <li>Unlimited Access to 30+ Exam Batches (Odisha &amp; Pan-India)</li>
+              <li>Khazana of all notes, test series &amp; recorded lecture vaults</li>
+              <li>Priority 1-on-1 Faculty Mentorship at NH-16 Patrapada Centre</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
+          <div>
+            <div style="font-size:12px;color:#94a3b8;text-decoration:line-through;">₹25,000</div>
+            <div style="font-size:28px;font-weight:900;color:#38bdf8;line-height:1;">₹12,000 <span style="font-size:12px;color:#34d399;font-weight:800;background:rgba(52,211,153,0.15);padding:2px 6px;border-radius:4px;">52% OFF</span></div>
+          </div>
+          <button type="button" class="btn orange" onclick="openCohortSelection()" style="padding:12px 24px;font-size:14.5px;font-weight:850;border-radius:10px;box-shadow:0 6px 20px rgba(234,88,12,0.4);">
+            Explore Goals &amp; Batches ❯
+          </button>
+        </div>
+      </div>
+
       <!-- Interactive Navigation Tabs for Dashboard -->
       <div style="display:flex;gap:8px;border-bottom:1.5px solid #e2e8f0;padding-bottom:10px;margin-bottom:18px;flex-wrap:wrap;">
         <button class="domain-tab-pill active" onclick="switchDashboardTab('tests', this)">&#128221; My Tests &amp; Given Solutions</button>
         <button class="domain-tab-pill" onclick="switchDashboardTab('batches', this)">&#127963; Classroom Batches (Patrapada)</button>
+        <button class="domain-tab-pill" onclick="openCohortSelection()" style="background:#eff6ff;color:#1d4ed8;border:1.5px solid #bfdbfe;font-weight:800;">🎯 Goal: Cohort Switcher ▾</button>
         <button class="domain-tab-pill" onclick="switchDashboardTab('books', this)">&#128218; Books &amp; Study Material</button>
         <button class="domain-tab-pill" onclick="switchDashboardTab('library', this)">&#128337; 24h Study Library</button>
         <button class="domain-tab-pill" onclick="switchDashboardTab('referrals', this)">🎁 Refer &amp; Earn Rewards</button>

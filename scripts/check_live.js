@@ -13,3 +13,4 @@ https.get('https://www.c2seri.com/library', (res) => {
     console.log('Images (first 5):', (imgs || []).slice(0, 5));
   });
 }).on('error', err => console.log('Error:', err.message));
+

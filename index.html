@@ -106,6 +106,7 @@
   <link rel="stylesheet" href="styles.css">
   <script src="exams.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="cohort-engine.js" defer></script>
 </head>
 
 <body>
@@ -152,6 +153,13 @@
           <span class="brand-legal-badge" style="display:block;font-size:10px;color:#64748b;font-weight:700;letter-spacing:0.2px;margin-top:1px;">Unit of: COLLEGE FOR COMPETITIVE STUDIES (C2S)</span>
         </div>
       </a>
+
+      <!-- Cohort / Career Pass Goal Selector Pill (PhysicsWallah / EdTech Style) -->
+      <button type="button" id="c2sCohortHeaderBtn" onclick="openCohortSelection()" class="c2s-cohort-pill-btn" style="background:#0f172a;color:#ffffff;border:1.5px solid #334155;border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:800;display:inline-flex;align-items:center;gap:6px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.15s;margin-left:14px;" onmouseover="this.style.borderColor='#38bdf8';this.style.background='#1e293b';" onmouseout="this.style.borderColor='#334155';this.style.background='#0f172a';">
+        <span style="font-size:14px;">🎓</span>
+        <span>Career Pass</span>
+        <span style="font-size:11px;font-weight:900;">❯</span>
+      </button>
 
       <!-- Mobile Hamburger Toggle -->
       <button class="hamburger" aria-label="Toggle navigation menu"
