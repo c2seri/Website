@@ -87,3 +87,4 @@ function walkDir(dir) {
 walkDir(rootDir);
 
 console.log('✓ All HTML files successfully updated to clean URLs (zero /index.html)!');
+

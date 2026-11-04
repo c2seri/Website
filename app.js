@@ -476,7 +476,7 @@ function renderExamCardHtml(e) {
     badgeStyle = 'background:#fefce8;color:#854d0e;border:1px solid #fef08a;';
   } else if (cat.includes('DEFENCE') || id.includes('NDA') || id.includes('CDS')) {
     themeClass = 'theme-defence';
-    cadreTag = '⚔️ Armed Forces Officer';
+    cadreTag = '&#127894; Armed Forces Officer';
     badgeStyle = 'background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;';
   } else if (cat.includes('TEACHING') || id.includes('TET')) {
     themeClass = 'theme-teaching';
@@ -484,7 +484,7 @@ function renderExamCardHtml(e) {
     badgeStyle = 'background:#faf5ff;color:#7e22ce;border:1px solid #e9d5ff;';
   } else if (cat.includes('CIVIL') || id.includes('UPSC') || id.includes('PSC')) {
     themeClass = 'theme-civil';
-    cadreTag = '⚖️ State / Union Civil Services';
+    cadreTag = '&#127963; State / Union Civil Services';
     badgeStyle = 'background:#fdf4ff;color:#a21caf;border:1px solid #f5d0fe;';
   }
 
@@ -510,19 +510,19 @@ function renderExamCardHtml(e) {
         <!-- 4-Pillar Information Grid (Clear Eligibility, Age, Posts & Stages) -->
         <div class="pan-exam-meta-grid">
           <div class="pan-exam-meta-item">
-            <span class="pan-exam-meta-label">🎓 Qualification</span>
+            <span class="pan-exam-meta-label">&#127891; Qualification</span>
             <span class="pan-exam-meta-val" title="${e.qualification}">${e.qualification || 'Graduation in any stream'}</span>
           </div>
           <div class="pan-exam-meta-item">
-            <span class="pan-exam-meta-label">⏳ Age Limit</span>
+            <span class="pan-exam-meta-label">&#9203; Age Limit</span>
             <span class="pan-exam-meta-val" title="${e.age}">${e.age || '18 - 32 Yrs'}</span>
           </div>
           <div class="pan-exam-meta-item">
-            <span class="pan-exam-meta-label">💼 Domain Cadre</span>
+            <span class="pan-exam-meta-label">&#127963; Domain Cadre</span>
             <span class="pan-exam-meta-val" title="${e.category}">${e.category || 'Govt Service'}</span>
           </div>
           <div class="pan-exam-meta-item">
-            <span class="pan-exam-meta-label">📋 Selection Pattern</span>
+            <span class="pan-exam-meta-label">&#128221; Selection Pattern</span>
             <span class="pan-exam-meta-val">${e.subExams && e.subExams.length ? e.subExams.length + ' Sub-Stages' : 'Prelims + Mains'}</span>
           </div>
         </div>
