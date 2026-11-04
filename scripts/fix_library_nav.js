@@ -13,3 +13,4 @@ let app = fs.readFileSync('app.js', 'utf8');
 app = app.replace(/window\.location\.href\s*=\s*['"]library\/['"]/g, "window.location.href = '/library'");
 fs.writeFileSync('app.js', app, 'utf8');
 console.log('Updated library link in app.js');
+
