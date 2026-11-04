@@ -1272,6 +1272,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function isTestUnlocked(testId) {
   if (testId === "BANK-MOCK-1") return true; // Free Demo Test
   if (store.get("c2s_all_access_pass", false)) return true;
+  
+  // Super Admin Complimentary Access Grant Check
+  const user = store.get("c2s_main_user", null);
+  const grants = store.get("c2s_access_grants", []);
+  const now = Date.now();
+  if (user && grants.some(g => (g.regNo === user.regNo || g.mobile === user.mobile || g.regNo === user.id) && (g.package === "all" || g.package === "tests") && g.expiresAt > now)) {
+    return true;
+  }
+
   const unlocked = store.get("c2s_unlocked_tests", []);
   return unlocked.includes(testId);
 }
@@ -3064,6 +3073,14 @@ function renderUser() {
   const overallPercent = totalMax > 0 ? Math.round((totalScore / totalMax) * 100) : 0;
   const initials = (u.name || "Student").split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
 
+  // Check active Super Admin complimentary access override
+  const grants = store.get("c2s_access_grants", []);
+  const now = Date.now();
+  const activeGrant = grants.find(g => (g.regNo === u.regNo || g.mobile === u.mobile || g.regNo === u.id) && g.active && g.expiresAt > now);
+  const remainingGrantDays = activeGrant ? Math.ceil((activeGrant.expiresAt - now) / 86400000) : 0;
+  const grantExpiryStr = activeGrant ? new Date(activeGrant.expiresAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "";
+
+
   userBox.innerHTML = `
     <div class="c2s-student-dashboard-card" style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:18px;padding:24px;box-shadow:0 8px 30px rgba(15,23,42,0.06);margin-bottom:24px;">
       
@@ -3128,11 +3145,28 @@ function renderUser() {
       </div>
 
       <!-- Interactive Navigation Tabs for Dashboard -->
+      ${activeGrant ? `
+        <div style="background:linear-gradient(135deg,#78350f,#451a03);border:1.5px solid #fbbf24;border-radius:14px;padding:14px 18px;margin-bottom:18px;color:#fef3c7;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;box-shadow:0 8px 24px rgba(245,158,11,0.25);">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:26px;">👑</span>
+            <div>
+              <strong style="font-size:15px;color:#fff;display:block;">Super Admin VIP Access Active: ${escapeHtml((activeGrant.package || 'all').toUpperCase())}</strong>
+              <span style="font-size:12px;color:#fde68a;">Complimentary grant by Super Admin &bull; Valid for ${remainingGrantDays} more days (Till ${grantExpiryStr})</span>
+            </div>
+          </div>
+          <span style="background:#fbbf24;color:#78350f;font-weight:900;font-size:11.5px;padding:4px 12px;border-radius:999px;">
+            VIP UNLOCKED
+          </span>
+        </div>
+      ` : ''}
+
+      <!-- Interactive Navigation Tabs for Dashboard -->
       <div style="display:flex;gap:8px;border-bottom:1.5px solid #e2e8f0;padding-bottom:10px;margin-bottom:18px;flex-wrap:wrap;">
         <button class="domain-tab-pill active" onclick="switchDashboardTab('tests', this)">&#128221; My Tests &amp; Given Solutions</button>
         <button class="domain-tab-pill" onclick="switchDashboardTab('batches', this)">&#127963; Classroom Batches (Patrapada)</button>
         <button class="domain-tab-pill" onclick="switchDashboardTab('books', this)">&#128218; Books &amp; Study Material</button>
         <button class="domain-tab-pill" onclick="switchDashboardTab('library', this)">&#128337; 24h Study Library</button>
+        <button class="domain-tab-pill" onclick="switchDashboardTab('referrals', this)">🎁 Refer &amp; Earn Rewards</button>
       </div>
 
       <!-- Tab Content 1: My Tests & Given Solutions -->
@@ -3289,8 +3323,12 @@ function switchDashboardTab(tabName, btn) {
   } else if (tabName === "library") {
     const el = $("#dashTabLibrary");
     if (el) el.style.display = "block";
+  } else if (tabName === "referrals") {
+    const el = $("#dashTabReferrals");
+    if (el) el.style.display = "block";
   }
 }
+
 
 function logoutStudent() {
   if (confirm("Are you sure you want to logout?")) {
@@ -4390,4 +4428,21 @@ window.quickDemoStudentLogin = function() {
 
   renderUser();
   alert("✓ Welcome Soumya Ranjan Mohapatra! Student Roll Number C2S-2026-0101 verified.");
+};
+
+
+window.shareStudentReferralWhatsapp = function(regNo) {
+  const code = 'C2S-REF-' + (regNo || 'STUDENT').replace(/[^a-zA-Z0-9]/g, '');
+  const text = 'Namaste! Join C2S Classroom Coaching & Test Series at NH-16 Patrapada, Bhubaneswar with my referral code *' + code + '* and get instant ₹100 discount + Free 3-Day Demo! Check it out: https://c2seri.com/#ref=' + code;
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+};
+
+window.copyStudentReferralLink = function(regNo) {
+  const code = 'C2S-REF-' + (regNo || 'STUDENT').replace(/[^a-zA-Z0-9]/g, '');
+  const link = 'https://c2seri.com/#ref=' + code;
+  navigator.clipboard.writeText(link).then(() => {
+    alert('✓ Referral link copied to clipboard:\n' + link);
+  }).catch(() => {
+    prompt('Copy your referral link:', link);
+  });
 };

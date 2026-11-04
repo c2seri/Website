@@ -286,6 +286,23 @@ function libAdmit(e) {
     store.set("c2s_lib_taken", taken);
   }
 
+  // Record Referral Reward if referral code was used
+  const refCode = ($("#referralCodeIn")?.value || "").trim().toUpperCase();
+  if (refCode) {
+    const referrals = store.get("c2s_referrals", []);
+    referrals.unshift({
+      id: "REF-" + Date.now(),
+      date: new Date().toISOString().slice(0, 10),
+      referrerName: "Library Member (" + refCode + ")",
+      referrerCode: refCode,
+      friendName: m.name + " (" + m.mobile + ")",
+      rewardType: "+7 Days Free Library Extension",
+      status: "Approved",
+      extended: true
+    });
+    store.set("c2s_referrals", referrals);
+  }
+
   // Ledger entry
   const ledger = store.get("c2s_lib_ledger", []);
   ledger.unshift({
@@ -588,4 +605,22 @@ window.quickDemoMemberLogin = function() {
   if (portal) portal.style.display = "block";
   
   alert("🏛️ Welcome Prakash Behera! Your Digital Pass & Assigned Desk A-14 are ready.");
+};
+
+window.shareLibraryReferralWhatsapp = function() {
+  const u = store.get("c2s_lib_user", null) || store.get("c2s_lib_current_user", null) || { regNo: "C2SLIB-00104", name: "Prakash" };
+  const refCode = "C2S-REF-" + (u.regNo || "00104").replace(/[^a-zA-Z0-9]/g, "");
+  const text = `Namaste! Join C2S 24-Hour AC Study Library at NH-16 Patrapada, Bhubaneswar with my referral code *${refCode}* and get instant ₹100 discount! Check 360 view & admissions here: https://c2seri.com/library/admission.html?ref=${refCode}`;
+  window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank");
+};
+
+window.copyLibraryReferralLink = function() {
+  const u = store.get("c2s_lib_user", null) || store.get("c2s_lib_current_user", null) || { regNo: "C2SLIB-00104", name: "Prakash" };
+  const refCode = "C2S-REF-" + (u.regNo || "00104").replace(/[^a-zA-Z0-9]/g, "");
+  const link = `https://c2seri.com/library/admission.html?ref=${refCode}`;
+  navigator.clipboard.writeText(link).then(() => {
+    alert("✓ Referral link copied to clipboard:\n" + link);
+  }).catch(() => {
+    prompt("Copy your referral link:", link);
+  });
 };

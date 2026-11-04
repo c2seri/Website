@@ -106,6 +106,226 @@ function renderSuperAdmin() {
       </tr>
     `).join('') : '<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:24px;">No transactions recorded yet.</td></tr>';
   }
+
+  // Populate Super Admin Access Granter & Referrals
+  populateStudentDatalist();
+  renderAdminGrants();
+  renderAdminReferrals();
+}
+
+/* ==========================================================================
+   SUPER ADMIN STUDENT ACCESS GRANTER & DURATION OVERRIDE ENGINE
+   ========================================================================== */
+function populateStudentDatalist() {
+  const datalist = document.getElementById('studentDatalist');
+  if (!datalist) return;
+  const users = store.get('c2s_main_users', []);
+  const members = store.get('c2s_lib_members', []);
+  
+  let options = '';
+  users.forEach(u => {
+    options += `<option value="${u.regNo || u.id}">${u.name} (Mobile: ${u.mobile || ''}) - Coaching Student</option>`;
+  });
+  members.forEach(m => {
+    options += `<option value="${m.regNo}">${m.name} (Mobile: ${m.mobile || ''}) - Library Member</option>`;
+  });
+  
+  // Seed demo students if empty
+  if (!options) {
+    options += `<option value="C2S-2026-0101">Soumya Ranjan Mohapatra (9777481909) - OSSC CGL</option>`;
+    options += `<option value="C2SLIB-00104">Prakash Behera (Desk A-14) - Full Day</option>`;
+  }
+  datalist.innerHTML = options;
+}
+
+function adminGrantAccess(e) {
+  e.preventDefault();
+  const target = document.getElementById('grantStudentTarget').value.trim();
+  const pkg = document.getElementById('grantPackage').value;
+  const days = Number(document.getElementById('grantDuration').value || 14);
+  const note = document.getElementById('grantNote').value.trim() || 'Super Admin Complimentary Grant';
+
+  if (!target) return alert('Please enter or select a student.');
+
+  // Find student name if known
+  const users = store.get('c2s_main_users', []);
+  const members = store.get('c2s_lib_members', []);
+  const found = users.find(u => u.regNo === target || u.mobile === target || u.id === target) ||
+                members.find(m => m.regNo === target || m.mobile === target);
+  const studentName = found ? found.name : target;
+
+  const now = Date.now();
+  const expiresAt = now + days * 24 * 60 * 60 * 1000;
+  const grantId = 'GRANT-' + Date.now();
+
+  const grants = store.get('c2s_access_grants', []);
+  grants.unshift({
+    id: grantId,
+    regNo: target,
+    name: studentName,
+    package: pkg,
+    days,
+    note,
+    grantedAt: now,
+    expiresAt,
+    active: true
+  });
+  store.set('c2s_access_grants', grants);
+
+  // If granting all/tests, also ensure test series unlock flag is active
+  if (pkg === 'all' || pkg === 'tests') {
+    store.set('c2s_all_access_pass', true);
+  }
+
+  alert(`🎁 Success! Granted ${days} Days complimentary access (${pkg.toUpperCase()}) to ${studentName}.`);
+  document.getElementById('accessGrantForm').reset();
+  renderAdminGrants();
+}
+
+function renderAdminGrants() {
+  const grants = store.get('c2s_access_grants', []);
+  const tbody = document.getElementById('activeGrantsTableBody');
+  const countEl = document.getElementById('activeGrantsCount');
+  if (!tbody) return;
+
+  const now = Date.now();
+  const activeGrants = grants.filter(g => g.active && g.expiresAt > now);
+  if (countEl) countEl.textContent = `${activeGrants.length} Active Overrides`;
+
+  if (!activeGrants.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">No complimentary overrides currently active. Use the form above to grant access.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = activeGrants.map(g => {
+    const remainingDays = Math.ceil((g.expiresAt - now) / (1000 * 60 * 60 * 24));
+    const grantedDateStr = new Date(g.grantedAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
+    const expiresDateStr = new Date(g.expiresAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+    
+    const pkgLabels = {
+      tests: "🎯 Test Series Pro (204+ Exams)",
+      batches: "🎥 Live Classroom Batches",
+      notes: "📚 Faculty Theory Notes",
+      library: "🪑 24h Study Library Pass",
+      all: "👑 VIP Scholar Bundle (All Access)"
+    };
+
+    return `
+      <tr>
+        <td><strong>${g.regNo}</strong></td>
+        <td>${g.name}</td>
+        <td><span class="pill blue" style="font-size:11px;">${pkgLabels[g.package] || g.package}</span></td>
+        <td>${grantedDateStr}</td>
+        <td><strong>${expiresDateStr}</strong></td>
+        <td>
+          <span class="pill ${remainingDays <= 3 ? 'orange' : 'green'}" style="font-size:11px;">
+            ${remainingDays} Days Left
+          </span>
+        </td>
+        <td>
+          <div style="display:flex;gap:6px;">
+            <button class="btn" style="background:#2563eb;color:#fff;padding:3px 8px;font-size:11px;" onclick="adminExtendGrant('${g.id}', 7)">+7 Days</button>
+            <button class="btn" style="background:#dc2626;color:#fff;padding:3px 8px;font-size:11px;" onclick="adminRevokeGrant('${g.id}')">Revoke</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function adminExtendGrant(grantId, days) {
+  const grants = store.get('c2s_access_grants', []);
+  const g = grants.find(x => x.id === grantId);
+  if (g) {
+    g.expiresAt += days * 24 * 60 * 60 * 1000;
+    store.set('c2s_access_grants', grants);
+    alert(`Extended access for ${g.name} by +${days} days.`);
+    renderAdminGrants();
+  }
+}
+
+function adminRevokeGrant(grantId) {
+  if (!confirm('Are you sure you want to revoke this access grant?')) return;
+  let grants = store.get('c2s_access_grants', []);
+  grants = grants.filter(x => x.id !== grantId);
+  store.set('c2s_access_grants', grants);
+  renderAdminGrants();
+}
+
+/* ==========================================================================
+   REFER & EARN REWARDS & EXTENSIONS ENGINE
+   ========================================================================== */
+function renderAdminReferrals() {
+  let referrals = store.get('c2s_referrals', null);
+  if (!referrals) {
+    // Seed sample referrals for demonstration
+    referrals = [
+      {
+        id: "REF-101",
+        date: "Today",
+        referrerName: "Prakash Behera",
+        referrerCode: "C2S-REF-00104",
+        friendName: "Amit Kumar Das",
+        rewardType: "+7 Days Free Library Extension",
+        status: "Approved",
+        extended: true
+      },
+      {
+        id: "REF-102",
+        date: "Yesterday",
+        referrerName: "Soumya Ranjan Mohapatra",
+        referrerCode: "C2S-REF-0101",
+        friendName: "Subhashree Nayak",
+        rewardType: "30 Days Free Test Series Pass",
+        status: "Approved",
+        extended: true
+      }
+    ];
+    store.set('c2s_referrals', referrals);
+  }
+
+  const tbody = document.getElementById('adminReferralsTableBody');
+  const kpiTotal = document.getElementById('refKpiTotal');
+  const kpiDays = document.getElementById('refKpiDays');
+  const kpiDiscounts = document.getElementById('refKpiDiscounts');
+
+  if (kpiTotal) kpiTotal.textContent = referrals.length;
+  if (kpiDays) {
+    const extDays = referrals.filter(r => r.rewardType.includes("Library")).length * 7;
+    kpiDays.textContent = `+${extDays} Days Free`;
+  }
+  if (kpiDiscounts) {
+    kpiDiscounts.textContent = `₹${referrals.length * 100}`;
+  }
+
+  if (!tbody) return;
+  tbody.innerHTML = referrals.map(r => `
+    <tr>
+      <td>${r.date}</td>
+      <td><strong>${r.referrerName}</strong></td>
+      <td>${r.friendName}</td>
+      <td><code style="background:#eff6ff;color:#1e40af;padding:2px 6px;border-radius:4px;">${r.referrerCode}</code></td>
+      <td><span class="pill green" style="font-size:11px;">${r.rewardType}</span></td>
+      <td><span class="pill ${r.status === 'Approved' ? 'green' : 'orange'}" style="font-size:11px;">${r.status}</span></td>
+      <td>
+        ${r.extended ? '<span style="color:#059669;font-weight:750;font-size:11.5px;">✓ Extended</span>' : `
+          <button class="btn orange" style="padding:4px 8px;font-size:11px;" onclick="approveReferral('${r.id}')">Approve +7 Days</button>
+        `}
+      </td>
+    </tr>
+  `).join('');
+}
+
+function approveReferral(refId) {
+  const referrals = store.get('c2s_referrals', []);
+  const r = referrals.find(x => x.id === refId);
+  if (r) {
+    r.status = "Approved";
+    r.extended = true;
+    store.set('c2s_referrals', referrals);
+    alert(`Approved referral reward for ${r.referrerName}: ${r.rewardType}`);
+    renderAdminReferrals();
+  }
 }
 
 function adminAddLedger(e) {

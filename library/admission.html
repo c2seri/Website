@@ -247,6 +247,22 @@
           </div>
         </div>
 
+        <!-- Referral Code Entry (₹100 Instant Discount & 7-Day Free Extension for Friend) -->
+        <div style="background:#f0fdf4;border:1.5px dashed #86efac;border-radius:12px;padding:14px 18px;margin:16px 0;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <span style="font-size:20px;">🎁</span>
+            <div>
+              <strong style="color:#166534;font-size:14px;">Have a Friend's Referral Code?</strong>
+              <span style="display:block;font-size:12px;color:#15803d;">Enter code to get instant ₹100 discount &amp; grant your friend +7 days free library extension!</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <input id="referralCodeIn" placeholder="e.g. C2S-REF-00104" style="flex:1;min-width:180px;text-transform:uppercase;font-weight:800;letter-spacing:1px;padding:10px 14px;margin:0;">
+            <button type="button" class="btn" style="background:#16a34a;color:#fff;padding:10px 18px;font-weight:800;border:none;border-radius:8px;white-space:nowrap;" onclick="applyReferralDiscount()">Apply ₹100 Off</button>
+          </div>
+          <div id="referralDiscountStatus" style="font-size:12px;margin-top:6px;"></div>
+        </div>
+
         <!-- Collapsible Staff Price Configuration (Admin Only) -->
         <details style="background:#f8fafc;padding:10px 14px;border-radius:10px;margin:16px 0;border:1px solid #e2e8f0;font-size:12px;color:#64748b;">
           <summary style="cursor:pointer;font-weight:700;">⚙️ Staff Price Configuration (Optional Admin Overrides)</summary>
@@ -368,6 +384,24 @@
       showSeatZone(zoneKey);
     };
 
+    window.applyReferralDiscount = function() {
+      const input = document.getElementById('referralCodeIn');
+      const status = document.getElementById('referralDiscountStatus');
+      const val = (input ? input.value : '').trim().toUpperCase();
+      if (!val) {
+        if (status) status.innerHTML = '';
+        return;
+      }
+      
+      const discInput = document.getElementById('discAmt');
+      if (discInput) discInput.value = 100;
+      if (typeof calcFees === 'function') calcFees();
+      
+      if (status) {
+        status.innerHTML = `<span style="color:#15803d;font-weight:750;">🎉 Referral Code <strong>${val}</strong> Applied! ₹100 instant discount deducted. Your referring friend will receive +7 Days Free Library Extension!</span>`;
+      }
+    };
+
     // Pre-populate seat if coming from 3D Seat Map
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -381,6 +415,16 @@
         if (match) {
           chosenDesk = match[0].toUpperCase();
           selectDeskChip(chosenDesk, match[1].toUpperCase());
+        }
+      }
+
+      // Check referral param in URL (e.g. ?ref=C2S-REF-00104)
+      const ref = urlParams.get('ref');
+      if (ref) {
+        const refInput = document.getElementById('referralCodeIn');
+        if (refInput) {
+          refInput.value = ref.toUpperCase();
+          applyReferralDiscount();
         }
       }
 
