@@ -6768,3 +6768,26 @@ section[data-view] {
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(29,78,216,0.45) !important;
 }
+
+
+/* ==========================================================================
+   STUDENT DASHBOARD & LIBRARY METER STYLES
+   ========================================================================== */
+.c2s-student-dashboard-card {
+  transition: box-shadow 0.2s ease;
+}
+
+.c2s-dash-tab-pane {
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .c2s-student-dashboard-card {
+    padding: 16px !important;
+  }
+}
