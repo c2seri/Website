@@ -1,8 +1,8 @@
 
 /* Supabase Live Cloud Integration */
 const SUPABASE_CONFIG = {
-  url: "https://ewxkrtkzlkyqfsfdoths.supabase.co",
-  anonKey: "sb_publishable_z4xFLLJS_ex0uGuF4-Of8Q_vfQ8dbbO"
+  url: "https://ojbffivhwktosknqwtmk.supabase.co",
+  anonKey: "sb_publishable_R7z1CEC2wDVe5TW3k6mSKQ_dFPsDAR9"
 };
 
 async function syncTestAttemptToSupabase(attempt) {

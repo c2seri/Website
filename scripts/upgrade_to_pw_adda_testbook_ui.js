@@ -926,3 +926,4 @@ fs.writeFileSync(indexHtmlPath, html, 'utf8');
 fs.writeFileSync(stylesCssPath, css, 'utf8');
 
 console.log('✓ Successfully wrote upgraded index.html and styles.css!');
+
