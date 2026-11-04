@@ -669,3 +669,4 @@ fs.writeFileSync(stylesCssPath, css, 'utf8');
 fs.writeFileSync(appJsPath, appJs, 'utf8');
 
 console.log('✓ Successfully upgraded Header and 204+ Exam Cards!');
+

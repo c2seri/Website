@@ -5865,3 +5865,271 @@ section[data-view] {
   font-weight: 850 !important;
   border-radius: 10px !important;
 }
+
+
+/* ==========================================================================
+   100% PURE C2S BRANDED RESPONSIVE GRAPHIC BANNERS (PW & ADDA247 STANDARD)
+   ========================================================================== */
+
+.c2s-banner-slide {
+  width: 100%;
+  height: 100%;
+  padding: 36px 44px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+@media (max-width: 900px) {
+  .c2s-banner-slide {
+    padding: 24px 20px;
+  }
+}
+
+/* Banner Color Themes */
+.slide-theme-blue {
+  background: linear-gradient(135deg, #071a38 0%, #0c2b5c 50%, #1e40af 100%);
+  color: #ffffff;
+}
+
+.slide-theme-emerald {
+  background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #047857 100%);
+  color: #ffffff;
+}
+
+.slide-theme-navy {
+  background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e1b4b 100%);
+  color: #ffffff;
+}
+
+.slide-theme-purple {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #5b21b6 100%);
+  color: #ffffff;
+}
+
+.c2s-banner-content {
+  display: grid;
+  grid-template-columns: 1.35fr 0.85fr;
+  gap: 32px;
+  align-items: center;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+@media (max-width: 850px) {
+  .c2s-banner-content {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .c2s-banner-right {
+    display: none; /* Keep clean on small mobile */
+  }
+}
+
+.c2s-banner-left {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.c2s-banner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.5px;
+  color: #fdba74;
+  width: fit-content;
+}
+
+.c2s-banner-heading {
+  font-size: 34px;
+  font-weight: 950;
+  line-height: 1.15;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 768px) {
+  .c2s-banner-heading {
+    font-size: 24px;
+  }
+}
+
+.c2s-banner-desc {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: #e2e8f0;
+  margin: 0;
+  max-width: 580px;
+}
+
+.c2s-banner-desc strong {
+  color: #ffffff;
+}
+
+.c2s-banner-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 2px 0;
+}
+
+.c2s-banner-tags span {
+  font-size: 11.5px;
+  font-weight: 750;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: #ffffff;
+}
+
+.c2s-banner-cta-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.c2s-banner-btn-primary {
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  color: #ffffff;
+  border: 0;
+  padding: 11px 22px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 850;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.4);
+  transition: all 0.15s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.c2s-banner-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.5);
+}
+
+.c2s-banner-btn-secondary {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 11px 20px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.c2s-banner-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Right Card Inside Banner */
+.c2s-banner-card {
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+}
+
+.c2s-card-logo-cluster {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.c2s-brand-pill {
+  background: #ea580c;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 3px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+}
+
+.c2s-centre-tag {
+  font-size: 11.5px;
+  font-weight: 750;
+  color: #cbd5e1;
+}
+
+.c2s-card-highlight strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.c2s-card-highlight small {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.c2s-card-trust-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.trust-stat {
+  font-size: 12px;
+  font-weight: 750;
+  color: #f1f5f9;
+}
+
+/* HEADER EDGE & PADDING ADJUSTMENT (Ensures Student Login is 100% visible) */
+.header-inner {
+  padding: 8px 16px !important;
+  max-width: 1280px !important;
+  gap: 10px !important;
+}
+
+.topnav {
+  gap: 2px !important;
+}
+
+.nav-link {
+  font-size: 13px !important;
+  padding: 6px 10px !important;
+}
+
+.header-login-btn {
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}

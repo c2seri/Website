@@ -918,3 +918,4 @@ fs.writeFileSync(indexHtmlPath, html, 'utf8');
 fs.writeFileSync(stylesCssPath, css, 'utf8');
 
 console.log('✓ Successfully written exact Adda247 + PW layout to index.html and styles.css!');
+
