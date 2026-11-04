@@ -1730,3 +1730,24 @@ if (document.readyState === 'loading') {
 } else {
   initHeroCarousel();
 }
+
+// ==========================================================================
+// Robust Homepage Grids Multi-Target Initializer
+// ==========================================================================
+function ensureAllHomepageCardsRendered() {
+  if (typeof renderPanIndiaExams === 'function') renderPanIndiaExams();
+  if (typeof renderDynamicTestGrid === 'function') renderDynamicTestGrid();
+  if (typeof renderCourses === 'function') renderCourses();
+  if (typeof renderBooks === 'function') renderBooks();
+  if (typeof renderCurrentAffairs === 'function') renderCurrentAffairs();
+}
+
+window.ensureAllHomepageCardsRendered = ensureAllHomepageCardsRendered;
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', ensureAllHomepageCardsRendered);
+} else {
+  ensureAllHomepageCardsRendered();
+}
+setTimeout(ensureAllHomepageCardsRendered, 300);
+setTimeout(ensureAllHomepageCardsRendered, 1000);
