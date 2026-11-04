@@ -84,7 +84,22 @@
           <div><label>Mobile Number (WhatsApp OTP)</label><input type="tel" id="studMobile" required placeholder="10-digit mobile"></div>
           <div><label>Email Address</label><input type="email" id="studEmail" placeholder="you@example.com"></div>
           <div><label>Highest Qualification</label><input id="qualif" placeholder="e.g. Graduation / B.Tech / +2"></div>
-          <div><label>Study Purpose / Target Exam</label><input id="examPref" placeholder="e.g. BANK₹ SSC₹ OSSC₹ UPSC₹ Police"></div>
+          <div><label for="examPref" style="font-weight:700;color:var(--c2s-navy-900);">Study Purpose / Target Exam <span style="color:#dc2626;">*</span></label>
+            <select id="examPref" required style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;font-weight:600;color:#0f172a;background:#fff;">
+              <option value="">-- Select Your Target Competitive Exam --</option>
+              <option value="OSSC CGL & Specialist (Group B/C)">🎯 OSSC CGL &amp; Specialist (Group B &amp; C)</option>
+              <option value="Odisha Police SI & Constable">👮 Odisha Police SI &amp; Constable</option>
+              <option value="Bank PO & Clerk (SBI / IBPS / RRB)">🏦 Banking (SBI / IBPS / RRB PO &amp; Clerk)</option>
+              <option value="SSC CGL / CHSL / MTS / GD">🏛️ SSC CGL / CHSL / MTS / GD</option>
+              <option value="Railway NTPC / Group D / ALP">🚆 Railway NTPC / Group D / ALP</option>
+              <option value="OPSC OAS / Odisha Civil Services">⚖️ OPSC OAS / Odisha Civil Services</option>
+              <option value="OSSSC Combined Recruitment Exams">📑 OSSSC Combined Recruitment Exams</option>
+              <option value="Teaching (CTET / OTET / OAVS)">🎓 Teaching (CTET / OTET / OAVS)</option>
+              <option value="Defence (NDA / CDS / AFCAT)">🎖️ Defence (NDA / CDS / AFCAT)</option>
+              <option value="UPSC Civil Services (IAS / IPS)">📜 UPSC Civil Services (IAS / IPS)</option>
+              <option value="Higher Studies & Other Competitive Exams">📚 Higher Studies &amp; Other Exams</option>
+            </select>
+          </div>
         </div>
         <p class="small" style="color:var(--c2s-slate-500);margin-top:6px;">
           * Member records are private and securely encrypted in database live mode.

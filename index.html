@@ -1633,78 +1633,206 @@
 
 
     <!-- VIEW: Main Login / Signup (OTP Based Only₹ Completely Separate from Library) -->
+    <!-- VIEW: Main Login / Signup (Separate Tabs with Roll No Generation & Exam Track) -->
     <section data-view="login" class="hidden">
-      <div class="card">
-        <div class="section-header" style="margin-top:0;">
-          <span class="section-tag">MAIN STUDENT ACCESS</span>
-          <h2>Main Login / Signup — OTP Based</h2>
-          <p>For coaching₹ exams₹ test series and batches. No passwords — choose SMS₹ WhatsApp or Email OTP. Main Login
-            does NOT show library seat or payment data.</p>
-          <div class="section-divider"></div>
+      <div id="userBox" style="margin-bottom:20px;"></div>
+
+      <div class="card" id="c2sAuthCard" style="border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,0.06);">
+        <div class="section-header" style="margin-top:0;text-align:center;">
+          <span class="section-tag">OFFICIAL C2S STUDENT PORTAL</span>
+          <h2 style="font-size:26px;color:var(--c2s-navy-900);">Student Login &amp; New Admission</h2>
+          <p style="max-width:640px;margin:8px auto 0;">Existing enrolled students can log in instantly via OTP. New aspirants can register to auto-generate their official C2S Student Roll Number &amp; select their Target Exam.</p>
+          <div class="section-divider" style="margin:16px auto;"></div>
         </div>
 
-        <div id="userBox" style="margin-bottom:16px;"></div>
+        <!-- 2 Clean Distinct Tabs: Login vs Signup -->
+        <div class="c2s-auth-tab-switch" style="display:flex;background:#f1f5f9;border-radius:12px;padding:5px;max-width:540px;margin:0 auto 26px;gap:6px;">
+          <button id="authTabBtnLogin" type="button" class="c2s-tab-pill active" onclick="switchAuthMode('login')" style="flex:1;padding:12px 18px;font-size:14.5px;font-weight:800;border:none;border-radius:9px;background:#ffffff;color:#0f2a5c;cursor:pointer;box-shadow:0 2px 8px rgba(15,23,42,0.08);transition:all 0.2s;">
+            🔑 Existing Student Login
+          </button>
+          <button id="authTabBtnSignup" type="button" class="c2s-tab-pill" onclick="switchAuthMode('signup')" style="flex:1;padding:12px 18px;font-size:14.5px;font-weight:800;border:none;border-radius:9px;background:transparent;color:#64748b;cursor:pointer;transition:all 0.2s;">
+            📝 New Student Registration
+          </button>
+        </div>
 
-        <div class="grid2">
-          <div>
-            <h3>1. Your Details</h3>
-            <form onsubmit="return false">
-              <label for="otpName">Full Name (for new student signup)</label>
-              <input id="otpName" placeholder="Your full name">
-
-              <label for="otpMobile">Mobile Number (for SMS / WhatsApp OTP)</label>
-              <input id="otpMobile" type="tel" placeholder="10-digit mobile number">
-
-              <label for="otpEmail">Email Address (for Email OTP)</label>
-              <input id="otpEmail" type="email" placeholder="you@example.com">
-            </form>
-          </div>
-
-          <div>
-            <h3>2. Choose OTP Channel</h3>
-            <div
-              style="background:var(--c2s-slate-50);border:1px solid var(--c2s-slate-200);border-radius:12px;padding:14px;margin-bottom:14px;">
-              <label style="display:block;margin-bottom:8px;cursor:pointer;">
-                <input type="radio" name="otpChannel" value="sms" checked> 📱 <strong>SMS OTP</strong>
-              </label>
-              <label style="display:block;margin-bottom:8px;cursor:pointer;">
-                <input type="radio" name="otpChannel" value="whatsapp"> 💬 <strong>WhatsApp OTP</strong>
-              </label>
-              <label style="display:block;cursor:pointer;">
-                <input type="radio" name="otpChannel" value="email"> ✉️ <strong>Email OTP</strong>
-              </label>
+        <!-- TAB 1: EXISTING STUDENT LOGIN -->
+        <div id="c2sLoginPane" class="c2s-auth-pane">
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:22px;max-width:580px;margin:0 auto;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+              <span style="font-size:22px;">⚡</span>
+              <div>
+                <strong style="color:#0f172a;font-size:16px;display:block;">Fast 10-Second OTP Login</strong>
+                <span style="color:#64748b;font-size:13px;">Enter your registered 10-digit mobile number or email address.</span>
+              </div>
             </div>
 
-            <button class="btn" onclick="requestOtp('main')">Send OTP Code</button>
-            <p id="otpStatus" class="small" style="margin:10px 0;"></p>
+            <form onsubmit="return false">
+              <label for="loginTarget" style="font-weight:700;font-size:13.5px;color:#334155;">Registered Mobile Number or Email</label>
+              <input id="loginTarget" placeholder="e.g. 9777481909 or student@gmail.com" style="margin-bottom:14px;font-size:15px;padding:12px 14px;">
 
-            <label for="otpCode">Enter 6-Digit OTP</label>
-            <input id="otpCode" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code">
+              <label style="font-weight:700;font-size:13px;color:#334155;margin-bottom:8px;display:block;">Choose OTP Delivery Channel:</label>
+              <div style="background:#ffffff;border:1px solid #cbd5e1;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:18px;">
+                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;color:#1e293b;">
+                  <input type="radio" name="loginOtpChannel" value="sms" checked> 📱 <strong>SMS OTP</strong>
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;color:#1e293b;">
+                  <input type="radio" name="loginOtpChannel" value="whatsapp"> 💬 <strong>WhatsApp OTP</strong>
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;color:#1e293b;">
+                  <input type="radio" name="loginOtpChannel" value="email"> ✉️ <strong>Email OTP</strong>
+                </label>
+              </div>
 
-            <button class="btn orange" onclick="verifyOtp('main')">Verify OTP &amp; Login</button>
-            <p id="loginMsg" style="margin-top:10px;"></p>
+              <button type="button" class="btn" style="width:100%;padding:12px;font-size:15px;font-weight:800;" onclick="requestStudentLoginOtp()">Send 6-Digit Login OTP →</button>
+              <p id="loginOtpStatus" class="small" style="margin:12px 0 6px;text-align:center;"></p>
+
+              <div id="loginOtpVerifyBox" style="margin-top:14px;padding-top:14px;border-top:1.5px dashed #cbd5e1;">
+                <label for="loginOtpCode" style="font-weight:700;font-size:13.5px;color:#334155;">Enter 6-Digit OTP Code</label>
+                <input id="loginOtpCode" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code" style="margin-bottom:14px;font-size:18px;letter-spacing:4px;font-weight:800;text-align:center;padding:12px;">
+
+                <button type="button" class="btn orange" style="width:100%;padding:12px;font-size:15px;font-weight:800;" onclick="verifyStudentLoginOtp()">Verify OTP &amp; Open Dashboard 🚀</button>
+                <p id="loginMsg" style="margin-top:10px;text-align:center;font-size:13.5px;"></p>
+              </div>
+            </form>
+
+            <div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid #e2e8f0;">
+              <span style="font-size:13.5px;color:#64748b;">Not registered yet?</span>
+              <button type="button" onclick="switchAuthMode('signup')" style="background:none;border:none;color:#ea580c;font-weight:800;cursor:pointer;font-size:13.5px;margin-left:4px;text-decoration:underline;">
+                Register Here to Get Official Roll No →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: NEW STUDENT REGISTRATION & ROLL NO GENERATION -->
+        <div id="c2sSignupPane" class="c2s-auth-pane" style="display:none;">
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:24px;max-width:680px;margin:0 auto;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+              <span style="font-size:24px;">📝</span>
+              <div>
+                <strong style="color:#0f172a;font-size:16.5px;display:block;">New Student Admission &amp; Roll Number Generation</strong>
+                <span style="color:#64748b;font-size:13px;">Fill in your basic details and target exam to generate your official C2S Student ID.</span>
+              </div>
+            </div>
+
+            <form onsubmit="return false">
+              <div class="grid2">
+                <div>
+                  <label for="signupFullName" style="font-weight:700;font-size:13px;color:#334155;">Full Name <span style="color:#dc2626;">*</span></label>
+                  <input id="signupFullName" placeholder="As per 10th certificate" required style="padding:10px 12px;font-size:14px;">
+                </div>
+                <div>
+                  <label for="signupMobile" style="font-weight:700;font-size:13px;color:#334155;">10-Digit Mobile Number <span style="color:#dc2626;">*</span></label>
+                  <input id="signupMobile" type="tel" maxlength="10" placeholder="10-digit mobile number" required style="padding:10px 12px;font-size:14px;">
+                </div>
+              </div>
+
+              <div class="grid2" style="margin-top:12px;">
+                <div>
+                  <label for="signupEmail" style="font-weight:700;font-size:13px;color:#334155;">Email Address <span style="color:#dc2626;">*</span></label>
+                  <input id="signupEmail" type="email" placeholder="student@example.com" required style="padding:10px 12px;font-size:14px;">
+                </div>
+                <div>
+                  <label for="signupTargetExam" style="font-weight:700;font-size:13px;color:#334155;">Target Competitive Exam <span style="color:#dc2626;">*</span></label>
+                  <select id="signupTargetExam" required style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;font-weight:600;color:#0f172a;background:#fff;">
+                    <option value="">-- Select Your Target Exam --</option>
+                    <option value="OSSC CGL &amp; Specialist (Group B/C)">🎯 OSSC CGL &amp; Specialist (Group B &amp; C)</option>
+                    <option value="Odisha Police SI &amp; Constable">👮 Odisha Police SI &amp; Constable</option>
+                    <option value="Bank PO &amp; Clerk (SBI / IBPS / RRB)">🏦 Banking (SBI / IBPS / RRB PO &amp; Clerk)</option>
+                    <option value="SSC CGL / CHSL / MTS / GD">🏛️ SSC CGL / CHSL / MTS / GD</option>
+                    <option value="Railway NTPC / Group D / ALP">🚆 Railway NTPC / Group D / ALP</option>
+                    <option value="OPSC OAS / Odisha Civil Services">⚖️ OPSC OAS / Odisha Civil Services</option>
+                    <option value="OSSSC Combined Recruitment Exams">📑 OSSSC Combined Recruitment Exams</option>
+                    <option value="Teaching (CTET / OTET / OAVS / OSSTET)">🎓 Teaching (CTET / OTET / OAVS)</option>
+                    <option value="Defence (NDA / CDS / AFCAT)">🎖️ Defence (NDA / CDS / AFCAT)</option>
+                    <option value="All-in-One Multi-Exam Master Prep">🌟 All-in-One Multi-Exam Master Track</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid2" style="margin-top:12px;">
+                <div>
+                  <label for="signupPrepMode" style="font-weight:700;font-size:13px;color:#334155;">Preparation Mode</label>
+                  <select id="signupPrepMode" style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;">
+                    <option value="NH-16 Patrapada Classroom Batch + CBT Lab">🏫 NH-16 Patrapada Classroom Batch + CBT Lab (Recommended)</option>
+                    <option value="Online Live Classes + Test Series Prime">💻 Online Live Classes + Test Series Prime</option>
+                    <option value="24H AC Study Library Desk + Mock Tests">📖 24H AC Study Library Desk + Weekly Mocks</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="signupCity" style="font-weight:700;font-size:13px;color:#334155;">City / District (Odisha)</label>
+                  <select id="signupCity" style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;">
+                    <option value="Bhubaneswar">Bhubaneswar (Khordha)</option>
+                    <option value="Cuttack">Cuttack</option>
+                    <option value="Puri">Puri</option>
+                    <option value="Balasore">Balasore</option>
+                    <option value="Berhampur">Berhampur (Ganjam)</option>
+                    <option value="Sambalpur">Sambalpur</option>
+                    <option value="Rourkela">Rourkela (Sundargarh)</option>
+                    <option value="Angul">Angul</option>
+                    <option value="Bhadrak">Bhadrak</option>
+                    <option value="Jajpur">Jajpur</option>
+                    <option value="Other Odisha District">Other Odisha District</option>
+                    <option value="Outside Odisha">Outside Odisha</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="margin-top:16px;">
+                <label style="font-weight:700;font-size:13px;color:#334155;margin-bottom:6px;display:block;">Choose Verification Channel:</label>
+                <div style="background:#ffffff;border:1px solid #cbd5e1;border-radius:10px;padding:12px 16px;display:flex;flex-wrap:wrap;gap:18px;">
+                  <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;color:#1e293b;">
+                    <input type="radio" name="signupOtpChannel" value="sms" checked> 📱 <strong>SMS OTP</strong>
+                  </label>
+                  <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;color:#1e293b;">
+                    <input type="radio" name="signupOtpChannel" value="whatsapp"> 💬 <strong>WhatsApp OTP</strong>
+                  </label>
+                  <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;color:#1e293b;">
+                    <input type="radio" name="signupOtpChannel" value="email"> ✉️ <strong>Email OTP</strong>
+                  </label>
+                </div>
+              </div>
+
+              <button type="button" class="btn" style="width:100%;padding:12px;font-size:15px;font-weight:800;margin-top:16px;" onclick="requestStudentSignupOtp()">Send Verification OTP →</button>
+              <p id="signupOtpStatus" class="small" style="margin:12px 0 6px;text-align:center;"></p>
+
+              <div id="signupOtpVerifyBox" style="margin-top:14px;padding-top:14px;border-top:1.5px dashed #cbd5e1;">
+                <label for="signupOtpCode" style="font-weight:700;font-size:13.5px;color:#334155;">Enter 6-Digit OTP Code</label>
+                <input id="signupOtpCode" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code" style="margin-bottom:14px;font-size:18px;letter-spacing:4px;font-weight:800;text-align:center;padding:12px;">
+
+                <button type="button" class="btn orange" style="width:100%;padding:12px;font-size:15px;font-weight:800;" onclick="verifyStudentSignupOtp()">Verify &amp; Generate Student Roll Number 🎓</button>
+                <p id="signupMsg" style="margin-top:10px;text-align:center;font-size:13.5px;"></p>
+              </div>
+            </form>
+
+            <div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid #e2e8f0;">
+              <span style="font-size:13.5px;color:#64748b;">Already enrolled at C2S?</span>
+              <button type="button" onclick="switchAuthMode('login')" style="background:none;border:none;color:#1d4ed8;font-weight:800;cursor:pointer;font-size:13.5px;margin-left:4px;text-decoration:underline;">
+                Switch to Student Login →
+              </button>
+            </div>
           </div>
         </div>
 
         <div class="preview" style="margin-top:20px;">
-          <strong>PREVIEW OTP:</strong> Until an active OTP provider is configured in Vercel environment variables₹ the
-          OTP code is generated browser-locally for preview testing only. It is NOT sent via real SMS₹ WhatsApp₹ or
+          <strong>PREVIEW OTP:</strong> Until an active OTP provider is configured in Vercel environment variables, the
+          OTP code is generated browser-locally for preview testing only. It is NOT sent via real SMS, WhatsApp, or
           email.
         </div>
       </div>
 
-      <!-- Cross-Promotion Card (Library is offline₹ separate login) -->
+      <!-- Cross-Promotion Card (Library is offline, separate login) -->
       <div class="card"
-        style="border-left:6px solid var(--c2s-orange-500);background:linear-gradient(135deg₹ #ffffff 0%₹ #fff7ed 100%);">
+        style="border-left:6px solid var(--c2s-orange-500);background:linear-gradient(135deg, #ffffff 0%, #fff7ed 100%);margin-top:20px;">
         <span class="badge orange">Offline Library Notice</span>
         <h3 style="margin:10px 0 6px;color:var(--c2s-navy-800);">🏛️ C2S 24-Hour Study Library at Patrapada</h3>
         <p>
-          In addition to coaching and test series₹ C2S provides a <strong>24-Hour Premium Study Library</strong> at our
-          Patrapada centre (fully air-conditioned₹ peaceful₹ Wi-Fi₹ Morning₹ Afternoon₹ Full Day and Night shifts).
+          In addition to coaching and test series, C2S provides a <strong>24-Hour Premium Study Library</strong> at our
+          Patrapada centre (fully air-conditioned, peaceful, Wi-Fi, Morning, Afternoon, Full Day and Night shifts).
         </p>
         <p class="small" style="color:var(--c2s-slate-600);">
-          <strong>Important:</strong> Main Login covers coaching and test series only — it does <strong>NOT</strong>
-          display library seat₹ payment₹ or validity records. To access your library membership or book a seat₹ open the
+          <strong>Important:</strong> Main Student Login covers coaching and test series only — it does <strong>NOT</strong>
+          display library seat, payment, or validity records. To access your library membership or book a seat, open the
           Library portal where a separate Library OTP login is used.
         </p>
         <button class="btn orange" onclick="navigateToLibrary()">Open C2S Library Portal (Separate Login)

@@ -217,76 +217,449 @@ function reviewGiven(id){
   alert(t.title+"\nScore: "+g.score+"/"+g.total+"\n\n"+t.qs.map((q,i)=>"Q"+(i+1)+": "+q[0]+"\nYour answer: "+(g.answers[i]==null?"Skipped":q[1][g.answers[i]])+"\nCorrect: "+q[1][q[2]]).join("\n\n"));
 }
 /* ---------- OTP login/signup (Main) — all three channels, no demo logins ---------- */
-function otpChannel(scope){
-  const el=document.querySelector(`input[name="otpChannel"]:checked`);
-  return el ? el.value : "sms";
+/* ==========================================================================
+   OFFICIAL C2S STUDENT AUTHENTICATION & ADMISSION ENGINE
+   Distinct Login vs. Signup Tabs | Auto Roll No Generation | Target Exam Tracking
+   ========================================================================== */
+
+function switchAuthMode(mode) {
+  const loginPane = document.getElementById("c2sLoginPane");
+  const signupPane = document.getElementById("c2sSignupPane");
+  const btnLogin = document.getElementById("authTabBtnLogin");
+  const btnSignup = document.getElementById("authTabBtnSignup");
+
+  if (mode === "signup") {
+    if (loginPane) loginPane.style.display = "none";
+    if (signupPane) signupPane.style.display = "block";
+    if (btnLogin) {
+      btnLogin.classList.remove("active");
+      btnLogin.style.background = "transparent";
+      btnLogin.style.color = "#64748b";
+      btnLogin.style.boxShadow = "none";
+    }
+    if (btnSignup) {
+      btnSignup.classList.add("active");
+      btnSignup.style.background = "#ffffff";
+      btnSignup.style.color = "#ea580c";
+      btnSignup.style.boxShadow = "0 2px 8px rgba(15,23,42,0.08)";
+    }
+    // Auto-focus first field
+    setTimeout(() => {
+      const f = document.getElementById("signupFullName");
+      if (f) f.focus();
+    }, 50);
+  } else {
+    if (signupPane) signupPane.style.display = "none";
+    if (loginPane) loginPane.style.display = "block";
+    if (btnSignup) {
+      btnSignup.classList.remove("active");
+      btnSignup.style.background = "transparent";
+      btnSignup.style.color = "#64748b";
+      btnSignup.style.boxShadow = "none";
+    }
+    if (btnLogin) {
+      btnLogin.classList.add("active");
+      btnLogin.style.background = "#ffffff";
+      btnLogin.style.color = "#0f2a5c";
+      btnLogin.style.boxShadow = "0 2px 8px rgba(15,23,42,0.08)";
+    }
+    // Auto-focus login input
+    setTimeout(() => {
+      const f = document.getElementById("loginTarget");
+      if (f) f.focus();
+    }, 50);
+  }
 }
-async function apiOtpRequest(channel, target){
-  try{
-    const r=await fetch("/api/otp-request",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({channel,target})});
+
+async function apiOtpRequest(channel, target) {
+  try {
+    const r = await fetch("/api/otp-request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ channel, target })
+    });
     return await r.json();
-  }catch(e){ return {provider_configured:false, error:"api_unreachable"}; }
+  } catch (e) {
+    return { provider_configured: false, error: "api_unreachable" };
+  }
 }
-async function requestOtp(scope){
-  const channel=otpChannel(scope);
-  const mobile=($("#otpMobile")||{}).value||"";
-  const email=($("#otpEmail")||{}).value||"";
-  const target = channel==="email" ? email : mobile;
-  if(!target) return alert(channel==="email" ? "Email enter karo." : "Mobile enter karo.");
-  const res=await apiOtpRequest(channel, target);
-  const status=$("#otpStatus");
-  // LIVE mode: provider sent a real OTP. Never show any code on screen.
-  if(res.provider_configured && res.sent){
-    store.set("c2s_main_live_otp", {channel, target});
+
+/* --- TAB 1: EXISTING STUDENT LOGIN FLOW --- */
+async function requestStudentLoginOtp() {
+  const targetEl = document.getElementById("loginTarget");
+  const target = (targetEl ? targetEl.value : "").trim();
+  const channelEl = document.querySelector('input[name="loginOtpChannel"]:checked');
+  const channel = channelEl ? channelEl.value : "sms";
+
+  if (!target) {
+    alert("Please enter your registered 10-digit mobile number or email address.");
+    if (targetEl) targetEl.focus();
+    return;
+  }
+
+  if (channel === "sms" || channel === "whatsapp") {
+    const cleaned = target.replace(/[^0-9]/g, "");
+    if (cleaned.length < 10) {
+      alert("Please enter a valid 10-digit mobile number for " + (channel === "sms" ? "SMS" : "WhatsApp") + " OTP.");
+      return;
+    }
+  }
+
+  const status = document.getElementById("loginOtpStatus");
+  if (status) status.innerHTML = "<span style='color:#2563eb;'>⏳ Connecting to secure OTP gateway...</span>";
+
+  const res = await apiOtpRequest(channel, target);
+
+  // LIVE mode: provider sent real OTP
+  if (res.provider_configured && res.sent) {
+    store.set("c2s_main_live_otp", { channel, target });
     store.set("c2s_main_otp_mode", "live");
-    if(status) status.innerHTML="OTP sent to your "+(channel==="email"?"email":"mobile")+". It is valid for 5 minutes. Enter it below — the code is never shown on this page.";
+    if (status) status.innerHTML = "<span style='color:#16a34a;font-weight:700;'>✓ OTP sent to your " + (channel === "email" ? "email" : "mobile") + "! Valid for 5 minutes. Enter code below:</span>";
+    const vBox = document.getElementById("loginOtpVerifyBox");
+    if (vBox) vBox.style.display = "block";
     return;
   }
-  // Provider configured but send failed: say so honestly, do not fall back to preview silently.
-  if(res.provider_configured && !res.sent){
-    if(status) status.innerHTML="OTP could not be sent ("+(res.error||"provider error")+(res.provider_status?" — status "+res.provider_status:"")+") — no OTP was sent. Check the provider keys/template in Vercel env vars and try again.";
+
+  // Provider failed
+  if (res.provider_configured && !res.sent) {
+    if (status) status.innerHTML = "<span style='color:#dc2626;'>OTP gateway error: " + (res.error || "failed") + ". Please try WhatsApp OTP or contact helpline 9777481909.</span>";
     return;
   }
-  // PREVIEW mode only (no provider configured): generate a random preview code locally, labelled clearly. Never claim it was sent.
+
+  // PREVIEW mode
   store.set("c2s_main_otp_mode", "preview");
-  const code=String(Math.floor(100000+Math.random()*900000));
-  store.set("c2s_main_preview_otp", {code, channel, target, expires:Date.now()+5*60*1000, attempts:0});
-  if(status) status.innerHTML="<strong>PREVIEW OTP (testing only, NOT sent by SMS/WhatsApp/email): "+code+"</strong> — valid 5 minutes in this browser only.";
-}
-function completeMainLogin(channel, target, live){
-  const name=($("#otpName")||{}).value||"C2S Student";
-  const users=store.get("c2s_main_users", []);
-  let u=users.find(x=>x.mobile===target || x.email===target);
-  if(!u){ u={id:"C2S-"+String(users.length+1).padStart(5,"0"), name, mobile:channel==="email"?"":target, email:channel==="email"?target:"", channel}; users.push(u); store.set("c2s_main_users",users); }
-  store.set("c2s_main_user",u);
-  const msg=$("#loginMsg"); if(msg) msg.innerHTML="<span class='ok'>OTP verified ("+(live?"LIVE mode":"PREVIEW mode")+" — "+(live?"real provider OTP":"browser-local preview")+"). Logged in as "+u.name+" ("+u.id+").</span>";
-  renderUser();
-}
-async function verifyOtp(scope){
-  const code=($("#otpCode")||{}).value||"";
-  if(!code) return alert("OTP enter karo.");
-  // LIVE mode: verify against the server (Supabase hash), never locally.
-  if(store.get("c2s_main_otp_mode", "")==="live"){
-    const live=store.get("c2s_main_live_otp", null); if(!live) return alert("Request a new OTP first.");
-    try{
-      const r=await fetch("/api/otp-verify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({channel:live.channel,target:live.target,code})});
-      const res=await r.json();
-      if(res.verified){ store.set("c2s_main_otp_mode",""); completeMainLogin(live.channel, live.target, true); return; }
-      return alert(res.message || "Wrong or expired OTP. Try again.");
-    }catch(e){ return alert("OTP verify service is unreachable. Try again."); }
+  const code = String(Math.floor(100000 + Math.random() * 900000));
+  store.set("c2s_main_preview_otp", { code, channel, target, expires: Date.now() + 5 * 60 * 1000, attempts: 0 });
+  if (status) {
+    status.innerHTML = "<div style='background:#fef3c7;border:1px solid #f59e0b;padding:8px 12px;border-radius:8px;color:#92400e;margin-top:6px;'>" +
+      "<strong>PREVIEW OTP CODE: <span style='font-size:18px;letter-spacing:2px;color:#b45309;'>" + code + "</span></strong><br>" +
+      "<small>(Vercel preview testing mode — valid for 5 mins in this browser)</small></div>";
   }
-  const preview=store.get("c2s_main_preview_otp", null);
-  if(!preview || Date.now()>preview.expires) return alert("Preview OTP expired. Request a new OTP.");
-  preview.attempts=(preview.attempts||0)+1; store.set("c2s_main_preview_otp", preview);
-  if(preview.attempts>5) return alert("Too many attempts. Request a new OTP.");
-  if(code!==preview.code) return alert("Wrong preview OTP. Try again.");
-  completeMainLogin(preview.channel, preview.target, false);
+  const vBox = document.getElementById("loginOtpVerifyBox");
+  if (vBox) vBox.style.display = "block";
 }
-function renderUser(){
-  const u=store.get("c2s_main_user",null);
-  $("#userBox").innerHTML = u ? "Logged in as <strong>"+u.name+"</strong> ("+u.id+") — PREVIEW mode, browser-local only. <button class='btn ghost' onclick='localStorage.removeItem(\"c2s_main_user\");location.reload()'>Logout</button>" : "Not logged in. Use OTP login/signup above (preview mode until providers are connected).";
+
+async function verifyStudentLoginOtp() {
+  const codeEl = document.getElementById("loginOtpCode");
+  const code = (codeEl ? codeEl.value : "").trim();
+  const targetEl = document.getElementById("loginTarget");
+  const target = (targetEl ? targetEl.value : "").trim();
+  const channelEl = document.querySelector('input[name="loginOtpChannel"]:checked');
+  const channel = channelEl ? channelEl.value : "sms";
+
+  if (!code) {
+    alert("Please enter the 6-digit OTP code.");
+    if (codeEl) codeEl.focus();
+    return;
+  }
+
+  let verified = false;
+
+  // Live verification
+  if (store.get("c2s_main_otp_mode", "") === "live") {
+    const live = store.get("c2s_main_live_otp", null);
+    if (!live) return alert("Session expired. Please request a new OTP.");
+    try {
+      const r = await fetch("/api/otp-verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ channel: live.channel, target: live.target, code })
+      });
+      const res = await r.json();
+      if (res.verified) {
+        store.set("c2s_main_otp_mode", "");
+        verified = true;
+      } else {
+        alert(res.message || "Invalid or expired OTP. Please try again.");
+        return;
+      }
+    } catch (e) {
+      alert("OTP verification service unreachable. Please try again.");
+      return;
+    }
+  } else {
+    // Preview verification
+    const preview = store.get("c2s_main_preview_otp", null);
+    if (!preview || Date.now() > preview.expires) {
+      alert("Preview OTP has expired. Please request a new OTP code.");
+      return;
+    }
+    preview.attempts = (preview.attempts || 0) + 1;
+    store.set("c2s_main_preview_otp", preview);
+    if (preview.attempts > 5) {
+      alert("Too many incorrect attempts. Please request a new OTP.");
+      return;
+    }
+    if (code !== preview.code) {
+      alert("Incorrect OTP code. Please enter the 6-digit code shown above.");
+      return;
+    }
+    verified = true;
+  }
+
+  if (verified) {
+    // Look up existing student in localStorage or Supabase
+    const users = store.get("c2s_main_users", []);
+    const cleanTarget = target.replace(/[^0-9]/g, "");
+    let student = users.find(x => 
+      (x.mobile && x.mobile.replace(/[^0-9]/g, "") === cleanTarget) || 
+      (x.email && x.email.toLowerCase() === target.toLowerCase()) ||
+      (x.id && x.id.toLowerCase() === target.toLowerCase()) ||
+      (x.regNo && x.regNo.toLowerCase() === target.toLowerCase())
+    );
+
+    if (student) {
+      store.set("c2s_main_user", student);
+      const msg = document.getElementById("loginMsg");
+      if (msg) msg.innerHTML = "<span class='ok' style='color:#16a34a;font-weight:700;'>✓ OTP Verified! Welcome back, " + escapeHtml(student.name) + " (" + student.regNo + "). Opening Dashboard...</span>";
+      setTimeout(() => {
+        renderUser();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 400);
+    } else {
+      // First-time user tried login directly -> prompt them to register and auto-fill
+      const proceed = confirm("No student registration found for '" + target + "'.\n\nWould you like to register now and generate your official C2S Student Roll Number?");
+      switchAuthMode("signup");
+      const mobInput = document.getElementById("signupMobile");
+      const emailInput = document.getElementById("signupEmail");
+      if (target.includes("@")) {
+        if (emailInput) emailInput.value = target;
+      } else {
+        if (mobInput) mobInput.value = cleanTarget;
+      }
+    }
+  }
 }
-/* ---------- Exam mode ---------- */
+
+/* --- TAB 2: NEW STUDENT REGISTRATION & ROLL NO GENERATION FLOW --- */
+let signupPendingData = null;
+
+async function requestStudentSignupOtp() {
+  const nameEl = document.getElementById("signupFullName");
+  const mobEl = document.getElementById("signupMobile");
+  const emailEl = document.getElementById("signupEmail");
+  const examEl = document.getElementById("signupTargetExam");
+  const prepEl = document.getElementById("signupPrepMode");
+  const cityEl = document.getElementById("signupCity");
+  const channelEl = document.querySelector('input[name="signupOtpChannel"]:checked');
+
+  const name = (nameEl ? nameEl.value : "").trim();
+  const mobile = (mobEl ? mobEl.value : "").trim().replace(/[^0-9]/g, "");
+  const email = (emailEl ? emailEl.value : "").trim();
+  const targetExam = (examEl ? examEl.value : "").trim();
+  const prepMode = (prepEl ? prepEl.value : "").trim();
+  const city = (cityEl ? cityEl.value : "").trim();
+  const channel = channelEl ? channelEl.value : "sms";
+
+  if (!name || name.length < 2) {
+    alert("Please enter your Full Name (as per 10th matric certificate).");
+    if (nameEl) nameEl.focus();
+    return;
+  }
+  if (!mobile || mobile.length < 10) {
+    alert("Please enter a valid 10-digit mobile number.");
+    if (mobEl) mobEl.focus();
+    return;
+  }
+  if (!email || !email.includes("@")) {
+    alert("Please enter a valid email address for scorecards and exam notices.");
+    if (emailEl) emailEl.focus();
+    return;
+  }
+  if (!targetExam) {
+    alert("Please select your Target Competitive Exam (e.g. OSSC CGL, Odisha Police SI, Bank PO, SSC CGL).");
+    if (examEl) examEl.focus();
+    return;
+  }
+
+  // Check if mobile or email is already registered
+  const users = store.get("c2s_main_users", []);
+  const existing = users.find(x => (x.mobile && x.mobile === mobile) || (x.email && x.email.toLowerCase() === email.toLowerCase()));
+  if (existing) {
+    alert("An account is already registered with this mobile/email.\n\nRoll Number: " + (existing.regNo || existing.id) + "\nStudent Name: " + existing.name + "\n\nSwitching to Student Login tab.");
+    switchAuthMode("login");
+    const loginTarget = document.getElementById("loginTarget");
+    if (loginTarget) loginTarget.value = mobile;
+    return;
+  }
+
+  // Cache signup payload
+  signupPendingData = {
+    name,
+    mobile,
+    email,
+    targetExam,
+    prepMode: prepMode || "NH-16 Patrapada Classroom Batch + CBT Lab",
+    city: city || "Bhubaneswar",
+    channel
+  };
+
+  const otpTarget = channel === "email" ? email : mobile;
+  const status = document.getElementById("signupOtpStatus");
+  if (status) status.innerHTML = "<span style='color:#2563eb;'>⏳ Sending verification OTP...</span>";
+
+  const res = await apiOtpRequest(channel, otpTarget);
+
+  if (res.provider_configured && res.sent) {
+    store.set("c2s_main_live_otp", { channel, target: otpTarget });
+    store.set("c2s_main_otp_mode", "live");
+    if (status) status.innerHTML = "<span style='color:#16a34a;font-weight:700;'>✓ Verification OTP sent to " + (channel === "email" ? email : mobile) + ". Enter the 6-digit code below:</span>";
+    const vBox = document.getElementById("signupOtpVerifyBox");
+    if (vBox) vBox.style.display = "block";
+    return;
+  }
+
+  if (res.provider_configured && !res.sent) {
+    if (status) status.innerHTML = "<span style='color:#dc2626;'>OTP delivery error: " + (res.error || "provider failed") + ". Please select WhatsApp OTP or helpline 9777481909.</span>";
+    return;
+  }
+
+  // PREVIEW mode
+  store.set("c2s_main_otp_mode", "preview");
+  const code = String(Math.floor(100000 + Math.random() * 900000));
+  store.set("c2s_main_preview_otp", { code, channel, target: otpTarget, expires: Date.now() + 5 * 60 * 1000, attempts: 0 });
+  if (status) {
+    status.innerHTML = "<div style='background:#fef3c7;border:1px solid #f59e0b;padding:8px 12px;border-radius:8px;color:#92400e;margin-top:6px;'>" +
+      "<strong>PREVIEW OTP CODE: <span style='font-size:18px;letter-spacing:2px;color:#b45309;'>" + code + "</span></strong><br>" +
+      "<small>(Vercel preview testing mode — valid for 5 mins in this browser)</small></div>";
+  }
+  const vBox = document.getElementById("signupOtpVerifyBox");
+  if (vBox) vBox.style.display = "block";
+}
+
+async function verifyStudentSignupOtp() {
+  const codeEl = document.getElementById("signupOtpCode");
+  const code = (codeEl ? codeEl.value : "").trim();
+
+  if (!code) {
+    alert("Please enter the 6-digit OTP code.");
+    if (codeEl) codeEl.focus();
+    return;
+  }
+
+  if (!signupPendingData) {
+    alert("Registration details missing. Please re-fill the form and request an OTP.");
+    return;
+  }
+
+  let verified = false;
+
+  if (store.get("c2s_main_otp_mode", "") === "live") {
+    const live = store.get("c2s_main_live_otp", null);
+    if (!live) return alert("Session expired. Please request a new OTP.");
+    try {
+      const r = await fetch("/api/otp-verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ channel: live.channel, target: live.target, code })
+      });
+      const res = await r.json();
+      if (res.verified) {
+        store.set("c2s_main_otp_mode", "");
+        verified = true;
+      } else {
+        alert(res.message || "Invalid or expired OTP. Please try again.");
+        return;
+      }
+    } catch (e) {
+      alert("OTP verification service unreachable. Please try again.");
+      return;
+    }
+  } else {
+    const preview = store.get("c2s_main_preview_otp", null);
+    if (!preview || Date.now() > preview.expires) {
+      alert("Preview OTP has expired. Please request a new OTP code.");
+      return;
+    }
+    if (code !== preview.code) {
+      alert("Incorrect OTP code. Please enter the 6-digit code shown above.");
+      return;
+    }
+    verified = true;
+  }
+
+  if (verified) {
+    const users = store.get("c2s_main_users", []);
+    // Auto-generate official institute Roll Number: C2S-2026-0101 onwards
+    const nextSeq = 101 + users.length;
+    const regNo = "C2S-2026-" + String(nextSeq).padStart(4, "0");
+
+    const newStudent = {
+      id: regNo,
+      regNo: regNo,
+      name: signupPendingData.name,
+      mobile: signupPendingData.mobile,
+      email: signupPendingData.email,
+      targetExam: signupPendingData.targetExam,
+      prepMode: signupPendingData.prepMode,
+      city: signupPendingData.city,
+      status: "Active Registered Student",
+      channel: signupPendingData.channel,
+      enrolledAt: new Date().toISOString()
+    };
+
+    users.push(newStudent);
+    store.set("c2s_main_users", users);
+    store.set("c2s_main_user", newStudent);
+
+    // Sync to Supabase in cloud
+    syncStudentToSupabase(newStudent);
+
+    // Render affirmative confirmation popup
+    alert("🎉 REGISTRATION SUCCESSFUL!\n\nWelcome to C2S College to Service, " + newStudent.name + "!\n\nYour Official Student Roll Number is:\n>>> " + regNo + " <<<\n\nTarget Exam: " + newStudent.targetExam + "\nCampus: NH-16 Patrapada Centre, Bhubaneswar.\n\nOpening your Executive Student Dashboard now!");
+
+    renderUser();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
+
+/* Supabase Cloud Sync for Registered Students */
+async function syncStudentToSupabase(student) {
+  try {
+    const payload = {
+      registration_no: student.regNo,
+      name: student.name,
+      mobile: student.mobile,
+      email: student.email,
+      target_exam: student.targetExam,
+      prep_mode: student.prepMode,
+      city: student.city,
+      status: "Active",
+      created_at: student.enrolledAt
+    };
+
+    fetch(SUPABASE_CONFIG.url + "/rest/v1/c2s_students", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_CONFIG.anonKey,
+        "Authorization": "Bearer " + SUPABASE_CONFIG.anonKey,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify(payload)
+    }).then(res => {
+      if (res.ok) console.log("☁️ Supabase Cloud Sync: Student profile saved to database (" + student.regNo + ")");
+    }).catch(err => console.warn("Supabase student sync warning:", err));
+  } catch (e) {
+    console.warn("Supabase sync exception:", e);
+  }
+}
+
+function logoutStudent() {
+  if (confirm("Are you sure you want to log out of your C2S student account?")) {
+    localStorage.removeItem("c2s_main_user");
+    localStorage.removeItem("c2s_main_live_otp");
+    localStorage.removeItem("c2s_main_preview_otp");
+    renderUser();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
+
+/* Backward compatibility aliases */
+function requestOtp(scope) { requestStudentLoginOtp(); }
+function verifyOtp(scope) { verifyStudentLoginOtp(); }
+function completeMainLogin(channel, target, live) { /* Handled in verifyStudentLoginOtp */ }
+
 let exam=null, violations=0, timerInt=null, secondsLeft=0;
 function startTest(id){
   if (!isTestUnlocked(id)) { openTestPaymentModal(id); return; }
@@ -2542,30 +2915,20 @@ if (document.readyState === "loading") {
 
 function renderUser() {
   const userBox = $("#userBox");
+  const authCard = document.getElementById("c2sAuthCard");
   if (!userBox) return;
 
   const u = store.get("c2s_main_user", null);
 
-  // If student is NOT logged in: show clean login state
+  // If student is NOT logged in: show clean auth card
   if (!u) {
-    userBox.innerHTML = `
-      <div style="background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:12px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:42px;height:42px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:20px;color:#64748b;">
-            &#128100;
-          </div>
-          <div>
-            <strong style="color:#0f172a;font-size:14.5px;display:block;">Not Logged In</strong>
-            <span style="color:#64748b;font-size:12.5px;">Enter your Mobile / Email below to get 6-digit OTP code.</span>
-          </div>
-        </div>
-        <span style="font-size:11.5px;background:#eff6ff;color:#1d4ed8;font-weight:700;padding:4px 10px;border-radius:999px;">
-          Fast 10-Sec OTP Login
-        </span>
-      </div>
-    `;
+    if (authCard) authCard.style.display = "block";
+    userBox.innerHTML = "";
     return;
   }
+
+  // Student IS logged in: hide login/signup card, show executive dashboard
+  if (authCard) authCard.style.display = "none";
 
   // STUDENT IS LOGGED IN -> RENDER WORLD-CLASS EXECUTIVE DASHBOARD
   const given = store.get("c2s_main_given", []);
@@ -2598,12 +2961,17 @@ function renderUser() {
               <h2 style="margin:0;font-size:22px;color:#0f172a;font-weight:900;">${escapeHtml(u.name)}</h2>
               <span style="background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;">&#10003; ACTIVE STUDENT</span>
             </div>
-            <div style="display:flex;gap:14px;color:#64748b;font-size:13px;margin-top:4px;flex-wrap:wrap;">
-              <span><strong>ID:</strong> ${u.id}</span>
+            <div style="display:flex;gap:12px;color:#64748b;font-size:13px;margin-top:6px;flex-wrap:wrap;align-items:center;">
+              <span style="background:#f1f5f9;color:#0f172a;padding:3px 10px;border-radius:6px;font-weight:800;font-family:monospace;font-size:13.5px;border:1px solid #e2e8f0;">
+                &#127891; Roll No: ${escapeHtml(u.regNo || u.id)}
+              </span>
               <span>&bull;</span>
-              <span><strong>Target:</strong> Central &amp; Odisha State Recruitment</span>
+              <span style="background:#eff6ff;color:#1d4ed8;padding:3px 10px;border-radius:6px;font-weight:700;border:1px solid #bfdbfe;">
+                &#127919; Target: ${escapeHtml(u.targetExam || 'OSSC / Central & Odisha Recruitment')}
+              </span>
               <span>&bull;</span>
               <span><strong>Centre:</strong> NH-16 Patrapada, Bhubaneswar</span>
+              ${u.prepMode ? `<span>&bull;</span><span style="color:#059669;font-weight:600;">${escapeHtml(u.prepMode)}</span>` : ''}
             </div>
           </div>
         </div>

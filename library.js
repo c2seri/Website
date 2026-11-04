@@ -167,7 +167,7 @@ function proceedToAdmissionWithSeat() {
 function libAdmit(e) {
   e.preventDefault();
   const members = store.get("c2s_lib_members", []);
-  const regNo = "C2SLIB-" + String(members.length + 1).padStart(5, "0");
+  const regNo = "C2S-LIB-2026-" + String(members.length + 101).padStart(4, "0");
 
   const m = {
     regNo,
@@ -188,6 +188,7 @@ function libAdmit(e) {
 
   members.unshift(m);
   store.set("c2s_lib_members", members);
+  store.set("c2s_lib_user", m);
   syncMemberToSupabase(m);
 
   // Mark seat as occupied
@@ -250,7 +251,8 @@ function renderDigitalID() {
             <div style="font-size:15px;font-weight:800;color:#00b4d8;margin-bottom:8px;">${u.regNo}</div>
 
             <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;">Assigned Shift &amp; Seat</div>
-            <div style="font-size:14px;color:#fff;">${u.shift || 'Afternoon'} • Desk ${u.seat || 'A-04'}</div>
+            <div style="font-size:14px;color:#fff;margin-bottom:6px;">${u.shift || 'Afternoon'} • Desk ${u.seat || 'A-04'}</div>
+            ${u.examPref ? `<div style="font-size:10px;color:#94a3b8;text-transform:uppercase;">Target Exam</div><div style="font-size:12.5px;color:#38bdf8;font-weight:700;">🎯 ${u.examPref}</div>` : ''}
           </div>
 
           <div class="digital-qr-mockup">

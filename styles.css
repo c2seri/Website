@@ -6930,3 +6930,78 @@ html, body {
     right: 16px !important;
   }
 }
+
+/* ==========================================================================
+   C2S STUDENT AUTHENTICATION PORTAL (LOGIN VS SIGNUP TABS & ROLL NO BADGES)
+   ========================================================================== */
+
+.c2s-auth-tab-switch {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 5px;
+  max-width: 540px;
+  margin: 0 auto 24px;
+  gap: 6px;
+  box-shadow: inset 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.c2s-tab-pill {
+  flex: 1;
+  padding: 12px 18px;
+  font-size: 14.5px;
+  font-weight: 800;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+}
+
+.c2s-tab-pill.active {
+  background: #ffffff !important;
+  color: #0f2a5c !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1) !important;
+}
+
+.c2s-auth-pane {
+  animation: c2sFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes c2sFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.c2s-roll-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #0f2a5c 0%, #1e3a8a 100%);
+  color: #38bdf8;
+  font-family: 'Outfit', 'Courier New', monospace;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  padding: 8px 18px;
+  border-radius: 10px;
+  border: 1.5px solid #38bdf8;
+  box-shadow: 0 4px 14px rgba(15, 42, 92, 0.25);
+  margin: 10px 0;
+}
+
+@media (max-width: 640px) {
+  .c2s-auth-tab-switch {
+    flex-direction: column;
+    padding: 6px;
+  }
+  .c2s-tab-pill {
+    padding: 10px 14px;
+    font-size: 13.5px;
+  }
+  #c2sSignupPane .grid2,
+  #c2sLoginPane .grid2 {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
