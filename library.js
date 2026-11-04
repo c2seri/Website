@@ -111,18 +111,26 @@ function renderTheatreSeats() {
       const isSelected = selectedSeat === seatId;
       const isReserved = i % 5 === 0 && !isTaken;
 
-      let cls = "theatre-seat available";
-      if (isTaken) cls = "theatre-seat occupied";
-      else if (isSelected) cls = "theatre-seat selected";
-      else if (isReserved) cls = "theatre-seat reserved";
+      let cls = "study-desk available";
+      let statusText = "Vacant";
+      if (isTaken) {
+        cls = "study-desk occupied";
+        statusText = "Occupied";
+      } else if (isSelected) {
+        cls = "study-desk selected";
+        statusText = "Selected";
+      } else if (isReserved) {
+        cls = "study-desk reserved";
+        statusText = "Reserved";
+      }
 
       html += `
-        <div class="${cls}" title="Seat ${seatId} • ${isTaken ? 'Occupied' : isReserved ? 'Afternoon Reserved' : 'Available • High-back ergonomic desk'}" onclick="pickSeat('${seatId}')">
-          <span>${seatId}</span>
-          <div class="theatre-seat-amenity-dots">
-            <span class="amenity-dot"></span>
-            <span class="amenity-dot"></span>
+        <div class="${cls}" title="Desk ${seatId} • ${statusText}" onclick="pickSeat('${seatId}')">
+          <div class="desk-top-row">
+            <span class="desk-id">${seatId}</span>
+            <span class="desk-plug">🔌</span>
           </div>
+          <div class="desk-status-badge">${statusText}</div>
         </div>
       `;
     }
