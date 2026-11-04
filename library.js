@@ -1,3 +1,48 @@
+
+/* Supabase Live Cloud Integration */
+const SUPABASE_CONFIG = {
+  url: "https://ewxkrtkzlkyqfsfdoths.supabase.co",
+  anonKey: "sb_publishable_z4xFLLJS_ex0uGuF4-Of8Q_vfQ8dbbO"
+};
+
+async function syncMemberToSupabase(m) {
+  try {
+    const payload = {
+      registration_no: m.regNo,
+      name: m.name,
+      mobile: m.mobile,
+      email: m.email || null,
+      shift: m.shift,
+      from_date: m.from || null,
+      to_date: m.to || null,
+      exam_pref: m.examPref || null,
+      shift_fees: m.total || 0,
+      locker_fees: 0,
+      total_fees: m.total || 0,
+      discount: 0,
+      paid: m.paid || 0,
+      pending: m.pending || 0,
+      payment_mode: m.mode || "UPI",
+      seat_status: m.seat || "Unassigned"
+    };
+
+    fetch(SUPABASE_CONFIG.url + "/rest/v1/library_members", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_CONFIG.anonKey,
+        "Authorization": "Bearer " + SUPABASE_CONFIG.anonKey,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify(payload)
+    }).then(res => {
+      if(res.ok) console.log("✓ Live Supabase Sync: Library Member inserted successfully");
+    }).catch(err => console.warn("Supabase background sync:", err));
+  } catch(e) {
+    console.warn("Supabase member sync error:", e);
+  }
+}
+
 /* ==========================================================================
    C2S 24-HOUR STUDY LIBRARY ENGINE (STANDALONE UNIVERSE)
    ========================================================================== */
@@ -135,6 +180,7 @@ function libAdmit(e) {
 
   members.unshift(m);
   store.set("c2s_lib_members", members);
+  syncMemberToSupabase(m);
 
   // Mark seat as occupied
   if (m.seat && m.seat !== "Unassigned") {

@@ -1,3 +1,27 @@
+
+const SUPABASE_CONFIG = {
+  url: "https://ewxkrtkzlkyqfsfdoths.supabase.co",
+  anonKey: "sb_publishable_z4xFLLJS_ex0uGuF4-Of8Q_vfQ8dbbO"
+};
+
+async function fetchLiveSupabaseStats() {
+  try {
+    const resMem = await fetch(SUPABASE_CONFIG.url + "/rest/v1/library_members?select=*", {
+      headers: { "apikey": SUPABASE_CONFIG.anonKey, "Authorization": "Bearer " + SUPABASE_CONFIG.anonKey }
+    });
+    if (resMem.ok) {
+      const liveMembers = await resMem.json();
+      console.log("Live Supabase Library Members Count:", liveMembers.length);
+      const totalStudentsEl = document.getElementById("kpiTotalStudents");
+      if (totalStudentsEl && liveMembers.length > 0) {
+        totalStudentsEl.textContent = liveMembers.length;
+      }
+    }
+  } catch(e) {
+    console.warn("Live Supabase fetch error:", e);
+  }
+}
+
 /* ==========================================================================
    C2S ENTERPRISE MULTI-ROLE LOGIC (ADMIN, FRONT DESK, FACULTY)
    ========================================================================== */
@@ -29,6 +53,7 @@ function switchRole(role) {
 
 /* 2. Super Admin Dashboard & KPIs */
 function renderSuperAdmin() {
+  fetchLiveSupabaseStats();
   const users = store.get('c2s_main_users', []);
   const members = store.get('c2s_lib_members', []);
   const given = store.get('c2s_main_given', []);

@@ -1,3 +1,43 @@
+
+/* Supabase Live Cloud Integration */
+const SUPABASE_CONFIG = {
+  url: "https://ewxkrtkzlkyqfsfdoths.supabase.co",
+  anonKey: "sb_publishable_z4xFLLJS_ex0uGuF4-Of8Q_vfQ8dbbO"
+};
+
+async function syncTestAttemptToSupabase(attempt) {
+  try {
+    const payload = {
+      registration_no: attempt.studentReg || "C2S-ONLINE-GUEST",
+      test_id: attempt.testId,
+      title: attempt.testTitle || attempt.testId,
+      score: attempt.score || 0,
+      total: attempt.totalMarks || attempt.total || 0,
+      correct: attempt.correctCount || 0,
+      wrong: attempt.wrongCount || 0,
+      skipped: attempt.skippedCount || 0,
+      violations: attempt.violations || 0,
+      reason: attempt.reason || "Submitted",
+      answers: attempt.answers || []
+    };
+
+    fetch(SUPABASE_CONFIG.url + "/rest/v1/test_attempts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_CONFIG.anonKey,
+        "Authorization": "Bearer " + SUPABASE_CONFIG.anonKey,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify(payload)
+    }).then(res => {
+      if(res.ok) console.log("✓ Live Supabase Sync: Test attempt recorded in cloud database");
+    }).catch(err => console.warn("Supabase test attempt sync:", err));
+  } catch(e) {
+    console.warn("Supabase test sync error:", e);
+  }
+}
+
 /* C2S production v2 — GitHub + Vercel only, no VPS.
    PREVIEW mode until DATABASE_URL + OTP provider env vars are set in Vercel.
    No live DB, OTP, payment or video is claimed. Analytics: empty placeholder only. */
