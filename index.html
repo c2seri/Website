@@ -365,223 +365,107 @@
 
     <!-- VIEW: Public Homepage (Default View on Load) -->
     <section data-view="home">
-      <!-- Elite EdTech Hero Banner (Physics Wallah Vidyapeeth / Adda247 / Testbook Standard) -->
-      <div class="hero-enterprise">
-        <div class="hero-layout">
-          <!-- Left: High-Authority Copy, Social Proof, Search & CTAs -->
-          <div class="hero-copy">
-            <div class="hero-kicker">
-              <span class="live-pulse-dot"></span>
-              <strong>ADMISSIONS OPEN 2025–26</strong>
-              <span class="kicker-sep">•</span>
-              <span>Classroom + 24/7 Library Hub • Patrapada, Bhubaneswar</span>
-            </div>
+      <!-- Elite EdTech Hero Banner Slider (Physics Wallah / Adda247 Reference Standard) -->
+      <div class="hero-slider-section">
+        <!-- Top Announcement & Quick Contact Strip -->
+        <div class="hero-announcement-strip">
+          <div class="announcement-pill">
+            <span class="live-pulse-dot"></span>
+            <strong>ADMISSIONS OPEN 2025–26</strong>
+            <span class="sep">•</span>
+            <span>Smart Classroom + 24/7 Library Hub • NH-16 Patrapada, Bhubaneswar</span>
+          </div>
+          <div class="announcement-contact">
+            <a href="tel:9777481909" class="quick-call-link">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span>Helpline: <strong>9777481909</strong> / <strong>9658177712</strong></span>
+            </a>
+          </div>
+        </div>
 
-            <h1 class="hero-headline">
-              Crack Your Dream Govt Job. <br>
-              <span class="hero-highlight-orange">Smart Classrooms</span> + India's 1st <span class="hero-highlight-blue">Locked CBT Engine</span>
-            </h1>
-
-            <p class="hero-subtitle">
-              Odisha's premier classroom coaching centre &amp; 24-hour air-conditioned study library at NH-16 Patrapada, Bhubaneswar. Comprehensive prep with handwritten smart notes &amp; real TCS pattern CBT mock tests for <strong>204+ Central &amp; State Recruitments</strong>.
-            </p>
-
-            <!-- Social Proof Strip (PW & Testbook Reference) -->
-            <div class="hero-social-proof">
-              <div class="student-avatar-stack">
-                <span class="avatar-circle" style="background:#2563eb;">AK</span>
-                <span class="avatar-circle" style="background:#ea580c;">SM</span>
-                <span class="avatar-circle" style="background:#059669;">RD</span>
-                <span class="avatar-circle" style="background:#7c3aed;">PB</span>
-              </div>
-              <div class="social-proof-text">
-                <div class="stars-row">★★★★★ <strong>4.9 / 5 Rating</strong></div>
-                <span>12,500+ Aspirants Prepared • NH-16 Patrapada Centre</span>
+        <!-- Full-Width Banner Carousel Container -->
+        <div class="c2s-carousel-container" id="c2sHeroCarousel">
+          <div class="carousel-track" id="carouselTrack">
+            <!-- Slide 1: Official C2S Launch Poster -->
+            <div class="carousel-slide active" onclick="scrollToPanIndiaExams()" style="cursor:pointer;">
+              <img src="images/banners/banner-1.jpg" alt="C2S College to Service - Premier Classroom Coaching & 24h Study Library" loading="eager">
+              <div class="slide-overlay-badge">
+                <span class="slide-badge-title">🎯 C2S Official Foundation</span>
+                <span class="slide-badge-sub">Smart Board Coaching • 204+ Exams • 24h Library • Mentorship</span>
               </div>
             </div>
 
-            <!-- Search Bar with Instant 204+ Exams Live Filter -->
-            <div class="hero-search-wrapper">
-              <div class="hero-search-bar">
-                <svg class="search-icon-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input id="heroSearchInput" type="search" placeholder="Search from 204 Central & State Govt Exams (e.g. OSSC CGL, Odisha Police, SSC, SBI, NTPC)..." oninput="handleHeroAutocomplete(this.value)" onkeydown="if(event.key==='Enter'){handleHeroSearch(this.value)}" autocomplete="off">
-                <div id="heroAutocompleteDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:#ffffff;border:1.5px solid #cbd5e1;border-radius:12px;box-shadow:0 12px 30px rgba(15,23,42,0.15);max-height:340px;overflow-y:auto;z-index:1000;margin-top:6px;"></div>
-                <button class="hero-search-submit" onclick="handleHeroSearch(document.getElementById('heroSearchInput').value)">Search 200+ Exams</button>
-              </div>
-              
-              <!-- Quick Goal Pills (Adda247 / Testbook Style) -->
-              <div class="hero-quick-tags">
-                <span class="tag-label">POPULAR GOALS:</span>
-                <button type="button" class="quick-tag-chip" onclick="quickFilterTarget('OSSC-CGL')">🏛️ OSSC CGL</button>
-                <button type="button" class="quick-tag-chip" onclick="quickFilterTarget('ODISHA-POLICE-SI')">👮 Odisha Police SI</button>
-                <button type="button" class="quick-tag-chip" onclick="quickFilterTarget('IBPS-PO')">🏦 Bank PO (SBI/IBPS)</button>
-                <button type="button" class="quick-tag-chip" onclick="quickFilterTarget('SSC-CGL')">🛡️ SSC CGL</button>
-                <button type="button" class="quick-tag-chip" onclick="quickFilterTarget('RRB-NTPC-GRAD')">🚆 Railway NTPC</button>
-                <button type="button" class="quick-tag-chip" onclick="quickFilterTarget('OPSC-OAS')">⚖️ OPSC OAS</button>
-                <button type="button" class="quick-tag-chip chip-library" onclick="window.location.href='library.html'">📖 24h Study Library</button>
+            <!-- Slide 2: Smart Classroom & Offline Batches -->
+            <div class="carousel-slide" onclick="scrollToPanIndiaExams()" style="cursor:pointer;">
+              <img src="images/banners/banner-2.jpg" alt="C2S Smart Classroom Coaching & Regular Batches" loading="lazy">
+              <div class="slide-overlay-badge">
+                <span class="slide-badge-title">🏫 Classroom Batches 2025</span>
+                <span class="slide-badge-sub">OSSC CGL, Odisha Police SI, Banking & SSC Foundation</span>
               </div>
             </div>
 
-            <!-- Action CTAs: High Contrast, Verified Patrapada Desk Call & WhatsApp Demo Booking -->
-            <div class="hero-cta-group">
-              <button class="btn-hero-primary" onclick="scrollToPanIndiaExams()">
-                Explore 204 Govt Exams ↓
-              </button>
-              <a href="https://wa.me/919777481909?text=Hi%20C2S,%20I%20want%20to%20book%20a%20free%203-day%20demo%20class%20at%20Patrapada%20centre" target="_blank" rel="noopener noreferrer" class="btn-hero-secondary">
-                Book Free 3-Day Demo Class →
-              </a>
-              <a href="tel:9777481909" class="hero-helpline-link">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                <span>Helpline: <strong>9777481909</strong> / <strong>9658177712</strong></span>
-              </a>
+            <!-- Slide 3: 24h Air-Conditioned Study Sanctuary -->
+            <div class="carousel-slide" onclick="window.location.href='library.html'" style="cursor:pointer;">
+              <img src="images/banners/banner-3.jpg" alt="24-Hour Air-Conditioned Study Library - Patrapada Centre" loading="lazy">
+              <div class="slide-overlay-badge">
+                <span class="slide-badge-title">📚 24-Hour Study Sanctuary</span>
+                <span class="slide-badge-sub">4 Flexible Shifts • High-Speed 5G Wi-Fi • Ergonomic Desks</span>
+              </div>
+            </div>
+
+            <!-- Slide 4: Locked CBT Mock Test Engine -->
+            <div class="carousel-slide" onclick="show('tests')" style="cursor:pointer;">
+              <img src="images/banners/banner-4.jpg" alt="Locked CBT Exam Engine - Real TCS Pattern Mock Tests" loading="lazy">
+              <div class="slide-overlay-badge">
+                <span class="slide-badge-title">💻 Locked CBT Exam Engine</span>
+                <span class="slide-badge-sub">100+ Mock Series • Real Timer • Negative Marking • Solutions</span>
+              </div>
+            </div>
+
+            <!-- Slide 5: Free 3-Day Demo Classes & Officer Mentorship -->
+            <div class="carousel-slide" onclick="window.open('https://wa.me/919777481909?text=Hi%20C2S,%20I%20want%20to%20book%20a%20free%203-day%20demo%20class', '_blank')" style="cursor:pointer;">
+              <img src="images/banners/banner-5.jpg" alt="Free 3-Day Demo Class & Govt Officer Mentorship" loading="lazy">
+              <div class="slide-overlay-badge">
+                <span class="slide-badge-title">⭐ Free 3-Day Demo Class</span>
+                <span class="slide-badge-sub">10+ Years Experienced Teachers & Selected Officer Mentors</span>
+              </div>
             </div>
           </div>
 
-          <!-- Right: Interactive PW Vidyapeeth-Style Academic & Centre Showcase Hub -->
-          <div class="hero-feature-panel">
-            <div class="feature-panel-header">
-              <div class="feature-panel-kicker">
-                <span class="centre-indicator-dot"></span>
-                <span>OFFLINE CENTRE • PATRAPADA, BHUBANESWAR</span>
-              </div>
-              <h3 style="margin:4px 0 2px;font-size:18px;font-weight:850;color:#0f172a;">C2S Preparation Ecosystem</h3>
-              <p style="margin:0 0 12px;font-size:12.5px;color:#64748b;">Classroom Batches, 24/7 Air-Conditioned Library &amp; CBT Test Pass</p>
+          <!-- Carousel Controls (Previous / Next Arrows) -->
+          <button type="button" class="carousel-nav-btn prev" aria-label="Previous Banner" onclick="prevHeroSlide(event)">❮</button>
+          <button type="button" class="carousel-nav-btn next" aria-label="Next Banner" onclick="nextHeroSlide(event)">❯</button>
+
+          <!-- Carousel Indicators / Dots -->
+          <div class="carousel-indicators" id="carouselIndicators">
+            <button type="button" class="indicator-dot active" aria-label="Slide 1" onclick="goToHeroSlide(0)"></button>
+            <button type="button" class="indicator-dot" aria-label="Slide 2" onclick="goToHeroSlide(1)"></button>
+            <button type="button" class="indicator-dot" aria-label="Slide 3" onclick="goToHeroSlide(2)"></button>
+            <button type="button" class="indicator-dot" aria-label="Slide 4" onclick="goToHeroSlide(3)"></button>
+            <button type="button" class="indicator-dot" aria-label="Slide 5" onclick="goToHeroSlide(4)"></button>
+          </div>
+        </div>
+
+        <!-- Adda247 / Testbook Quick Goal Bar & Live Search -->
+        <div class="hero-actions-bar">
+          <div class="hero-search-wrapper" style="margin:0;">
+            <div class="hero-search-bar">
+              <svg class="search-icon-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="heroSearchInput" type="search" placeholder="Search from 204 Central & State Govt Exams (e.g. OSSC CGL, Odisha Police, SSC, SBI, NTPC)..." oninput="handleHeroAutocomplete(this.value)" onkeydown="if(event.key==='Enter'){handleHeroSearch(this.value)}" autocomplete="off">
+              <div id="heroAutocompleteDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:#ffffff;border:1.5px solid #cbd5e1;border-radius:12px;box-shadow:0 12px 30px rgba(15,23,42,0.15);max-height:340px;overflow-y:auto;z-index:1000;margin-top:6px;"></div>
+              <button class="hero-search-submit" onclick="handleHeroSearch(document.getElementById('heroSearchInput').value)">Search 200+ Exams</button>
             </div>
-
-            <!-- Interactive Tab Switcher (PW Vidyapeeth Style) -->
-            <div class="hero-tab-switcher">
-              <button type="button" class="hero-tab-btn active" onclick="switchHeroShowcaseTab('classroom', this)">
-                🏫 Smart Classroom
-              </button>
-              <button type="button" class="hero-tab-btn" onclick="switchHeroShowcaseTab('library', this)">
-                📚 24h Study Library
-              </button>
-              <button type="button" class="hero-tab-btn" onclick="switchHeroShowcaseTab('cbt', this)">
-                💻 CBT Test Pass
-              </button>
-            </div>
-
-            <!-- Tab Content 1: Classroom -->
-            <div id="heroTabContent_classroom" class="hero-tab-content-panel active">
-              <div class="feature-item-list">
-                <div class="feature-item">
-                  <div class="feature-icon-bubble" style="background:#eff6ff;color:#2563eb;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                  </div>
-                  <div class="feature-text-block">
-                    <strong>Smart 4K Interactive Flat Panels</strong>
-                    <span>Digital visual concepts + instant handwritten faculty PDF notes</span>
-                  </div>
-                </div>
-
-                <div class="feature-item">
-                  <div class="feature-icon-bubble" style="background:#fff7ed;color:#ea580c;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                  </div>
-                  <div class="feature-text-block">
-                    <strong>Daily DPPs &amp; Weekly Offline CBT Mocks</strong>
-                    <span>Strict All-India ranking with post-test doubt solving</span>
-                  </div>
-                </div>
-
-                <div class="feature-item">
-                  <div class="feature-icon-bubble" style="background:#ecfdf5;color:#059669;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                  </div>
-                  <div class="feature-text-block">
-                    <strong>10+ Yrs Senior Teachers &amp; Officer Mentors</strong>
-                    <span>Personalized 1-on-1 mentorship for high selection rate</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="hero-panel-action-bar">
-                <a href="https://wa.me/919777481909?text=Hi%20C2S,%20I%20want%20to%20join%20the%20classroom%20batch%20at%20Patrapada" target="_blank" rel="noopener noreferrer" class="panel-action-btn primary">
-                  Join Classroom Batch (Patrapada) →
-                </a>
-              </div>
-            </div>
-
-            <!-- Tab Content 2: Library -->
-            <div id="heroTabContent_library" class="hero-tab-content-panel" style="display:none;">
-              <div class="feature-item-list">
-                <div class="feature-item">
-                  <div class="feature-icon-bubble" style="background:#ecfdf5;color:#059669;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  </div>
-                  <div class="feature-text-block">
-                    <strong>4 Flexible Shifts (Open 24 Hours)</strong>
-                    <span>Morning (6AM-12PM), Noon (12PM-6PM), Evening (6PM-12AM) &amp; 24h</span>
-                  </div>
-                </div>
-
-                <div class="feature-item">
-                  <div class="feature-icon-bubble" style="background:#eff6ff;color:#2563eb;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                  </div>
-                  <div class="feature-text-block">
-                    <strong>Ergonomic Desks &amp; Personal Power Sockets</strong>
-                    <span>Air-conditioned silence zone, high-speed Wi-Fi &amp; CCTV security</span>
-                  </div>
-                </div>
-
-                <div class="feature-item">
-                  <div class="feature-icon-bubble" style="background:#fef2f2;color:#dc2626;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                  </div>
-                  <div class="feature-text-block">
-                    <strong>NH-16 Opposite Sani Mandir, Patrapada</strong>
-                    <span>Prime safe location, RO water dispenser &amp; clean washrooms</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="hero-panel-action-bar">
-                <a href="library.html" class="panel-action-btn green">
-                  View Shifts &amp; Book Library Seat →
-                </a>
-              </div>
-            </div>
-
-            <!-- Tab Content 3: CBT Test Pass -->
-            <div id="heroTabContent_cbt" class="hero-tab-content-panel" style="display:none;">
-              <div class="feature-item-list">
-                <div class="feature-item">
-                  <div class="feature-icon-bubble" style="background:#fef2f2;color:#dc2626;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                  </div>
-                  <div class="feature-text-block">
-                    <strong>Locked Fullscreen CBT Engine</strong>
-                    <span>Real timer, negative marking &amp; 3-violation anti-cheat auto submit</span>
-                  </div>
-                </div>
-
-                <div class="feature-item">
-                  <div class="feature-icon-bubble" style="background:#eff6ff;color:#2563eb;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                  </div>
-                  <div class="feature-text-block">
-                    <strong>100+ All-India &amp; Odisha Mock Series</strong>
-                    <span>Instant All-India percentile, subject cutoff &amp; time analysis</span>
-                  </div>
-                </div>
-
-                <div class="feature-item">
-                  <div class="feature-icon-bubble" style="background:#faf5ff;color:#9333ea;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                  </div>
-                  <div class="feature-text-block">
-                    <strong>Step-by-Step Bilingual Solutions</strong>
-                    <span>Detailed explanations for every question after test submission</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="hero-panel-action-bar">
-                <button type="button" class="panel-action-btn orange" onclick="show('tests')">
-                  Explore CBT Test Series &amp; Pass →
-                </button>
-              </div>
+            
+            <!-- Quick Goal Pills (Adda247 / Testbook Style) -->
+            <div class="hero-quick-tags">
+              <span class="tag-label">POPULAR GOALS:</span>
+              <button type="button" class="quick-tag-chip" onclick="quickFilterTarget('OSSC-CGL')">🏛️ OSSC CGL</button>
+              <button type="button" class="quick-tag-chip" onclick="quickFilterTarget('ODISHA-POLICE-SI')">👮 Odisha Police SI</button>
+              <button type="button" class="quick-tag-chip" onclick="quickFilterTarget('IBPS-PO')">🏦 Bank PO (SBI/IBPS)</button>
+              <button type="button" class="quick-tag-chip" onclick="quickFilterTarget('SSC-CGL')">🛡️ SSC CGL</button>
+              <button type="button" class="quick-tag-chip" onclick="quickFilterTarget('RRB-NTPC-GRAD')">🚆 Railway NTPC</button>
+              <button type="button" class="quick-tag-chip" onclick="quickFilterTarget('OPSC-OAS')">⚖️ OPSC OAS</button>
+              <button type="button" class="quick-tag-chip chip-library" onclick="window.location.href='library.html'">📖 24h Study Library</button>
             </div>
           </div>
         </div>

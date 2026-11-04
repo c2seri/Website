@@ -1587,3 +1587,102 @@ function switchHeroShowcaseTab(tabKey, btn) {
   });
 }
 window.switchHeroShowcaseTab = switchHeroShowcaseTab;
+
+// ==========================================================================
+// C2S Hero Banner Carousel Engine (Physics Wallah / Adda247 Standard)
+// ==========================================================================
+let currentHeroSlideIdx = 0;
+let heroCarouselTimer = null;
+
+function showHeroSlide(index) {
+  const slides = document.querySelectorAll('#carouselTrack .carousel-slide');
+  const dots = document.querySelectorAll('#carouselIndicators .indicator-dot');
+  if (!slides || slides.length === 0) return;
+
+  if (index >= slides.length) index = 0;
+  if (index < 0) index = slides.length - 1;
+  currentHeroSlideIdx = index;
+
+  slides.forEach((slide, i) => {
+    if (i === index) {
+      slide.classList.add('active');
+    } else {
+      slide.classList.remove('active');
+    }
+  });
+
+  dots.forEach((dot, i) => {
+    if (i === index) {
+      dot.classList.add('active');
+    } else {
+      dot.classList.remove('active');
+    }
+  });
+}
+
+function nextHeroSlide(e) {
+  if (e) e.stopPropagation();
+  showHeroSlide(currentHeroSlideIdx + 1);
+  resetHeroCarouselTimer();
+}
+
+function prevHeroSlide(e) {
+  if (e) e.stopPropagation();
+  showHeroSlide(currentHeroSlideIdx - 1);
+  resetHeroCarouselTimer();
+}
+
+function goToHeroSlide(index) {
+  showHeroSlide(index);
+  resetHeroCarouselTimer();
+}
+
+function resetHeroCarouselTimer() {
+  if (heroCarouselTimer) clearInterval(heroCarouselTimer);
+  heroCarouselTimer = setInterval(() => {
+    showHeroSlide(currentHeroSlideIdx + 1);
+  }, 4500);
+}
+
+function initHeroCarousel() {
+  const container = document.getElementById('c2sHeroCarousel');
+  if (!container) return;
+
+  showHeroSlide(0);
+  resetHeroCarouselTimer();
+
+  // Pause on hover
+  container.addEventListener('mouseenter', () => {
+    if (heroCarouselTimer) clearInterval(heroCarouselTimer);
+  });
+  container.addEventListener('mouseleave', () => {
+    resetHeroCarouselTimer();
+  });
+
+  // Touch Swipe for Mobile
+  let startX = 0;
+  container.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+
+  container.addEventListener('touchend', (e) => {
+    const endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+    if (diff > 40) {
+      nextHeroSlide();
+    } else if (diff < -40) {
+      prevHeroSlide();
+    }
+  }, { passive: true });
+}
+
+window.nextHeroSlide = nextHeroSlide;
+window.prevHeroSlide = prevHeroSlide;
+window.goToHeroSlide = goToHeroSlide;
+window.initHeroCarousel = initHeroCarousel;
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initHeroCarousel);
+} else {
+  initHeroCarousel();
+}
