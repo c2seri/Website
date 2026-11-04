@@ -371,3 +371,4 @@ if (indexHtml.includes(insertTarget) && !indexHtml.includes('data-view="admin"')
 
 fs.writeFileSync('index.html', indexHtml, 'utf8');
 console.log('index.html updated successfully with Super Admin Console!');
+

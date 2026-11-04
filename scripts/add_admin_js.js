@@ -342,3 +342,4 @@ if (!appJs.includes('C2S SUPER ADMIN COMMAND CENTER')) {
 
 fs.writeFileSync('app.js', appJs, 'utf8');
 console.log('app.js updated successfully!');
+
