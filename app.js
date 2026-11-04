@@ -1879,3 +1879,657 @@ if (document.readyState === "loading") {
 } else {
   handleUrlHashView();
 }
+
+
+/* ==========================================================================
+   ENTERPRISE CBT TEST SUITE: DUAL-MODE, PAUSE/RESUME, ANALYTICS & SOLUTIONS
+   ========================================================================== */
+
+// Enriched mock tests with faculty explanations
+const ENRICHED_TESTS = [
+  {
+    id: "BANK-MOCK-1",
+    exam: "BANK",
+    title: "BANK PO / Clerk Prelims Mock 1",
+    minutes: 10,
+    calculatorAllowed: true,
+    qs: [
+      ["What is 15% of 240?", ["24", "36", "30", "48"], 1, "Calculation: (15 / 100) * 240 = 0.15 * 240 = 36. Hence, Option B is correct.", "Quantitative Aptitude"],
+      ["A train covers 180 km in 3 hours. What is its speed?", ["50 km/h", "60 km/h", "70 km/h", "40 km/h"], 1, "Speed = Distance / Time = 180 km / 3 h = 60 km/h. Hence, Option B is correct.", "Quantitative Aptitude"],
+      ["Find the next number in the series: 2, 6, 12, 20, ?", ["28", "30", "32", "36"], 1, "Differences between consecutive terms: 6-2 = 4, 12-6 = 6, 20-12 = 8. Next difference must be +10. So 20 + 10 = 30. Hence, Option B is correct.", "Reasoning Ability"],
+      ["What is the synonym of 'Rapid'?", ["Slow", "Fast", "Weak", "Late"], 1, "'Rapid' denotes happening in a short time or at a great rate. Its direct synonym is 'Fast'. Hence, Option B is correct.", "English Language"]
+    ]
+  },
+  {
+    id: "SSC-MOCK-1",
+    exam: "SSC",
+    title: "SSC CGL / CHSL Tier-1 Mock 1",
+    minutes: 10,
+    calculatorAllowed: false,
+    qs: [
+      ["What is 12 x 8?", ["84", "96", "92", "108"], 1, "Multiplication table: 12 * 8 = 96.", "Quantitative Aptitude"],
+      ["Find the odd one out: 2, 3, 5, 9, 11", ["2", "9", "5", "11"], 1, "2, 3, 5, and 11 are all Prime Numbers. 9 is a composite number (3 * 3). Hence, 9 is the odd one out.", "General Intelligence"],
+      ["If x + 5 = 12, what is the value of x?", ["5", "6", "7", "8"], 2, "Solving linear equation: x = 12 - 5 = 7.", "Quantitative Aptitude"],
+      ["What is the official state capital of Odisha?", ["Cuttack", "Bhubaneswar", "Rourkela", "Puri"], 1, "Bhubaneswar was designated as the capital of Odisha in 1948, taking over from the historic city of Cuttack.", "General Awareness"]
+    ]
+  },
+  {
+    id: "RAILWAY-MOCK-1",
+    exam: "RAILWAY",
+    title: "Railway NTPC & Group D Mock 1",
+    minutes: 10,
+    calculatorAllowed: false,
+    qs: [
+      ["What is 25% of 400?", ["75", "100", "125", "150"], 1, "Calculation: 25% = 1/4th. 400 / 4 = 100.", "Mathematics"],
+      ["A train 120 m long crosses an electric pole in 6 seconds. What is its speed in m/s?", ["15 m/s", "20 m/s", "25 m/s", "30 m/s"], 1, "Speed = Distance / Time = 120 / 6 = 20 m/s.", "Mathematics"],
+      ["Which of the following is a prime number?", ["21", "27", "29", "33"], 2, "21 is divisible by 3 and 7; 27 is divisible by 3 and 9; 33 is divisible by 3 and 11. 29 has only two factors (1 and 29) and is prime.", "General Intelligence"],
+      ["At normal atmospheric pressure, water boils at what temperature?", ["90°C", "95°C", "100°C", "110°C"], 2, "The boiling point of pure water at standard atmospheric pressure (1 atm) is 100°C (212°F).", "General Science"]
+    ]
+  },
+  {
+    id: "OSSC-MOCK-1",
+    exam: "OSSC",
+    title: "OSSC CGL & CTS Mock 1",
+    minutes: 10,
+    calculatorAllowed: false,
+    qs: [
+      ["What is 20% of 250?", ["40", "50", "60", "70"], 1, "20% of 250 = 0.20 * 250 = 50.", "Arithmetic"],
+      ["What is the official State Animal of Odisha?", ["Tiger", "Sambar deer", "Elephant", "Leopard"], 1, "The Sambar deer (Rusa unicolor) is the officially designated state animal of Odisha.", "Odisha GK"],
+      ["Find the synonym of 'Brave':", ["Coward", "Bold", "Weak", "Shy"], 1, "'Brave' means showing courage or ready to face danger. Its synonym is 'Bold'.", "English"],
+      ["Calculate 144 / 12 = ?", ["10", "11", "12", "13"], 2, "12 * 12 = 144, hence 144 / 12 = 12.", "Arithmetic"]
+    ]
+  },
+  {
+    id: "UPSC-MOCK-1",
+    exam: "UPSC",
+    title: "UPSC Civil Services / OPSC OAS Mock 1",
+    minutes: 10,
+    calculatorAllowed: false,
+    qs: [
+      ["Which Articles of the Constitution of India deal with Fundamental Rights?", ["Art. 12-35", "Art. 36-51", "Art. 52-78", "Art. 1-4"], 0, "Part III of the Constitution (Articles 12 to 35) embodies the Fundamental Rights guaranteed to Indian citizens.", "Indian Polity"],
+      ["Who was the first President of the Republic of India?", ["Dr. Rajendra Prasad", "Dr. A.P.J. Abdul Kalam", "Dr. S. Radhakrishnan", "Dr. Zakir Husain"], 0, "Dr. Rajendra Prasad served as the first President of India from 1950 to 1962.", "Indian History"],
+      ["Photosynthesis primarily occurs in which part of the plant cell?", ["Root", "Stem", "Chloroplasts in Leaf", "Flower"], 2, "Photosynthesis takes place predominantly inside the chloroplasts located within the green leaves of plants.", "General Science"],
+      ["The river Ganga empties into which water body?", ["Arabian Sea", "Bay of Bengal", "Indian Ocean", "Pacific Ocean"], 1, "The Ganga river flows eastward through India and Bangladesh before discharging into the Bay of Bengal.", "Geography"]
+    ]
+  }
+];
+
+let currentExamTest = null;
+let currentExamMode = "live"; // "live" or "practice"
+let currentAnswers = [];
+let currentMarked = [];
+let currentQuestionIdx = 0;
+let testSecondsRemaining = 0;
+let testTimerInterval = null;
+let testViolationsCount = 0;
+let lastSubmittedResult = null;
+
+function startTest(testId) {
+  const customTests = store.get("c2s_custom_tests", []);
+  const allTests = [...ENRICHED_TESTS, ...customTests];
+  const t = allTests.find(x => x.id === testId);
+  if (!t) return alert("Test not found.");
+
+  // Check if test requires unlocking
+  if (!isTestUnlocked(t.id)) {
+    openTestPaymentModal(t.id);
+    return;
+  }
+
+  currentExamTest = t;
+  currentAnswers = new Array(t.qs.length).fill(null);
+  currentMarked = new Array(t.qs.length).fill(false);
+  currentQuestionIdx = 0;
+  testViolationsCount = 0;
+
+  const tag = $("#lockExamTag");
+  if (tag) tag.innerText = (t.exam || "GOVT EXAM") + " TRACK";
+  const title = $("#lockTitle");
+  if (title) title.innerText = t.title;
+  const note = $("#lockCalcNote");
+  if (note) note.innerHTML = t.calculatorAllowed ? "<strong>&#128425; Calculator Allowed</strong> (Bank pattern)" : "<strong>&#10006; No Calculator</strong> (Standard pattern)";
+
+  // Reset areas
+  $("#instruct").classList.remove("hidden");
+  $("#testArea").classList.add("hidden");
+  $("#pausedArea").classList.add("hidden");
+  $("#analysisArea").classList.add("hidden");
+  $("#solutionsArea").classList.add("hidden");
+  $("#examLock").classList.remove("hidden");
+}
+
+function exitTestSetup() {
+  $("#examLock").classList.add("hidden");
+  currentExamTest = null;
+}
+
+function beginExam() {
+  if (!$("#declare").checked) return alert("Please confirm that you will follow the exam rules.");
+  
+  // Detect selected mode
+  const modeRadio = document.querySelector('input[name="testModeSelect"]:checked');
+  currentExamMode = modeRadio ? modeRadio.value : "live";
+
+  $("#instruct").classList.add("hidden");
+  $("#testArea").classList.remove("hidden");
+
+  const badge = $("#activeTestBadge");
+  if (badge) {
+    if (currentExamMode === "live") {
+      badge.innerText = "LIVE EXAM MODE (LOCKED)";
+      badge.style.background = "#fee2e2";
+      badge.style.color = "#dc2626";
+      $("#btnPauseTest").style.display = "none";
+    } else {
+      badge.innerText = "PRACTICE MODE (PAUSABLE)";
+      badge.style.background = "#dcfce7";
+      badge.style.color = "#16a34a";
+      $("#btnPauseTest").style.display = "inline-block";
+    }
+  }
+
+  const actTitle = $("#activeTestTitle");
+  if (actTitle) actTitle.innerText = currentExamTest.title;
+
+  testSecondsRemaining = currentExamTest.minutes * 60;
+
+  // Toggle calculator
+  const calcBox = $("#calcBox");
+  if (calcBox) calcBox.classList.toggle("hidden", !currentExamTest.calculatorAllowed);
+
+  // Fullscreen only in live mode
+  if (currentExamMode === "live") {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+    window.addEventListener("fullscreenchange", handleExamFullscreenChange);
+    window.addEventListener("visibilitychange", handleExamVisibilityChange);
+  }
+
+  renderQuestionPalette();
+  renderQuestion();
+  startExamTimer();
+}
+
+function handleExamFullscreenChange() {
+  if (currentExamMode !== "live") return;
+  if (!document.fullscreenElement) {
+    recordExamViolation("Exiting fullscreen is not permitted in Live Exam Mode.");
+  }
+}
+
+function handleExamVisibilityChange() {
+  if (currentExamMode !== "live") return;
+  if (document.hidden) {
+    recordExamViolation("Switching browser tabs or minimizing the window is not permitted.");
+  }
+}
+
+function recordExamViolation(reason) {
+  testViolationsCount++;
+  alert("WARNING Violation (" + testViolationsCount + "/3): " + reason + "\n3 violations will automatically submit your exam.");
+  if (testViolationsCount >= 3) {
+    submitExam("auto-submitted (3 anti-cheat violations)");
+  }
+}
+
+function startExamTimer() {
+  clearInterval(testTimerInterval);
+  updateTimerDisplay();
+  testTimerInterval = setInterval(() => {
+    testSecondsRemaining--;
+    updateTimerDisplay();
+    if (testSecondsRemaining <= 0) {
+      clearInterval(testTimerInterval);
+      submitExam("time-up");
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(testSecondsRemaining / 60);
+  const s = testSecondsRemaining % 60;
+  const timeStr = String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+  const el = $("#timer");
+  if (el) el.innerText = "Time left: " + timeStr;
+}
+
+function renderQuestionPalette() {
+  const container = $("#qPaletteButtons");
+  if (!container || !currentExamTest) return;
+
+  container.innerHTML = currentExamTest.qs.map((q, i) => {
+    let bg = "#f1f5f9", col = "#475569", border = "#cbd5e1";
+    if (currentAnswers[i] !== null) {
+      bg = "#22c55e"; col = "#fff"; border = "#16a34a"; // Answered green
+    } else if (currentMarked[i]) {
+      bg = "#8b5cf6"; col = "#fff"; border = "#7c3aed"; // Review purple
+    }
+    if (i === currentQuestionIdx) {
+      border = "#0f172a";
+    }
+    return `<button type="button" onclick="jumpToQuestion(${i})" style="width:28px;height:28px;border-radius:6px;border:1.5px solid ${border};background:${bg};color:${col};font-weight:700;font-size:12px;cursor:pointer;">${i+1}</button>`;
+  }).join("");
+}
+
+function jumpToQuestion(idx) {
+  currentQuestionIdx = idx;
+  renderQuestion();
+  renderQuestionPalette();
+}
+
+function renderQuestion() {
+  if (!currentExamTest) return;
+  const q = currentExamTest.qs[currentQuestionIdx];
+  const qBox = $("#qBox");
+  if (!qBox) return;
+
+  const sectionName = q[4] || currentExamTest.exam || "Sectional";
+
+  qBox.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <span style="font-size:12px;font-weight:700;color:#64748b;">QUESTION ${currentQuestionIdx + 1} OF ${currentExamTest.qs.length} &bull; <strong style="color:#2563eb;">${escapeHtml(sectionName)}</strong></span>
+      <span style="font-size:11.5px;color:#059669;font-weight:700;">+1.00 / -0.25 Mark</span>
+    </div>
+    <div style="font-size:16px;font-weight:700;color:#0f172a;line-height:1.5;margin-bottom:18px;">
+      ${escapeHtml(q[0])}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      ${q[1].map((opt, optIdx) => {
+        const isSelected = currentAnswers[currentQuestionIdx] === optIdx;
+        const optLetter = String.fromCharCode(65 + optIdx);
+        return `
+          <button type="button" class="c2s-opt-btn ${isSelected ? 'selected' : ''}" onclick="selectAnswer(${optIdx})" style="text-align:left;padding:12px 16px;border-radius:10px;border:1.5px solid ${isSelected ? '#2563eb' : '#cbd5e1'};background:${isSelected ? '#eff6ff' : '#ffffff'};font-weight:${isSelected ? '700' : '500'};color:${isSelected ? '#1e40af' : '#1e293b'};cursor:pointer;display:flex;align-items:center;gap:12px;font-size:14.5px;transition:all 0.15s ease;">
+            <span style="width:24px;height:24px;border-radius:50%;background:${isSelected ? '#2563eb' : '#f1f5f9'};color:${isSelected ? '#fff' : '#64748b'};display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;">${optLetter}</span>
+            <span>${escapeHtml(opt)}</span>
+          </button>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function selectAnswer(optIdx) {
+  currentAnswers[currentQuestionIdx] = optIdx;
+  currentMarked[currentQuestionIdx] = false;
+  renderQuestion();
+  renderQuestionPalette();
+}
+
+function clearCurrentAnswer() {
+  currentAnswers[currentQuestionIdx] = null;
+  currentMarked[currentQuestionIdx] = false;
+  renderQuestion();
+  renderQuestionPalette();
+}
+
+function markForReviewAndNext() {
+  currentMarked[currentQuestionIdx] = true;
+  move(1);
+}
+
+function move(step) {
+  const nextIdx = currentQuestionIdx + step;
+  if (nextIdx >= 0 && nextIdx < currentExamTest.qs.length) {
+    currentQuestionIdx = nextIdx;
+    renderQuestion();
+    renderQuestionPalette();
+  }
+}
+
+// --------------------------------------------------------------------------
+// PAUSE & RESUME LOGIC (FOR PRACTICE MODE)
+// --------------------------------------------------------------------------
+function pauseCurrentTest() {
+  if (currentExamMode !== "practice") {
+    alert("Live All-India Exam Mode cannot be paused. Complete or submit the test.");
+    return;
+  }
+  clearInterval(testTimerInterval);
+
+  const pausedState = {
+    testId: currentExamTest.id,
+    mode: currentExamMode,
+    answers: currentAnswers,
+    marked: currentMarked,
+    questionIdx: currentQuestionIdx,
+    secondsLeft: testSecondsRemaining,
+    pausedAt: new Date().toISOString()
+  };
+  store.set("c2s_paused_test", pausedState);
+
+  $("#testArea").classList.add("hidden");
+  $("#pausedArea").classList.remove("hidden");
+  checkAndDisplayPausedBanner();
+}
+
+function resumePausedTest() {
+  const pausedState = store.get("c2s_paused_test", null);
+  if (!pausedState) return;
+
+  const customTests = store.get("c2s_custom_tests", []);
+  const allTests = [...ENRICHED_TESTS, ...customTests];
+  const t = allTests.find(x => x.id === pausedState.testId);
+  if (!t) return;
+
+  currentExamTest = t;
+  currentExamMode = pausedState.mode || "practice";
+  currentAnswers = pausedState.answers || new Array(t.qs.length).fill(null);
+  currentMarked = pausedState.marked || new Array(t.qs.length).fill(false);
+  currentQuestionIdx = pausedState.questionIdx || 0;
+  testSecondsRemaining = pausedState.secondsLeft || (t.minutes * 60);
+
+  $("#instruct").classList.add("hidden");
+  $("#pausedArea").classList.add("hidden");
+  $("#analysisArea").classList.add("hidden");
+  $("#solutionsArea").classList.add("hidden");
+  $("#testArea").classList.remove("hidden");
+  $("#examLock").classList.remove("hidden");
+
+  const badge = $("#activeTestBadge");
+  if (badge) {
+    badge.innerText = "PRACTICE MODE (RESUMED)";
+    badge.style.background = "#dcfce7";
+    badge.style.color = "#16a34a";
+    $("#btnPauseTest").style.display = "inline-block";
+  }
+
+  const actTitle = $("#activeTestTitle");
+  if (actTitle) actTitle.innerText = t.title;
+
+  renderQuestionPalette();
+  renderQuestion();
+  startExamTimer();
+}
+
+function discardPausedTest() {
+  if (confirm("Discard this paused test? Progress will not be saved.")) {
+    store.set("c2s_paused_test", null);
+    checkAndDisplayPausedBanner();
+  }
+}
+
+function closePausedNoticeAndGoHome() {
+  $("#examLock").classList.add("hidden");
+  checkAndDisplayPausedBanner();
+  show("tests");
+}
+
+function checkAndDisplayPausedBanner() {
+  const banner = $("#c2sPausedBanner");
+  const info = $("#pausedBannerInfo");
+  if (!banner) return;
+
+  const paused = store.get("c2s_paused_test", null);
+  if (paused && paused.testId) {
+    const customTests = store.get("c2s_custom_tests", []);
+    const allTests = [...ENRICHED_TESTS, ...customTests];
+    const t = allTests.find(x => x.id === paused.testId);
+    const title = t ? t.title : "Mock Test";
+    const mins = Math.ceil(paused.secondsLeft / 60);
+    if (info) info.innerText = title + " &bull; " + mins + " minutes remaining.";
+    banner.style.display = "flex";
+  } else {
+    banner.style.display = "none";
+  }
+}
+
+// --------------------------------------------------------------------------
+// TEST SUBMISSION & PERFORMANCE ANALYSIS GENERATOR
+// --------------------------------------------------------------------------
+function confirmSubmit(reason) {
+  const unattempted = currentAnswers.filter(a => a === null).length;
+  const msg = unattempted > 0 
+    ? "You have " + unattempted + " unattempted questions.\nAre you sure you want to submit your test?"
+    : "Are you sure you want to submit your test?";
+
+  if (confirm(msg)) {
+    submitExam(reason);
+  }
+}
+
+function submitExam(reason) {
+  clearInterval(testTimerInterval);
+
+  if (document.exitFullscreen) {
+    document.exitFullscreen().catch(() => {});
+  }
+  window.removeEventListener("fullscreenchange", handleExamFullscreenChange);
+  window.removeEventListener("visibilitychange", handleExamVisibilityChange);
+
+  // Clear any paused state
+  store.set("c2s_paused_test", null);
+  checkAndDisplayPausedBanner();
+
+  const t = currentExamTest;
+  let correct = 0, wrong = 0, skipped = 0;
+  
+  t.qs.forEach((q, i) => {
+    const userAns = currentAnswers[i];
+    if (userAns === null) {
+      skipped++;
+    } else if (userAns === q[2]) {
+      correct++;
+    } else {
+      wrong++;
+    }
+  });
+
+  // Calculate score with negative marking (-0.25)
+  const rawScore = (correct * 1) - (wrong * 0.25);
+  const finalScore = Math.max(0, rawScore).toFixed(2);
+  const accuracy = (correct + wrong) > 0 ? Math.round((correct / (correct + wrong)) * 100) : 0;
+  const timeTakenSeconds = (t.minutes * 60) - testSecondsRemaining;
+  const timeTakenStr = Math.floor(timeTakenSeconds / 60) + "m " + (timeTakenSeconds % 60) + "s";
+
+  const resultRecord = {
+    testId: t.id,
+    title: t.title,
+    exam: t.exam,
+    mode: currentExamMode,
+    totalQuestions: t.qs.length,
+    correct: correct,
+    wrong: wrong,
+    skipped: skipped,
+    score: parseFloat(finalScore),
+    maxMarks: t.qs.length,
+    accuracy: accuracy,
+    timeTaken: timeTakenStr,
+    answers: currentAnswers,
+    violations: testViolationsCount,
+    submittedAt: new Date().toISOString()
+  };
+
+  // Save in user test attempts history
+  const given = store.get("c2s_main_given", []);
+  given.push(resultRecord);
+  store.set("c2s_main_given", given);
+
+  lastSubmittedResult = {
+    test: t,
+    result: resultRecord
+  };
+
+  // Display rich Analysis Modal
+  displayAnalysisReport(lastSubmittedResult);
+}
+
+function displayAnalysisReport(data) {
+  const t = data.test;
+  const r = data.result;
+
+  $("#testArea").classList.add("hidden");
+  $("#pausedArea").classList.add("hidden");
+  $("#solutionsArea").classList.add("hidden");
+  $("#analysisArea").classList.remove("hidden");
+
+  const titleEl = $("#analysisTestTitle");
+  if (titleEl) titleEl.innerText = t.title;
+
+  const scoreEl = $("#analysisScore");
+  if (scoreEl) scoreEl.innerText = r.score + " / " + r.maxMarks;
+
+  const pctEl = $("#analysisPercentScore");
+  if (pctEl) pctEl.innerText = Math.round((r.score / r.maxMarks) * 100) + "% Total";
+
+  const accEl = $("#analysisAccuracy");
+  if (accEl) accEl.innerText = r.accuracy + "%";
+
+  const timeEl = $("#analysisTime");
+  if (timeEl) timeEl.innerText = r.timeTaken;
+
+  const badgeC = $("#badgeCorrect");
+  if (badgeC) badgeC.innerHTML = "&#10003; " + r.correct + " Correct (+" + r.correct + ")";
+
+  const badgeW = $("#badgeWrong");
+  if (badgeW) badgeW.innerHTML = "&times; " + r.wrong + " Wrong (-" + (r.wrong * 0.25).toFixed(2) + ")";
+
+  const badgeS = $("#badgeSkipped");
+  if (badgeS) badgeS.innerHTML = "&cir; " + r.skipped + " Unattempted";
+
+  const rankEl = $("#analysisRank");
+  if (rankEl) {
+    const pct = Math.round((r.score / r.maxMarks) * 100);
+    if (pct >= 80) rankEl.innerText = "Top 5%";
+    else if (pct >= 60) rankEl.innerText = "Top 18%";
+    else if (pct >= 40) rankEl.innerText = "Top 35%";
+    else rankEl.innerText = "Top 55%";
+  }
+
+  const recEl = $("#analysisRecommendation");
+  if (recEl) {
+    if (r.accuracy >= 85) {
+      recEl.innerHTML = "<strong>Excellent accuracy (" + r.accuracy + "%)!</strong> You have strong foundational clarity in this track. Keep maintaining this precision under exam hall pressure.";
+    } else if (r.accuracy >= 65) {
+      recEl.innerHTML = "<strong>Good effort!</strong> Focus on minimizing guesswork to eliminate the -" + (r.wrong * 0.25).toFixed(2) + " negative marking penalty. Check the detailed solutions below for shortcuts.";
+    } else {
+      recEl.innerHTML = "<strong>Revision Recommended:</strong> Review the detailed explanations and step-by-step solutions below to strengthen weak concepts before the next test.";
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// DETAILED SOLUTIONS & ANSWER KEY VIEWER
+// --------------------------------------------------------------------------
+function openDetailedSolutions() {
+  if (!lastSubmittedResult) return;
+  const t = lastSubmittedResult.test;
+  const r = lastSubmittedResult.result;
+
+  $("#analysisArea").classList.add("hidden");
+  $("#solutionsArea").classList.remove("hidden");
+
+  const sub = $("#solutionSubtitle");
+  if (sub) sub.innerText = t.title + " &bull; " + r.correct + " Correct, " + r.wrong + " Incorrect, " + r.skipped + " Skipped";
+
+  renderSolutionsList("all");
+}
+
+function backToAnalysis() {
+  $("#solutionsArea").classList.add("hidden");
+  $("#analysisArea").classList.remove("hidden");
+}
+
+function filterSolutions(filterType, btn) {
+  document.querySelectorAll("#solutionsArea .domain-tab-pill").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  renderSolutionsList(filterType);
+}
+
+function renderSolutionsList(filterType) {
+  const container = $("#solutionsListContainer");
+  if (!container || !lastSubmittedResult) return;
+
+  const t = lastSubmittedResult.test;
+  const r = lastSubmittedResult.result;
+
+  let html = "";
+  t.qs.forEach((q, i) => {
+    const userChoice = r.answers[i];
+    const correctChoice = q[2];
+    const isCorrect = userChoice === correctChoice;
+    const isSkipped = userChoice === null;
+    const isWrong = !isCorrect && !isSkipped;
+
+    if (filterType === "correct" && !isCorrect) return;
+    if (filterType === "wrong" && !isWrong) return;
+    if (filterType === "skipped" && !isSkipped) return;
+
+    let statusBadge = "";
+    let borderCol = "#e2e8f0";
+
+    if (isCorrect) {
+      statusBadge = '<span style="background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;padding:2px 8px;border-radius:6px;font-size:11.5px;font-weight:700;">&#10003; Correct (+1.00)</span>';
+      borderCol = "#86efac";
+    } else if (isWrong) {
+      statusBadge = '<span style="background:#fef2f2;color:#991b1b;border:1px solid #fecaca;padding:2px 8px;border-radius:6px;font-size:11.5px;font-weight:700;">&times; Incorrect (-0.25)</span>';
+      borderCol = "#fca5a5";
+    } else {
+      statusBadge = '<span style="background:#f8fafc;color:#475569;border:1px solid #cbd5e1;padding:2px 8px;border-radius:6px;font-size:11.5px;font-weight:700;">&cir; Skipped (0.00)</span>';
+      borderCol = "#cbd5e1";
+    }
+
+    const explanation = q[3] || "Verified as per official recruitment commission syllabus. Option " + String.fromCharCode(65 + correctChoice) + " is correct.";
+
+    html += `
+      <div style="background:#ffffff;border:1.5px solid ${borderCol};border-radius:12px;padding:18px;line-height:1.6;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <strong style="color:#0f172a;font-size:14px;">Question ${i + 1} &bull; <span style="color:#2563eb;">${escapeHtml(q[4] || t.exam || "General")}</span></strong>
+          ${statusBadge}
+        </div>
+        <p style="font-weight:700;color:#1e293b;margin:0 0 14px;font-size:15px;">${escapeHtml(q[0])}</p>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+          ${q[1].map((opt, optIdx) => {
+            const isUserOpt = userChoice === optIdx;
+            const isCorrectOpt = correctChoice === optIdx;
+            let optStyle = "background:#f8fafc;border:1px solid #e2e8f0;color:#334155;";
+
+            if (isCorrectOpt) {
+              optStyle = "background:#ecfdf5;border:1.5px solid #10b981;color:#065f46;font-weight:700;";
+            } else if (isUserOpt && !isCorrectOpt) {
+              optStyle = "background:#fef2f2;border:1.5px solid #ef4444;color:#991b1b;font-weight:700;";
+            }
+
+            return `
+              <div style="padding:8px 12px;border-radius:8px;font-size:13.5px;${optStyle}">
+                <strong>${String.fromCharCode(65 + optIdx)}.</strong> ${escapeHtml(opt)}
+                ${isCorrectOpt ? ' <span style="color:#16a34a;font-weight:800;">&#10003; Correct Answer</span>' : ''}
+                ${isUserOpt && !isCorrectOpt ? ' <span style="color:#dc2626;font-weight:800;">&times; Your Answer</span>' : ''}
+              </div>
+            `;
+          }).join("")}
+        </div>
+
+        <!-- Faculty Step-by-Step Solution Box -->
+        <div style="background:#f1f5f9;border-left:4px solid #2563eb;padding:12px 14px;border-radius:6px;font-size:13px;color:#334155;">
+          <strong style="color:#1e40af;display:block;margin-bottom:4px;">&#129302; Step-by-Step Solution &amp; Explanation:</strong>
+          ${escapeHtml(explanation)}
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html || '<p style="color:#64748b;text-align:center;padding:20px;">No questions match this filter.</p>';
+}
+
+function reattemptCurrentTest() {
+  if (!lastSubmittedResult) return;
+  const testId = lastSubmittedResult.test.id;
+  $("#analysisArea").classList.add("hidden");
+  startTest(testId);
+}
+
+function closeAnalysisAndGoHome() {
+  $("#examLock").classList.add("hidden");
+  lastSubmittedResult = null;
+  renderTests();
+  show("tests");
+}
+
+// Hook paused banner check on page initialization
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", checkAndDisplayPausedBanner);
+} else {
+  checkAndDisplayPausedBanner();
+}

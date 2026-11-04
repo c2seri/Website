@@ -6740,3 +6740,31 @@ section[data-view] {
     display: none !important; /* Hide long pill on small mobile screens */
   }
 }
+
+
+/* ==========================================================================
+   CBT TEST ENGINE MODES, PALETTES & SOLUTION STYLING
+   ========================================================================== */
+.c2s-test-mode-card:hover {
+  border-color: #2563eb !important;
+  background: #f8fafc;
+}
+
+.c2s-opt-btn:hover {
+  border-color: #2563eb !important;
+  background: #f0f7ff !important;
+}
+
+@keyframes toastPop {
+  0% { transform: translate(-50%, -20px); opacity: 0; }
+  100% { transform: translate(-50%, 0); opacity: 1; }
+}
+
+@keyframes toastSpin {
+  100% { transform: rotate(360deg); }
+}
+
+.c2s-back-to-coaching-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(29,78,216,0.45) !important;
+}
