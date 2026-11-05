@@ -119,24 +119,26 @@
     <!-- Tier 1: Brand Logo, Career Pass Goal Pill, Super Admin, Library, Student Login -->
     <div class="header-tier-1">
       <div class="container header-tier-1-inner">
-        <!-- Brand Logo on Left (Full Form & Tagline Restored) -->
-        <a href="/" class="brand" title="C2S — College to Service | Return to Home" onclick="if(window.resetToHomeView){window.resetToHomeView(event);}" style="text-decoration:none;cursor:pointer;">
-          <span class="logo-badge" role="img" aria-label="C2S official logo"></span>
-          <div class="brand-text">
-            <div class="brand-title">
-              <span class="brand-blue">C2S</span>
-              <span class="brand-sub">College to Service</span>
+        <!-- Left Group: Brand Logo + Career Pass Button (Pura Left Logo k Right Side mein) -->
+        <div class="header-tier-1-left">
+          <a href="/" class="brand" title="C2S — College to Service | Return to Home" onclick="if(window.resetToHomeView){window.resetToHomeView(event);}" style="text-decoration:none;cursor:pointer;">
+            <span class="logo-badge" role="img" aria-label="C2S official logo"></span>
+            <div class="brand-text">
+              <div class="brand-title">
+                <span class="brand-blue">C2S</span>
+                <span class="brand-sub">College to Service</span>
+              </div>
+              <span class="brand-tagline">Your Selection Our Mission</span>
             </div>
-            <span class="brand-tagline">Your Selection Our Mission</span>
-          </div>
-        </a>
+          </a>
 
-        <!-- Cohort / Career Pass Goal Selector Pill (PhysicsWallah / EdTech Style) -->
-        <button type="button" id="c2sCohortHeaderBtn" onclick="openCohortSelection()" class="c2s-cohort-pill-btn" title="Choose your Target Exam Goal">
-          <span style="font-size:15px;">🎓</span>
-          <span class="cohort-text">Select Goal / Career Pass</span>
-          <span style="font-size:11px;font-weight:900;opacity:0.8;">❯</span>
-        </button>
+          <!-- Career Pass Goal Selector Pill (Directly next to logo) -->
+          <button type="button" id="c2sCohortHeaderBtn" onclick="if(typeof show==='function'){show('pass');}else{openCohortSelection();}" class="c2s-cohort-pill-btn" title="Choose your Target Exam Goal or Explore Career Pass">
+            <span style="font-size:14px;">🎓</span>
+            <span class="cohort-text">Career Pass</span>
+            <span style="font-size:11px;font-weight:900;">❯</span>
+          </button>
+        </div>
 
         <!-- Tier 1 Quick Access Actions & Mobile Hamburger -->
         <div class="header-tier-1-actions">

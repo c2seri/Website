@@ -186,6 +186,13 @@ a:hover {
   box-sizing: border-box !important;
 }
 
+.header-tier-1-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  flex-shrink: 0 !important;
+}
+
 .c2s-cohort-pill-btn {
   background: #0f172a;
   color: #ffffff;
