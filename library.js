@@ -456,8 +456,8 @@ function libAdmit(e) {
 
   const acceptTerms = document.getElementById("acceptLibraryTerms");
   if (acceptTerms && !acceptTerms.checked) {
-    alert("Please read and accept all 24 Library Use Rules & Instructions and the Declaration before taking admission.");
-    acceptTerms.focus();
+    if (typeof window.openLibraryRulesModal === 'function') window.openLibraryRulesModal();
+    alert("Please review the 24 Library Use Rules & Instructions in the popup and click 'I Have Read & Accept Declaration'.");
     return;
   }
 

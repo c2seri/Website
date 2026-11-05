@@ -279,10 +279,6 @@
           </div>
         </div>
 
-        <!-- 6. Payment Details -->
-        <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:28px 0 14px;color:var(--c2s-navy-900);">
-          6. Payment Details &amp; Summary
-        </h3>
         <!-- 6. Payment Details & Summary -->
         <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:28px 0 14px;color:var(--c2s-navy-900);">
           6. Payment Details &amp; Summary
@@ -319,22 +315,23 @@
         </h3>
 
         <div style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:14px;padding:20px;box-shadow:0 4px 14px -2px rgba(15, 23, 42, 0.05);margin-bottom:22px;">
-          <!-- Clean Clickable Checkbox Row -->
-          <div style="display:flex;align-items:flex-start;gap:12px;">
-            <input type="checkbox" id="acceptLibraryTerms" required style="width:20px;height:20px;margin-top:2px;cursor:pointer;accent-color:#ea580c;">
-            <div>
-              <label for="acceptLibraryTerms" style="font-size:14px;font-weight:750;color:#0f2a5c;cursor:pointer;line-height:1.5;display:block;">
-                I have read, understood, and agree to all 24 Library Use Rules &amp; Instructions and accept the Declaration. <span style="color:#dc2626;">*</span>
-              </label>
-              <div style="margin-top:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-                <button type="button" onclick="openLibraryRulesModal()" style="background:#eff6ff;color:#1d4ed8;border:1.5px solid #93c5fd;padding:6px 14px;border-radius:8px;font-size:12.5px;font-weight:750;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all 0.15s ease;">
-                  <span>📖 Click to Read all 24 Library Rules &amp; Declaration</span>
-                </button>
-                <button type="button" onclick="printLibraryRulesSheet()" style="background:transparent;color:#64748b;border:none;text-decoration:underline;font-size:12px;cursor:pointer;">
-                  🖨️ Print A4 Physical Slip
-                </button>
+          <!-- Interactive Trigger Box: Clicking opens the Declaration Popup -->
+          <div style="display:flex;align-items:flex-start;gap:14px;cursor:pointer;background:#ffffff;border:1.5px solid #93c5fd;border-radius:12px;padding:16px 18px;box-shadow:0 2px 8px rgba(37,99,235,0.06);transition:all 0.15s ease;" onclick="handleDeclarationBoxClick(event)">
+            <input type="checkbox" id="acceptLibraryTerms" required style="width:22px;height:22px;margin-top:2px;cursor:pointer;accent-color:#16a34a;" onclick="handleCheckboxClick(event)">
+            <div style="flex:1;">
+              <span style="font-size:14.5px;font-weight:800;color:#0f2a5c;line-height:1.45;display:block;">
+                I have read, understood, and accept all 24 Library Use Rules &amp; Instructions and agree to the Declaration. <span style="color:#dc2626;">*</span>
+              </span>
+              <span style="display:inline-block;font-size:12px;color:#2563eb;font-weight:750;margin-top:4px;">
+                👆 Click to View &amp; Accept Declaration in Popup
+              </span>
+              <div id="declarationAcceptedBadge" style="display:none;margin-top:8px;align-items:center;gap:6px;color:#15803d;font-size:12.5px;font-weight:750;">
+                <span style="background:#dcfce7;border:1px solid #86efac;padding:3px 10px;border-radius:999px;">✓ Declaration Read &amp; Accepted in Popup</span>
               </div>
             </div>
+            <button type="button" class="btn" style="background:#2563eb;color:#fff;font-size:12.5px;font-weight:800;padding:8px 16px;border-radius:8px;border:none;white-space:nowrap;cursor:pointer;box-shadow:0 2px 8px rgba(37,99,235,0.25);" onclick="event.stopPropagation();openLibraryRulesModal()">
+              📖 Read &amp; Accept →
+            </button>
           </div>
 
           <!-- Digital Signature & Date -->
@@ -517,6 +514,22 @@
       }
     });
 
+    window.handleDeclarationBoxClick = function(e) {
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON')) return;
+      openLibraryRulesModal();
+    };
+
+    window.handleCheckboxClick = function(e) {
+      const cb = document.getElementById('acceptLibraryTerms');
+      if (cb && !cb.checked) {
+        const badge = document.getElementById('declarationAcceptedBadge');
+        if (badge) badge.style.display = 'none';
+        return;
+      }
+      e.preventDefault();
+      openLibraryRulesModal();
+    };
+
     window.openLibraryRulesModal = function() {
       const modal = document.getElementById('libraryRulesModal');
       if (modal) modal.style.display = 'flex';
@@ -530,6 +543,14 @@
     window.agreeAndCloseRulesModal = function() {
       const cb = document.getElementById('acceptLibraryTerms');
       if (cb) cb.checked = true;
+      const badge = document.getElementById('declarationAcceptedBadge');
+      if (badge) badge.style.display = 'inline-flex';
+
+      const sig = document.getElementById('applicantSignature');
+      const cand = document.getElementById('candName');
+      if (sig && (!sig.value || !sig.value.trim()) && cand && cand.value.trim()) {
+        sig.value = cand.value.trim();
+      }
       closeLibraryRulesModal();
     };
   </script>
@@ -599,7 +620,7 @@
 
       <div style="background:#f8fafc;padding:14px 22px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
         <button type="button" class="btn ghost" onclick="printLibraryRulesSheet()" style="font-size:12.5px;padding:8px 16px;">🖨️ Print A4 Physical Copy</button>
-        <button type="button" class="btn orange" onclick="agreeAndCloseRulesModal()" style="font-size:13px;padding:10px 24px;font-weight:800;">✓ I Have Read &amp; Agree to Rules</button>
+        <button type="button" class="btn orange" onclick="agreeAndCloseRulesModal()" style="font-size:13.5px;padding:12px 28px;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(234,88,12,0.35);">✓ I Have Read &amp; Accept Declaration</button>
       </div>
     </div>
   </div>
