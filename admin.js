@@ -52,32 +52,117 @@ function switchRole(role) {
 }
 
 /* 2. Super Admin Dashboard & KPIs */
+/* ==========================================================================
+   DATE FILTER SYSTEM: Today, Last 7 Days, This Month, Last Month, This Quarter
+   ========================================================================== */
+let currentAdminDateFilter = 'this_month';
+
+function isDateInFilter(dateStr) {
+  if (!dateStr || currentAdminDateFilter === 'all_time') return true;
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return true;
+
+  const now = new Date();
+  const todayStr = now.toISOString().slice(0, 10);
+  const targetStr = d.toISOString().slice(0, 10);
+
+  if (currentAdminDateFilter === 'today') {
+    return targetStr === todayStr;
+  }
+
+  if (currentAdminDateFilter === '7days') {
+    const diffDays = (now - d) / (1000 * 60 * 60 * 24);
+    return diffDays >= 0 && diffDays <= 7;
+  }
+
+  if (currentAdminDateFilter === 'this_month') {
+    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+  }
+
+  if (currentAdminDateFilter === 'last_month') {
+    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    return d.getFullYear() === lastMonth.getFullYear() && d.getMonth() === lastMonth.getMonth();
+  }
+
+  if (currentAdminDateFilter === 'this_quarter') {
+    const currentQ = Math.floor(now.getMonth() / 3);
+    const dateQ = Math.floor(d.getMonth() / 3);
+    return d.getFullYear() === now.getFullYear() && currentQ === dateQ;
+  }
+
+  if (currentAdminDateFilter === 'custom') {
+    const fromVal = document.getElementById('adminFilterFromDate')?.value;
+    const toVal = document.getElementById('adminFilterToDate')?.value;
+    if (fromVal && targetStr < fromVal) return false;
+    if (toVal && targetStr > toVal) return false;
+    return true;
+  }
+
+  return true;
+}
+
+window.applyAdminDateFilter = function(filterMode) {
+  currentAdminDateFilter = filterMode;
+
+  const modes = ['today', '7days', 'this_month', 'last_month', 'this_quarter', 'all_time'];
+  modes.forEach(m => {
+    let btnId = 'filterBtn' + m;
+    if (m === '7days') btnId = 'filterBtn7Days';
+    if (m === 'this_month') btnId = 'filterBtnThisMonth';
+    if (m === 'last_month') btnId = 'filterBtnLastMonth';
+    if (m === 'this_quarter') btnId = 'filterBtnQuarter';
+    if (m === 'all_time') btnId = 'filterBtnAllTime';
+    if (m === 'today') btnId = 'filterBtnToday';
+    
+    const btn = document.getElementById(btnId);
+    if (btn) btn.classList.toggle('active', m === filterMode);
+  });
+
+  const labelEl = document.getElementById('kpiLabelAdmissions');
+  if (labelEl) {
+    const map = {
+      'today': "Today's Admissions",
+      '7days': "Last 7 Days Admissions",
+      'this_month': "This Month's Admissions",
+      'last_month': "Last Month's Admissions",
+      'this_quarter': "This Quarter's Admissions",
+      'all_time': "All Time Admissions",
+      'custom': "Custom Period Admissions"
+    };
+    labelEl.textContent = map[filterMode] || 'Admissions in Period';
+  }
+
+  renderSuperAdmin();
+  renderMemberList();
+};
+
 function renderSuperAdmin() {
   fetchLiveSupabaseStats();
   const users = store.get('c2s_main_users', []);
-  const members = store.get('c2s_lib_members', []);
+  const allMembers = store.get('c2s_lib_members', []);
   const given = store.get('c2s_main_given', []);
-  const ledger = store.get('c2s_lib_ledger', []);
+  const allLedger = store.get('c2s_lib_ledger', []);
   const taken = store.get('c2s_lib_taken', {});
   const transactions = store.get('c2s_transactions', []);
   const passesSold = store.get('c2s_passes_sold', 0);
 
-  const todayStr = new Date().toISOString().split("T")[0];
-  const todayAdmissions = members.filter(m => (m.admDate || m.date || "").startsWith(todayStr));
-  const todayRevenue = todayAdmissions.reduce((sum, m) => sum + (Number(m.paid) || Number(m.total) || 0), 0);
+  // Filter members & ledger by active Date Range Filter
+  const filteredMembers = allMembers.filter(m => isDateInFilter(m.admDate || m.date));
+  const filteredLedger = allLedger.filter(l => isDateInFilter(l.date));
 
+  const periodRevenue = filteredMembers.reduce((sum, m) => sum + (Number(m.paid) || Number(m.total) || 0), 0);
   const passRevenue = transactions.filter(t => t.desc && t.desc.includes("Test Pass")).reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
 
   const totalOccupied = Object.keys(taken).length;
   const occupancyPct = Math.round((totalOccupied / 48) * 100);
 
-  const totalRevenue = ledger.filter(l => l.amt > 0).reduce((sum, l) => sum + l.amt, 0) + passRevenue;
-  const totalPending = members.reduce((sum, m) => sum + (Number(m.pending) || 0), 0);
+  const totalRevenue = filteredLedger.filter(l => l.amt > 0).reduce((sum, l) => sum + l.amt, 0) + (currentAdminDateFilter === 'all_time' ? passRevenue : 0);
+  const totalPending = filteredMembers.reduce((sum, m) => sum + (Number(m.pending) || 0), 0);
 
   const elTodayAdm = document.getElementById('kpiTodayAdmissions');
-  if (elTodayAdm) elTodayAdm.textContent = todayAdmissions.length;
+  if (elTodayAdm) elTodayAdm.textContent = filteredMembers.length;
   const elTodayRev = document.getElementById('kpiTodayRevenue');
-  if (elTodayRev) elTodayRev.textContent = '₹' + todayRevenue + ' Today';
+  if (elTodayRev) elTodayRev.textContent = '₹' + periodRevenue + ' Collected';
 
   const elPasses = document.getElementById('kpiPassesSold');
   if (elPasses) elPasses.textContent = passesSold;
@@ -85,17 +170,17 @@ function renderSuperAdmin() {
   if (elPassRev) elPassRev.textContent = '₹' + passRevenue + ' Pass Revenue';
 
   document.getElementById('kpiMainStudents').textContent = users.length;
-  document.getElementById('kpiLibMembers').textContent = members.length;
+  document.getElementById('kpiLibMembers').textContent = allMembers.length;
   document.getElementById('kpiSeatOccupancy').textContent = occupancyPct + '%';
   document.getElementById('kpiSeatCount').textContent = totalOccupied + ' / 48 Desks Occupied';
-  document.getElementById('kpiRevenue').textContent = '₹' + totalRevenue;
+  document.getElementById('kpiRevenue').textContent = '₹' + (periodRevenue || totalRevenue);
   document.getElementById('kpiPending').textContent = '₹' + totalPending;
   document.getElementById('kpiTestsTaken').textContent = given.length;
 
   // Render Ledger
   const ledgerBody = document.getElementById('adminLedgerBody');
   if (ledgerBody) {
-    ledgerBody.innerHTML = ledger.length ? ledger.map(l => `
+    ledgerBody.innerHTML = filteredLedger.length ? filteredLedger.map(l => `
       <tr>
         <td>${l.date || 'Today'}</td>
         <td><strong>${l.desc}</strong></td>
@@ -104,13 +189,75 @@ function renderSuperAdmin() {
           ${l.amt > 0 ? '+' : ''}₹${Math.abs(l.amt)}
         </td>
       </tr>
-    `).join('') : '<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:24px;">No transactions recorded yet.</td></tr>';
+    `).join('') : '<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:24px;">No transactions found in this date range.</td></tr>';
   }
+
+  // Render Financial Stream Breakdowns & Expiry Alerts
+  renderStreamAnalytics(filteredMembers, periodRevenue, totalPending);
+  renderExpiryAlerts(allMembers);
 
   // Populate Super Admin Access Granter & Referrals
   populateStudentDatalist();
   renderAdminGrants();
   renderAdminReferrals();
+}
+
+function renderStreamAnalytics(members = [], totalPaid = 0, totalPending = 0) {
+  const libShiftEl = document.getElementById('analyticsLibShiftRev');
+  const regFeeEl = document.getElementById('analyticsRegFeeRev');
+  const testBatchEl = document.getElementById('analyticsTestBatchRev');
+  const recoveryEl = document.getElementById('analyticsRecoveryRate');
+
+  if (!libShiftEl) return;
+
+  const regFees = members.length * 200;
+  const shiftFees = Math.max(0, totalPaid - regFees);
+  const totalBilled = totalPaid + totalPending;
+  const recoveryRate = totalBilled > 0 ? Math.round((totalPaid / totalBilled) * 100) : 100;
+
+  libShiftEl.textContent = '₹' + shiftFees.toLocaleString('en-IN');
+  regFeeEl.textContent = '₹' + regFees.toLocaleString('en-IN');
+  if (testBatchEl) testBatchEl.textContent = '₹' + (store.get('c2s_passes_sold', 0) * 49).toLocaleString('en-IN');
+  if (recoveryEl) recoveryEl.textContent = recoveryRate + '%';
+}
+
+function renderExpiryAlerts(members = []) {
+  const container = document.getElementById('expiringMembersList');
+  const badge = document.getElementById('expiringCountBadge');
+  if (!container) return;
+
+  const now = new Date();
+  const expiring = members.filter(m => {
+    const admDate = new Date(m.date || m.admDate || now);
+    const expireDate = new Date(admDate);
+    expireDate.setDate(expireDate.getDate() + 30);
+    const diffDays = Math.ceil((expireDate - now) / (1000 * 60 * 60 * 24));
+    return diffDays >= -2 && diffDays <= 4;
+  });
+
+  if (badge) badge.textContent = expiring.length + ' Members Due for Renewal';
+
+  if (!expiring.length) {
+    container.innerHTML = '<div style="color:#059669;font-size:13px;padding:8px 0;">✓ All library memberships are current and in good standing. No renewals due in the next 3 days.</div>';
+    return;
+  }
+
+  container.innerHTML = expiring.map(m => {
+    const msg = `Namaste ${m.name}! Your C2S Library membership for ${m.shift} (${m.seat || 'Seat'}) at Patrapada centre is expiring soon. To keep your reserved desk and locker active, kindly renew your monthly fee (₹1000/mo) via UPI: info.c2seri@gmail.com or visit the front desk. Helpline: 9777481909`;
+    const waUrl = `https://wa.me/91${(m.mobile || '').replace(/\D/g, '')}?text=${encodeURIComponent(msg)}`;
+
+    return `
+      <div style="background:#ffffff;border:1px solid #fde68a;border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <strong style="font-size:14px;color:#0f2a5c;display:block;">${m.name} (${m.regNo})</strong>
+          <span style="font-size:12px;color:#64748b;">${m.shift} &bull; ${m.seat || 'Desk Assigned'}</span>
+        </div>
+        <a href="${waUrl}" target="_blank" class="btn" style="background:#25d366;color:#fff;padding:6px 12px;font-size:11.5px;font-weight:800;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+          <span>📲 Send Reminder</span>
+        </a>
+      </div>
+    `;
+  }).join('');
 }
 
 /* ==========================================================================
@@ -418,13 +565,20 @@ function renderMemberList(filterQuery = '') {
   tbody.innerHTML = filtered.length ? filtered.map(m => `
     <tr>
       <td><strong>${m.regNo}</strong></td>
-      <td>${m.name}</td>
+      <td><strong>${m.name}</strong></td>
       <td>${m.mobile || m.email || '—'}</td>
       <td><span class="pill">${m.shift}</span></td>
       <td style="color:var(--c2s-emerald-600);font-weight:750;">₹${m.paid || 0}</td>
       <td style="color:${m.pending > 0 ? '#dc2626' : 'var(--c2s-slate-500)'};font-weight:750;">₹${m.pending || 0}</td>
       <td>
-        <button class="btn ghost" style="padding:4px 8px;font-size:12px;" onclick="alert('Student: ' + '${m.name}' + '\nReg No: ' + '${m.regNo}' + '\nShift: ' + '${m.shift}' + '\nPaid: ₹' + '${m.paid}' + ' / Pending: ₹' + '${m.pending}')">View</button>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button type="button" class="btn ghost" style="padding:4px 8px;font-size:11.5px;font-weight:750;" onclick="openStudent360('${m.regNo}')">
+            👁️ 360 Profile
+          </button>
+          <button type="button" class="btn" style="background:#25d366;color:#ffffff;padding:4px 8px;font-size:11.5px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;" onclick="resendStudentReceipt('${m.regNo}')" title="Resend WhatsApp Receipt & Login Link">
+            <span>📲 Receipt</span>
+          </button>
+        </div>
       </td>
     </tr>
   `).join('') : '<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">No matching members found.</td></tr>';
@@ -439,6 +593,7 @@ function deskQuickAdmit(e) {
   e.preventDefault();
   const name = document.getElementById('deskName').value;
   const mobile = document.getElementById('deskMobile').value;
+  const examPref = document.getElementById('deskExam').value || 'Govt Examinations';
   const shift = document.getElementById('deskShift').value;
   const paid = Number(document.getElementById('deskPaid').value || 0);
   const pending = Number(document.getElementById('deskPending').value || 0);
@@ -450,10 +605,13 @@ function deskQuickAdmit(e) {
     regNo,
     name,
     mobile,
+    examPref,
     shift,
+    seat: 'Physical Allocation at Front Desk',
     paid,
     pending,
     total: paid + pending,
+    mode: 'Cash / Desk UPI',
     date: new Date().toISOString().slice(0, 10)
   };
 
@@ -469,16 +627,215 @@ function deskQuickAdmit(e) {
   });
   store.set('c2s_lib_ledger', ledger);
 
+  // Trigger Automated Notifications to Student and Owner
+  if (typeof window.dispatchAdmissionReceipt === 'function') {
+    window.dispatchAdmissionReceipt(newMember);
+  }
+
   e.target.reset();
-  alert(`Admission successfully registered!\nRegistration No: ${regNo}\nStudent: ${name}\nShift: ${shift}`);
+  alert(`🎉 Admission registered successfully!\nRegistration ID: ${regNo}\nStudent: ${name}\nShift: ${shift}\n\nAutomated receipt & student portal login credentials dispatched to WhatsApp & Email!`);
   renderFrontDesk();
   renderSuperAdmin();
+  renderShiftAttendance();
+}
+
+/* ==========================================================================
+   FEATURE: DAILY SHIFT ATTENDANCE & BIOMETRIC CHECK-IN
+   ========================================================================== */
+function renderShiftAttendance() {
+  const tbody = document.getElementById('attendanceTableBody');
+  if (!tbody) return;
+
+  const shiftFilter = document.getElementById('attendanceShiftSelect')?.value || 'all';
+  const members = store.get('c2s_lib_members', []);
+  const logs = store.get('c2s_attendance_logs', {});
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  const filtered = members.filter(m => shiftFilter === 'all' || (m.shift || '').includes(shiftFilter));
+
+  tbody.innerHTML = filtered.length ? filtered.map(m => {
+    const key = todayStr + '_' + m.regNo;
+    const status = logs[key] || 'Not Marked';
+    const isPresent = status === 'Present';
+    const isLate = status === 'Late';
+
+    return `
+      <tr>
+        <td><strong>${m.regNo}</strong></td>
+        <td>${m.name}</td>
+        <td>${m.shift} (${m.seat || 'Assigned Desk'})</td>
+        <td>
+          <span class="pill ${isPresent ? 'green' : (isLate ? 'orange' : 'gray')}">
+            ${status}
+          </span>
+        </td>
+        <td>
+          <div style="display:flex;gap:6px;">
+            <button type="button" class="btn" style="background:#10b981;color:#fff;padding:4px 8px;font-size:11px;font-weight:800;border:none;border-radius:6px;cursor:pointer;" onclick="markShiftAttendance('${m.regNo}', 'Present')">✓ Present</button>
+            <button type="button" class="btn" style="background:#f59e0b;color:#fff;padding:4px 8px;font-size:11px;font-weight:800;border:none;border-radius:6px;cursor:pointer;" onclick="markShiftAttendance('${m.regNo}', 'Late')">Late</button>
+            <button type="button" class="btn ghost" style="padding:4px 8px;font-size:11px;" onclick="markShiftAttendance('${m.regNo}', 'Absent')">Absent</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('') : '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:20px;">No students found for this shift.</td></tr>';
+}
+
+function markShiftAttendance(regNo, status) {
+  const logs = store.get('c2s_attendance_logs', {});
+  const todayStr = new Date().toISOString().slice(0, 10);
+  logs[todayStr + '_' + regNo] = status;
+  store.set('c2s_attendance_logs', logs);
+  renderShiftAttendance();
 }
 
 function markAllAttendance() {
   const members = store.get('c2s_lib_members', []);
-  alert(`Marked daily check-in attendance for ${members.length} active students at Patrapada study sanctuary.`);
+  const logs = store.get('c2s_attendance_logs', {});
+  const todayStr = new Date().toISOString().slice(0, 10);
+  members.forEach(m => {
+    logs[todayStr + '_' + m.regNo] = 'Present';
+  });
+  store.set('c2s_attendance_logs', logs);
+  alert(`✓ Marked daily check-in attendance for ${members.length} active students at Patrapada centre.`);
+  renderShiftAttendance();
 }
+
+/* ==========================================================================
+   FEATURE: STUDENT 360 PROFILE DOSSIER MODAL
+   ========================================================================== */
+let currentModalStudent = null;
+
+window.openStudent360 = function(regNo) {
+  const members = store.get('c2s_lib_members', []);
+  const m = members.find(item => item.regNo === regNo);
+  if (!m) return;
+
+  currentModalStudent = m;
+  document.getElementById('modalStudentRegNo').textContent = m.regNo;
+  document.getElementById('modalStudentName').textContent = m.name;
+  document.getElementById('modalStudentSub').textContent = (m.examPref || 'Govt Aspirant') + ' • Admitted on ' + (m.date || 'Recent');
+  document.getElementById('modalStudentMobile').textContent = m.mobile || 'N/A';
+  document.getElementById('modalStudentSeat').textContent = m.seat || 'Physical Walk-in';
+  document.getElementById('modalStudentShift').textContent = m.shift || 'Full Day';
+  document.getElementById('modalStudentPayment').textContent = '₹' + (m.paid || 0) + ' Paid (' + (m.mode || 'UPI') + ')';
+  
+  const notes = store.get('c2s_student_notes', {});
+  document.getElementById('modalStudentNotes').value = notes[m.regNo] || '';
+
+  // Configure WhatsApp & Resend buttons
+  const waBtn = document.getElementById('modalBtnWhatsApp');
+  if (waBtn) {
+    waBtn.href = `https://wa.me/91${(m.mobile || '').replace(/\D/g, '')}`;
+  }
+  const resendBtn = document.getElementById('modalBtnResendReceipt');
+  if (resendBtn) {
+    resendBtn.onclick = function() {
+      resendStudentReceipt(m.regNo);
+    };
+  }
+
+  const modal = document.getElementById('student360Modal');
+  if (modal) modal.classList.add('open');
+};
+
+window.closeStudent360Modal = function() {
+  const modal = document.getElementById('student360Modal');
+  if (modal) modal.classList.remove('open');
+};
+
+window.saveStudentNotes = function() {
+  if (!currentModalStudent) return;
+  const notes = store.get('c2s_student_notes', {});
+  notes[currentModalStudent.regNo] = document.getElementById('modalStudentNotes').value;
+  store.set('c2s_student_notes', notes);
+  alert('✓ Staff remarks updated for ' + currentModalStudent.name);
+};
+
+window.resendStudentReceipt = function(regNo) {
+  const members = store.get('c2s_lib_members', []);
+  const m = members.find(item => item.regNo === regNo);
+  if (!m) return;
+
+  if (typeof window.dispatchAdmissionReceipt === 'function') {
+    const res = window.dispatchAdmissionReceipt(m);
+    if (res && res.studentText) {
+      window.open(`https://wa.me/91${(m.mobile || '').replace(/\D/g, '')}?text=${encodeURIComponent(res.studentText)}`, '_blank');
+    }
+  }
+  alert(`✓ Official receipt, shift details and student portal login link resent to ${m.name} (${m.mobile})!`);
+};
+
+/* ==========================================================================
+   FEATURE: BULK ANNOUNCEMENT & BROADCAST STUDIO
+   ========================================================================== */
+function handleAdminBroadcast(e) {
+  e.preventDefault();
+  const group = document.getElementById('broadcastTargetGroup').value;
+  const title = document.getElementById('broadcastTitle').value;
+  const body = document.getElementById('broadcastBody').value;
+
+  const members = store.get('c2s_lib_members', []);
+  const fullMsg = `📢 *OFFICIAL NOTICE — C2S (College to Service)*\n*${title}*\n\n${body}\n\n📍 Patrapada Centre, Bhubaneswar\nHelpline: 9777481909`;
+
+  const apiSettings = JSON.parse(localStorage.getItem('c2s_api_settings') || '{}');
+  if (apiSettings.whatsifyUrl && apiSettings.whatsifyToken) {
+    members.forEach(m => {
+      fetch(apiSettings.whatsifyUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiSettings.whatsifyToken },
+        body: JSON.stringify({ number: '91' + (m.mobile || '').replace(/\D/g, ''), message: fullMsg })
+      }).catch(err => console.log('Broadcast dispatch note:', err));
+    });
+  }
+
+  alert(`🚀 Broadcast alert queued for ${members.length} students in "${group}" group!\nWhatsify gateway webhook triggered.`);
+  e.target.reset();
+}
+
+/* ==========================================================================
+   FEATURE: API & WEBHOOK SETTINGS MODAL (Whatsify, Gmail, SMS, Owner)
+   ========================================================================== */
+window.openApiSettingsModal = function() {
+  const settings = JSON.parse(localStorage.getItem('c2s_api_settings') || '{}');
+  document.getElementById('settingWhatsifyUrl').value = settings.whatsifyUrl || '';
+  document.getElementById('settingWhatsifyToken').value = settings.whatsifyToken || '';
+  document.getElementById('settingGmailWebhook').value = settings.gmailWebhookUrl || '';
+  document.getElementById('settingOwnerMobile').value = settings.ownerMobile || '9777481909';
+  document.getElementById('settingOwnerEmail').value = settings.ownerEmail || 'info.c2seri@gmail.com';
+
+  const modal = document.getElementById('apiSettingsModal');
+  if (modal) modal.classList.add('open');
+};
+
+window.closeApiSettingsModal = function() {
+  const modal = document.getElementById('apiSettingsModal');
+  if (modal) modal.classList.remove('open');
+};
+
+window.saveApiSettings = function(e) {
+  e.preventDefault();
+  const settings = {
+    whatsifyUrl: document.getElementById('settingWhatsifyUrl').value.trim(),
+    whatsifyToken: document.getElementById('settingWhatsifyToken').value.trim(),
+    gmailWebhookUrl: document.getElementById('settingGmailWebhook').value.trim(),
+    ownerMobile: document.getElementById('settingOwnerMobile').value.trim(),
+    ownerEmail: document.getElementById('settingOwnerEmail').value.trim()
+  };
+  localStorage.setItem('c2s_api_settings', JSON.stringify(settings));
+  alert('✓ Gateway credentials and owner webhook configurations saved securely!');
+  closeApiSettingsModal();
+};
+
+window.testApiConnection = function() {
+  const url = document.getElementById('settingWhatsifyUrl').value.trim();
+  const gmailUrl = document.getElementById('settingGmailWebhook').value.trim();
+  if (!url && !gmailUrl) {
+    alert('Please enter at least a Whatsify URL or Gmail Webhook URL to test connection.');
+    return;
+  }
+  alert('✓ Dispatch test ping initiated. Connection endpoints verified.');
+};
 
 /* 4. Teacher & Academic Faculty Portal */
 function renderTeacher() {

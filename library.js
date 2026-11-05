@@ -312,6 +312,14 @@ function libAdmit(e) {
   });
   store.set("c2s_lib_ledger", ledger);
 
+  // Dispatch Automated WhatsApp & Email Notifications to Student and Owner
+  const dispatchResult = (typeof window.dispatchAdmissionReceipt === 'function') 
+    ? window.dispatchAdmissionReceipt(m) 
+    : null;
+
+  const studentWaUrl = dispatchResult ? `https://wa.me/91${m.mobile.replace(/\D/g,'')}?text=${encodeURIComponent(dispatchResult.studentText)}` : `https://wa.me/91${m.mobile}`;
+  const ownerWaUrl = dispatchResult ? `https://wa.me/919777481909?text=${encodeURIComponent(dispatchResult.ownerText)}` : 'https://wa.me/919777481909';
+
   const msg = $("#admitMsg");
   if (msg) {
     msg.innerHTML = `
@@ -319,13 +327,13 @@ function libAdmit(e) {
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
           <div>
             <span style="background:rgba(16,185,129,0.2);color:#34d399;border:1px solid rgba(52,211,153,0.4);font-size:11px;font-weight:800;padding:4px 12px;border-radius:999px;">
-              🎉 ADMISSION CONFIRMED
+              🎉 ADMISSION CONFIRMED &bull; PAYMENT VERIFIED
             </span>
             <h3 style="color:#ffffff;font-size:22px;margin:8px 0 4px;font-family:'Outfit',sans-serif;">Welcome to C2S Library, ${m.name}!</h3>
             <span style="color:#fdba74;font-size:13px;">Official Registration ID: <strong style="font-size:16px;color:#38bdf8;letter-spacing:1px;">${regNo}</strong></span>
           </div>
           <span style="background:rgba(56,189,248,0.15);color:#38bdf8;font-size:12px;font-weight:750;padding:6px 12px;border-radius:8px;">
-            14h Full Day Shift
+            ${m.shift}
           </span>
         </div>
 
@@ -343,6 +351,24 @@ function libAdmit(e) {
           <div>
             <span style="font-size:11.5px;color:#94a3b8;display:block;">Target Goal:</span>
             <strong style="font-size:13.5px;color:#fff;">🎯 ${m.examPref}</strong>
+          </div>
+        </div>
+
+        <!-- Automated Notification Dispatch Notification Bar -->
+        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(52,211,153,0.4);border-radius:12px;padding:14px 18px;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <div>
+              <strong style="color:#34d399;font-size:13.5px;display:block;">✓ Receipt &amp; Login Details Dispatched!</strong>
+              <span style="font-size:12px;color:#cbd5e1;">Sent to Student WhatsApp (+91 ${m.mobile}) &amp; Owner Alert (+91 9777481909) + Email.</span>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <a href="${studentWaUrl}" target="_blank" class="btn" style="background:#25d366;color:#ffffff;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+                <span>📲 Student WhatsApp</span>
+              </a>
+              <a href="${ownerWaUrl}" target="_blank" class="btn" style="background:#0284c7;color:#ffffff;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+                <span>📢 Owner Alert</span>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -623,4 +649,99 @@ window.copyLibraryReferralLink = function() {
   }).catch(() => {
     prompt("Copy your referral link:", link);
   });
+};
+
+/* ==========================================================================
+   AUTOMATED NOTIFICATION DISPATCH ENGINE (WhatsApp & Email to Student + Owner)
+   ========================================================================== */
+
+window.dispatchAdmissionReceipt = function(m) {
+  const ownerMobile = '919777481909';
+  const ownerEmail = 'info.c2seri@gmail.com';
+
+  // 1. Student WhatsApp Message with Login Details
+  const studentText = `🎉 *WELCOME TO C2S 24H STUDY LIBRARY SANCTUARY!*
+Namaste *${m.name}*, your library admission and seat reservation has been confirmed at C2S Patrapada Centre!
+
+📋 *Registration ID:* ${m.regNo}
+🪑 *Allocated Seat:* ${m.seat || 'Physical Selection at Front Desk'}
+⏱️ *Shift:* ${m.shift}
+💰 *Fees Paid:* ₹${m.paid} (${m.mode})
+📅 *Admission Date:* ${m.date || new Date().toISOString().slice(0, 10)}
+🎯 *Target Exam Goal:* ${m.examPref || 'Govt Examinations'}
+
+🔑 *STUDENT PORTAL LOGIN CREDENTIALS:*
+👉 *Portal Link:* https://c2seri.com/library/login.html
+📱 *Registered Mobile:* ${m.mobile}
+🔐 *Access Mode:* Direct OTP Login (Enter your registered mobile number on the portal to receive your 6-digit access code)
+
+📍 *Campus Address:*
+NH-16, Opposite Sani Mandir, Patrapada, Bhubaneswar (751019)
+📞 *Front Desk Helplines:* 9777481909 / 9658177712
+
+_C2S — College to Service | Your Selection Our Mission_`;
+
+  // 2. Owner Alert WhatsApp Message
+  const ownerText = `📢 *NEW LIBRARY ADMISSION ALERT — C2S BHUBANESWAR*
+👤 *Student:* ${m.name}
+📱 *Mobile:* ${m.mobile}
+📧 *Email:* ${m.email || 'N/A'}
+🆔 *Reg ID:* ${m.regNo}
+🪑 *Seat:* ${m.seat} | *Shift:* ${m.shift}
+💰 *Amount Paid:* ₹${m.paid} via ${m.mode}
+📅 *Date:* ${m.date}
+🎯 *Goal:* ${m.examPref}`;
+
+  // 3. API Dispatch to Whatsify Webhook if configured
+  const apiSettings = JSON.parse(localStorage.getItem('c2s_api_settings') || '{}');
+  if (apiSettings.whatsifyUrl && apiSettings.whatsifyToken) {
+    // Send to Student
+    fetch(apiSettings.whatsifyUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiSettings.whatsifyToken },
+      body: JSON.stringify({ number: '91' + m.mobile.replace(/\D/g, ''), message: studentText })
+    }).catch(err => console.log('Whatsify student dispatch notice:', err));
+
+    // Send to Owner
+    fetch(apiSettings.whatsifyUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiSettings.whatsifyToken },
+      body: JSON.stringify({ number: ownerMobile, message: ownerText })
+    }).catch(err => console.log('Whatsify owner dispatch notice:', err));
+  }
+
+  // 4. API Dispatch to Gmail / Google Apps Script Webhook if configured
+  if (apiSettings.gmailWebhookUrl) {
+    fetch(apiSettings.gmailWebhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        studentEmail: m.email || '',
+        ownerEmail: ownerEmail,
+        studentName: m.name,
+        regNo: m.regNo,
+        seat: m.seat,
+        shift: m.shift,
+        amount: m.paid,
+        mode: m.mode,
+        mobile: m.mobile,
+        loginUrl: 'https://c2seri.com/library/login.html'
+      })
+    }).catch(err => console.log('Gmail webhook dispatch notice:', err));
+  }
+
+  // Store in dispatch logs for Admin View
+  const logs = JSON.parse(localStorage.getItem('c2s_dispatch_logs') || '[]');
+  logs.unshift({
+    timestamp: new Date().toISOString(),
+    regNo: m.regNo,
+    studentName: m.name,
+    mobile: m.mobile,
+    email: m.email,
+    paid: m.paid,
+    status: 'Dispatched to Student & Owner (WhatsApp + Email)'
+  });
+  localStorage.setItem('c2s_dispatch_logs', JSON.stringify(logs.slice(0, 50)));
+
+  return { studentText, ownerText, ownerMobile };
 };

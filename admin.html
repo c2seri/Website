@@ -59,14 +59,40 @@
     </div>
   </div>
 
+  <!-- QUICK DATE RANGE FILTER TOOLBAR (User Requested: Today, Last 7 Days, This Month, Last Month, This Quarter, Custom) -->
+  <div class="admin-date-filter-bar">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <span style="font-size:12.5px;font-weight:800;color:#0f172a;display:inline-flex;align-items:center;gap:5px;">
+        <span>⏱️</span> Date Range:
+      </span>
+      <button type="button" class="admin-date-btn" id="filterBtnToday" onclick="applyAdminDateFilter('today')">Today</button>
+      <button type="button" class="admin-date-btn" id="filterBtn7Days" onclick="applyAdminDateFilter('7days')">Last 7 Days</button>
+      <button type="button" class="admin-date-btn active" id="filterBtnThisMonth" onclick="applyAdminDateFilter('this_month')">This Month</button>
+      <button type="button" class="admin-date-btn" id="filterBtnLastMonth" onclick="applyAdminDateFilter('last_month')">Last Month</button>
+      <button type="button" class="admin-date-btn" id="filterBtnQuarter" onclick="applyAdminDateFilter('this_quarter')">This Quarter</button>
+      <button type="button" class="admin-date-btn" id="filterBtnAllTime" onclick="applyAdminDateFilter('all_time')">All Time</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <div style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#475569;">
+        <span>From:</span>
+        <input type="date" id="adminFilterFromDate" onchange="applyAdminDateFilter('custom')" style="padding:4px 8px;font-size:12px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;">
+        <span>To:</span>
+        <input type="date" id="adminFilterToDate" onchange="applyAdminDateFilter('custom')" style="padding:4px 8px;font-size:12px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;">
+      </div>
+      <button type="button" onclick="openApiSettingsModal()" class="btn ghost" style="padding:6px 14px;font-size:12px;font-weight:750;display:inline-flex;align-items:center;gap:6px;background:#fff;border-color:#cbd5e1;">
+        ⚙️ API Settings (Whatsify / Gmail)
+      </button>
+    </div>
+  </div>
+
   <!-- ROLE 1: SUPER ADMIN DASHBOARD (Full Access & KPIs) -->
   <div id="roleViewAdmin" class="role-view">
     <!-- Top KPI Grid -->
     <div class="kpi-grid">
       <div class="kpi-card" style="border-top:4px solid #ea580c;">
-        <span class="kpi-title">Today's New Admissions</span>
+        <span class="kpi-title" id="kpiLabelAdmissions">Admissions in Period</span>
         <div class="kpi-value" id="kpiTodayAdmissions" style="color:#ea580c;">0</div>
-        <span class="kpi-sub" id="kpiTodayRevenue">₹0 Collected Today</span>
+        <span class="kpi-sub" id="kpiTodayRevenue">₹0 Collected</span>
       </div>
       <div class="kpi-card" style="border-top:4px solid #10b981;">
         <span class="kpi-title">Test Series Passes Active</span>
@@ -103,6 +129,45 @@
         <div class="kpi-value" id="kpiTestsTaken">0</div>
         <span class="kpi-sub">Exam Centre Engine Submissions</span>
       </div>
+    </div>
+
+    <!-- FEATURE 2: FINANCIAL STREAM REVENUE ANALYTICS BREAKDOWN -->
+    <div class="stream-analytics-grid">
+      <div class="stream-card" style="border-left:4px solid #059669;">
+        <span style="font-size:11px;font-weight:800;color:#059669;text-transform:uppercase;">Library Monthly Shifts</span>
+        <div style="font-size:20px;font-weight:900;color:#0f172a;margin:4px 0;" id="analyticsLibShiftRev">₹0</div>
+        <span class="small" style="color:#64748b;">Active shifts (₹1000/mo recurring)</span>
+      </div>
+      <div class="stream-card" style="border-left:4px solid #2563eb;">
+        <span style="font-size:11px;font-weight:800;color:#2563eb;text-transform:uppercase;">Registration Fee Collections</span>
+        <div style="font-size:20px;font-weight:900;color:#0f172a;margin:4px 0;" id="analyticsRegFeeRev">₹0</div>
+        <span class="small" style="color:#64748b;">One-time non-refundable ₹200 fee</span>
+      </div>
+      <div class="stream-card" style="border-left:4px solid #7c3aed;">
+        <span style="font-size:11px;font-weight:800;color:#7c3aed;text-transform:uppercase;">Test Series &amp; Batches</span>
+        <div style="font-size:20px;font-weight:900;color:#0f172a;margin:4px 0;" id="analyticsTestBatchRev">₹0</div>
+        <span class="small" style="color:#64748b;">CBT Mock Passes &amp; Foundation Batches</span>
+      </div>
+      <div class="stream-card" style="border-left:4px solid #ea580c;">
+        <span style="font-size:11px;font-weight:800;color:#ea580c;text-transform:uppercase;">Fee Recovery Rate</span>
+        <div style="font-size:20px;font-weight:900;color:#0f172a;margin:4px 0;" id="analyticsRecoveryRate">100%</div>
+        <span class="small" style="color:#64748b;">Collection efficiency vs pending dues</span>
+      </div>
+    </div>
+
+    <!-- FEATURE 3: EXPIRING MEMBERSHIPS & RENEWAL ALERT CENTER (Next 3 Days) -->
+    <div class="expiry-alert-box" id="adminExpiryAlertBox">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:22px;">⚠️</span>
+          <div>
+            <strong style="color:#92400e;font-size:15px;display:block;">Expiring Library Memberships (Next 3 Days):</strong>
+            <span style="font-size:12.5px;color:#b45309;">Send polite 1-click WhatsApp renewal reminder before desk is released.</span>
+          </div>
+        </div>
+        <span class="pill orange" id="expiringCountBadge">0 Members Due for Renewal</span>
+      </div>
+      <div id="expiringMembersList" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:10px;"></div>
     </div>
 
     <!-- Financial Ledger & Expense Management -->
@@ -346,6 +411,69 @@
         <button class="btn orange" type="submit">Issue Library Admission &amp; Generate Reg No</button>
       </form>
     </div>
+
+    <!-- FEATURE: DAILY ATTENDANCE & BIOMETRIC CHECK-IN LOGGER -->
+    <div class="card" style="margin-top:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <div>
+          <h3 style="margin:0;font-size:18px;color:#0f2a5c;">📋 Daily Shift Attendance &amp; Check-In Logger</h3>
+          <span class="small" style="color:#64748b;">Record daily student physical presence per shift.</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <select id="attendanceShiftSelect" onchange="renderShiftAttendance()" style="padding:6px 12px;font-size:12.5px;font-weight:750;border-radius:8px;border:1px solid #cbd5e1;">
+            <option value="all">All Shifts</option>
+            <option value="Morning">Morning Shift</option>
+            <option value="Afternoon">Afternoon Shift</option>
+            <option value="Full Day" selected>Full Day Shift (7 AM – 9 PM)</option>
+            <option value="Night">Night Shift</option>
+          </select>
+          <button type="button" class="btn ghost" style="padding:6px 14px;font-size:12px;" onclick="renderShiftAttendance()">🔄 Refresh Log</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="c2s-table" style="width:100%;font-size:13px;">
+          <thead>
+            <tr style="background:#f1f5f9;">
+              <th>Reg No</th>
+              <th>Student Name</th>
+              <th>Shift &amp; Seat</th>
+              <th>Today's Status</th>
+              <th>Check-in Action</th>
+            </tr>
+          </thead>
+          <tbody id="attendanceTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FEATURE: BULK WHATSAPP / SMS BROADCAST STUDIO -->
+    <div class="card" style="margin-top:20px;border:1.5px solid #fed7aa;background:#fffaf5;">
+      <h3 style="margin:0 0 10px;font-size:18px;color:#9a3412;">📢 Bulk Announcement &amp; Alert Broadcaster</h3>
+      <p class="small" style="color:#c2410c;margin:0 0 14px;">Broadcast important exam alerts, holiday notices, or marathon session schedules to students via WhatsApp (Whatsify) or SMS.</p>
+      <form onsubmit="handleAdminBroadcast(event)">
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px;margin-bottom:12px;">
+          <div>
+            <label style="font-weight:750;font-size:13px;">Target Recipient Group</label>
+            <select id="broadcastTargetGroup" style="width:100%;">
+              <option value="all">All Registered Students (Coaching + Library)</option>
+              <option value="library" selected>Library Members Only (Active Shifts)</option>
+              <option value="coaching">Classroom Coaching Students Only</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-weight:750;font-size:13px;">Announcement Title</label>
+            <input id="broadcastTitle" placeholder="e.g. OSSC CGL Marathon Test Series on Sunday at 10 AM" required style="width:100%;">
+          </div>
+        </div>
+        <label style="font-weight:750;font-size:13px;">Message Body</label>
+        <textarea id="broadcastBody" rows="3" placeholder="Compose announcement text to be delivered via WhatsApp…" required style="width:100%;box-sizing:border-box;border-radius:8px;padding:10px;border:1px solid #fed7aa;"></textarea>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:10px;">
+          <button type="submit" class="btn orange" style="padding:9px 20px;font-weight:800;font-size:13.5px;">
+            🚀 Dispatch Broadcast Alert Now
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- ROLE 3: TEACHER & FACULTY PORTAL (Batches, Tests, PYQs, Notices) -->
@@ -499,6 +627,106 @@
         <div id="teacherPostsList"></div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- MODAL 1: STUDENT 360 PROFILE DOSSIER -->
+<div id="student360Modal" class="c2s-admin-modal-backdrop">
+  <div class="c2s-admin-modal-card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <div>
+        <span class="pill blue" id="modalStudentRegNo">REG-0000</span>
+        <h3 style="margin:6px 0 2px;font-size:22px;color:#0f2a5c;" id="modalStudentName">Student Profile</h3>
+        <span style="font-size:12.5px;color:#64748b;" id="modalStudentSub">Comprehensive 360° Dossier</span>
+      </div>
+      <button type="button" class="btn ghost" onclick="closeStudent360Modal()" style="padding:4px 10px;font-size:16px;line-height:1;">✕</button>
+    </div>
+
+    <!-- Student Key Attributes Grid -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px;margin-bottom:18px;">
+      <div style="background:#f8fafc;padding:12px;border-radius:10px;border:1px solid #e2e8f0;">
+        <span style="font-size:11px;color:#64748b;display:block;">Contact Mobile:</span>
+        <strong id="modalStudentMobile" style="font-size:14px;color:#0f172a;">-</strong>
+      </div>
+      <div style="background:#f8fafc;padding:12px;border-radius:10px;border:1px solid #e2e8f0;">
+        <span style="font-size:11px;color:#64748b;display:block;">Assigned Desk:</span>
+        <strong id="modalStudentSeat" style="font-size:14px;color:#2563eb;">-</strong>
+      </div>
+      <div style="background:#f8fafc;padding:12px;border-radius:10px;border:1px solid #e2e8f0;">
+        <span style="font-size:11px;color:#64748b;display:block;">Shift Schedule:</span>
+        <strong id="modalStudentShift" style="font-size:14px;color:#ea580c;">-</strong>
+      </div>
+      <div style="background:#f8fafc;padding:12px;border-radius:10px;border:1px solid #e2e8f0;">
+        <span style="font-size:11px;color:#64748b;display:block;">Payment Status:</span>
+        <strong id="modalStudentPayment" style="font-size:14px;color:#059669;">-</strong>
+      </div>
+    </div>
+
+    <!-- Direct Quick Actions Strip -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+      <a href="#" id="modalBtnWhatsApp" target="_blank" class="btn" style="background:#25d366;color:#fff;font-size:12.5px;padding:8px 14px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">📲 Open WhatsApp</a>
+      <button type="button" id="modalBtnResendReceipt" class="btn orange" style="font-size:12.5px;padding:8px 14px;">✉️ Resend Receipt &amp; Login</button>
+      <button type="button" class="btn ghost" style="font-size:12.5px;padding:8px 14px;" onclick="window.print()">🖨️ Print Student Pass</button>
+    </div>
+
+    <!-- Staff Remarks -->
+    <div style="background:#f8fafc;border-radius:12px;padding:14px;border:1px solid #e2e8f0;">
+      <strong style="font-size:13.5px;color:#0f2a5c;display:block;margin-bottom:6px;">Staff Notes &amp; Verification Remarks:</strong>
+      <textarea id="modalStudentNotes" rows="2" style="width:100%;box-sizing:border-box;border-radius:8px;padding:8px;border:1px solid #cbd5e1;font-size:12.5px;" placeholder="Add notes (e.g. Identity verified, preparing for OSSC CGL, fee paid via PhonePe)…"></textarea>
+      <button type="button" class="btn ghost" style="margin-top:6px;font-size:12px;padding:5px 12px;" onclick="saveStudentNotes()">Save Remarks</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 2: API & GATEWAY SETTINGS MODAL (Whatsify, Gmail, SMS, Owner) -->
+<div id="apiSettingsModal" class="c2s-admin-modal-backdrop">
+  <div class="c2s-admin-modal-card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <div>
+        <span class="pill orange">GATEWAY INTEGRATIONS</span>
+        <h3 style="margin:6px 0 2px;font-size:22px;color:#0f2a5c;">API &amp; Webhook Settings</h3>
+        <span style="font-size:12.5px;color:#64748b;">Configure Whatsify, Gmail Webhook, and Owner Notifications.</span>
+      </div>
+      <button type="button" class="btn ghost" onclick="closeApiSettingsModal()" style="padding:4px 10px;font-size:16px;line-height:1;">✕</button>
+    </div>
+
+    <form onsubmit="saveApiSettings(event)">
+      <div style="margin-bottom:14px;">
+        <label style="font-weight:750;font-size:13px;color:#0f2a5c;">Whatsify API Endpoint URL (WhatsApp Gateway)</label>
+        <input id="settingWhatsifyUrl" placeholder="e.g. https://api.whatsify.net/api/v1/send" style="width:100%;box-sizing:border-box;">
+        <span class="small" style="color:#64748b;">Your Whatsify webhook endpoint for instant WhatsApp delivery.</span>
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <label style="font-weight:750;font-size:13px;color:#0f2a5c;">Whatsify API Access Token / Bearer Key</label>
+        <input type="password" id="settingWhatsifyToken" placeholder="Paste Whatsify bearer token" style="width:100%;box-sizing:border-box;">
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <label style="font-weight:750;font-size:13px;color:#0f2a5c;">Gmail Webhook URL (Google Apps Script / SMTP Endpoint)</label>
+        <input id="settingGmailWebhook" placeholder="e.g. https://script.google.com/macros/s/AKfycb.../exec" style="width:100%;box-sizing:border-box;">
+        <span class="small" style="color:#64748b;">Sends official admission and payment receipts directly from <strong>info.c2seri@gmail.com</strong>.</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div>
+          <label style="font-weight:750;font-size:13px;color:#0f2a5c;">Owner WhatsApp Number</label>
+          <input id="settingOwnerMobile" value="9777481909" style="width:100%;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="font-weight:750;font-size:13px;color:#0f2a5c;">Owner Email Address</label>
+          <input id="settingOwnerEmail" value="info.c2seri@gmail.com" style="width:100%;box-sizing:border-box;">
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;">
+        <button type="button" class="btn ghost" onclick="testApiConnection()">⚡ Send Test Ping</button>
+        <div style="display:flex;gap:10px;">
+          <button type="button" class="btn ghost" onclick="closeApiSettingsModal()">Cancel</button>
+          <button type="submit" class="btn orange">Save API Configurations</button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
 

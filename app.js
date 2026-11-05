@@ -4838,3 +4838,66 @@ if (document.readyState === 'loading') {
   initDynamicScrollEngine();
   initScrollAnimationsAndCounters();
 }
+
+/* ==========================================================================
+   GLOBAL PAYMENT RECEIPT & CREDENTIALS DISPATCHER (Student + Owner)
+   ========================================================================== */
+window.dispatchGenericPaymentReceipt = function(data) {
+  const ownerMobile = '919777481909';
+  const ownerEmail = 'info.c2seri@gmail.com';
+
+  const studentText = `🎉 *PAYMENT CONFIRMED — C2S (College to Service)!*
+Namaste *${data.studentName}*, your payment for *${data.productTitle}* has been verified!
+
+📋 *Order / Reg ID:* ${data.orderId || 'C2S-' + Date.now()}
+💰 *Amount Paid:* ₹${data.amount} via ${data.payMode || 'UPI'}
+📅 *Date:* ${new Date().toLocaleDateString('en-IN')}
+
+🔑 *STUDENT PORTAL LOGIN DETAILS:*
+👉 *Portal Link:* https://c2seri.com/#login
+📱 *User ID:* ${data.mobile}
+🔐 *Access:* Enter your mobile number on the login page to receive your instant OTP.
+
+📍 *C2S Patrapada Centre:* NH-16, Opposite Sani Mandir, Bhubaneswar (751019)
+📞 *Support:* 9777481909 / 9658177712`;
+
+  const ownerText = `📢 *NEW ONLINE PAYMENT RECEIVED — C2S*
+👤 *Student:* ${data.studentName}
+📱 *Mobile:* ${data.mobile}
+🎯 *Product:* ${data.productTitle}
+💰 *Amount:* ₹${data.amount} (${data.payMode || 'UPI'})
+🆔 *ID:* ${data.orderId || 'C2S-' + Date.now()}`;
+
+  const apiSettings = JSON.parse(localStorage.getItem('c2s_api_settings') || '{}');
+  if (apiSettings.whatsifyUrl && apiSettings.whatsifyToken) {
+    fetch(apiSettings.whatsifyUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiSettings.whatsifyToken },
+      body: JSON.stringify({ number: '91' + data.mobile.replace(/\D/g, ''), message: studentText })
+    }).catch(e => console.log('Whatsify notice:', e));
+
+    fetch(apiSettings.whatsifyUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiSettings.whatsifyToken },
+      body: JSON.stringify({ number: ownerMobile, message: ownerText })
+    }).catch(e => console.log('Whatsify notice:', e));
+  }
+
+  if (apiSettings.gmailWebhookUrl && data.email) {
+    fetch(apiSettings.gmailWebhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        studentEmail: data.email,
+        ownerEmail: ownerEmail,
+        studentName: data.studentName,
+        product: data.productTitle,
+        amount: data.amount,
+        mobile: data.mobile,
+        loginUrl: 'https://c2seri.com/#login'
+      })
+    }).catch(e => console.log('Gmail notice:', e));
+  }
+
+  return { studentText, ownerText };
+};
