@@ -798,19 +798,23 @@
               <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;" id="deskShiftButtonsWrap">
                 <button type="button" class="btn desk-shift-chip" onclick="setDeskShift('Morning', 800, '07:00 AM to 02:00 PM', this)" style="padding:10px 12px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;text-align:left;">
                   <strong style="display:block;color:#0f2a5c;">1. Morning Shift — ₹800</strong>
-                  <span style="font-size:11px;color:#64748b;">07:00 AM to 02:00 PM</span>
+                  <span style="font-size:11px;color:#64748b;">07:00 AM to 02:00 PM • No Locker</span>
                 </button>
                 <button type="button" class="btn desk-shift-chip" onclick="setDeskShift('Afternoon', 800, '02:30 PM to 09:00 PM', this)" style="padding:10px 12px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;text-align:left;">
                   <strong style="display:block;color:#0f2a5c;">2. Afternoon Shift — ₹800</strong>
-                  <span style="font-size:11px;color:#64748b;">02:30 PM to 09:00 PM</span>
+                  <span style="font-size:11px;color:#64748b;">02:30 PM to 09:00 PM • No Locker</span>
                 </button>
                 <button type="button" class="btn desk-shift-chip active" onclick="setDeskShift('Full Day', 1200, '07:00 AM to 09:00 PM', this)" style="padding:10px 12px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #2563eb;background:#eff6ff;color:#1d4ed8;cursor:pointer;text-align:left;">
                   <strong style="display:block;color:#1d4ed8;">3. Full Day — ₹1,200 ★</strong>
-                  <span style="font-size:11px;color:#2563eb;">07:00 AM to 09:00 PM (14h)</span>
+                  <span style="font-size:11px;color:#2563eb;">07:00 AM to 09:00 PM • Locker Included</span>
                 </button>
                 <button type="button" class="btn desk-shift-chip" onclick="setDeskShift('Night', 1000, '09:30 PM to 06:30 AM', this)" style="padding:10px 12px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;text-align:left;">
                   <strong style="display:block;color:#0f2a5c;">4. Night Shift — ₹1,000</strong>
-                  <span style="font-size:11px;color:#64748b;">09:30 PM to 06:30 AM (9h)</span>
+                  <span style="font-size:11px;color:#64748b;">09:30 PM to 06:30 AM • No Locker</span>
+                </button>
+                <button type="button" class="btn desk-shift-chip" onclick="setDeskShift('24 Hours', 2000, 'Round-the-Clock (24 Hours 24x7)', this)" style="grid-column: span 2; padding:10px 12px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;text-align:left;">
+                  <strong style="display:block;color:#7c3aed;">5. 24 Hours Shift (Full Day &amp; Night) — ₹2,000 ★</strong>
+                  <span style="font-size:11px;color:#6d28d9;">24x7 Round-The-Clock • Personal Attached Locker Included (Locker No. = Seat No.)</span>
                 </button>
               </div>
               <input type="hidden" id="deskShift" value="Full Day">
@@ -833,7 +837,17 @@
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
                 Desk / Seat No.
               </label>
-              <input id="deskSeat" placeholder="e.g. Desk A-04 or Front Desk" value="Desk A-04" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;font-weight:700;">
+              <input id="deskSeat" placeholder="e.g. Desk #108 or Front Desk" value="Desk #04" oninput="updateDeskLockerSync()" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;font-weight:700;">
+
+              <div style="margin-top:10px;">
+                <label style="display:block;font-size:12px;font-weight:750;color:#0f172a;margin-bottom:4px;">
+                  🔒 Attached Locker No. (Seat = Locker)
+                </label>
+                <input id="deskLocker" readonly value="Locker #04" style="width:100%;padding:8px 12px;border:1.5px solid #a7f3d0;background:#ecfdf5;color:#047857;border-radius:8px;font-size:12.5px;font-weight:800;">
+                <div id="deskLockerNote" style="margin-top:4px;">
+                  <span style="font-size:11px;color:#059669;font-weight:750;">✓ Attached Locker #04 Included (Full Day)</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

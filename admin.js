@@ -610,10 +610,11 @@ function exportLedgerCSV() {
 
 /* 3. Front Desk & Employee Desk */
 window.LIBRARY_SHIFTS_CONFIG = {
-  "Morning": { name: "Morning Shift (07:00 AM – 02:00 PM)", timing: "07:00 AM to 02:00 PM", fee: 800 },
-  "Afternoon": { name: "Afternoon Shift (02:30 PM – 09:00 PM)", timing: "02:30 PM to 09:00 PM", fee: 800 },
-  "Full Day": { name: "Full Day (07:00 AM – 09:00 PM)", timing: "07:00 AM to 09:00 PM", fee: 1200 },
-  "Night": { name: "Night Shift (09:30 PM – 06:30 AM)", timing: "09:30 PM to 06:30 AM", fee: 1000 }
+  "Morning": { name: "Morning Shift (07:00 AM – 02:00 PM)", timing: "07:00 AM to 02:00 PM", fee: 800, lockerAllowed: false },
+  "Afternoon": { name: "Afternoon Shift (02:30 PM – 09:00 PM)", timing: "02:30 PM to 09:00 PM", fee: 800, lockerAllowed: false },
+  "Full Day": { name: "Full Day (07:00 AM – 09:00 PM)", timing: "07:00 AM to 09:00 PM", fee: 1200, lockerAllowed: true },
+  "Night": { name: "Night Shift (09:30 PM – 06:30 AM)", timing: "09:30 PM to 06:30 AM", fee: 1000, lockerAllowed: false },
+  "24 Hours": { name: "24 Hours (Full Day & Night 24x7)", timing: "Round-the-Clock (24 Hours 24x7)", fee: 2000, lockerAllowed: true }
 };
 
 window.normalizeSeatCode = function(seatStr) {
@@ -845,6 +846,7 @@ function initDeskAdmissionForm() {
   // Default to Full Day: Shift Fee = 1200, Reg = 200, Total = 1400, Paid = 1400, Pending = 0
   const shiftFeesEl = document.getElementById('deskShiftFees');
   if (shiftFeesEl) shiftFeesEl.value = 1200;
+  if (typeof updateDeskLockerSync === 'function') updateDeskLockerSync();
   calcDeskFees(true);
 }
 
@@ -885,13 +887,49 @@ window.setDeskShift = function(shiftName, fee, timing, btn) {
     btn.style.color = '#1d4ed8';
   }
 
+  updateDeskLockerSync();
   calcDeskFees(true); // Automatic as per shift & duration!
+};
+
+window.updateDeskLockerSync = function() {
+  const shiftInput = document.getElementById('deskShift');
+  const shiftName = shiftInput?.value || 'Full Day';
+  const seatInput = document.getElementById('deskSeat');
+  const lockerInput = document.getElementById('deskLocker');
+  const lockerNote = document.getElementById('deskLockerNote');
+  const seatVal = seatInput ? seatInput.value.trim() : '';
+
+  const isLockerAllowed = (shiftName === 'Full Day' || shiftName === '24 Hours');
+  const numMatch = seatVal.match(/\d+/);
+  const seatNum = numMatch ? numMatch[0] : '';
+
+  if (lockerInput) {
+    if (isLockerAllowed) {
+      lockerInput.value = seatNum ? `Locker #${seatNum}` : (seatVal ? `Locker for ${seatVal}` : 'Locker Attached');
+      lockerInput.style.background = '#ecfdf5';
+      lockerInput.style.color = '#047857';
+      lockerInput.style.borderColor = '#a7f3d0';
+    } else {
+      lockerInput.value = 'Not Available (Partial Shift)';
+      lockerInput.style.background = '#f8fafc';
+      lockerInput.style.color = '#94a3b8';
+      lockerInput.style.borderColor = '#e2e8f0';
+    }
+  }
+
+  if (lockerNote) {
+    if (isLockerAllowed) {
+      lockerNote.innerHTML = `<span style="font-size:11.5px;color:#059669;font-weight:750;">✓ Attached Locker #${seatNum || 'Assigned'} Included (Desk No. = Locker No.)</span>`;
+    } else {
+      lockerNote.innerHTML = `<span style="font-size:11.5px;color:#b45309;font-weight:650;">ℹ️ Locker not available for partial shift (Lockers are attached directly to each seat; Full Day &amp; 24h only).</span>`;
+    }
+  }
 };
 
 window.calcDeskFees = function(autoPaid = false) {
   const shiftInput = document.getElementById('deskShift');
   const shiftName = shiftInput?.value || 'Full Day';
-  const baseMonthlyFees = { Morning: 800, Afternoon: 800, 'Full Day': 1200, Night: 1000 };
+  const baseMonthlyFees = { Morning: 800, Afternoon: 800, 'Full Day': 1200, Night: 1000, '24 Hours': 2000 };
   const monthly = baseMonthlyFees[shiftName] || 1200;
   const duration = Number(document.getElementById('deskDuration')?.value || 1);
   const shiftTotal = monthly * duration;
@@ -1036,6 +1074,10 @@ function renderMemberList(filterQuery = '') {
         <td>
           <span class="pill" style="font-size:11.5px;padding:3px 9px;margin-bottom:3px;display:inline-block;">${m.shift}</span>
           <span style="font-size:11.5px;color:${isExpired ? '#dc2626' : '#2563eb'};font-weight:700;display:block;">💺 ${m.seat || 'Front Desk'} ${isExpired ? '(Released)' : ''}</span>
+          ${(m.shift && (m.shift.includes('Full Day') || m.shift.includes('24 Hours'))) ? 
+            `<span style="font-size:10.5px;color:#059669;font-weight:750;display:block;">🔒 ${m.locker || (m.seat && m.seat.match(/\d+/) ? 'Locker #' + m.seat.match(/\d+/)[0] : 'Locker Attached')}</span>` :
+            `<span style="font-size:10px;color:#94a3b8;display:block;">🔒 No Locker (Partial Shift)</span>`
+          }
         </td>
         <td>
           <div style="font-size:13px;font-weight:800;color:#047857;">₹${m.paid || 0} Paid</div>
@@ -1257,6 +1299,12 @@ function deskQuickAdmit(e) {
     shiftTiming,
     seatStatus,
     seat,
+    locker: (shift === 'Full Day' || shift === '24 Hours') ? 
+      (seat.match(/\d+/) ? `Locker #${seat.match(/\d+/)[0]}` : 'Locker Attached') : 
+      'None (Partial Shift)',
+    lockerNo: (shift === 'Full Day' || shift === '24 Hours') ? 
+      (seat.match(/\d+/) ? seat.match(/\d+/)[0] : 'Assigned') : 
+      'None',
     shiftFees,
     regFee,
     discount,

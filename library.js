@@ -54,10 +54,11 @@ const store = {
 };
 
 const SHIFTS = {
-  Morning: { label: "1. Morning Shift — ₹800", time: "07:00 AM – 02:00 PM (7 Hours)", priceKey: "priceMorning", defaultPrice: 800 },
-  Afternoon: { label: "2. Afternoon Shift — ₹800", time: "02:30 PM – 09:00 PM (6.5 Hours)", priceKey: "priceAfternoon", defaultPrice: 800 },
-  "Full Day": { label: "3. Full Day — ₹1,200 ★", time: "07:00 AM – 09:00 PM (14 Hours)", priceKey: "priceFullDay", defaultPrice: 1200 },
-  Night: { label: "4. Night Shift — ₹1,000", time: "09:30 PM – 06:30 AM (9 Hours)", priceKey: "priceNight", defaultPrice: 1000 }
+  Morning: { label: "1. Morning Shift — ₹800 (No Locker)", time: "07:00 AM – 02:00 PM (7 Hours)", priceKey: "priceMorning", defaultPrice: 800, lockerAvailable: false },
+  Afternoon: { label: "2. Afternoon Shift — ₹800 (No Locker)", time: "02:30 PM – 09:00 PM (6.5 Hours)", priceKey: "priceAfternoon", defaultPrice: 800, lockerAvailable: false },
+  "Full Day": { label: "3. Full Day — ₹1,200 ★ (Locker Included)", time: "07:00 AM – 09:00 PM (14 Hours)", priceKey: "priceFullDay", defaultPrice: 1200, lockerAvailable: true },
+  Night: { label: "4. Night Shift — ₹1,000 (No Locker)", time: "09:30 PM – 06:30 AM (9 Hours)", priceKey: "priceNight", defaultPrice: 1000, lockerAvailable: false },
+  "24 Hours": { label: "5. 24 Hours (Full Day & Night) — ₹2,000 ★ (Locker Included)", time: "Round-the-Clock (24 Hours 24x7)", priceKey: "price24Hours", defaultPrice: 2000, lockerAvailable: true }
 };
 
 let selShift = "Full Day";
@@ -76,28 +77,36 @@ function renderShifts() {
   }).join("");
 
   if ($("#shiftInfo")) {
-    const s = SHIFTS[selShift];
-    $("#shiftInfo").textContent = selShift + " — " + s.time + " • Shift Fee: ₹" + s.defaultPrice + "/mo (One-Time Registration: ₹200)";
+    const s = SHIFTS[selShift] || SHIFTS["Full Day"];
+    const lockerBadge = s.lockerAvailable ?
+      `<div style="margin-top:6px;background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;padding:6px 12px;border-radius:8px;font-size:12px;display:inline-flex;align-items:center;gap:6px;">
+        <span>🔒</span> <strong>Personal Attached Locker: INCLUDED &amp; AVAILABLE</strong> (Locker No. = Seat No.)
+      </div>` :
+      `<div style="margin-top:6px;background:#fffbeb;color:#b45309;border:1px solid #fde68a;padding:6px 12px;border-radius:8px;font-size:12px;display:inline-flex;align-items:center;gap:6px;">
+        <span>ℹ️</span> <strong>Personal Locker: NOT AVAILABLE for partial shifts</strong> (Lockers are attached directly to each seat; available exclusively for Full Day &amp; 24-Hour shifts to allow seat rotation).
+      </div>`;
+
+    $("#shiftInfo").innerHTML = `
+      <div><strong>${selShift}</strong> — ${s.time} • Shift Fee: <strong>₹${s.defaultPrice}/mo</strong> (One-Time Registration: ₹200)</div>
+      ${lockerBadge}
+    `;
   }
   calcFees(true);
 }
 
 function calcFees(autoPaid = false) {
   if (!$("#shiftFees")) return;
-  const priceInput = document.getElementById(SHIFTS[selShift]?.priceKey);
-  const monthlyPrice = priceInput ? Number(priceInput.value || 0) : (SHIFTS[selShift]?.defaultPrice || 1200);
+  const s = SHIFTS[selShift] || SHIFTS["Full Day"];
+  const priceInput = document.getElementById(s?.priceKey);
+  const monthlyPrice = priceInput ? Number(priceInput.value || 0) : (s?.defaultPrice || 1200);
 
   const duration = Number(document.getElementById("membershipDuration")?.value || 1);
   const shiftTotal = monthlyPrice * duration;
   $("#shiftFees").value = shiftTotal;
 
-  const locker = Number($("#lockerFees")?.value || 0);
-  const discAmt = Number($("#discAmt")?.value || 0);
-  const discPct = Number($("#discPct")?.value || 0);
-
   // ₹200 one-time non-refundable registration fee
-  const gross = 200 + shiftTotal + locker;
-  const total = Math.max(0, gross - discAmt - Math.round(gross * discPct / 100));
+  const gross = 200 + shiftTotal;
+  const total = gross;
 
   if ($("#totalFees")) $("#totalFees").value = total;
 
@@ -398,10 +407,11 @@ function updateInspectorHUD() {
     if (hudTitle) {
       hudTitle.innerHTML = `<span style="color:#60a5fa;">${deskDisplay}</span> &bull; <span style="font-size:16px;color:#cbd5e1;font-weight:700;">${floor} Study Sanctuary</span>`;
     }
+    const lockerSpec = (selShift === "Full Day" || selShift === "24 Hours") ? `🔒 Personal Attached Locker #${num} (Included)` : `🔒 Locker: Full Day & 24h only`;
     if (hudSpecs) {
-      hudSpecs.innerHTML = "⚡ Dedicated 230V Socket &bull; 💡 Personal Warm LED Lamp &bull; 💺 High-Back Mesh Lumbar Chair &bull; ❄️ 22°C Central A/C &bull; 🅿️ Underground Parking";
+      hudSpecs.innerHTML = `⚡ Dedicated 230V Socket &bull; 💡 Personal Warm LED Lamp &bull; 💺 High-Back Mesh Lumbar Chair &bull; ${lockerSpec} &bull; ❄️ 22°C Central A/C &bull; 🅿️ Underground Parking`;
     }
-    const shiftPrice = SHIFTS[selShift]?.defaultPrice || 1000;
+    const shiftPrice = SHIFTS[selShift]?.defaultPrice || 1200;
     if (hudPrice) hudPrice.textContent = selShift + ": ₹" + shiftPrice + "/mo";
   } else {
     if (hudDeskName) hudDeskName.textContent = "Select Any Desk Above";
@@ -417,7 +427,7 @@ function updateInspectorHUD() {
     }
 
     if (hudTitle) hudTitle.textContent = "None Selected (Click any Green Desk Above)";
-    if (hudSpecs) hudSpecs.textContent = "⚡ 3-Pin Dedicated Socket • 💡 Anti-Glare Lamp • 💺 High-Back Mesh Chair • ❄️ Central A/C • 🅿️ Underground Parking";
+    if (hudSpecs) hudSpecs.textContent = "⚡ 3-Pin Dedicated Socket • 💡 Anti-Glare Lamp • 💺 High-Back Mesh Chair • 🔒 Attached Locker (Full Day & 24h) • ❄️ Central A/C • 🅿️ Underground Parking";
   }
 }
 
@@ -683,6 +693,12 @@ function libAdmit(e) {
     durationMonths,
     seat: seatVal,
     seatMode: isPhysical ? "physical" : "online",
+    locker: (selShift === "Full Day" || selShift === "24 Hours") ? 
+      (seatVal.match(/\d+/) ? `Locker #${seatVal.match(/\d+/)[0]}` : "Locker Attached") : 
+      "None (Partial Shift)",
+    lockerNo: (selShift === "Full Day" || selShift === "24 Hours") ? 
+      (seatVal.match(/\d+/) ? seatVal.match(/\d+/)[0] : "Attached") : 
+      "None",
     from: $("#fromDate")?.value || new Date().toISOString().slice(0, 10),
     to: $("#toDate")?.value || new Date(Date.now() + durationMonths * 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
     shiftFees: Number($("#shiftFees")?.value || (SHIFTS[selShift]?.defaultPrice || 1200) * durationMonths),
@@ -1350,6 +1366,12 @@ window.processStudentRenewal = function(e) {
   m.shift = newShift + ` (${newShiftTiming})`;
   m.shiftTiming = newShiftTiming;
   m.seat = newSeat;
+  m.locker = (shiftKey === "Full Day" || shiftKey === "24 Hours") ? 
+    (newSeat.match(/\d+/) ? `Locker #${newSeat.match(/\d+/)[0]}` : "Locker Attached") : 
+    "None (Partial Shift)";
+  m.lockerNo = (shiftKey === "Full Day" || shiftKey === "24 Hours") ? 
+    (newSeat.match(/\d+/) ? newSeat.match(/\d+/)[0] : "Attached") : 
+    "None";
   m.fromDate = newFromDate;
   m.toDate = newToDate;
   m.validTill = newToDate;
