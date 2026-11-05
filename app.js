@@ -120,7 +120,11 @@ const TESTS = [
   qs:[["Which article deals with Fundamental Rights?",["Art. 12–35","Art. 36–51","Art. 52–78","Art. 1–4"],0],["First President of India?",["Dr. Rajendra Prasad","Dr. Kalam","Dr. Radhakrishnan","Zakir Husain"],0],["Photosynthesis occurs in?",["Root","Stem","Leaf","Flower"],2],["Ganga flows into?",["Arabian Sea","Bay of Bengal","Indian Ocean","Pacific"],1]]}
 ];
 // Top Navigation Dropdown & Mobile Drawer Controllers
-window.toggleDropdown = function(btn) {
+window.toggleDropdown = function(btn, event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
   if (!btn) return;
   const parent = btn.closest('.nav-item');
   if (!parent) return;
@@ -132,6 +136,9 @@ window.toggleDropdown = function(btn) {
   });
   if (!wasOpen) {
     parent.classList.add('open', 'open-mobile');
+    btn.setAttribute('aria-expanded', 'true');
+  } else {
+    btn.setAttribute('aria-expanded', 'false');
   }
 };
 

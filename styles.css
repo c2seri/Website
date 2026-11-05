@@ -201,7 +201,8 @@ a:hover {
 .site-header {
   position: sticky !important;
   top: 0 !important;
-  z-index: 999 !important;
+  z-index: 99999 !important;
+  overflow: visible !important;
   background: #ffffff !important;
   box-shadow: 0 4px 20px -2px rgba(15, 42, 92, 0.08) !important;
   display: block !important;
@@ -4406,7 +4407,8 @@ h1, h2, h3, h4, .brand-title {
 .site-header {
   position: sticky !important;
   top: 0 !important;
-  z-index: 999 !important;
+  z-index: 99999 !important;
+  overflow: visible !important;
   background: #ffffff !important;
   box-shadow: 0 4px 20px -2px rgba(15, 42, 92, 0.08) !important;
   display: block !important;
@@ -6846,7 +6848,8 @@ section[data-view] {
 .site-header {
   position: sticky !important;
   top: 0 !important;
-  z-index: 999 !important;
+  z-index: 99999 !important;
+  overflow: visible !important;
   background: #ffffff !important;
   box-shadow: 0 4px 20px -2px rgba(15, 42, 92, 0.08) !important;
   display: block !important;
@@ -7432,7 +7435,9 @@ section[data-view] {
   }
 
   .nav-item.open-mobile .mega-menu,
-  .nav-item.open-mobile .dropdown-menu {
+  .nav-item.open-mobile .dropdown-menu,
+  .nav-item.open .mega-menu,
+  .nav-item.open .dropdown-menu {
     display: block !important;
   }
 
@@ -7483,8 +7488,7 @@ section[data-view] {
     flex-wrap: nowrap !important;
     box-sizing: border-box !important;
     padding: 6px 0 !important;
-    overflow-x: auto !important;
-    scrollbar-width: none !important;
+    overflow: visible !important;
   }
   .header-nav-line::-webkit-scrollbar {
     display: none !important;
@@ -7522,14 +7526,44 @@ section[data-view] {
     border-top: none !important;
     padding: 24px 28px !important;
     background: #ffffff !important;
-    z-index: 1005 !important;
+    z-index: 999999 !important;
+    display: none !important;
   }
-  .nav-item:hover .mega-menu,
-  .nav-item:hover .dropdown-menu {
+  .dropdown-menu {
+    position: absolute !important;
+    top: calc(100% + 6px) !important;
+    right: 0 !important;
+    left: auto !important;
+    min-width: 340px !important;
+    max-width: 440px !important;
+    width: max-content !important;
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 20px 50px -8px rgba(15, 23, 42, 0.28), 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+    padding: 14px !important;
+    z-index: 999999 !important;
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(6px) !important;
+    transition: opacity 0.2s ease, transform 0.2s ease !important;
+    max-height: 85vh !important;
+    overflow-y: auto !important;
+  }
+  .nav-item:hover > .mega-menu,
+  .nav-item:focus-within > .mega-menu,
+  .nav-item.open > .mega-menu,
+  .nav-item.open-mobile > .mega-menu,
+  .nav-item:hover > .dropdown-menu,
+  .nav-item:focus-within > .dropdown-menu,
+  .nav-item.open > .dropdown-menu,
+  .nav-item.open-mobile > .dropdown-menu {
     display: block !important;
     opacity: 1 !important;
     visibility: visible !important;
     transform: translateY(0) !important;
+    pointer-events: auto !important;
   }
 }
 
