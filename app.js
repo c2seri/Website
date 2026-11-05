@@ -75,6 +75,28 @@ window.toggleDropdown = function(btn) {
   }
 };
 
+// All Exams PW-Style Category Switcher (Two-Pane Drawer)
+window.switchPwCategory = function(catId) {
+  if (!catId) return;
+  // Update left category buttons
+  document.querySelectorAll('.pw-cat-btn').forEach(btn => {
+    if (btn.getAttribute('data-cat') === catId) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  // Update right panels
+  document.querySelectorAll('.pw-cards-panel').forEach(panel => {
+    if (panel.id === `pwPanel-${catId}`) {
+      panel.classList.add('active');
+    } else {
+      panel.classList.remove('active');
+    }
+  });
+};
+
 // All Exams PW-Style Click Toggle (Open on click & Disappear if clicked again)
 window.toggleAllExamsMenu = function(btn, event) {
   if (event) {

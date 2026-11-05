@@ -170,240 +170,532 @@
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </button>
-              <div class="mega-menu pw-all-exams-menu">
-                <!-- PW Style Popular Goals Quick-Tabs Top Header -->
-                <div class="pw-menu-header">
-                  <div class="pw-menu-header-left">
-                    <span class="pw-menu-tag">🔥 POPULAR GOALS:</span>
-                    <div class="pw-header-chips">
-                      <button type="button" class="pw-chip-tag" onclick="filterExam('Odisha State', 'OPSC');closeMobileNav();">OPSC OAS</button>
-                      <button type="button" class="pw-chip-tag" onclick="filterExam('Odisha State', 'OSSC');closeMobileNav();">OSSC CGL</button>
-                      <button type="button" class="pw-chip-tag" onclick="filterExam('Odisha State', 'ODISHA-POLICE');closeMobileNav();">Odisha Police SI</button>
-                      <button type="button" class="pw-chip-tag" onclick="filterExam('All India', 'BANK');closeMobileNav();">Bank PO/Clerk</button>
-                      <button type="button" class="pw-chip-tag" onclick="filterExam('All India', 'SSC');closeMobileNav();">SSC CGL</button>
-                      <button type="button" class="pw-chip-tag" onclick="filterExam('All India', 'RAILWAY');closeMobileNav();">Railway NTPC</button>
-                      <button type="button" class="pw-chip-tag" onclick="filterExam('All India', 'UPSC');closeMobileNav();">UPSC CSE</button>
+              <div class="mega-menu pw-all-exams-drawer">
+                <!-- Left Pane: Vertical Category List (PhysicsWallah Exact Model) -->
+                <div class="pw-drawer-left">
+                  <button type="button" class="pw-cat-btn active" data-cat="upsc" onmouseenter="switchPwCategory('upsc')" onclick="switchPwCategory('upsc')">
+                    <div>
+                      <strong class="pw-cat-name">Only IAS / Civil Services</strong>
+                      <span class="pw-cat-sub">UPSC CSE, State PSC, OPSC OAS</span>
                     </div>
-                  </div>
-                  <button type="button" class="pw-goal-select-btn" onclick="openCohortSelection();closeMobileNav();">
-                    🎯 Choose Goal / Cohort →
+                    <span class="pw-cat-arrow">&#10095;</span>
+                  </button>
+
+                  <button type="button" class="pw-cat-btn" data-cat="odisha" onmouseenter="switchPwCategory('odisha')" onclick="switchPwCategory('odisha')">
+                    <div>
+                      <strong class="pw-cat-name">Odisha State Exams</strong>
+                      <span class="pw-cat-sub">OPSC, OSSC CGL, OSSSC CRE, Police SI</span>
+                    </div>
+                    <span class="pw-cat-arrow">&#10095;</span>
+                  </button>
+
+                  <button type="button" class="pw-cat-btn" data-cat="ssc" onmouseenter="switchPwCategory('ssc')" onclick="switchPwCategory('ssc')">
+                    <div>
+                      <strong class="pw-cat-name">Staff Selection (SSC)</strong>
+                      <span class="pw-cat-sub">CGL, CHSL, MTS, GD Constable, CPO SI</span>
+                    </div>
+                    <span class="pw-cat-arrow">&#10095;</span>
+                  </button>
+
+                  <button type="button" class="pw-cat-btn" data-cat="bank" onmouseenter="switchPwCategory('bank')" onclick="switchPwCategory('bank')">
+                    <div>
+                      <strong class="pw-cat-name">Banking &amp; Financial</strong>
+                      <span class="pw-cat-sub">SBI PO/Clerk, IBPS, RRB, RBI Grade B</span>
+                    </div>
+                    <span class="pw-cat-arrow">&#10095;</span>
+                  </button>
+
+                  <button type="button" class="pw-cat-btn" data-cat="railway" onmouseenter="switchPwCategory('railway')" onclick="switchPwCategory('railway')">
+                    <div>
+                      <strong class="pw-cat-name">Railways (RRB)</strong>
+                      <span class="pw-cat-sub">RRB NTPC, ALP, Group D, RPF SI</span>
+                    </div>
+                    <span class="pw-cat-arrow">&#10095;</span>
+                  </button>
+
+                  <button type="button" class="pw-cat-btn" data-cat="jeeneet" onmouseenter="switchPwCategory('jeeneet')" onclick="switchPwCategory('jeeneet')">
+                    <div>
+                      <strong class="pw-cat-name">Competitive Exams (JEE / NEET)</strong>
+                      <span class="pw-cat-sub">IIT JEE Main &amp; Adv, NEET-UG, NISER NEST</span>
+                    </div>
+                    <span class="pw-cat-arrow">&#10095;</span>
+                  </button>
+
+                  <button type="button" class="pw-cat-btn" data-cat="school" onmouseenter="switchPwCategory('school')" onclick="switchPwCategory('school')">
+                    <div>
+                      <strong class="pw-cat-name">School Boards &amp; K-12</strong>
+                      <span class="pw-cat-sub">CBSE 9-12, CHSE +2 Science/Commerce, BSE</span>
+                    </div>
+                    <span class="pw-cat-arrow">&#10095;</span>
+                  </button>
+
+                  <button type="button" class="pw-cat-btn" data-cat="defence" onmouseenter="switchPwCategory('defence')" onclick="switchPwCategory('defence')">
+                    <div>
+                      <strong class="pw-cat-name">Defence &amp; Police</strong>
+                      <span class="pw-cat-sub">Odisha Police SI, NDA, CDS, AFCAT, CAPF</span>
+                    </div>
+                    <span class="pw-cat-arrow">&#10095;</span>
+                  </button>
+
+                  <button type="button" class="pw-cat-btn" data-cat="teaching" onmouseenter="switchPwCategory('teaching')" onclick="switchPwCategory('teaching')">
+                    <div>
+                      <strong class="pw-cat-name">Teaching Exams</strong>
+                      <span class="pw-cat-sub">CTET, OTET, OSSTET, KVS &amp; NVS</span>
+                    </div>
+                    <span class="pw-cat-arrow">&#10095;</span>
                   </button>
                 </div>
 
-                <div class="pw-mega-grid-inner">
-                  <div class="mega-grid" style="grid-template-columns: repeat(4, 1fr) 1.25fr; gap: 16px;">
-                  <!-- Col 1: Odisha State Recruitments -->
-                  <div>
-                    <div class="mega-col-title">🏛️ Odisha State Exams</div>
-                    
-                    <!-- Subgroup: State Civil & Admin -->
-                    <div class="mega-subgroup">
-                      <div class="mega-subgroup-title mega-subgroup-orange">👑 State Civil Services</div>
-                      <div class="mega-link-list">
-                        <button class="mega-link" onclick="filterExam('Odisha State', 'OPSC');closeMobileNav();">
-                          <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="OPSC" style="width:20px;height:20px;border-radius:50%;object-fit:contain;" decoding="async"></span>
-                          <div><strong>OPSC OAS (Civil Services)</strong><span class="mega-link-desc">Group A/B &bull; OAS, OFS, OPS</span></div>
-                        </button>
-                        <button class="mega-link" onclick="filterExam('Odisha State', 'OPSC');closeMobileNav();">
-                          <span class="mega-link-icon">🏛️</span>
-                          <div><strong>OPSC ASO (Secretariat)</strong><span class="mega-link-desc">Assistant Section Officer</span></div>
-                        </button>
-                      </div>
+                <!-- Right Pane: Dynamic Cards (Changes based on left selection) -->
+                <div class="pw-drawer-right">
+                  <!-- 1. Panel: UPSC / Only IAS (Active By Default in User Screenshot) -->
+                  <div class="pw-cards-panel active" id="pwPanel-upsc">
+                    <div class="pw-panel-header">
+                      <span class="pw-panel-tag">CIVIL SERVICES &amp; STATE COMMISSIONS</span>
+                      <h3 class="pw-panel-title">Only IAS / Civil Services</h3>
                     </div>
-
-                    <!-- Subgroup: Clerical & Technical -->
-                    <div class="mega-subgroup">
-                      <div class="mega-subgroup-title mega-subgroup-blue">📋 Clerical &amp; Field Staff</div>
-                      <div class="mega-link-list">
-                        <button class="mega-link" onclick="filterExam('Odisha State', 'OSSC');closeMobileNav();">
-                          <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="OSSC" style="width:20px;height:20px;border-radius:50%;object-fit:contain;" decoding="async"></span>
-                          <div><strong>OSSC CGL &amp; Group B/C</strong><span class="mega-link-desc">Auditor, Supplies, Excise</span></div>
-                        </button>
-                        <button class="mega-link" onclick="filterExam('Odisha State', 'OSSSC');closeMobileNav();">
-                          <span class="mega-link-icon">📑</span>
-                          <div><strong>OSSSC CRE (RI, ARI, Amin)</strong><span class="mega-link-desc">Forester &amp; Forest Guard</span></div>
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Subgroup: Uniform & Police -->
-                    <div class="mega-subgroup">
-                      <div class="mega-subgroup-title mega-subgroup-emerald">🛡️ Uniform &amp; Police</div>
-                      <div class="mega-link-list">
-                        <button class="mega-link" onclick="filterExam('Odisha State', 'ODISHA-POLICE');closeMobileNav();">
-                          <span class="mega-link-icon"><img src="images/logos/odisha.svg" alt="Police" style="width:20px;height:20px;border-radius:50%;object-fit:contain;" decoding="async"></span>
-                          <div><strong>Odisha Police Constable &amp; SI</strong><span class="mega-link-desc">Written + 1.6km PET Prep</span></div>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Col 2: Banking & Insurance -->
-                  <div>
-                    <div class="mega-col-title">🏦 Banking &amp; Financial</div>
-
-                    <!-- Subgroup: Public Sector Banks -->
-                    <div class="mega-subgroup">
-                      <div class="mega-subgroup-title mega-subgroup-blue">🏛️ Nationalized Banks</div>
-                      <div class="mega-link-list">
-                        <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
-                          <span class="mega-link-icon"><img src="images/logos/sbi.svg" alt="SBI" style="width:20px;height:20px;border-radius:50%;object-fit:contain;" decoding="async"></span>
-                          <div><strong>SBI PO &amp; Clerk</strong><span class="mega-link-desc">Probationary Officer &amp; JA</span></div>
-                        </button>
-                        <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
-                          <span class="mega-link-icon"><img src="images/logos/ibps.png" alt="IBPS" style="width:20px;height:20px;border-radius:4px;object-fit:contain;" decoding="async"></span>
-                          <div><strong>IBPS PO &amp; Clerk</strong><span class="mega-link-desc">11 Participating Banks</span></div>
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Subgroup: Gramin & Regional -->
-                    <div class="mega-subgroup">
-                      <div class="mega-subgroup-title mega-subgroup-orange">🌾 Regional Rural Banks</div>
-                      <div class="mega-link-list">
-                        <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
-                          <span class="mega-link-icon">🌾</span>
-                          <div><strong>IBPS RRB Officer &amp; Assistant</strong><span class="mega-link-desc">Gramin Banks (Odisha)</span></div>
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Subgroup: Apex & Regulatory -->
-                    <div class="mega-subgroup">
-                      <div class="mega-subgroup-title mega-subgroup-purple">🪙 Apex &amp; Insurance</div>
-                      <div class="mega-link-list">
-                        <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
-                          <span class="mega-link-icon">🪙</span>
-                          <div><strong>RBI Grade B &amp; Assistant</strong><span class="mega-link-desc">Apex Central Bank of India</span></div>
-                        </button>
-                        <button class="mega-link" onclick="filterExam('All India', 'BANK');closeMobileNav();">
-                          <span class="mega-link-icon">🛡️</span>
-                          <div><strong>LIC AAO &amp; NIACL</strong><span class="mega-link-desc">Insurance Sector Exams</span></div>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Col 3: Staff Selection Commission (SSC) -->
-                  <div>
-                    <div class="mega-col-title">🛡️ Staff Selection (SSC)</div>
-
-                    <!-- Subgroup: Graduate Posts -->
-                    <div class="mega-subgroup">
-                      <div class="mega-subgroup-title mega-subgroup-orange">⭐ Graduate Posts</div>
-                      <div class="mega-link-list">
-                        <button class="mega-link" onclick="filterExam('All India', 'SSC');closeMobileNav();">
-                          <span class="mega-link-icon">⭐</span>
-                          <div><strong>SSC CGL (Tier 1 &amp; 2)</strong><span class="mega-link-desc">ASO, Income Tax, Excise</span></div>
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Subgroup: 10+2 & Matric -->
-                    <div class="mega-subgroup">
-                      <div class="mega-subgroup-title mega-subgroup-blue">📑 10+2 &amp; Matric Posts</div>
-                      <div class="mega-link-list">
-                        <button class="mega-link" onclick="filterExam('All India', 'SSC');closeMobileNav();">
-                          <span class="mega-link-icon">📑</span>
-                          <div><strong>SSC CHSL (10+2)</strong><span class="mega-link-desc">LDC, DEO, PA/SA</span></div>
-                        </button>
-                        <button class="mega-link" onclick="filterExam('All India', 'SSC');closeMobileNav();">
-                          <span class="mega-link-icon">📝</span>
-                          <div><strong>SSC MTS &amp; Havaldar</strong><span class="mega-link-desc">Non-Technical Staff</span></div>
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Subgroup: Central Armed Police -->
-                    <div class="mega-subgroup">
-                      <div class="mega-subgroup-title mega-subgroup-emerald">🛡️ Central Armed Police</div>
-                      <div class="mega-link-list">
-                        <button class="mega-link" onclick="filterExam('All India', 'SSC');closeMobileNav();">
-                          <span class="mega-link-icon">🛡️</span>
-                          <div><strong>SSC GD &amp; CPO SI</strong><span class="mega-link-desc">BSF, CRPF, CISF, Delhi Police</span></div>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Col 4: Railway, UPSC & Defence -->
-                  <div>
-                    <div class="mega-col-title">🚆 Railway, UPSC &amp; Defence</div>
-
-                    <!-- Subgroup: Railways -->
-                    <div class="mega-subgroup">
-                      <div class="mega-subgroup-title mega-subgroup-blue">🚆 Indian Railways</div>
-                      <div class="mega-link-list">
-                        <button class="mega-link" onclick="filterExam('All India', 'RAILWAY');closeMobileNav();">
-                          <span class="mega-link-icon">🚆</span>
-                          <div><strong>RRB NTPC, ALP &amp; Group D</strong><span class="mega-link-desc">Station Master, Loco Pilot</span></div>
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Subgroup: Defence & Civil -->
-                    <div class="mega-subgroup">
-                      <div class="mega-subgroup-title mega-subgroup-orange">⚔️ Defence &amp; Civil Services</div>
-                      <div class="mega-link-list">
-                        <button class="mega-link" onclick="filterExam('All India', 'UPSC');closeMobileNav();">
-                          <span class="mega-link-icon">🏛️</span>
-                          <div><strong>UPSC Civil Services</strong><span class="mega-link-desc">IAS, IPS, IFS (GS + CSAT)</span></div>
-                        </button>
-                        <button class="mega-link" onclick="filterExam('All India', 'DEFENCE');closeMobileNav();">
-                          <span class="mega-link-icon">⚔️</span>
-                          <div><strong>NDA, CDS &amp; AFCAT</strong><span class="mega-link-desc">Army, Navy, Air Force + SSB</span></div>
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Subgroup: Teaching -->
-                    <div class="mega-subgroup">
-                      <div class="mega-subgroup-title mega-subgroup-purple">📚 Teaching Eligibility</div>
-                      <div class="mega-link-list">
-                        <button class="mega-link" onclick="filterExam('All India', 'TEACHING');closeMobileNav();">
-                          <span class="mega-link-icon">📚</span>
-                          <div><strong>CTET, OTET &amp; KVS/NVS</strong><span class="mega-link-desc">PRT, TGT, PGT Teaching</span></div>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Col 5: C2S Career Pass Card -->
-                  <div class="mega-featured-card" style="background:linear-gradient(135deg, #0a2540 0%, #1e3a8a 100%);color:#fff;border-radius:14px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;">
-                    <div>
-                      <div style="display:inline-block;background:rgba(251, 146, 60, 0.2);color:#fdba74;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;border:1px solid rgba(251,146,60,0.4);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">C2S CAREER PASS PRO</div>
-                      <h4 style="color:#ffffff;font-size:16px;margin:0 0 8px;font-weight:800;">1 Pass for 200+ Govt Exams</h4>
-                      <p style="font-size:12.5px;color:#cbd5e1;line-height:1.5;margin:0 0 14px;">Access all CBT mock test series, bilingual notes, syllabus breakdowns &amp; 24h Study Library.</p>
-                      <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:14px;">
-                        <span style="font-size:24px;font-weight:900;color:#38bdf8;">₹1,000</span>
-                        <span style="font-size:12px;color:#94a3b8;font-weight:600;">/ month</span>
-                      </div>
-                    </div>
-                    <div style="display:flex;flex-direction:column;gap:8px;">
-                      <button type="button" class="btn orange" style="width:100%;padding:10px;font-size:13px;font-weight:750;" onclick="show('pass');closeMobileNav();">
-                        Explore Career Pass →
+                    <div class="pw-cards-grid">
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'UPSC');closeMobileNav();">
+                        <span class="pw-exam-icon">🏛️</span>
+                        <div>
+                          <strong>UPSC</strong>
+                          <small>Civil Services (IAS, IPS, IFS Prelims &amp; Mains)</small>
+                        </div>
                       </button>
-                      <button type="button" class="btn ghost" style="width:100%;padding:8px;font-size:12px;font-weight:700;color:#cbd5e1;border-color:rgba(255,255,255,0.25);" onclick="show('exams');closeMobileNav();">
-                        Explore Complete 204 Directory →
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('Odisha State', 'OPSC');closeMobileNav();">
+                        <span class="pw-exam-icon">👑</span>
+                        <div>
+                          <strong>State PSC</strong>
+                          <small>OPSC OAS, ASO &amp; State Civil Services</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'DEFENCE');closeMobileNav();">
+                        <span class="pw-exam-icon">⚔️</span>
+                        <div>
+                          <strong>UPSC NDA &amp; CDS</strong>
+                          <small>National Defence Academy &amp; Combined Services</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'SSC');closeMobileNav();">
+                        <span class="pw-exam-icon">🛡️</span>
+                        <div>
+                          <strong>UPSC CAPF (AC)</strong>
+                          <small>Assistant Commandant (BSF, CRPF, CISF, ITBP)</small>
+                        </div>
                       </button>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <!-- PW Style Footer Bar -->
-              <div class="pw-menu-footer">
-                <div class="pw-footer-left">
-                  <span class="pw-dot-live"></span>
-                  <span><strong>12,500+ Aspirants</strong> preparing across Odisha &amp; Pan-India</span>
-                </div>
-                <div class="pw-footer-links">
-                  <a href="https://wa.me/919777481909?text=Hi%20C2S,%20I%20need%20exam%20guidance" target="_blank" rel="noopener noreferrer" class="pw-footer-link">
-                    💬 Academic Counsellor Desk
-                  </a>
-                  <a href="tel:9777481909" class="pw-footer-link">
-                    📞 Helpline: 9777481909
-                  </a>
+                  <!-- 2. Panel: Odisha State Exams -->
+                  <div class="pw-cards-panel" id="pwPanel-odisha">
+                    <div class="pw-panel-header">
+                      <span class="pw-panel-tag">ODISHA RECRUITMENT COMMISSIONS</span>
+                      <h3 class="pw-panel-title">Odisha State Examinations</h3>
+                    </div>
+                    <div class="pw-cards-grid">
+                      <button type="button" class="pw-exam-card" onclick="filterExam('Odisha State', 'OPSC');closeMobileNav();">
+                        <span class="pw-exam-icon"><img src="images/logos/odisha.svg" alt="OPSC" decoding="async"></span>
+                        <div>
+                          <strong>OPSC OAS (Civil Services)</strong>
+                          <small>Group A &amp; B • OAS, OFS, OPS</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('Odisha State', 'OPSC');closeMobileNav();">
+                        <span class="pw-exam-icon">🏛️</span>
+                        <div>
+                          <strong>OPSC ASO (Secretariat)</strong>
+                          <small>Assistant Section Officer Exam</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('Odisha State', 'OSSC');closeMobileNav();">
+                        <span class="pw-exam-icon"><img src="images/logos/odisha.svg" alt="OSSC" decoding="async"></span>
+                        <div>
+                          <strong>OSSC CGL &amp; Group B/C</strong>
+                          <small>Auditor, Inspector of Supplies, Excise</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('Odisha State', 'OSSSC');closeMobileNav();">
+                        <span class="pw-exam-icon">📑</span>
+                        <div>
+                          <strong>OSSSC CRE (RI, ARI, Amin)</strong>
+                          <small>Revenue Inspector &amp; Forest Guard</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('Odisha State', 'ODISHA-POLICE');closeMobileNav();">
+                        <span class="pw-exam-icon"><img src="images/logos/odisha.svg" alt="Police" decoding="async"></span>
+                        <div>
+                          <strong>Odisha Police SI &amp; Constable</strong>
+                          <small>Written + 1.6km PET Physical Prep</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('Odisha State', 'OSSC');closeMobileNav();">
+                        <span class="pw-exam-icon">📋</span>
+                        <div>
+                          <strong>OSSC CHSL &amp; Technical</strong>
+                          <small>Junior Clerk, DEO, Stenographer</small>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 3. Panel: SSC -->
+                  <div class="pw-cards-panel" id="pwPanel-ssc">
+                    <div class="pw-panel-header">
+                      <span class="pw-panel-tag">CENTRAL STAFF SELECTION COMMISSION</span>
+                      <h3 class="pw-panel-title">Staff Selection Commission (SSC)</h3>
+                    </div>
+                    <div class="pw-cards-grid">
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'SSC');closeMobileNav();">
+                        <span class="pw-exam-icon"><img src="images/logos/ssc.webp" alt="SSC" decoding="async"></span>
+                        <div>
+                          <strong>SSC CGL (Tier 1 &amp; Tier 2)</strong>
+                          <small>Income Tax, ASO, Preventive Officer, GST</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'SSC');closeMobileNav();">
+                        <span class="pw-exam-icon">📑</span>
+                        <div>
+                          <strong>SSC CHSL (10+2)</strong>
+                          <small>Lower Division Clerk (LDC), DEO, PA/SA</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'SSC');closeMobileNav();">
+                        <span class="pw-exam-icon">📝</span>
+                        <div>
+                          <strong>SSC MTS &amp; Havaldar</strong>
+                          <small>Multi-Tasking Non-Technical Staff</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'SSC');closeMobileNav();">
+                        <span class="pw-exam-icon">🛡️</span>
+                        <div>
+                          <strong>SSC GD Constable</strong>
+                          <small>BSF, CRPF, CISF, ITBP, SSB, Assam Rifles</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'SSC');closeMobileNav();">
+                        <span class="pw-exam-icon">👮</span>
+                        <div>
+                          <strong>SSC CPO Sub-Inspector</strong>
+                          <small>Delhi Police SI &amp; CAPFs Central Armed Police</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'SSC');closeMobileNav();">
+                        <span class="pw-exam-icon">⚖️</span>
+                        <div>
+                          <strong>SSC Stenographer Grade C &amp; D</strong>
+                          <small>General Awareness, English &amp; Shorthand</small>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 4. Panel: Banking & Financial -->
+                  <div class="pw-cards-panel" id="pwPanel-bank">
+                    <div class="pw-panel-header">
+                      <span class="pw-panel-tag">PUBLIC SECTOR &amp; APEX FINANCIAL</span>
+                      <h3 class="pw-panel-title">Banking &amp; Insurance Recruitments</h3>
+                    </div>
+                    <div class="pw-cards-grid">
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'BANK');closeMobileNav();">
+                        <span class="pw-exam-icon"><img src="images/logos/sbi.svg" alt="SBI" decoding="async"></span>
+                        <div>
+                          <strong>SBI PO &amp; Junior Associate</strong>
+                          <small>State Bank of India Probationary Officer &amp; Clerk</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'BANK');closeMobileNav();">
+                        <span class="pw-exam-icon"><img src="images/logos/ibps.png" alt="IBPS" decoding="async"></span>
+                        <div>
+                          <strong>IBPS PO &amp; Clerk</strong>
+                          <small>11 Participating Public Sector National Banks</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'BANK');closeMobileNav();">
+                        <span class="pw-exam-icon">🌾</span>
+                        <div>
+                          <strong>IBPS RRB Officer &amp; Assistant</strong>
+                          <small>Odisha Gramya Bank &amp; Utkal Grameen Bank</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'BANK');closeMobileNav();">
+                        <span class="pw-exam-icon">🪙</span>
+                        <div>
+                          <strong>RBI Grade B &amp; Assistant</strong>
+                          <small>Reserve Bank of India Apex Regulatory Posts</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'BANK');closeMobileNav();">
+                        <span class="pw-exam-icon">🛡️</span>
+                        <div>
+                          <strong>LIC AAO, ADO &amp; NIACL</strong>
+                          <small>Life &amp; General Insurance Administrative Officer</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'BANK');closeMobileNav();">
+                        <span class="pw-exam-icon">💼</span>
+                        <div>
+                          <strong>NABARD Grade A &amp; SEBI</strong>
+                          <small>Rural Development &amp; Capital Market Regulators</small>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 5. Panel: Railways -->
+                  <div class="pw-cards-panel" id="pwPanel-railway">
+                    <div class="pw-panel-header">
+                      <span class="pw-panel-tag">MINISTRY OF RAILWAYS (RRB &amp; RRC)</span>
+                      <h3 class="pw-panel-title">Railway Recruitment Board (RRB)</h3>
+                    </div>
+                    <div class="pw-cards-grid">
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'RAILWAY');closeMobileNav();">
+                        <span class="pw-exam-icon"><img src="images/logos/railways.jpg" alt="RRB" decoding="async"></span>
+                        <div>
+                          <strong>RRB NTPC (Graduate &amp; 10+2)</strong>
+                          <small>Station Master, Goods Train Manager, Senior Clerk</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'RAILWAY');closeMobileNav();">
+                        <span class="pw-exam-icon">🚆</span>
+                        <div>
+                          <strong>RRB ALP &amp; Technician</strong>
+                          <small>Assistant Loco Pilot &amp; Electrical/Mechanical</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'RAILWAY');closeMobileNav();">
+                        <span class="pw-exam-icon">🛤️</span>
+                        <div>
+                          <strong>RRB Group D (Level-1)</strong>
+                          <small>Track Maintainer, Pointsman, Assistant Workshop</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'RAILWAY');closeMobileNav();">
+                        <span class="pw-exam-icon">🛡️</span>
+                        <div>
+                          <strong>RPF Sub-Inspector &amp; Constable</strong>
+                          <small>Railway Protection Force Uniformed Services</small>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 6. Panel: JEE / NEET -->
+                  <div class="pw-cards-panel" id="pwPanel-jeeneet">
+                    <div class="pw-panel-header">
+                      <span class="pw-panel-tag">ENGINEERING &amp; MEDICAL ENTRANCE</span>
+                      <h3 class="pw-panel-title">Competitive Exams (JEE / NEET / Research)</h3>
+                    </div>
+                    <div class="pw-cards-grid">
+                      <button type="button" class="pw-exam-card" onclick="show('batches');closeMobileNav();">
+                        <span class="pw-exam-icon">⚡</span>
+                        <div>
+                          <strong>IIT-JEE (Main + Advanced)</strong>
+                          <small>Top Rank Engineering • Class 11, 12 &amp; Droppers</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="show('batches');closeMobileNav();">
+                        <span class="pw-exam-icon">🩺</span>
+                        <div>
+                          <strong>NEET-UG (Medical)</strong>
+                          <small>MBBS / BDS Admissions • 720/720 Score Strategy</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="show('batches');closeMobileNav();">
+                        <span class="pw-exam-icon">🔭</span>
+                        <div>
+                          <strong>NEST (NISER Bhubaneswar)</strong>
+                          <small>Integrated MSc Pure Science &amp; Atomic Research</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="show('batches');closeMobileNav();">
+                        <span class="pw-exam-icon">🧪</span>
+                        <div>
+                          <strong>IISER IAT &amp; CUET-UG</strong>
+                          <small>Central University Admissions &amp; IISER Fellowship</small>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 7. Panel: School Boards -->
+                  <div class="pw-cards-panel" id="pwPanel-school">
+                    <div class="pw-panel-header">
+                      <span class="pw-panel-tag">K-12 &amp; JUNIOR COLLEGE WING</span>
+                      <h3 class="pw-panel-title">School Boards (CBSE &amp; CHSE +2)</h3>
+                    </div>
+                    <div class="pw-cards-grid">
+                      <button type="button" class="pw-exam-card" onclick="show('batches');closeMobileNav();">
+                        <span class="pw-exam-icon">🔬</span>
+                        <div>
+                          <strong>CHSE Odisha +2 Science</strong>
+                          <small>1st &amp; 2nd Year Physics, Chemistry, Math, Bio &amp; IT</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="show('batches');closeMobileNav();">
+                        <span class="pw-exam-icon">📊</span>
+                        <div>
+                          <strong>CHSE Odisha +2 Commerce</strong>
+                          <small>Accountancy, Business Studies &amp; Economics</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="show('batches');closeMobileNav();">
+                        <span class="pw-exam-icon">📘</span>
+                        <div>
+                          <strong>CBSE Class 11th &amp; 12th</strong>
+                          <small>NCERT Master Batches (Science &amp; Commerce)</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="show('batches');closeMobileNav();">
+                        <span class="pw-exam-icon">📐</span>
+                        <div>
+                          <strong>CBSE Class 10th Board Booster</strong>
+                          <small>Math, Science &amp; Social Studies (95%+ Target)</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="show('batches');closeMobileNav();">
+                        <span class="pw-exam-icon">📑</span>
+                        <div>
+                          <strong>BSE Odisha 10th Matric</strong>
+                          <small>State Board Class 10 High School Crash Batch</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="show('batches');closeMobileNav();">
+                        <span class="pw-exam-icon">🥇</span>
+                        <div>
+                          <strong>Olympiad &amp; NTSE Foundation</strong>
+                          <small>NSO, IMO, NTSE &amp; High-School Science Drills</small>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 8. Panel: Defence & Police -->
+                  <div class="pw-cards-panel" id="pwPanel-defence">
+                    <div class="pw-panel-header">
+                      <span class="pw-panel-tag">ARMED FORCES &amp; UNIFORMED SERVICES</span>
+                      <h3 class="pw-panel-title">Defence, Police &amp; Paramilitary</h3>
+                    </div>
+                    <div class="pw-cards-grid">
+                      <button type="button" class="pw-exam-card" onclick="filterExam('Odisha State', 'ODISHA-POLICE');closeMobileNav();">
+                        <span class="pw-exam-icon">👮</span>
+                        <div>
+                          <strong>Odisha Police SI &amp; Constable</strong>
+                          <small>Written Syllabus + 1.6km PET Ground Training</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'DEFENCE');closeMobileNav();">
+                        <span class="pw-exam-icon">⚔️</span>
+                        <div>
+                          <strong>NDA &amp; NA (10+2 Defence)</strong>
+                          <small>Army, Navy &amp; Air Force + 5-Day SSB Interview</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'DEFENCE');closeMobileNav();">
+                        <span class="pw-exam-icon">🎖️</span>
+                        <div>
+                          <strong>CDS &amp; AFCAT</strong>
+                          <small>Combined Defence Services &amp; Air Force Common</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'SSC');closeMobileNav();">
+                        <span class="pw-exam-icon">🛡️</span>
+                        <div>
+                          <strong>Agniveer &amp; Coast Guard</strong>
+                          <small>General Duty (GD), Technical &amp; Tradesman</small>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 9. Panel: Teaching Exams -->
+                  <div class="pw-cards-panel" id="pwPanel-teaching">
+                    <div class="pw-panel-header">
+                      <span class="pw-panel-tag">TEACHER ELIGIBILITY &amp; RECRUITMENT</span>
+                      <h3 class="pw-panel-title">Teaching Eligibility Examinations</h3>
+                    </div>
+                    <div class="pw-cards-grid">
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'TEACHING');closeMobileNav();">
+                        <span class="pw-exam-icon">📚</span>
+                        <div>
+                          <strong>CTET (Paper 1 &amp; Paper 2)</strong>
+                          <small>Central Teacher Eligibility Test (CDP + Subject)</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'TEACHING');closeMobileNav();">
+                        <span class="pw-exam-icon">📑</span>
+                        <div>
+                          <strong>OTET &amp; OSSTET (Odisha)</strong>
+                          <small>Primary &amp; Secondary High School Teacher Tests</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'TEACHING');closeMobileNav();">
+                        <span class="pw-exam-icon">🏫</span>
+                        <div>
+                          <strong>KVS &amp; NVS Teaching Posts</strong>
+                          <small>Kendriya &amp; Navodaya Vidyalaya PRT, TGT, PGT</small>
+                        </div>
+                      </button>
+
+                      <button type="button" class="pw-exam-card" onclick="filterExam('All India', 'TEACHING');closeMobileNav();">
+                        <span class="pw-exam-icon">🎓</span>
+                        <div>
+                          <strong>Odisha B.Ed Entrance</strong>
+                          <small>Science &amp; Arts Integrated B.Ed Prep</small>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Bottom Quick Bar for Right Pane -->
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;margin-top:20px;flex-wrap:wrap;gap:10px;">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <span style="font-size:16px;">🎯</span>
+                      <span style="font-size:12.5px;color:#334155;font-weight:700;">Explore all 204+ Central &amp; State Govt Examinations</span>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                      <button type="button" class="btn orange" style="padding:6px 14px;font-size:12px;font-weight:750;" onclick="show('exams');closeMobileNav();">
+                        View 204 Directory →
+                      </button>
+                      <button type="button" class="btn ghost" style="padding:6px 12px;font-size:12px;font-weight:700;border-color:#cbd5e1;" onclick="openCohortSelection();closeMobileNav();">
+                        Change Goal
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
