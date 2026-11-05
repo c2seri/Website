@@ -237,10 +237,10 @@
               </div>
               <strong style="display:block;color:#0f2a5c;font-size:15px;margin-bottom:4px;">Choose Desk Online Now</strong>
               <span style="font-size:12.5px;color:#64748b;line-height:1.45;display:block;">
-                Interactive seating layout se apni specific desk (Zone A, B ya C) abhi direct confirm karein.
+                Interactive seating layout se apni specific desk (149 Desks across 2 Floors) abhi direct confirm karein.
               </span>
               <div style="margin-top:12px;font-size:12px;color:#2563eb;font-weight:750;">
-                Pick from 64 ergonomic desks &rarr;
+                Pick from 149 ergonomic desks (2 Floors) &rarr;
               </div>
             </div>
           </label>
@@ -276,20 +276,19 @@
             </div>
           </div>
 
-          <!-- Zone Tabs -->
-          <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;">
-            <button type="button" class="btn" id="btnZoneA" onclick="showSeatZone('A')" style="padding:7px 14px;font-size:12.5px;font-weight:800;background:#2563eb;color:#fff;border:none;border-radius:8px;">Zone A (Silent Cubicles)</button>
-            <button type="button" class="btn" id="btnZoneB" onclick="showSeatZone('B')" style="padding:7px 14px;font-size:12.5px;font-weight:800;background:#e2e8f0;color:#334155;border:none;border-radius:8px;">Zone B (Laptop Hub)</button>
-            <button type="button" class="btn" id="btnZoneC" onclick="showSeatZone('C')" style="padding:7px 14px;font-size:12.5px;font-weight:800;background:#e2e8f0;color:#334155;border:none;border-radius:8px;">Zone C (Acoustic Pods)</button>
+          <!-- Floor Tabs -->
+          <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+            <button type="button" class="btn" id="btnZoneF1" onclick="showSeatZone('F1')" style="padding:8px 16px;font-size:13px;font-weight:800;background:#2563eb;color:#fff;border:none;border-radius:8px;cursor:pointer;">🏢 Floor 1 (Desks 001–075)</button>
+            <button type="button" class="btn" id="btnZoneF2" onclick="showSeatZone('F2')" style="padding:8px 16px;font-size:13px;font-weight:800;background:#e2e8f0;color:#334155;border:none;border-radius:8px;cursor:pointer;">🏢 Floor 2 (Desks 076–149)</button>
           </div>
 
           <!-- Zone Grid of Desks -->
-          <div id="deskChipGrid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(76px, 1fr));gap:8px;"></div>
+          <div id="deskChipGrid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(78px, 1fr));gap:8px;max-height:280px;overflow-y:auto;padding-right:4px;"></div>
 
           <!-- Currently Selected Desk Pill -->
           <div id="selectedDeskDisplay" style="margin-top:14px;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-            <span style="font-size:13.5px;color:#1e40af;">Assigned Desk: <strong id="selectedDeskLabel" style="font-size:16px;color:#1d4ed8;">Desk A-14 (Zone A)</strong></span>
-            <span style="font-size:12px;color:#2563eb;font-weight:700;">✓ Ready to allocate on submission</span>
+            <span style="font-size:13.5px;color:#1e40af;">Assigned Desk: <strong id="selectedDeskLabel" style="font-size:16px;color:#1d4ed8;">Desk #12 (Floor 1)</strong></span>
+            <span style="font-size:12px;color:#2563eb;font-weight:750;">✓ Verified 149-Seat Study Sanctuary</span>
           </div>
         </div>
 
@@ -408,34 +407,35 @@
       if (hidden) hidden.value = full;
     };
 
-    let currentZone = 'A';
-    let chosenDesk = 'A-14';
+    let currentFloorKey = 'F1';
+    let chosenDesk = 'Desk #12 (Floor 1)';
 
-    const OCCUPIED_DESKS = new Set(["A-03", "A-07", "A-11", "B-02", "B-06", "B-09", "B-12", "C-05", "C-08", "C-11", "C-15"]);
-
-    window.showSeatZone = function(zoneKey) {
-      currentZone = zoneKey;
-      ['A', 'B', 'C'].forEach(z => {
-        const btn = document.getElementById('btnZone' + z);
-        if (btn) {
-          if (z === zoneKey) {
-            btn.style.background = '#2563eb';
-            btn.style.color = '#fff';
-          } else {
-            btn.style.background = '#e2e8f0';
-            btn.style.color = '#334155';
-          }
-        }
-      });
+    window.showSeatZone = function(floorKey) {
+      if (floorKey) currentFloorKey = floorKey === 'F2' ? 'F2' : 'F1';
+      const btnF1 = document.getElementById('btnZoneF1');
+      const btnF2 = document.getElementById('btnZoneF2');
+      if (btnF1) {
+        btnF1.style.background = currentFloorKey === 'F1' ? '#2563eb' : '#e2e8f0';
+        btnF1.style.color = currentFloorKey === 'F1' ? '#fff' : '#334155';
+      }
+      if (btnF2) {
+        btnF2.style.background = currentFloorKey === 'F2' ? '#2563eb' : '#e2e8f0';
+        btnF2.style.color = currentFloorKey === 'F2' ? '#fff' : '#334155';
+      }
 
       const grid = document.getElementById('deskChipGrid');
       if (!grid) return;
       grid.innerHTML = '';
 
-      for (let i = 1; i <= 16; i++) {
-        const deskId = zoneKey + '-' + String(i).padStart(2, '0');
-        const isOccupied = OCCUPIED_DESKS.has(deskId);
-        const isSelected = deskId === chosenDesk;
+      const start = currentFloorKey === 'F1' ? 1 : 76;
+      const end = currentFloorKey === 'F1' ? 75 : 149;
+      const floorTitle = currentFloorKey === 'F1' ? 'Floor 1' : 'Floor 2';
+
+      for (let i = start; i <= end; i++) {
+        const deskLabel = `Desk #${i}`;
+        const fullDeskStr = `${deskLabel} (${floorTitle})`;
+        const isOccupied = (i % 7 === 0);
+        const isSelected = chosenDesk && (chosenDesk.includes(`#${i}`) || chosenDesk.includes(`Desk-${String(i).padStart(3, '0')}`));
 
         const chip = document.createElement('button');
         chip.type = 'button';
@@ -452,34 +452,33 @@
           chip.style.border = '1px dashed #cbd5e1';
           chip.style.color = '#94a3b8';
           chip.disabled = true;
-          chip.innerHTML = `${deskId}<br><span style="font-size:9.5px;font-weight:600;">Taken</span>`;
+          chip.innerHTML = `#${i}<br><span style="font-size:9.5px;font-weight:600;">Taken</span>`;
         } else if (isSelected) {
           chip.style.background = '#10b981';
           chip.style.border = '2px solid #059669';
           chip.style.color = '#ffffff';
           chip.style.boxShadow = '0 0 10px rgba(16,185,129,0.4)';
-          chip.innerHTML = `${deskId}<br><span style="font-size:9.5px;">Selected</span>`;
+          chip.innerHTML = `#${i}<br><span style="font-size:9.5px;">Selected</span>`;
         } else {
           chip.style.background = '#ffffff';
           chip.style.border = '1.5px solid #10b981';
           chip.style.color = '#065f46';
-          chip.innerHTML = `${deskId}<br><span style="font-size:9.5px;color:#10b981;">Vacant</span>`;
-          chip.onclick = () => selectDeskChip(deskId, zoneKey);
+          chip.innerHTML = `#${i}<br><span style="font-size:9.5px;color:#10b981;">Vacant</span>`;
+          chip.onclick = () => selectDeskChip(fullDeskStr);
         }
         grid.appendChild(chip);
       }
     };
 
-    window.selectDeskChip = function(deskId, zoneKey) {
-      chosenDesk = deskId;
-      const zoneNames = { A: "Zone A: Silent Cubicles", B: "Zone B: Laptop Hub", C: "Zone C: Acoustic Pods" };
+    window.selectDeskChip = function(fullDeskStr) {
+      chosenDesk = fullDeskStr;
       const label = document.getElementById('selectedDeskLabel');
-      if (label) label.textContent = `Desk ${deskId} (${zoneNames[zoneKey] || 'Library Desk'})`;
+      if (label) label.textContent = fullDeskStr;
       
       const allocInput = document.getElementById('allocSeat');
-      if (allocInput) allocInput.value = `Desk ${deskId} (${zoneNames[zoneKey] || ''})`;
+      if (allocInput) allocInput.value = fullDeskStr;
 
-      showSeatZone(zoneKey);
+      showSeatZone(currentFloorKey);
     };
 
     window.applyReferralDiscount = function() {

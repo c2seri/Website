@@ -246,7 +246,7 @@
           <div
             style="margin-top:4px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.12);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#94a3b8;">
             <span>📍 NH-16 Opp. Sani Mandir</span>
-            <span style="color:#38bdf8;font-weight:700;">64 Ergonomic Desks</span>
+            <span style="color:#38bdf8;font-weight:800;">🏢 2 Floors • 💺 149 Total Desks</span>
           </div>
         </div>
       </div>
@@ -473,40 +473,36 @@
       <!-- CONTAINER 2: 2D TACTICAL MATRIX (FALLBACK / ALTERNATE VIEW) -->
       <div id="c2s2dContainer" style="display:none;margin-top:20px;">
         <div class="c2s-3d-floor view-2d" id="c2s3dFloor">
-          <!-- Entrance -->
-          <div style="text-align:center;margin-bottom:24px;border-bottom:2px dashed #cbd5e1;padding-bottom:12px;">
-            <span style="font-size:11px;font-weight:800;letter-spacing:2px;color:#64748b;text-transform:uppercase;">
-              🚪 MAIN RECEPTION ENTRANCE • RO WATER COOLER • BIOMETRIC ACCESS PUNCH
+          <!-- Two Floors Switcher Header -->
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;background:#f8fafc;padding:12px 18px;border-radius:14px;border:1.5px solid #cbd5e1;">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <span style="font-size:12px;font-weight:900;color:#0f2a5c;text-transform:uppercase;letter-spacing:1px;">🏢 SELECT FLOOR:</span>
+              <button type="button" id="btnFloor1" class="btn" onclick="setLibraryFloor(1)"
+                style="padding:8px 18px;font-size:13.5px;font-weight:800;background:#1d4ed8;color:#ffffff;border:1.5px solid #1d4ed8;border-radius:9px;cursor:pointer;box-shadow:0 2px 6px rgba(29,78,216,0.25);">
+                🏢 Floor 1 (Desks 001–075)
+              </button>
+              <button type="button" id="btnFloor2" class="btn" onclick="setLibraryFloor(2)"
+                style="padding:8px 18px;font-size:13.5px;font-weight:800;background:#ffffff;color:#0f2a5c;border:1.5px solid #cbd5e1;border-radius:9px;cursor:pointer;">
+                🏢 Floor 2 (Desks 076–149)
+              </button>
+            </div>
+            <div>
+              <span id="currentFloorLabelBadge" style="display:inline-block;background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:800;">
+                Floor 1 • Desks 001 to 075 (75 Seats)
+              </span>
+            </div>
+          </div>
+
+          <!-- Entrance / Amenities Strip -->
+          <div style="text-align:center;margin-bottom:20px;border-bottom:2px dashed #cbd5e1;padding-bottom:10px;">
+            <span style="font-size:11.5px;font-weight:800;letter-spacing:1px;color:#64748b;text-transform:uppercase;">
+              🚪 MAIN RECEPTION ENTRANCE • 🅿️ UNDERGROUND PARKING ACCESS • 🍱 DINING/PANTRY • ☕ TEA & COFFEE BAR • BIOMETRIC PUNCH
             </span>
           </div>
 
-          <!-- Zone A -->
-          <div style="margin-bottom:24px;background:#f8fafc;padding:18px;border-radius:16px;border:1px solid #e2e8f0;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-              <strong style="color:#0a192f;font-size:15px;">Zone A: Executive Silent Cubicles (A-01 to A-16)</strong>
-              <span class="badge green">SILENT SANCTUARY</span>
-            </div>
-            <div class="c2s-3d-desk-grid" id="zoneAGrid"></div>
-          </div>
-
-          <!-- Zone B -->
-          <div style="margin-bottom:24px;background:#f8fafc;padding:18px;border-radius:16px;border:1px solid #e2e8f0;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-              <strong style="color:#0a192f;font-size:15px;">Zone B: Digital Laptop &amp; Power Hub (B-01 to
-                B-16)</strong>
-              <span class="badge blue">POWER ZONE</span>
-            </div>
-            <div class="c2s-3d-desk-grid" id="zoneBGrid"></div>
-          </div>
-
-          <!-- Zone C -->
-          <div style="background:#f8fafc;padding:18px;border-radius:16px;border:1px solid #e2e8f0;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-              <strong style="color:#0a192f;font-size:15px;">Zone C: Executive Silent Reading Pods (C-01 to
-                C-16)</strong>
-              <span class="badge orange">PRIVATE PODS</span>
-            </div>
-            <div class="c2s-3d-desk-grid" id="zoneCGrid"></div>
+          <!-- Dynamic Desk Grid (Renders 75 desks on Floor 1, 74 desks on Floor 2) -->
+          <div style="background:#ffffff;padding:20px;border-radius:16px;border:1.5px solid #e2e8f0;margin-bottom:20px;box-shadow:0 4px 16px rgba(15,23,42,0.03);">
+            <div class="c2s-3d-desk-grid" id="c2sDynamicDeskGrid"></div>
           </div>
         </div>
       </div>
@@ -575,74 +571,195 @@
       }
     </script>
 
+    <!-- Verified Campus & Study Sanctuary Photo Gallery (Patrapada Centre) -->
+    <div style="margin-bottom:44px;background:#ffffff;border:1.5px solid #e2e8f0;border-radius:24px;padding:32px 24px;box-shadow:0 10px 30px rgba(15,23,42,0.05);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:24px;border-bottom:1.5px solid #f1f5f9;padding-bottom:16px;">
+        <div>
+          <span class="pill green" style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-weight:800;">
+            📸 REAL CAMPUS PHOTOGRAPHS &bull; PATRAPADA CENTRE
+          </span>
+          <h2 style="font-size:26px;font-weight:900;color:#0a192f;margin:6px 0 4px;letter-spacing:-0.02em;">
+            C2S 24-Hour Study Sanctuary Tour (149 Seats Across 2 Floors)
+          </h2>
+          <p style="font-size:14px;color:#64748b;margin:0;">
+            100% Real photographs of our air-conditioned study hall, individual lockable study cubicles, green wall ambiance, and infrastructure.
+          </p>
+        </div>
+        <div>
+          <span style="display:inline-flex;align-items:center;gap:6px;background:#f8fafc;border:1.5px solid #cbd5e1;padding:8px 16px;border-radius:999px;font-size:13px;font-weight:800;color:#0f2a5c;">
+            🏢 2 Full Floors &bull; 💺 149 Total Desks
+          </span>
+        </div>
+      </div>
+
+      <!-- 5 Photo Grid with Modern Aspect Ratio Cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:18px;">
+        <!-- Photo 1: Main Central Aisle -->
+        <div style="position:relative;border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(15,23,42,0.08);border:1px solid #e2e8f0;background:#0f172a;">
+          <img src="/images/library/c2s-library-aisle-hall.jpg" alt="C2S Library Central Study Aisle - 149 Desks" style="width:100%;height:240px;object-fit:cover;display:block;">
+          <div style="position:absolute;bottom:0;inset-inline:0;background:linear-gradient(to top, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0) 100%);padding:16px;color:#fff;">
+            <div style="font-size:11px;font-weight:800;color:#38bdf8;text-transform:uppercase;letter-spacing:0.5px;">Main Sanctuary Hall</div>
+            <strong style="font-size:14.5px;display:block;color:#f8fafc;">Central Study Aisle (149 Desks across 2 Floors)</strong>
+            <span style="font-size:11.5px;color:#cbd5e1;">Ergonomic mesh chairs, polished granite floor, zero-noise discipline.</span>
+          </div>
+        </div>
+
+        <!-- Photo 2: Individual Study Cabins with Overhead Lockers -->
+        <div style="position:relative;border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(15,23,42,0.08);border:1px solid #e2e8f0;background:#0f172a;">
+          <img src="/images/library/c2s-library-study-cabins.jpg" alt="C2S Library Personal Study Cabins with Overhead Lockers" style="width:100%;height:240px;object-fit:cover;display:block;">
+          <div style="position:absolute;bottom:0;inset-inline:0;background:linear-gradient(to top, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0) 100%);padding:16px;color:#fff;">
+            <div style="font-size:11px;font-weight:800;color:#34d399;text-transform:uppercase;letter-spacing:0.5px;">Private Storage &amp; Power</div>
+            <strong style="font-size:14.5px;display:block;color:#f8fafc;">Individual Cabins with Lockable Overhead Storage</strong>
+            <span style="font-size:11.5px;color:#cbd5e1;">Numbered desks with individual locks, 230V plugs &amp; central A/C.</span>
+          </div>
+        </div>
+
+        <!-- Photo 3: Green Wall Ambiance -->
+        <div style="position:relative;border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(15,23,42,0.08);border:1px solid #e2e8f0;background:#0f172a;">
+          <img src="/images/library/c2s-library-cubicles-greenwall.jpg" alt="C2S Library Green Wall Ambiance and Cubicles" style="width:100%;height:240px;object-fit:cover;display:block;">
+          <div style="position:absolute;bottom:0;inset-inline:0;background:linear-gradient(to top, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0) 100%);padding:16px;color:#fff;">
+            <div style="font-size:11px;font-weight:800;color:#a7f3d0;text-transform:uppercase;letter-spacing:0.5px;">Eco-Friendly Interior</div>
+            <strong style="font-size:14.5px;display:block;color:#f8fafc;">Vertical Green Wall &amp; Natural Planters</strong>
+            <span style="font-size:11.5px;color:#cbd5e1;">Fresh visual calmness to keep mind sharp and stress-free for 14 hours.</span>
+          </div>
+        </div>
+
+        <!-- Photo 4: Spacious Hall (Desks 76 to 149) -->
+        <div style="position:relative;border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(15,23,42,0.08);border:1px solid #e2e8f0;background:#0f172a;">
+          <img src="/images/library/c2s-library-hall-wide.jpg" alt="C2S Library Wide Study Hall View" style="width:100%;height:240px;object-fit:cover;display:block;">
+          <div style="position:absolute;bottom:0;inset-inline:0;background:linear-gradient(to top, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0) 100%);padding:16px;color:#fff;">
+            <div style="font-size:11px;font-weight:800;color:#facc15;text-transform:uppercase;letter-spacing:0.5px;">Two Floor Layout</div>
+            <strong style="font-size:14.5px;display:block;color:#f8fafc;">Expansive Air-Conditioned Dual-Floor Sanctuary</strong>
+            <span style="font-size:11.5px;color:#cbd5e1;">High-velocity silent fans, 22°C commercial AC &amp; daylight blinds.</span>
+          </div>
+        </div>
+
+        <!-- Photo 5: Modern Interior Wall & CCTV -->
+        <div style="position:relative;border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(15,23,42,0.08);border:1px solid #e2e8f0;background:#0f172a;">
+          <img src="/images/library/c2s-library-interior-decor.jpg" alt="C2S Library 24x7 CCTV and Interior Décor" style="width:100%;height:240px;object-fit:cover;display:block;">
+          <div style="position:absolute;bottom:0;inset-inline:0;background:linear-gradient(to top, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0) 100%);padding:16px;color:#fff;">
+            <div style="font-size:11px;font-weight:800;color:#f472b6;text-transform:uppercase;letter-spacing:0.5px;">Safety &amp; Time Discipline</div>
+            <strong style="font-size:14.5px;display:block;color:#f8fafc;">24x7 HD CCTV Surveillance &amp; Decorative Ambiance</strong>
+            <span style="font-size:11.5px;color:#cbd5e1;">Continuous security monitoring, biometric attendance and strict timing.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Official Facilities -->
     <div style="margin-bottom:36px;">
       <div class="section-head" style="text-align:left;margin-bottom:20px;">
-        <span class="pill">CENTRE INFRASTRUCTURE</span>
-        <h2 style="font-size:24px;color:#0a192f;margin:6px 0;">Official Library Facilities</h2>
+        <span class="pill green" style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-weight:800;">VERIFIED AMENITIES</span>
+        <h2 style="font-size:26px;color:#0a192f;margin:6px 0 4px;font-weight:900;">Official Library Facilities (Total 149 Seats Across 2 Floors)</h2>
         <p class="small" style="color:#64748b;margin:0;">Guaranteed at NH-16 Patrapada centre, Bhubaneswar.</p>
       </div>
 
+      <!-- 5 Key Highlighted Facilities (User Specified Special Amenities) -->
+      <div style="margin-bottom:24px;background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%);border-radius:20px;padding:26px;border:1.5px solid #334155;box-shadow:0 12px 32px rgba(15,23,42,0.15);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+          <span style="background:#ea580c;color:#fff;font-size:11px;font-weight:900;padding:4px 10px;border-radius:999px;letter-spacing:0.5px;">★ EXCLUSIVE PILLARS</span>
+          <h3 style="color:#ffffff;font-size:19px;margin:0;font-weight:900;">Top 5 Premium Member Privileges</h3>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:16px;">
+          <!-- 1. Free weekly classes on math and reasoning -->
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:18px;backdrop-filter:blur(6px);">
+            <div style="font-size:28px;margin-bottom:8px;">📐</div>
+            <h4 style="margin:0 0 4px;color:#38bdf8;font-size:16px;font-weight:800;">1. Free Weekly Classes on Math &amp; Reasoning</h4>
+            <p style="color:#cbd5e1;margin:0;font-size:12.5px;line-height:1.5;">Special live trick workshops and doubt sessions by senior faculty for OSSC, Banking, SSC, &amp; Railway aspirants.</p>
+          </div>
+
+          <!-- 2. Free online test -->
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:18px;backdrop-filter:blur(6px);">
+            <div style="font-size:28px;margin-bottom:8px;">💻</div>
+            <h4 style="margin:0 0 4px;color:#34d399;font-size:16px;font-weight:800;">2. Free Online Test Series</h4>
+            <p style="color:#cbd5e1;margin:0;font-size:12.5px;line-height:1.5;">Full-length CBT mock tests with instant percentile and solutions included complimentary with every library shift.</p>
+          </div>
+
+          <!-- 3. Underground Parking -->
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:18px;backdrop-filter:blur(6px);">
+            <div style="font-size:28px;margin-bottom:8px;">🅿️</div>
+            <h4 style="margin:0 0 4px;color:#facc15;font-size:16px;font-weight:800;">3. Underground Parking</h4>
+            <p style="color:#cbd5e1;margin:0;font-size:12.5px;line-height:1.5;">Safe, secure basement parking for two-wheelers and four-wheelers with wide ramp and 24x7 security surveillance.</p>
+          </div>
+
+          <!-- 4. Lunch and Dinner facilities -->
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:18px;backdrop-filter:blur(6px);">
+            <div style="font-size:28px;margin-bottom:8px;">🍱</div>
+            <h4 style="margin:0 0 4px;color:#fb923c;font-size:16px;font-weight:800;">4. Lunch &amp; Dinner Facilities</h4>
+            <p style="color:#cbd5e1;margin:0;font-size:12.5px;line-height:1.5;">Clean, dedicated dining/pantry area where students can have hygienic meals comfortably without leaving the building.</p>
+          </div>
+
+          <!-- 5. Tea and coffee facilities -->
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:18px;backdrop-filter:blur(6px);">
+            <div style="font-size:28px;margin-bottom:8px;">☕</div>
+            <h4 style="margin:0 0 4px;color:#f472b6;font-size:16px;font-weight:800;">5. Tea &amp; Coffee Facilities</h4>
+            <p style="color:#cbd5e1;margin:0;font-size:12.5px;line-height:1.5;">Fresh hot tea and coffee station available round-the-clock to stay awake, energized, and 100% focused during long shifts.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Infrastructure Amenities Grid -->
       <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px;">
         <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;">
           <div style="font-size:26px;margin-bottom:8px;">💡</div>
-          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">1. Personal Light for Desk (For Everyone)</h4>
+          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">6. Personal Light for Desk (For Everyone)</h4>
           <p class="small" style="color:#64748b;margin:0;line-height:1.5;">Every single study desk is equipped with an
             anti-glare warm LED gooseneck lamp to prevent eye fatigue.</p>
         </div>
 
         <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;">
           <div style="font-size:26px;margin-bottom:8px;">⚡</div>
-          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">2. Dedicated Charging Socket</h4>
+          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">7. Dedicated 230V Charging Socket</h4>
           <p class="small" style="color:#64748b;margin:0;line-height:1.5;">Personal 3-pin 230V power plug directly on
             your cubicle table for laptops, tablets, and phones.</p>
         </div>
 
         <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;">
           <div style="font-size:26px;margin-bottom:8px;">📶</div>
-          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">3. Free High-Speed Wi-Fi</h4>
+          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">8. Free High-Speed Wi-Fi</h4>
           <p class="small" style="color:#64748b;margin:0;line-height:1.5;">100% Free 300 Mbps dual-ISP optical fiber
             connections with zero buffering for CBT mocks and lectures.</p>
         </div>
 
         <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;">
           <div style="font-size:26px;margin-bottom:8px;">🤫</div>
-          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">4. Warm &amp; Shanti Wala Environment</h4>
+          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">9. Warm &amp; Shanti Wala Environment</h4>
           <p class="small" style="color:#64748b;margin:0;line-height:1.5;">Acoustic soundproof cubicles with deep peace
             and silence. Strict zero-talking rules for absolute focus.</p>
         </div>
 
         <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;">
           <div style="font-size:26px;margin-bottom:8px;">💺</div>
-          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">5. Ergonomic High-Back Chairs</h4>
+          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">10. Ergonomic High-Back Chairs</h4>
           <p class="small" style="color:#64748b;margin:0;line-height:1.5;">High-back cushioned mesh chairs with lumbar
             spinal support, engineered for long 14-hour study sessions.</p>
         </div>
 
         <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;">
           <div style="font-size:26px;margin-bottom:8px;">🔒</div>
-          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">6. Locker Facility Available</h4>
-          <p class="small" style="color:#64748b;margin:0;line-height:1.5;">Private lockable student storage lockers for
-            safely keeping heavy books, study material, and bags.</p>
+          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">11. Personal Lockable Overhead Storage</h4>
+          <p class="small" style="color:#64748b;margin:0;line-height:1.5;">Private lockable overhead cabinets above every desk for
+            safely keeping heavy books, study material, and personal items.</p>
         </div>
 
         <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;">
           <div style="font-size:26px;margin-bottom:8px;">🚻</div>
-          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">7. Clean &amp; Hygienic Washrooms</h4>
+          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">12. Clean &amp; Hygienic Washrooms</h4>
           <p class="small" style="color:#64748b;margin:0;line-height:1.5;">Separate washrooms for male and female
             aspirants, cleaned and sanitized multiple times throughout the day.</p>
         </div>
 
         <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;">
           <div style="font-size:26px;margin-bottom:8px;">❄️</div>
-          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">8. Commercial Central A/C &amp; Power Backup</h4>
+          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">13. Commercial Central A/C &amp; Power Backup</h4>
           <p class="small" style="color:#64748b;margin:0;line-height:1.5;">Continuous 22°C temperature with silent
             automatic generator backup ensuring 0 second power cuts.</p>
         </div>
 
         <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;">
           <div style="font-size:26px;margin-bottom:8px;">💧</div>
-          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">9. RO Chilled &amp; Normal Water</h4>
+          <h4 style="margin:0 0 4px;color:#0a192f;font-size:16px;">14. RO Chilled &amp; Normal Water</h4>
           <p class="small" style="color:#64748b;margin:0;line-height:1.5;">Commercial multi-stage RO water plant
             dispenser with continuous clean hot, cold, and normal water.</p>
         </div>

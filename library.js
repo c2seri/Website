@@ -197,30 +197,106 @@ window.toggle3dAmbiance = function() {
   }
 };
 
+let currentLibraryFloor = 1;
+
+window.setLibraryFloor = function(floorNum) {
+  currentLibraryFloor = Number(floorNum);
+  const btnF1 = document.getElementById("btnFloor1");
+  const btnF2 = document.getElementById("btnFloor2");
+  if (btnF1) {
+    if (currentLibraryFloor === 1) {
+      btnF1.style.background = "#1d4ed8";
+      btnF1.style.color = "#ffffff";
+      btnF1.style.borderColor = "#1d4ed8";
+    } else {
+      btnF1.style.background = "#ffffff";
+      btnF1.style.color = "#0f2a5c";
+      btnF1.style.borderColor = "#cbd5e1";
+    }
+  }
+  if (btnF2) {
+    if (currentLibraryFloor === 2) {
+      btnF2.style.background = "#1d4ed8";
+      btnF2.style.color = "#ffffff";
+      btnF2.style.borderColor = "#1d4ed8";
+    } else {
+      btnF2.style.background = "#ffffff";
+      btnF2.style.color = "#0f2a5c";
+      btnF2.style.borderColor = "#cbd5e1";
+    }
+  }
+  const floorBadge = document.getElementById("currentFloorLabelBadge");
+  if (floorBadge) {
+    floorBadge.textContent = currentLibraryFloor === 1 ? "Floor 1 • Desks 001 to 075 (75 Seats)" : "Floor 2 • Desks 076 to 149 (74 Seats)";
+  }
+  renderTheatreSeats();
+};
+
 function renderTheatreSeats() {
   const taken = store.get("c2s_lib_taken", {});
+  const gridEl = document.getElementById("c2sDynamicDeskGrid");
 
+  if (gridEl) {
+    const start = currentLibraryFloor === 1 ? 1 : 76;
+    const end = currentLibraryFloor === 1 ? 75 : 149;
+    let html = "";
+
+    for (let i = start; i <= end; i++) {
+      const seatCode = "Desk-" + String(i).padStart(3, "0");
+      const shortNum = String(i);
+      const isTaken = Boolean(taken[seatCode] || taken["Desk " + i] || taken["Desk #" + i] || taken[String(i)]);
+      const isSelected = selectedSeat === seatCode || selectedSeat === ("Desk #" + shortNum) || selectedSeat === ("Desk " + shortNum);
+      const isReserved = (i % 7 === 0) && !isTaken && !isSelected; // Occasional held status for realistic occupancy
+
+      let cls = "c2s-3d-desk available";
+      let statusText = "🟢 Vacant";
+      if (isTaken || isReserved) {
+        cls = "c2s-3d-desk occupied";
+        statusText = "⚪ Occupied";
+      } else if (isSelected) {
+        cls = "c2s-3d-desk selected";
+        statusText = "🔵 Selected";
+      }
+
+      const floorLabel = currentLibraryFloor === 1 ? "Floor 1" : "Floor 2";
+      const zoneType = i <= 35 ? "Silent Cubicle" : (i <= 75 ? "5G Laptop Hub" : (i <= 110 ? "Focus Pod" : "Overnight Sanctuary"));
+
+      html += `
+        <div class="${cls}" title="Desk #${shortNum} (${floorLabel}) • ${statusText}" onclick="pickSeat('${seatCode}')">
+          <div class="c2s-desk-header">
+            <span class="c2s-desk-num">#${shortNum}</span>
+            <span class="desk-plug" title="Personal 230V Socket & Warm LED Lamp">🔌</span>
+          </div>
+          <div class="c2s-desk-type">${zoneType}</div>
+          <div class="c2s-desk-footer">
+            <span class="c2s-desk-status">${statusText}</span>
+            <span style="font-size:10px;color:#94a3b8;">${floorLabel}</span>
+          </div>
+        </div>
+      `;
+    }
+    gridEl.innerHTML = html;
+  }
+
+  // Backward compatibility for legacy zone grids if present on page
   const renderZone = (gridId, prefix, count, zoneLabel, zoneTypeDesc) => {
     const el = document.getElementById(gridId);
     if (!el) return;
     let html = "";
     for (let i = 1; i <= count; i++) {
       const seatId = prefix + "-" + String(i).padStart(2, "0");
-      const isTaken = Boolean(taken[seatId]);
+      const isTaken = Boolean(taken[seatId] || taken["Desk " + seatId]);
       const isSelected = selectedSeat === seatId;
-      const isReserved = (i % 6 === 0) && !isTaken && !isSelected; // 1 in 6 marked as actively held
+      const isReserved = (i % 6 === 0) && !isTaken && !isSelected;
 
       let cls = "c2s-3d-desk available";
       let statusText = "🟢 Vacant";
-      if (isTaken) {
+      if (isTaken || isReserved) {
         cls = "c2s-3d-desk occupied";
         statusText = "⚪ Occupied";
       } else if (isSelected) {
         cls = "c2s-3d-desk selected";
         statusText = "🔵 Selected";
-      } else if (isReserved) {
-        cls = "c2s-3d-desk occupied";
-        statusText = "⚪ Occupied";
       }
 
       html += `
@@ -249,14 +325,25 @@ function renderTheatreSeats() {
 
 function pickSeat(id) {
   const taken = store.get("c2s_lib_taken", {});
-  // Check if reserved or taken
-  const num = parseInt(id.split("-")[1], 10);
-  if (taken[id] || (num % 6 === 0 && !taken[id] && selectedSeat !== id)) {
-    alert("Desk " + id + " is currently occupied by an active student. Please choose an open green desk.");
-    return;
+  const numMatch = id.match(/\d+/);
+  const num = numMatch ? parseInt(numMatch[0], 10) : 0;
+  const isNumbered = num > 0;
+
+  if (isNumbered) {
+    const seatCode = "Desk-" + String(num).padStart(3, "0");
+    if (taken[seatCode] || taken["Desk " + num] || taken["Desk #" + num] || taken[String(num)] || (num % 7 === 0 && !taken[seatCode] && selectedSeat !== seatCode)) {
+      alert("Desk #" + num + " is currently occupied by an active student. Please choose an open green desk.");
+      return;
+    }
+    selectedSeat = seatCode;
+  } else {
+    if (taken[id]) {
+      alert("Desk " + id + " is currently occupied. Please choose an open green desk.");
+      return;
+    }
+    selectedSeat = id;
   }
 
-  selectedSeat = id;
   renderTheatreSeats();
 }
 
@@ -264,28 +351,52 @@ function updateInspectorHUD() {
   const hudTitle = document.getElementById("inspectorDeskTitle");
   const hudSpecs = document.getElementById("inspectorDeskSpecs");
   const hudPrice = document.getElementById("inspectorShiftPrice");
-
-  if (!hudTitle) return;
+  const hudDeskName = document.getElementById("hudDeskName");
+  const hudZoneName = document.getElementById("hudZoneName");
+  const hudDeskStatus = document.getElementById("hudDeskStatus");
+  const hudBookCta = document.getElementById("hudBookCta");
 
   if (selectedSeat) {
-    let zoneName = "Zone A • Executive Silent Cubicle";
-    let zoneSpecs = "⚡ 3-Pin Dedicated 230V Socket &bull; 💡 Anti-Glare Warm Lamp &bull; 💺 High-Back Mesh Lumbar Chair";
-    if (selectedSeat.startsWith("B")) {
-      zoneName = "Zone B • Digital Laptop & Tablet Hub";
-      zoneSpecs = "⚡ Dual 230V Power Sockets &bull; 📶 Dedicated 300 Mbps 5G Wi-Fi &bull; 💺 High-Back Mesh Chair";
-    } else if (selectedSeat.startsWith("C")) {
-      zoneName = "Zone C • Executive Acoustic Silent Pod";
-      zoneSpecs = "🎧 Sound-Dampening Acoustic Pod &bull; ⚡ 3-Pin Socket &bull; 💺 Extra-Wide Mesh Chair";
+    const numMatch = selectedSeat.match(/\d+/);
+    const num = numMatch ? parseInt(numMatch[0], 10) : 1;
+    const floor = num <= 75 ? "Floor 1" : "Floor 2";
+    const deskDisplay = "Desk #" + num + " (" + floor + ")";
+
+    if (hudDeskName) hudDeskName.textContent = deskDisplay;
+    if (hudZoneName) hudZoneName.textContent = `${floor} • 149-Seat Study Sanctuary`;
+    if (hudDeskStatus) {
+      hudDeskStatus.innerHTML = '<span style="color:#10b981;font-weight:800;">🟢 Vacant &amp; Available (Verified Seat)</span>';
+    }
+    if (hudBookCta) {
+      hudBookCta.onclick = function() {
+        window.location.href = "admission.html?seat=" + encodeURIComponent(deskDisplay);
+      };
+      hudBookCta.textContent = "Reserve " + deskDisplay + " Online →";
     }
 
-    hudTitle.innerHTML = `<span style="color:#60a5fa;">Desk ${selectedSeat}</span> &bull; <span style="font-size:16px;color:#cbd5e1;font-weight:700;">${zoneName}</span>`;
-    if (hudSpecs) hudSpecs.innerHTML = zoneSpecs + " &bull; ❄️ 22°C Central A/C";
-
+    if (hudTitle) {
+      hudTitle.innerHTML = `<span style="color:#60a5fa;">${deskDisplay}</span> &bull; <span style="font-size:16px;color:#cbd5e1;font-weight:700;">${floor} Study Sanctuary</span>`;
+    }
+    if (hudSpecs) {
+      hudSpecs.innerHTML = "⚡ Dedicated 230V Socket &bull; 💡 Personal Warm LED Lamp &bull; 💺 High-Back Mesh Lumbar Chair &bull; ❄️ 22°C Central A/C &bull; 🅿️ Underground Parking";
+    }
     const shiftPrice = SHIFTS[selShift]?.defaultPrice || 1000;
     if (hudPrice) hudPrice.textContent = selShift + ": ₹" + shiftPrice + "/mo";
   } else {
-    hudTitle.textContent = "None Selected (Click any Green Desk Above)";
-    if (hudSpecs) hudSpecs.textContent = "⚡ 3-Pin Dedicated Socket • 💡 Anti-Glare Lamp • 💺 High-Back Mesh Chair • ❄️ Central A/C";
+    if (hudDeskName) hudDeskName.textContent = "Select Any Desk Above";
+    if (hudZoneName) hudZoneName.textContent = "149 Total Desks • Available in Two Floors";
+    if (hudDeskStatus) {
+      hudDeskStatus.innerHTML = '<span style="color:#94a3b8;">Click any green desk on Floor 1 (1–75) or Floor 2 (76–149)</span>';
+    }
+    if (hudBookCta) {
+      hudBookCta.onclick = function() {
+        window.location.href = "admission.html";
+      };
+      hudBookCta.textContent = "Proceed to Online Admission →";
+    }
+
+    if (hudTitle) hudTitle.textContent = "None Selected (Click any Green Desk Above)";
+    if (hudSpecs) hudSpecs.textContent = "⚡ 3-Pin Dedicated Socket • 💡 Anti-Glare Lamp • 💺 High-Back Mesh Chair • ❄️ Central A/C • 🅿️ Underground Parking";
   }
 }
 

@@ -517,6 +517,13 @@ window.LIBRARY_SHIFTS_CONFIG = {
 window.normalizeSeatCode = function(seatStr) {
   if (!seatStr) return '';
   const str = String(seatStr).trim();
+  const numMatch = str.match(/(?:Desk|Seat)?[-_\s#]*0*(\d+)/i);
+  if (numMatch) {
+    const num = parseInt(numMatch[1], 10);
+    if (num >= 1 && num <= 149) {
+      return `Desk-${String(num).padStart(3, '0')}`;
+    }
+  }
   const match = str.match(/([ABC])[-_\s]*0*(\d+)/i);
   if (match) {
     const zone = match[1].toUpperCase();
@@ -594,19 +601,26 @@ window.syncExpiredSeatsAndMembers = function() {
   }
 };
 
+let currentAdminSeatFloor = 1;
+
+window.setAdminSeatFloor = function(f) {
+  currentAdminSeatFloor = Number(f);
+  renderSeatController();
+};
+
 window.getAvailableSeats = function(currentSeatToIgnore = null) {
   const taken = store.get('c2s_lib_taken', {});
   const ignoreNorm = currentSeatToIgnore ? normalizeSeatCode(currentSeatToIgnore) : null;
   const list = [];
-  ['A', 'B', 'C'].forEach(zone => {
-    for (let i = 1; i <= 16; i++) {
-      const code = `${zone}-${String(i).padStart(2, '0')}`;
-      const isTaken = Boolean(taken[code] || taken[`Zone ${zone}-${i}`] || taken[`Desk ${code}`]);
-      if (!isTaken || (ignoreNorm && ignoreNorm === code)) {
-        list.push(code);
-      }
+  // 149 Total Desks across 2 Floors
+  for (let i = 1; i <= 149; i++) {
+    const code = `Desk-${String(i).padStart(3, '0')}`;
+    const label = `Desk #${i}`;
+    const isTaken = Boolean(taken[code] || taken[`Desk ${i}`] || taken[label] || taken[String(i)]);
+    if (!isTaken || (ignoreNorm && ignoreNorm === code)) {
+      list.push({ num: i, code: code, label: label, floor: i <= 75 ? 1 : 2 });
     }
-  });
+  }
   return list;
 };
 
@@ -622,26 +636,59 @@ function renderSeatController() {
   const container = document.getElementById('adminSeatController');
   if (!container) return;
 
-  let html = '<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px;">';
-  [
-    { name: 'Zone A (Silent Cubicles)', prefix: 'A' },
-    { name: 'Zone B (5G Wi-Fi Hub)', prefix: 'B' },
-    { name: 'Zone C (Focus Pods)', prefix: 'C' }
-  ].forEach(zone => {
-    html += `<div style="background:#f8fafc;padding:16px;border-radius:12px;border:1px solid #e2e8f0;">
-      <h4 style="margin:0 0 10px;font-size:14px;color:var(--c2s-navy-900);">${zone.name}</h4>
-      <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;">`;
+  let takenF1 = 0;
+  for (let i = 1; i <= 75; i++) {
+    const code = `Desk-${String(i).padStart(3, '0')}`;
+    if (taken[code] || taken[`Desk ${i}`] || taken[`Desk #${i}`] || taken[String(i)]) takenF1++;
+  }
+  let takenF2 = 0;
+  for (let i = 76; i <= 149; i++) {
+    const code = `Desk-${String(i).padStart(3, '0')}`;
+    if (taken[code] || taken[`Desk ${i}`] || taken[`Desk #${i}`] || taken[String(i)]) takenF2++;
+  }
 
-    for (let i = 1; i <= 16; i++) {
-      const code = `${zone.prefix}-${String(i).padStart(2, '0')}`;
-      const isTaken = Boolean(taken[code] || taken[`Desk ${code}`] || taken[`Zone ${zone.prefix}-${i}`]);
-      html += `<button type="button" class="btn ${isTaken ? 'orange' : 'ghost'}" style="padding:6px 4px;font-size:11.5px;font-weight:800;" onclick="toggleAdminSeat('${code}')">
-        ${isTaken ? '🔴' : '🟢'} ${code}
-      </button>`;
-    }
-    html += '</div></div>';
-  });
-  html += '</div>';
+  let html = `
+    <div style="background:#ffffff;border:1.5px solid #cbd5e1;border-radius:14px;padding:18px;margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px;border-bottom:1px solid #f1f5f9;padding-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <span style="font-weight:900;color:#0f2a5c;font-size:13px;">🏢 SELECT FLOOR VIEW (149 SEATS):</span>
+          <button type="button" class="btn" onclick="setAdminSeatFloor(1)"
+            style="padding:6px 16px;font-size:12.5px;font-weight:800;border-radius:8px;background:${currentAdminSeatFloor === 1 ? '#1d4ed8' : '#f8fafc'};color:${currentAdminSeatFloor === 1 ? '#fff' : '#0f2a5c'};border:1px solid ${currentAdminSeatFloor === 1 ? '#1d4ed8' : '#cbd5e1'};cursor:pointer;">
+            🏢 Floor 1 (${75 - takenF1} / 75 Vacant)
+          </button>
+          <button type="button" class="btn" onclick="setAdminSeatFloor(2)"
+            style="padding:6px 16px;font-size:12.5px;font-weight:800;border-radius:8px;background:${currentAdminSeatFloor === 2 ? '#1d4ed8' : '#f8fafc'};color:${currentAdminSeatFloor === 2 ? '#fff' : '#0f2a5c'};border:1px solid ${currentAdminSeatFloor === 2 ? '#1d4ed8' : '#cbd5e1'};cursor:pointer;">
+            🏢 Floor 2 (${74 - takenF2} / 74 Vacant)
+          </button>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:12px;flex-wrap:wrap;">
+          <span>🟢 Vacant</span>
+          <span>🔴 Occupied</span>
+          <strong style="color:#0f2a5c;background:#eff6ff;padding:3px 10px;border-radius:999px;">Total Vacant: ${149 - (takenF1 + takenF2)} / 149</strong>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(82px, 1fr));gap:8px;">
+  `;
+
+  const start = currentAdminSeatFloor === 1 ? 1 : 76;
+  const end = currentAdminSeatFloor === 1 ? 75 : 149;
+
+  for (let i = start; i <= end; i++) {
+    const code = `Desk-${String(i).padStart(3, '0')}`;
+    const isTaken = Boolean(taken[code] || taken[`Desk ${i}`] || taken[`Desk #${i}`] || taken[String(i)]);
+    html += `
+      <button type="button" class="btn ${isTaken ? 'orange' : 'ghost'}"
+        style="padding:8px 4px;font-size:11.5px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;"
+        title="Desk #${i} • ${isTaken ? 'Occupied (Click to Release)' : 'Vacant (Click to Hold)'}"
+        onclick="toggleAdminSeat('${code}')">
+        <span>${isTaken ? '🔴' : '🟢'}</span>
+        <span>#${i}</span>
+      </button>
+    `;
+  }
+
+  html += '</div></div>';
   container.innerHTML = html;
 }
 
@@ -1394,22 +1441,27 @@ window.openRenewalModal = function(regNo) {
     document.getElementById('renewFromDate').value = today;
   }
 
-  // Populate Vacant Seats dropdown
+  // Populate Vacant Seats dropdown (149 Seats across 2 Floors)
   const vacantList = getAvailableSeats(isExpired && !isOldSeatTakenBySomeoneElse ? seatCode : null);
   const selectEl = document.getElementById('renewNewSeatSelect');
   if (selectEl) {
-    let optHtml = '<option value="">-- Choose an Available Desk --</option>';
-    ['A', 'B', 'C'].forEach(zone => {
-      const zoneName = zone === 'A' ? 'Zone A (Silent Cubicles)' : (zone === 'B' ? 'Zone B (5G Wi-Fi Hub)' : 'Zone C (Focus Pods)');
-      const zoneSeats = vacantList.filter(s => s.startsWith(zone + '-'));
-      if (zoneSeats.length) {
-        optHtml += `<optgroup label="${zoneName}">`;
-        zoneSeats.forEach(s => {
-          optHtml += `<option value="Desk ${s}">Desk ${s}</option>`;
-        });
-        optHtml += `</optgroup>`;
-      }
-    });
+    let optHtml = '<option value="">-- Choose an Available Desk (149 Seats Across 2 Floors) --</option>';
+    const f1Seats = vacantList.filter(s => s.floor === 1);
+    const f2Seats = vacantList.filter(s => s.floor === 2);
+    if (f1Seats.length) {
+      optHtml += `<optgroup label="🏢 Floor 1 (Desks 001–075) • ${f1Seats.length} Vacant">`;
+      f1Seats.forEach(s => {
+        optHtml += `<option value="${s.label} (Floor 1)">${s.label} (Floor 1)</option>`;
+      });
+      optHtml += `</optgroup>`;
+    }
+    if (f2Seats.length) {
+      optHtml += `<optgroup label="🏢 Floor 2 (Desks 076–149) • ${f2Seats.length} Vacant">`;
+      f2Seats.forEach(s => {
+        optHtml += `<option value="${s.label} (Floor 2)">${s.label} (Floor 2)</option>`;
+      });
+      optHtml += `</optgroup>`;
+    }
     optHtml += `<optgroup label="Walk-in / Physical"><option value="Walk-in Physical Allocation">Walk-in Physical Allocation</option></optgroup>`;
     selectEl.innerHTML = optHtml;
   }
