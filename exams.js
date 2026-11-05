@@ -5095,6 +5095,27 @@ const COURSES = [
    ========================================================================== */
 const BOOKS_MATERIAL = [
   {
+    id: "MAG-NOTES-OF-CURRENT-EVENTS",
+    title: "Notes of Current events",
+    subtitle: "C2S Monthly Current Affairs Magazine for Civil Services, State PCS, SSC, Banking & Railways",
+    badge: "🔥 Newly Launched Monthly Magazine",
+    pages: "64 Pages / Monthly Issue",
+    edition: "Monthly Digital Magazine (November 2026)",
+    language: "Bilingual (English & Odia)",
+    targetExams: "UPSC CSE, OPSC OAS, OSSC CGL, SSC CGL/CHSL, Banking PO/Clerk, Railway NTPC, Police SI",
+    price: "₹15",
+    period: "/month",
+    mrp: "₹50",
+    isMagazine: true,
+    samplePdf: "c2s-notes-of-current-events-sample.pdf",
+    highlights: [
+      "Authoritative monthly coverage of National, International & Odisha State GK",
+      "Cabinet decisions, Govt schemes, Economic indicators & Budget highlights",
+      "Chapterwise high-yield practice MCQs with detailed explanations",
+      "Instant printable PDF download available immediately upon paying ₹15/month"
+    ]
+  },
+  {
     id: "BOOK-QUANT-BRAHMASTRA",
     title: "C2S Quantitative Aptitude Brahmastra",
     subtitle: "Complete Arithmetic & Advanced Maths with 3500+ Practice MCQs",

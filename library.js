@@ -277,7 +277,9 @@ window.setLibraryFloor = function(floorNum) {
   }
   const floorBadge = document.getElementById("currentFloorLabelBadge");
   if (floorBadge) {
-    floorBadge.textContent = currentLibraryFloor === 1 ? "Floor 1 • Desks 001 to 075 (75 Seats)" : "Floor 2 • Desks 076 to 149 (74 Seats)";
+    floorBadge.textContent = currentLibraryFloor === 1 ? 
+      "1st Floor • Desks S-25 to S-149 (Zones B, C, D • 125 Seats)" : 
+      "2nd Floor • Desks S-1 to S-24 (Zone A • 24 Seats)";
   }
   renderTheatreSeats();
 };
@@ -287,99 +289,101 @@ function renderTheatreSeats() {
   const gridEl = document.getElementById("c2sDynamicDeskGrid");
 
   if (gridEl) {
-    const start = currentLibraryFloor === 1 ? 1 : 76;
-    const end = currentLibraryFloor === 1 ? 75 : 149;
+    // Exact architectural zones & 2 rows each:
+    // 2nd Floor: Zone-A (S-1 to S-24, 2 rows: 1-12, 13-24)
+    // 1st Floor: Zone-B (S-25 to S-67, 2 rows: 25-46, 47-67)
+    //            Zone-C (S-68 to S-109, 2 rows: 68-88, 89-109)
+    //            Zone-D (S-110 to S-149, 2 rows: 110-130, 131-149)
+    const zones = currentLibraryFloor === 2 ? [
+      {
+        title: "Zone A (2nd Floor • Desks S-1 to S-24)",
+        rows: [
+          { label: "Row 1 (Desks S-1 to S-12)", start: 1, end: 12 },
+          { label: "Row 2 (Desks S-13 to S-24)", start: 13, end: 24 }
+        ]
+      }
+    ] : [
+      {
+        title: "Zone B (1st Floor • Desks S-25 to S-67 • Left Wall Bay)",
+        rows: [
+          { label: "Row 1 • Outer Wall A/C (Desks S-25 to S-46)", start: 25, end: 46 },
+          { label: "Row 2 • Inner Row (Desks S-47 to S-67)", start: 47, end: 67 }
+        ]
+      },
+      {
+        title: "Zone C (1st Floor • Desks S-68 to S-109 • Center Sanctuary)",
+        rows: [
+          { label: "Row 1 • Center Aisle Facing (Desks S-68 to S-88)", start: 68, end: 88 },
+          { label: "Row 2 • Center Aisle Facing (Desks S-89 to S-109)", start: 89, end: 109 }
+        ]
+      },
+      {
+        title: "Zone D (1st Floor • Desks S-110 to S-149 • Right Wall Bay)",
+        rows: [
+          { label: "Row 1 • Aisle Facing (Desks S-110 to S-130)", start: 110, end: 130 },
+          { label: "Row 2 • Right Wall A/C & Entrance (Desks S-131 to S-149)", start: 131, end: 149 }
+        ]
+      }
+    ];
+
     let html = "";
-
-    for (let i = start; i <= end; i++) {
-      const seatCode = "Desk-" + String(i).padStart(3, "0");
-      const shortNum = String(i);
-      const isTaken = Boolean(taken[seatCode] || taken["Desk " + i] || taken["Desk #" + i] || taken[String(i)]);
-      const isSelected = selectedSeat === seatCode || selectedSeat === ("Desk #" + shortNum) || selectedSeat === ("Desk " + shortNum);
-      const isReserved = (i % 7 === 0) && !isTaken && !isSelected; // Occasional held status for realistic occupancy
-
-      let cls = "c2s-3d-desk available";
-      let statusText = "🟢 Vacant";
-      if (isTaken || isReserved) {
-        cls = "c2s-3d-desk occupied";
-        statusText = "⚪ Occupied";
-      } else if (isSelected) {
-        cls = "c2s-3d-desk selected";
-        statusText = "🔵 Selected";
-      }
-
-      const floorLabel = currentLibraryFloor === 1 ? "Floor 1" : "Floor 2";
-      let zoneType = "Executive Bay";
-      if (i >= 25 && i <= 46) {
-        zoneType = "Left Wall (A/C)";
-      } else if (i >= 47 && i <= 88) {
-        zoneType = "Center Bay 1";
-      } else if (i >= 89 && i <= 130) {
-        zoneType = "Center Bay 2";
-      } else if (i >= 131 && i <= 149) {
-        zoneType = "Right Wall (A/C)";
-      } else if (i < 25) {
-        zoneType = "Silent Cubicle";
-      }
-
+    zones.forEach(zone => {
       html += `
-        <div class="${cls}" title="Desk #${shortNum} (${floorLabel}) • ${statusText}" onclick="pickSeat('${seatCode}')">
-          <div class="c2s-desk-header">
-            <span class="c2s-desk-num">#${shortNum}</span>
-            <span class="desk-plug" title="Personal 230V Socket & Warm LED Lamp">🔌</span>
+        <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px;margin-bottom:18px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+            <strong style="color:#0f2a5c;font-size:14.5px;">💺 ${zone.title}</strong>
+            <span style="font-size:11px;color:#059669;font-weight:800;background:#ecfdf5;padding:3px 10px;border-radius:6px;border:1px solid #a7f3d0;">
+              Desk No = Locker No
+            </span>
           </div>
-          <div class="c2s-desk-type">${zoneType}</div>
-          <div class="c2s-desk-footer">
-            <span class="c2s-desk-status">${statusText}</span>
-            <span style="font-size:10px;color:#94a3b8;">${floorLabel}</span>
-          </div>
-        </div>
       `;
-    }
+
+      zone.rows.forEach(r => {
+        html += `
+          <div style="font-size:12px;font-weight:750;color:#64748b;margin:10px 0 6px;">↳ ${r.label}</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(76px, 1fr));gap:8px;margin-bottom:12px;">
+        `;
+
+        for (let i = r.start; i <= r.end; i++) {
+          const seatCode = "S-" + i;
+          const isTaken = Boolean(taken[seatCode] || taken["Desk-" + String(i).padStart(3, "0")] || taken["Desk " + i] || taken["Desk #" + i] || taken[String(i)]);
+          const isSelected = selectedSeat === seatCode || selectedSeat === ("S-" + i) || selectedSeat?.includes("S-" + i) || selectedSeat?.includes("#" + i);
+          const isReserved = (i % 7 === 0) && !isTaken && !isSelected;
+
+          let cls = "c2s-3d-desk available";
+          let statusText = "🟢 Vacant";
+          if (isTaken || isReserved) {
+            cls = "c2s-3d-desk occupied";
+            statusText = "⚪ Occupied";
+          } else if (isSelected) {
+            cls = "c2s-3d-desk selected";
+            statusText = "🔵 Selected";
+          }
+
+          const floorLabel = i <= 24 ? "2nd Floor" : "1st Floor";
+          const zoneKey = i <= 24 ? "Zone-A" : (i <= 67 ? "Zone-B" : (i <= 109 ? "Zone-C" : "Zone-D"));
+
+          html += `
+            <div class="${cls}" title="Seat ${seatCode} (${floorLabel} • ${zoneKey}) • Locker #${i} • ${statusText}" onclick="pickSeat('${seatCode}')">
+              <div class="c2s-desk-header">
+                <span class="c2s-desk-num">${seatCode}</span>
+                <span class="desk-plug" title="Personal 230V Socket & Warm LED Lamp">🔌</span>
+              </div>
+              <div class="c2s-desk-type" style="font-size:9.5px;color:#2563eb;font-weight:750;">Locker #${i}</div>
+              <div class="c2s-desk-footer">
+                <span class="c2s-desk-status">${statusText}</span>
+              </div>
+            </div>
+          `;
+        }
+        html += `</div>`;
+      });
+
+      html += `</div>`;
+    });
+
     gridEl.innerHTML = html;
   }
-
-  // Backward compatibility for legacy zone grids if present on page
-  const renderZone = (gridId, prefix, count, zoneLabel, zoneTypeDesc) => {
-    const el = document.getElementById(gridId);
-    if (!el) return;
-    let html = "";
-    for (let i = 1; i <= count; i++) {
-      const seatId = prefix + "-" + String(i).padStart(2, "0");
-      const isTaken = Boolean(taken[seatId] || taken["Desk " + seatId]);
-      const isSelected = selectedSeat === seatId;
-      const isReserved = (i % 6 === 0) && !isTaken && !isSelected;
-
-      let cls = "c2s-3d-desk available";
-      let statusText = "🟢 Vacant";
-      if (isTaken || isReserved) {
-        cls = "c2s-3d-desk occupied";
-        statusText = "⚪ Occupied";
-      } else if (isSelected) {
-        cls = "c2s-3d-desk selected";
-        statusText = "🔵 Selected";
-      }
-
-      html += `
-        <div class="${cls}" title="Desk ${seatId} • ${zoneLabel} • ${statusText}" onclick="pickSeat('${seatId}')">
-          <div class="c2s-desk-header">
-            <span class="c2s-desk-num">${seatId}</span>
-            <span class="desk-plug" title="Dedicated 3-Pin Power Socket">🔌</span>
-          </div>
-          <div class="c2s-desk-type">${zoneTypeDesc}</div>
-          <div class="c2s-desk-footer">
-            <span class="c2s-desk-status">${statusText}</span>
-            <span style="font-size:10px;color:#94a3b8;">NH-16</span>
-          </div>
-        </div>
-      `;
-    }
-    el.innerHTML = html;
-  };
-
-  renderZone("zoneAGrid", "A", 16, "Zone A (Cubicles)", "Silent Cubicle");
-  renderZone("zoneBGrid", "B", 16, "Zone B (Power Hub)", "Digital Hub & Wi-Fi");
-  renderZone("zoneCGrid", "C", 16, "Zone C (Silent Pods)", "Acoustic Pod");
 
   updateInspectorHUD();
 }
@@ -391,9 +395,9 @@ function pickSeat(id) {
   const isNumbered = num > 0;
 
   if (isNumbered) {
-    const seatCode = "Desk-" + String(num).padStart(3, "0");
-    if (taken[seatCode] || taken["Desk " + num] || taken["Desk #" + num] || taken[String(num)] || (num % 7 === 0 && !taken[seatCode] && selectedSeat !== seatCode)) {
-      alert("Desk #" + num + " is currently occupied by an active student. Please choose an open green desk.");
+    const seatCode = "S-" + num;
+    if (taken[seatCode] || taken["Desk-" + String(num).padStart(3, "0")] || taken["Desk " + num] || taken["Desk #" + num] || taken[String(num)] || (num % 7 === 0 && !taken[seatCode] && selectedSeat !== seatCode)) {
+      alert("Seat " + seatCode + " is currently occupied by an active student. Please choose an open green desk.");
       return;
     }
     selectedSeat = seatCode;
@@ -419,36 +423,41 @@ function updateInspectorHUD() {
 
   if (selectedSeat) {
     const numMatch = selectedSeat.match(/\d+/);
-    const num = numMatch ? parseInt(numMatch[0], 10) : 1;
-    const floor = num <= 75 ? "Floor 1" : "Floor 2";
-    const deskDisplay = "Desk #" + num + " (" + floor + ")";
-    let bayName = "Executive Sanctuary Bay";
-    if (num >= 25 && num <= 46) {
-      bayName = "Left Wall Silent Bay • Dedicated A/C";
-    } else if (num >= 47 && num <= 88) {
-      bayName = "Center Double Bay 1 • Overhead Fans";
-    } else if (num >= 89 && num <= 130) {
-      bayName = "Center Double Bay 2 • High-Focus Double Aisle";
+    const num = numMatch ? parseInt(numMatch[0], 10) : 25;
+    const floor = num <= 24 ? "2nd Floor" : "1st Floor";
+    const zoneKey = num <= 24 ? "Zone-A" : (num <= 67 ? "Zone-B" : (num <= 109 ? "Zone-C" : "Zone-D"));
+    const deskDisplay = "Seat S-" + num + " (" + floor + " • " + zoneKey + ")";
+    let bayName = "Executive Silent Sanctuary";
+    if (num <= 24) {
+      bayName = "Zone-A Silent Cubicles • 2nd Floor";
+    } else if (num >= 25 && num <= 46) {
+      bayName = "Zone-B Outer Wall • Dedicated Split A/C";
+    } else if (num >= 47 && num <= 67) {
+      bayName = "Zone-B Inner Double Row";
+    } else if (num >= 68 && num <= 109) {
+      bayName = "Zone-C Center Double-Row Sanctuary";
+    } else if (num >= 110 && num <= 130) {
+      bayName = "Zone-D Center Aisle Facing Bay";
     } else if (num >= 131 && num <= 149) {
-      bayName = "Right Wall Focus Bay • A/C & Reception Proximity";
+      bayName = "Zone-D Right Wall A/C & Entrance Bay";
     }
 
-    if (hudDeskName) hudDeskName.textContent = deskDisplay;
+    if (hudDeskName) hudDeskName.textContent = "Seat S-" + num;
     if (hudZoneName) hudZoneName.textContent = `${floor} • ${bayName}`;
     if (hudDeskStatus) {
-      hudDeskStatus.innerHTML = '<span style="color:#10b981;font-weight:800;">🟢 Vacant &amp; Available (Verified Seat)</span>';
+      hudDeskStatus.innerHTML = `<span style="color:#10b981;font-weight:800;">🟢 Vacant &amp; Available • Attached Locker #${num}</span>`;
     }
     if (hudBookCta) {
       hudBookCta.onclick = function() {
-        window.location.href = "admission.html?seat=" + encodeURIComponent(deskDisplay);
+        window.location.href = "admission.html?seat=" + encodeURIComponent("S-" + num);
       };
-      hudBookCta.textContent = "Reserve " + deskDisplay + " Online →";
+      hudBookCta.textContent = "Reserve Seat S-" + num + " Online →";
     }
 
     if (hudTitle) {
-      hudTitle.innerHTML = `<span style="color:#60a5fa;">${deskDisplay}</span> &bull; <span style="font-size:16px;color:#cbd5e1;font-weight:700;">${floor} Study Sanctuary</span>`;
+      hudTitle.innerHTML = `<span style="color:#60a5fa;">Seat S-${num}</span> &bull; <span style="font-size:16px;color:#cbd5e1;font-weight:700;">${floor} (${zoneKey})</span>`;
     }
-    const lockerSpec = (selShift === "Full Day" || selShift === "24 Hours") ? `🔒 Personal Attached Locker #${num} (Included)` : `🔒 Locker: Full Day & 24h only`;
+    const lockerSpec = (selShift === "Full Day" || selShift === "24 Hours") ? `🔒 Personal Attached Locker #${num} (Included)` : `🔒 Locker #${num} (Full Day & 24h only)`;
     if (hudSpecs) {
       hudSpecs.innerHTML = `⚡ Dedicated 230V Socket &bull; 💡 Personal Warm LED Lamp &bull; 💺 High-Back Mesh Lumbar Chair &bull; ${lockerSpec} &bull; ❄️ 22°C Central A/C &bull; 🅿️ Underground Parking`;
     }
@@ -456,9 +465,9 @@ function updateInspectorHUD() {
     if (hudPrice) hudPrice.textContent = selShift + ": ₹" + shiftPrice + "/mo";
   } else {
     if (hudDeskName) hudDeskName.textContent = "Select Any Desk Above";
-    if (hudZoneName) hudZoneName.textContent = "149 Total Desks • Available in Two Floors";
+    if (hudZoneName) hudZoneName.textContent = "149 Total Desks • 2 Floors (Zones A, B, C, D)";
     if (hudDeskStatus) {
-      hudDeskStatus.innerHTML = '<span style="color:#94a3b8;">Click any green desk on Floor 1 (1–75) or Floor 2 (76–149)</span>';
+      hudDeskStatus.innerHTML = '<span style="color:#94a3b8;">Click any green desk: 2nd Floor (S-1 to S-24) or 1st Floor (S-25 to S-149)</span>';
     }
     if (hudBookCta) {
       hudBookCta.onclick = function() {
@@ -466,7 +475,6 @@ function updateInspectorHUD() {
       };
       hudBookCta.textContent = "Proceed to Online Admission →";
     }
-
     if (hudTitle) hudTitle.textContent = "None Selected (Click any Green Desk Above)";
     if (hudSpecs) hudSpecs.textContent = "⚡ 3-Pin Dedicated Socket • 💡 Anti-Glare Lamp • 💺 High-Back Mesh Chair • 🔒 Attached Locker (Full Day & 24h) • ❄️ Central A/C • 🅿️ Underground Parking";
   }

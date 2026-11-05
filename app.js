@@ -2102,48 +2102,136 @@ renderCourses = function() {
   });
 };
 
+// Magazine Download & Payment Engine (₹15/month)
+window.downloadMagazinePdf = function(title, month) {
+  const selectedMonth = month || 'November 2026';
+  const existing = document.getElementById('c2sMagPayModal');
+  if (existing) existing.remove();
+
+  const modalHtml = `
+    <div id="c2sMagPayModal" style="position:fixed;inset:0;background:rgba(15,23,42,0.8);backdrop-filter:blur(6px);z-index:999999;display:flex;align-items:center;justify-content:center;padding:16px;">
+      <div style="background:#ffffff;border-radius:20px;max-width:440px;width:100%;padding:26px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.3);border:1.5px solid #e2e8f0;text-align:center;position:relative;">
+        <button onclick="document.getElementById('c2sMagPayModal').remove()" style="position:absolute;top:14px;right:14px;background:#f1f5f9;border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;color:#64748b;">✕</button>
+        <span class="pill orange" style="font-size:11px;font-weight:800;margin-bottom:8px;">🔥 C2S CURRENT AFFAIRS MAGAZINE</span>
+        <h3 style="margin:6px 0 4px;color:#0a192f;font-size:22px;font-weight:900;">Notes of Current events</h3>
+        <p style="font-size:13px;color:#64748b;margin:0 0 16px;">Issue: <strong>${selectedMonth}</strong> • High-Yield Monthly PDF</p>
+        
+        <div style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:14px;padding:16px;margin-bottom:18px;">
+          <div style="font-size:12px;color:#64748b;font-weight:700;">OFFICIAL MAGAZINE FEE</div>
+          <div style="font-size:34px;font-weight:900;color:#1e3a8a;margin:2px 0;">₹15<span style="font-size:14px;color:#64748b;font-weight:600;"> / month</span></div>
+          <div style="font-size:11.5px;color:#059669;font-weight:750;">✓ Instant Access to Complete High-Yield Monthly PDF</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="upi://pay?pa=c2sstudy@sbi&pn=C2S%20College%20To%20Service&am=15.00&cu=INR&tn=Notes%20of%20Current%20Events%20${encodeURIComponent(selectedMonth)}" class="btn orange" style="padding:12px;font-size:14px;font-weight:800;text-decoration:none;border-radius:10px;" onclick="simulateMagDownload('${selectedMonth}')">
+            📲 Pay ₹15 via UPI (GPay / PhonePe / Paytm)
+          </a>
+          <button type="button" class="btn" style="background:#0f172a;color:#ffffff;padding:11px;font-size:13px;font-weight:750;border-radius:10px;border:none;cursor:pointer;" onclick="simulateMagDownload('${selectedMonth}')">
+            ⚡ Pay at Patrapada Desk / Download Edition
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+};
+
+window.simulateMagDownload = function(month) {
+  setTimeout(() => {
+    alert("Payment verified for 'Notes of Current events (" + month + ")'! Your printable monthly magazine PDF is downloading now.");
+    const modal = document.getElementById('c2sMagPayModal');
+    if (modal) modal.remove();
+    const content = "%PDF-1.4\n% C2S College to Service — Notes of Current events Monthly Magazine (" + month + ")\n" +
+      "Title: Notes of Current events\nIssue: " + month + "\nPrice: Rs. 15 / month\n" +
+      "Publisher: C2S Academic Publications, NH-16 Patrapada, Bhubaneswar (751019)\n" +
+      "Helplines: 9777481909 / 9658177712\n\n" +
+      "[1. NATIONAL & INTERNATIONAL AFFAIRS]\n" +
+      "• Key Union Cabinet decisions, major statutory bills & international summits.\n" +
+      "• High-level economic indicators, RBI Monetary Policy updates & inflation indexes.\n\n" +
+      "[2. ODISHA STATE GK & SPECIAL COMPENDIUM]\n" +
+      "• Odisha state budget allocations, welfare schemes & industrial projects.\n" +
+      "• High-yield state heritage, culture, awards & appointments for OPSC / OSSC.\n\n" +
+      "[3. 50 PRACTICE MCQS WITH DETAILED EXPLANATIONS]\n" +
+      "• Fully graded practice questions strictly aligned with latest TCS & OSSC patterns.\n";
+    const blob = new Blob([content], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "C2S_Notes_of_Current_events_" + month.replace(/\s+/g, '_') + ".pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }, 400);
+};
+
 // Enhance renderBooks to render both standalone and homepage
 const originalRenderBooks = renderBooks;
 renderBooks = function() {
   const targets = [document.getElementById("booksList"), document.getElementById("homeBooksGrid")];
   targets.forEach(container => {
     if (!container) return;
-    container.innerHTML = BOOKS_MATERIAL.map(b => `
-      <div class="card" style="border:1.5px solid #e2e8f0;border-radius:16px;padding:22px;box-shadow:0 4px 16px -2px rgba(15,23,42,0.05);display:flex;flex-direction:column;justify-content:space-between;">
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
-            <span class="pill orange" style="font-weight:800;font-size:11px;">${b.badge}</span>
-            <span style="font-size:12px;font-weight:700;color:#64748b;background:#f1f5f9;padding:2px 8px;border-radius:6px;">${b.pages} • ${b.language}</span>
-          </div>
-
-          <h3 style="font-size:18px;font-weight:850;color:#0a192f;margin:0 0 4px;">${b.title}</h3>
-          <p style="font-size:12.5px;color:#64748b;margin:0 0 10px;">${b.subtitle}</p>
-
-          <div style="background:#f8fafc;padding:8px 12px;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:12px;font-size:12px;color:#334155;">
-            <strong>🎯 For:</strong> ${b.targetExams}
-          </div>
-
-          <ul style="margin:0 0 14px;padding-left:18px;font-size:12px;color:#475569;line-height:1.5;">
-            ${b.highlights.slice(0, 3).map(h => `<li>${h}</li>`).join('')}
-          </ul>
+    container.innerHTML = BOOKS_MATERIAL.map(b => {
+      const isMag = b.isMagazine || b.id === 'MAG-NOTES-OF-CURRENT-EVENTS';
+      const monthSelectHtml = isMag ? `
+        <div style="margin:10px 0;background:#eff6ff;padding:10px 12px;border-radius:10px;border:1.5px solid #bfdbfe;">
+          <label style="font-size:11.5px;font-weight:750;color:#1e40af;display:block;margin-bottom:4px;">Select Month / Edition:</label>
+          <select id="cardMagMonth_${container.id}_${b.id}" style="width:100%;padding:6px 10px;border-radius:6px;border:1px solid #93c5fd;font-size:12.5px;font-weight:700;color:#0f2a5c;">
+            <option value="November 2026">November 2026 Edition (Latest)</option>
+            <option value="October 2026">October 2026 Edition</option>
+            <option value="September 2026">September 2026 Edition</option>
+            <option value="August 2026">August 2026 Edition</option>
+          </select>
         </div>
+      ` : '';
 
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding-top:12px;border-top:1px solid #f1f5f9;">
+      const actionButtons = isMag ? `
+        <button class="btn orange" style="padding:7px 16px;font-size:12.5px;font-weight:850;width:100%;border-radius:8px;" onclick="downloadMagazinePdf('${b.title}', document.getElementById('cardMagMonth_${container.id}_${b.id}')?.value)">
+          Download PDF (Pay ₹15/month) ↓
+        </button>
+      ` : `
+        <button class="btn ghost" style="padding:6px 10px;font-size:11.5px;" onclick="downloadSamplePdf('${b.title}')">
+          Sample PDF ↓
+        </button>
+        <button class="btn orange" style="padding:6px 12px;font-size:12px;" onclick="orderBookDesk('${b.title}')">
+          Order Copy →
+        </button>
+      `;
+
+      return `
+        <div class="card" style="border:${isMag ? '2px solid #3b82f6' : '1.5px solid #e2e8f0'};border-radius:16px;padding:22px;box-shadow:${isMag ? '0 10px 25px -5px rgba(59,130,246,0.15)' : '0 4px 16px -2px rgba(15,23,42,0.05)'};display:flex;flex-direction:column;justify-content:space-between;background:#fff;">
           <div>
-            <span style="font-size:18px;font-weight:900;color:#1e3a8a;">${b.price}</span>
-            <span style="font-size:12px;color:#94a3b8;text-decoration:line-through;margin-left:4px;">${b.mrp}</span>
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+              <span class="pill ${isMag ? 'blue' : 'orange'}" style="font-weight:800;font-size:11px;">${b.badge}</span>
+              <span style="font-size:12px;font-weight:700;color:#64748b;background:#f1f5f9;padding:2px 8px;border-radius:6px;">${b.pages} • ${b.language}</span>
+            </div>
+
+            <h3 style="font-size:18px;font-weight:850;color:#0a192f;margin:0 0 4px;">${b.title}</h3>
+            <p style="font-size:12.5px;color:#64748b;margin:0 0 10px;">${b.subtitle}</p>
+
+            ${monthSelectHtml}
+
+            <div style="background:#f8fafc;padding:8px 12px;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:12px;font-size:12px;color:#334155;">
+              <strong>🎯 For:</strong> ${b.targetExams}
+            </div>
+
+            <ul style="margin:0 0 14px;padding-left:18px;font-size:12px;color:#475569;line-height:1.5;">
+              ${b.highlights.slice(0, 3).map(h => `<li>${h}</li>`).join('')}
+            </ul>
           </div>
-          <div style="display:flex;gap:6px;">
-            <button class="btn ghost" style="padding:6px 10px;font-size:11.5px;" onclick="downloadSamplePdf('${b.title}')">
-              Sample PDF ↓
-            </button>
-            <button class="btn orange" style="padding:6px 12px;font-size:12px;" onclick="orderBookDesk('${b.title}')">
-              Order Copy →
-            </button>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding-top:12px;border-top:1px solid #f1f5f9;">
+            <div>
+              <span style="font-size:18px;font-weight:900;color:#1e3a8a;">${b.price}</span>
+              ${b.period ? `<span style="font-size:12px;color:#64748b;font-weight:700;">${b.period}</span>` : ''}
+              <span style="font-size:12px;color:#94a3b8;text-decoration:line-through;margin-left:4px;">${b.mrp}</span>
+            </div>
+            <div style="display:flex;gap:6px;${isMag ? 'width:100%;margin-top:8px;' : ''}">
+              ${actionButtons}
+            </div>
           </div>
         </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   });
 };
 

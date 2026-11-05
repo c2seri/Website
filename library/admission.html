@@ -340,21 +340,21 @@
           <!-- Floor Tabs & Blueprint Link -->
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button type="button" class="btn" id="btnZoneF1" onclick="showSeatZone('F1')" style="padding:8px 16px;font-size:13px;font-weight:800;background:#2563eb;color:#fff;border:none;border-radius:8px;cursor:pointer;">🏢 Floor 1 (Desks 001–075)</button>
-              <button type="button" class="btn" id="btnZoneF2" onclick="showSeatZone('F2')" style="padding:8px 16px;font-size:13px;font-weight:800;background:#e2e8f0;color:#334155;border:none;border-radius:8px;cursor:pointer;">🏢 Floor 2 (Desks 076–149)</button>
+              <button type="button" class="btn" id="btnZoneF1" onclick="showSeatZone('F1')" style="padding:8px 16px;font-size:13px;font-weight:800;background:#2563eb;color:#fff;border:none;border-radius:8px;cursor:pointer;">🏢 1st Floor (Desks S-25 to S-149 • Zones B, C, D)</button>
+              <button type="button" class="btn" id="btnZoneF2" onclick="showSeatZone('F2')" style="padding:8px 16px;font-size:13px;font-weight:800;background:#e2e8f0;color:#334155;border:none;border-radius:8px;cursor:pointer;">🏢 2nd Floor (Desks S-1 to S-24 • Zone A)</button>
             </div>
             <button type="button" class="btn" onclick="openFloorBlueprintModal()" style="display:inline-flex;align-items:center;gap:6px;background:#0f172a;color:#38bdf8;border:1px solid #334155;padding:7px 14px;border-radius:8px;font-size:12.5px;font-weight:800;cursor:pointer;">
               🗺️ View Architectural Blueprint
             </button>
           </div>
 
-          <!-- Zone Grid of Desks -->
-          <div id="deskChipGrid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(78px, 1fr));gap:8px;max-height:280px;overflow-y:auto;padding-right:4px;"></div>
+          <!-- Zone Grid of Desks (Organized in 2 Rows per Zone as per Architectural Blueprint) -->
+          <div id="deskChipGrid" style="display:flex;flex-direction:column;gap:16px;max-height:360px;overflow-y:auto;padding-right:4px;"></div>
 
           <!-- Currently Selected Desk Pill -->
           <div id="selectedDeskDisplay" style="margin-top:14px;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-            <span style="font-size:13.5px;color:#1e40af;">Assigned Desk: <strong id="selectedDeskLabel" style="font-size:16px;color:#1d4ed8;">Desk #12 (Floor 1)</strong></span>
-            <span style="font-size:12px;color:#2563eb;font-weight:750;">✓ Verified 149-Seat Study Sanctuary</span>
+            <span style="font-size:13.5px;color:#1e40af;">Assigned Desk: <strong id="selectedDeskLabel" style="font-size:16px;color:#1d4ed8;">S-25 (1st Floor • Zone-B • Locker #25)</strong></span>
+            <span style="font-size:12px;color:#2563eb;font-weight:750;">✓ Attached Locker Included with Seat (Full Day &amp; 24h)</span>
           </div>
         </div>
 
@@ -474,7 +474,7 @@
     };
 
     let currentFloorKey = 'F1';
-    let chosenDesk = 'Desk #12 (Floor 1)';
+    let chosenDesk = 'S-25 (1st Floor • Zone-B • Locker #25)';
 
     window.showSeatZone = function(floorKey) {
       if (floorKey) currentFloorKey = floorKey === 'F2' ? 'F2' : 'F1';
@@ -493,47 +493,124 @@
       if (!grid) return;
       grid.innerHTML = '';
 
-      const start = currentFloorKey === 'F1' ? 1 : 76;
-      const end = currentFloorKey === 'F1' ? 75 : 149;
-      const floorTitle = currentFloorKey === 'F1' ? 'Floor 1' : 'Floor 2';
-
-      for (let i = start; i <= end; i++) {
-        const deskLabel = `Desk #${i}`;
-        const fullDeskStr = `${deskLabel} (${floorTitle})`;
-        const isOccupied = (i % 7 === 0);
-        const isSelected = chosenDesk && (chosenDesk.includes(`#${i}`) || chosenDesk.includes(`Desk-${String(i).padStart(3, '0')}`));
-
-        const chip = document.createElement('button');
-        chip.type = 'button';
-        chip.style.padding = '8px 4px';
-        chip.style.borderRadius = '8px';
-        chip.style.fontSize = '12px';
-        chip.style.fontWeight = '800';
-        chip.style.textAlign = 'center';
-        chip.style.cursor = isOccupied ? 'not-allowed' : 'pointer';
-        chip.style.transition = 'all 0.15s ease';
-
-        if (isOccupied) {
-          chip.style.background = '#f1f5f9';
-          chip.style.border = '1px dashed #cbd5e1';
-          chip.style.color = '#94a3b8';
-          chip.disabled = true;
-          chip.innerHTML = `#${i}<br><span style="font-size:9.5px;font-weight:600;">Taken</span>`;
-        } else if (isSelected) {
-          chip.style.background = '#10b981';
-          chip.style.border = '2px solid #059669';
-          chip.style.color = '#ffffff';
-          chip.style.boxShadow = '0 0 10px rgba(16,185,129,0.4)';
-          chip.innerHTML = `#${i}<br><span style="font-size:9.5px;">Selected</span>`;
-        } else {
-          chip.style.background = '#ffffff';
-          chip.style.border = '1.5px solid #10b981';
-          chip.style.color = '#065f46';
-          chip.innerHTML = `#${i}<br><span style="font-size:9.5px;color:#10b981;">Vacant</span>`;
-          chip.onclick = () => selectDeskChip(fullDeskStr);
+      // Zones configuration as per official architectural blueprint:
+      // 2nd Floor: Zone-A (S-1 to S-24, 2 rows: 1-12, 13-24)
+      // 1st Floor: Zone-B (S-25 to S-67, 2 rows: 25-46, 47-67)
+      //            Zone-C (S-68 to S-109, 2 rows: 68-88, 89-109)
+      //            Zone-D (S-110 to S-149, 2 rows: 110-130, 131-149)
+      const zonesToRender = currentFloorKey === 'F2' ? [
+        {
+          name: 'Zone-A (2nd Floor • Desks S-1 to S-24)',
+          rows: [
+            { label: 'Row 1 (Desks S-1 to S-12)', start: 1, end: 12 },
+            { label: 'Row 2 (Desks S-13 to S-24)', start: 13, end: 24 }
+          ]
         }
-        grid.appendChild(chip);
-      }
+      ] : [
+        {
+          name: 'Zone-B (1st Floor • Desks S-25 to S-67 • Left Wall Bay)',
+          rows: [
+            { label: 'Row 1 • Outer Wall A/C (Desks S-25 to S-46)', start: 25, end: 46 },
+            { label: 'Row 2 • Inner Row (Desks S-47 to S-67)', start: 47, end: 67 }
+          ]
+        },
+        {
+          name: 'Zone-C (1st Floor • Desks S-68 to S-109 • Center Sanctuary)',
+          rows: [
+            { label: 'Row 1 • Center Aisle Facing (Desks S-68 to S-88)', start: 68, end: 88 },
+            { label: 'Row 2 • Center Aisle Facing (Desks S-89 to S-109)', start: 89, end: 109 }
+          ]
+        },
+        {
+          name: 'Zone-D (1st Floor • Desks S-110 to S-149 • Right Wall Bay)',
+          rows: [
+            { label: 'Row 1 • Aisle Facing (Desks S-110 to S-130)', start: 110, end: 130 },
+            { label: 'Row 2 • Right Wall A/C & Entrance (Desks S-131 to S-149)', start: 131, end: 149 }
+          ]
+        }
+      ];
+
+      zonesToRender.forEach(zone => {
+        const zoneWrap = document.createElement('div');
+        zoneWrap.style.background = '#f8fafc';
+        zoneWrap.style.border = '1.5px solid #e2e8f0';
+        zoneWrap.style.borderRadius = '12px';
+        zoneWrap.style.padding = '12px 14px';
+
+        const zoneHeader = document.createElement('div');
+        zoneHeader.style.display = 'flex';
+        zoneHeader.style.justifyContent = 'space-between';
+        zoneHeader.style.alignItems = 'center';
+        zoneHeader.style.marginBottom = '10px';
+        zoneHeader.innerHTML = `
+          <strong style="color:#0f2a5c;font-size:13.5px;display:flex;align-items:center;gap:6px;">
+            💺 ${zone.name}
+          </strong>
+          <span style="font-size:11px;color:#059669;font-weight:750;background:#ecfdf5;padding:2px 8px;border-radius:4px;border:1px solid #a7f3d0;">
+            Desk = Locker #
+          </span>
+        `;
+        zoneWrap.appendChild(zoneHeader);
+
+        zone.rows.forEach(r => {
+          const rowLabel = document.createElement('div');
+          rowLabel.style.fontSize = '11.5px';
+          rowLabel.style.fontWeight = '750';
+          rowLabel.style.color = '#475569';
+          rowLabel.style.margin = '8px 0 6px';
+          rowLabel.textContent = '↳ ' + r.label;
+          zoneWrap.appendChild(rowLabel);
+
+          const rowGrid = document.createElement('div');
+          rowGrid.style.display = 'grid';
+          rowGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(68px, 1fr))';
+          rowGrid.style.gap = '6px';
+          rowGrid.style.marginBottom = '10px';
+
+          for (let i = r.start; i <= r.end; i++) {
+            const seatCode = `S-${i}`;
+            const floorTitle = currentFloorKey === 'F1' ? '1st Floor' : '2nd Floor';
+            const zoneKey = i <= 24 ? 'Zone-A' : (i <= 67 ? 'Zone-B' : (i <= 109 ? 'Zone-C' : 'Zone-D'));
+            const fullDeskStr = `${seatCode} (${floorTitle} • ${zoneKey} • Locker #${i})`;
+            const isOccupied = (i % 7 === 0);
+            const isSelected = chosenDesk && (chosenDesk.includes(`S-${i}`) || chosenDesk.includes(`S${i}`) || chosenDesk.includes(`#${i}`));
+
+            const chip = document.createElement('button');
+            chip.type = 'button';
+            chip.style.padding = '6px 2px';
+            chip.style.borderRadius = '7px';
+            chip.style.fontSize = '11.5px';
+            chip.style.fontWeight = '800';
+            chip.style.textAlign = 'center';
+            chip.style.cursor = isOccupied ? 'not-allowed' : 'pointer';
+            chip.style.transition = 'all 0.15s ease';
+
+            if (isOccupied) {
+              chip.style.background = '#f1f5f9';
+              chip.style.border = '1px dashed #cbd5e1';
+              chip.style.color = '#94a3b8';
+              chip.disabled = true;
+              chip.innerHTML = `${seatCode}<br><span style="font-size:9px;font-weight:600;">Taken</span>`;
+            } else if (isSelected) {
+              chip.style.background = '#10b981';
+              chip.style.border = '2px solid #059669';
+              chip.style.color = '#ffffff';
+              chip.style.boxShadow = '0 0 10px rgba(16,185,129,0.4)';
+              chip.innerHTML = `${seatCode}<br><span style="font-size:9px;">Selected</span>`;
+            } else {
+              chip.style.background = '#ffffff';
+              chip.style.border = '1.5px solid #10b981';
+              chip.style.color = '#065f46';
+              chip.innerHTML = `${seatCode}<br><span style="font-size:9px;color:#10b981;">Vacant</span>`;
+              chip.onclick = () => selectDeskChip(fullDeskStr);
+            }
+            rowGrid.appendChild(chip);
+          }
+          zoneWrap.appendChild(rowGrid);
+        });
+
+        grid.appendChild(zoneWrap);
+      });
     };
 
     window.selectDeskChip = function(fullDeskStr) {
@@ -578,22 +655,18 @@
         const numMatch = seat.match(/\d+/);
         if (numMatch) {
           const num = parseInt(numMatch[0], 10);
-          if (num > 75) {
+          if (num <= 24) {
             currentFloorKey = 'F2';
           } else {
             currentFloorKey = 'F1';
           }
-          chosenDesk = `Desk #${num} (${num > 75 ? 'Floor 2' : 'Floor 1'})`;
+          const floorTitle = num <= 24 ? '2nd Floor' : '1st Floor';
+          const zoneKey = num <= 24 ? 'Zone-A' : (num <= 67 ? 'Zone-B' : (num <= 109 ? 'Zone-C' : 'Zone-D'));
+          chosenDesk = `S-${num} (${floorTitle} • ${zoneKey} • Locker #${num})`;
           selectDeskChip(chosenDesk);
         } else {
-          const match = seat.match(/^([ABC])-(\d+)/i);
-          if (match) {
-            chosenDesk = match[0].toUpperCase();
-            selectDeskChip(chosenDesk);
-          } else {
-            chosenDesk = seat;
-            selectDeskChip(chosenDesk);
-          }
+          chosenDesk = seat;
+          selectDeskChip(chosenDesk);
         }
       }
 
