@@ -641,12 +641,60 @@
           <div style="background:#091e42;color:#ffffff;font-size:12px;font-weight:800;letter-spacing:0.8px;padding:9px 16px;border-radius:6px;text-transform:uppercase;margin-bottom:14px;">
             STUDENT INFORMATION
           </div>
+
+          <!-- Name Breakdown Row: First Name | Middle Name | Surname | Gender -->
           <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px;margin-bottom:14px;" class="admin-form-grid-4">
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Admission Date <span style="color:#dc2626;">*</span>
+                First Name <span style="color:#dc2626;">*</span>
               </label>
-              <input type="date" id="deskAdmDate" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+              <input id="deskFirstName" required placeholder="First Name" oninput="updateCombinedDeskName()" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Middle Name
+              </label>
+              <input id="deskMiddleName" placeholder="Middle Name (optional)" oninput="updateCombinedDeskName()" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Surname <span style="color:#dc2626;">*</span>
+              </label>
+              <input id="deskSurname" required placeholder="Surname / Last Name" oninput="updateCombinedDeskName()" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Gender <span style="color:#dc2626;">*</span>
+              </label>
+              <select id="deskGender" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;">
+                <option value="Male" selected>Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          <!-- Hidden combined candidate name -->
+          <input type="hidden" id="deskName" value="">
+
+          <!-- Parent, Mobile & DOB Row -->
+          <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px;margin-bottom:14px;" class="admin-form-grid-4">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Father / Guardian Name <span style="color:#dc2626;">*</span>
+              </label>
+              <input id="deskFather" required placeholder="Father/Guardian Name" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Mobile No. <span style="color:#dc2626;">*</span> <span style="font-size:11px;color:#64748b;font-weight:500;">(used for login)</span>
+              </label>
+              <input type="tel" id="deskMobile" required placeholder="10-digit mobile" maxlength="10" pattern="[0-9]{10}" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Date of Birth <span style="color:#dc2626;">*</span>
+              </label>
+              <input type="date" id="deskDob" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
             </div>
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
@@ -654,76 +702,33 @@
               </label>
               <input id="deskRegNo" readonly style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f2a5c;background:#f8fafc;font-weight:800;">
             </div>
-            <div>
-              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Candidate name <span style="color:#dc2626;">*</span>
-              </label>
-              <input id="deskName" required placeholder="Full Name" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
-            </div>
-            <div>
-              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Gender <span style="color:#dc2626;">*</span>
-              </label>
-              <select id="deskGender" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;">
-                <option value="">Select Gender</option>
-                <option value="Male" selected>Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
           </div>
 
-          <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px;margin-bottom:14px;" class="admin-form-grid-4">
+          <!-- Target Exams, Address, District & Pin Code Row -->
+          <div style="display:grid;grid-template-columns:1.2fr 2fr 1fr 1fr;gap:16px;margin-bottom:16px;" class="admin-address-grid">
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Mobile No <span style="color:#dc2626;">*</span> <span style="font-size:11px;color:#64748b;font-weight:500;">(will be used for login)</span>
+                Target Exams <span style="color:#dc2626;">*</span>
               </label>
-              <input type="tel" id="deskMobile" required placeholder="10-digit mobile" maxlength="10" pattern="[0-9]{10}" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+              <input id="deskExam" required placeholder="e.g. UPSC, OPSC, Bank, SSC, Railway" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
             </div>
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Email
+                Address <span style="color:#dc2626;">*</span>
               </label>
-              <input type="email" id="deskEmail" placeholder="Email" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+              <input id="deskAddress" required placeholder="Street / Plot / Locality" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
             </div>
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Date of Birth
+                District
               </label>
-              <input type="date" id="deskDob" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+              <input id="deskDistrict" placeholder="District" value="Khordha" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
             </div>
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Father Name
+                Pin Code
               </label>
-              <input id="deskFather" placeholder="Father Name" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
-            </div>
-          </div>
-
-          <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px;margin-bottom:16px;" class="admin-form-grid-4">
-            <div>
-              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Mother Name
-              </label>
-              <input id="deskMother" placeholder="Mother Name" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
-            </div>
-            <div>
-              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Qualification
-              </label>
-              <input id="deskQualif" placeholder="Qualification (e.g. Graduation, +2)" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
-            </div>
-            <div>
-              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Study Purpose
-              </label>
-              <input id="deskExam" placeholder="Study Purpose (e.g. UPSC, OPSC, Bank, SSC)" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
-            </div>
-            <div>
-              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Guardian's Contact
-              </label>
-              <input type="tel" id="deskGuardian" placeholder="Guardian's Contact" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+              <input id="deskPincode" placeholder="Pin Code" maxlength="6" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
             </div>
           </div>
 
@@ -755,78 +760,43 @@
           </div>
         </div>
 
-        <!-- 3. ADDRESS -->
+        <!-- 3. SHIFT ALLOCATION -->
         <div style="margin-bottom:24px;">
           <div style="background:#091e42;color:#ffffff;font-size:12px;font-weight:800;letter-spacing:0.8px;padding:9px 16px;border-radius:6px;text-transform:uppercase;margin-bottom:14px;">
-            ADDRESS
+            SHIFTS &amp; SEAT ALLOCATION
           </div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:16px;" class="admin-address-grid">
-            <div>
-              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Address
-              </label>
-              <input id="deskAddress" placeholder="Street / Plot / Locality" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
-            </div>
-            <div>
-              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                District
-              </label>
-              <input id="deskDistrict" placeholder="District" value="Khordha" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
-            </div>
-            <div>
-              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                State
-              </label>
-              <select id="deskState" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;">
-                <option value="Odisha" selected>Odisha</option>
-                <option value="West Bengal">West Bengal</option>
-                <option value="Bihar">Bihar</option>
-                <option value="Jharkhand">Jharkhand</option>
-                <option value="Andhra Pradesh">Andhra Pradesh</option>
-                <option value="Other">Other State</option>
-              </select>
-            </div>
-            <div>
-              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Pin Code
-              </label>
-              <input id="deskPincode" placeholder="Pin Code" maxlength="6" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
-            </div>
-          </div>
-        </div>
-
-        <!-- 4. SHIFT ALLOCATION -->
-        <div style="margin-bottom:24px;">
-          <div style="background:#091e42;color:#ffffff;font-size:12px;font-weight:800;letter-spacing:0.8px;padding:9px 16px;border-radius:6px;text-transform:uppercase;margin-bottom:14px;">
-            SHIFT ALLOCATION
-          </div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px;align-items:flex-start;" class="admin-shift-grid">
+          <div style="display:grid;grid-template-columns:2.4fr 1fr 1fr;gap:16px;align-items:flex-start;" class="admin-shift-grid">
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:8px;">
-                Shift <span style="color:#dc2626;">*</span>
+                Shift <span style="color:#dc2626;">*</span> (Click to Auto-Calculate Fees)
               </label>
-              <div style="display:flex;gap:8px;flex-wrap:wrap;" id="deskShiftButtonsWrap">
-                <button type="button" class="btn desk-shift-chip" onclick="setDeskShift('Morning', 1000, this)" style="padding:8px 14px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;">
-                  Morning (6 AM - 12 PM)
+              <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;" id="deskShiftButtonsWrap">
+                <button type="button" class="btn desk-shift-chip" onclick="setDeskShift('Morning', 800, '07:00 AM to 02:00 PM', this)" style="padding:10px 12px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;text-align:left;">
+                  <strong style="display:block;color:#0f2a5c;">1. Morning Shift — ₹800</strong>
+                  <span style="font-size:11px;color:#64748b;">07:00 AM to 02:00 PM</span>
                 </button>
-                <button type="button" class="btn desk-shift-chip" onclick="setDeskShift('Afternoon', 1000, this)" style="padding:8px 14px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;">
-                  Afternoon (12 PM - 6 PM)
+                <button type="button" class="btn desk-shift-chip" onclick="setDeskShift('Afternoon', 800, '02:30 PM to 09:00 PM', this)" style="padding:10px 12px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;text-align:left;">
+                  <strong style="display:block;color:#0f2a5c;">2. Afternoon Shift — ₹800</strong>
+                  <span style="font-size:11px;color:#64748b;">02:30 PM to 09:00 PM</span>
                 </button>
-                <button type="button" class="btn desk-shift-chip active" onclick="setDeskShift('Full Day', 1000, this)" style="padding:8px 14px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #2563eb;background:#eff6ff;color:#1d4ed8;cursor:pointer;">
-                  Full Day (7 AM - 9 PM) ★
+                <button type="button" class="btn desk-shift-chip active" onclick="setDeskShift('Full Day', 1200, '07:00 AM to 09:00 PM', this)" style="padding:10px 12px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #2563eb;background:#eff6ff;color:#1d4ed8;cursor:pointer;text-align:left;">
+                  <strong style="display:block;color:#1d4ed8;">3. Full Day — ₹1,200 ★</strong>
+                  <span style="font-size:11px;color:#2563eb;">07:00 AM to 09:00 PM (14h)</span>
                 </button>
-                <button type="button" class="btn desk-shift-chip" onclick="setDeskShift('Night', 1000, this)" style="padding:8px 14px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;">
-                  Night (9 PM - 6 AM)
+                <button type="button" class="btn desk-shift-chip" onclick="setDeskShift('Night', 1000, '09:30 PM to 06:30 AM', this)" style="padding:10px 12px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;text-align:left;">
+                  <strong style="display:block;color:#0f2a5c;">4. Night Shift — ₹1,000</strong>
+                  <span style="font-size:11px;color:#64748b;">09:30 PM to 06:30 AM (9h)</span>
                 </button>
               </div>
               <input type="hidden" id="deskShift" value="Full Day">
+              <input type="hidden" id="deskShiftTiming" value="07:00 AM to 09:00 PM">
             </div>
 
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
                 Seat Status <span style="color:#dc2626;">*</span>
               </label>
-              <select id="deskSeatStatus" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;">
+              <select id="deskSeatStatus" required style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;">
                 <option value="Fixed Seat" selected>Fixed Seat (Dedicated Desk)</option>
                 <option value="Flexi Seat">Flexible Seat</option>
                 <option value="Walk-in Physical Allocation">Walk-in Physical Allocation</option>
@@ -843,48 +813,48 @@
           </div>
         </div>
 
-        <!-- 5. PAYMENT DETAILS -->
+        <!-- 4. PAYMENT DETAILS (AUTOMATIC AS PER SHIFT) -->
         <div style="margin-bottom:24px;">
           <div style="background:#091e42;color:#ffffff;font-size:12px;font-weight:800;letter-spacing:0.8px;padding:9px 16px;border-radius:6px;text-transform:uppercase;margin-bottom:14px;">
-            PAYMENT DETAILS
+            PAYMENT DETAILS (AUTOMATIC AS PER SHIFT)
           </div>
           <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px;margin-bottom:14px;" class="admin-form-grid-4">
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Shift Fees (₹)
+                Amount (Automatic Shift Fee) <span style="color:#dc2626;">*</span>
               </label>
-              <input type="number" id="deskShiftFees" value="1000" readonly style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f2a5c;background:#f8fafc;font-weight:750;">
+              <input type="number" id="deskShiftFees" value="1200" readonly style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:14px;color:#0f2a5c;background:#f8fafc;font-weight:800;">
             </div>
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Locker Fees (₹)
+                Registration Fee (₹) <span style="font-size:11px;color:#64748b;">(one-time)</span>
               </label>
-              <input type="number" id="deskLockerFees" value="0" min="0" oninput="calcDeskFees()" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+              <input type="number" id="deskRegFee" value="200" readonly style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:14px;color:#0f2a5c;background:#f8fafc;font-weight:750;">
             </div>
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Total Fees (₹) <span style="color:#dc2626;">*</span> <span style="font-size:11px;color:#64748b;">(includes ₹200 reg)</span>
+                Total Fee (₹) <span style="color:#dc2626;">*</span>
               </label>
-              <input type="number" id="deskTotalFees" value="1200" readonly style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:14px;color:#0f2a5c;background:#f8fafc;font-weight:900;">
+              <input type="number" id="deskTotalFees" value="1400" readonly style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:14px;color:#0f2a5c;background:#f8fafc;font-weight:900;">
             </div>
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Discount (Amount) (₹)
+                Discount (if given) (₹)
               </label>
-              <input type="number" id="deskDiscount" value="0" min="0" oninput="calcDeskFees()" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+              <input type="number" id="deskDiscount" value="0" min="0" oninput="calcDeskFees(false)" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
             </div>
           </div>
 
           <div style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:16px;" class="admin-pay-grid-3">
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Paid Fees (₹) <span style="color:#dc2626;">*</span>
+                Paid Fees (₹) <span style="color:#dc2626;">*</span> <span style="font-size:11px;color:#059669;">(Automatic)</span>
               </label>
-              <input type="number" id="deskPaid" value="1200" required oninput="calcDeskFees()" style="width:100%;padding:9px 12px;border:1.5px solid #10b981;border-radius:8px;font-size:14px;color:#047857;background:#ecfdf5;font-weight:900;">
+              <input type="number" id="deskPaid" value="1400" required oninput="calcDeskFees(false)" style="width:100%;padding:9px 12px;border:1.5px solid #10b981;border-radius:8px;font-size:14px;color:#047857;background:#ecfdf5;font-weight:900;">
             </div>
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Pending Fees (₹)
+                Pending Fees (₹) <span style="font-size:11px;color:#64748b;">(Automatic)</span>
               </label>
               <input type="number" id="deskPending" value="0" readonly style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:14px;color:#dc2626;background:#fef2f2;font-weight:900;">
             </div>

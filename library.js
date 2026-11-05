@@ -54,33 +54,38 @@ const store = {
 };
 
 const SHIFTS = {
-  Morning: { time: "06:00 AM – 12:00 PM", priceKey: "priceMorning", defaultPrice: 1000 },
-  Afternoon: { time: "02:30 PM – 09:00 PM", priceKey: "priceAfternoon", defaultPrice: 1000 },
-  "Full Day": { time: "07:00 AM – 09:00 PM (14 Hours)", priceKey: "priceFullDay", defaultPrice: 1000 },
-  Night: { time: "09:00 PM – 06:00 AM", priceKey: "priceNight", defaultPrice: 1000 }
+  Morning: { label: "1. Morning Shift — ₹800", time: "07:00 AM – 02:00 PM (7 Hours)", priceKey: "priceMorning", defaultPrice: 800 },
+  Afternoon: { label: "2. Afternoon Shift — ₹800", time: "02:30 PM – 09:00 PM (6.5 Hours)", priceKey: "priceAfternoon", defaultPrice: 800 },
+  "Full Day": { label: "3. Full Day — ₹1,200 ★", time: "07:00 AM – 09:00 PM (14 Hours)", priceKey: "priceFullDay", defaultPrice: 1200 },
+  Night: { label: "4. Night Shift — ₹1,000", time: "09:30 PM – 06:30 AM (9 Hours)", priceKey: "priceNight", defaultPrice: 1000 }
 };
 
-let selShift = "Afternoon";
+let selShift = "Full Day";
 let selectedSeat = "";
 
 /* 1. Shift Selector and Fee Calculator */
 function renderShifts() {
   const container = $("#shiftBtns");
   if (!container) return;
-  container.innerHTML = Object.keys(SHIFTS).map(s => 
-    `<button type="button" class="btn ${selShift === s ? 'orange' : 'ghost'}" style="margin-right:8px;margin-bottom:8px;" onclick="selShift='${s}';renderShifts();calcFees()">${s}</button>`
-  ).join("");
+  container.innerHTML = Object.keys(SHIFTS).map(s => {
+    const shift = SHIFTS[s];
+    const isAct = selShift === s;
+    return `<button type="button" class="btn ${isAct ? 'orange' : 'ghost'}" style="margin-right:8px;margin-bottom:8px;padding:8px 14px;font-size:13px;font-weight:750;" onclick="selShift='${s}';renderShifts();calcFees(true)">
+      ${shift.label}
+    </button>`;
+  }).join("");
 
   if ($("#shiftInfo")) {
-    $("#shiftInfo").textContent = selShift + " — " + SHIFTS[selShift].time + " • Verified Seat Price: ₹1000/mo (One-Time Registration: ₹200)";
+    const s = SHIFTS[selShift];
+    $("#shiftInfo").textContent = selShift + " — " + s.time + " • Shift Fee: ₹" + s.defaultPrice + "/mo (One-Time Registration: ₹200)";
   }
-  calcFees();
+  calcFees(true);
 }
 
-function calcFees() {
+function calcFees(autoPaid = false) {
   if (!$("#shiftFees")) return;
   const priceInput = document.getElementById(SHIFTS[selShift]?.priceKey);
-  const price = priceInput ? Number(priceInput.value || 0) : (SHIFTS[selShift]?.defaultPrice || 0);
+  const price = priceInput ? Number(priceInput.value || 0) : (SHIFTS[selShift]?.defaultPrice || 1200);
   $("#shiftFees").value = price;
 
   const locker = Number($("#lockerFees")?.value || 0);
@@ -92,6 +97,10 @@ function calcFees() {
   const total = Math.max(0, gross - discAmt - Math.round(gross * discPct / 100));
 
   if ($("#totalFees")) $("#totalFees").value = total;
+
+  if (autoPaid && $("#paidFees")) {
+    $("#paidFees").value = total;
+  }
 
   const paid = Number($("#paidFees")?.value || 0);
   if ($("#pendingFees")) $("#pendingFees").value = Math.max(0, total - paid);
@@ -301,9 +310,17 @@ function libAdmit(e) {
   const seatVal = ($("#allocSeat")?.value || selectedSeat || "Physically at Patrapada Front Desk").trim();
   const isPhysical = seatVal.toLowerCase().includes("physic") || seatVal.toLowerCase().includes("front desk");
 
+  const fName = ($("#candFirstName")?.value || "").trim();
+  const mName = ($("#candMiddleName")?.value || "").trim();
+  const sName = ($("#candSurname")?.value || "").trim();
+  const candName = [fName, mName, sName].filter(Boolean).join(" ") || $("#candName")?.value || "Student";
+
   const m = {
     regNo,
-    name: $("#candName").value,
+    firstName: fName,
+    middleName: mName,
+    surname: sName,
+    name: candName,
     gender: $("#gender")?.value || "Male",
     mobile: $("#studMobile").value,
     email: $("#studEmail")?.value || "",
@@ -326,8 +343,10 @@ function libAdmit(e) {
     seatMode: isPhysical ? "physical" : "online",
     from: $("#fromDate")?.value || new Date().toISOString().slice(0, 10),
     to: $("#toDate")?.value || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-    total: Number($("#totalFees")?.value || 1200),
-    paid: Number($("#paidFees")?.value || 1200),
+    shiftFees: Number($("#shiftFees")?.value || (SHIFTS[selShift]?.defaultPrice || 1200)),
+    regFee: 200,
+    total: Number($("#totalFees")?.value || 1400),
+    paid: Number($("#paidFees")?.value || 1400),
     pending: Number($("#pendingFees")?.value || 0),
     mode: $("#payMode")?.value || "UPI",
     date: new Date().toISOString().slice(0, 10)

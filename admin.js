@@ -554,6 +554,15 @@ let currentDeskPhotoData = '';
 let currentDeskAadharData = '';
 let currentDeskAadharFileName = '';
 
+window.updateCombinedDeskName = function() {
+  const first = (document.getElementById('deskFirstName')?.value || '').trim();
+  const middle = (document.getElementById('deskMiddleName')?.value || '').trim();
+  const surname = (document.getElementById('deskSurname')?.value || '').trim();
+  const combined = [first, middle, surname].filter(Boolean).join(' ');
+  const hiddenName = document.getElementById('deskName');
+  if (hiddenName) hiddenName.value = combined;
+};
+
 function initDeskAdmissionForm() {
   const members = store.get('c2s_lib_members', []);
   const regEl = document.getElementById('deskRegNo');
@@ -575,7 +584,10 @@ function initDeskAdmissionForm() {
     toDateEl.value = d.toISOString().slice(0, 10);
   }
 
-  calcDeskFees();
+  // Default to Full Day: Shift Fee = 1200, Reg = 200, Total = 1400, Paid = 1400, Pending = 0
+  const shiftFeesEl = document.getElementById('deskShiftFees');
+  if (shiftFeesEl) shiftFeesEl.value = 1200;
+  calcDeskFees(true);
 }
 
 window.autoUpdateToDate = function(fromVal) {
@@ -589,9 +601,11 @@ window.autoUpdateToDate = function(fromVal) {
   } catch (e) {}
 };
 
-window.setDeskShift = function(shiftName, fee, btn) {
+window.setDeskShift = function(shiftName, fee, timing, btn) {
   const shiftInput = document.getElementById('deskShift');
   if (shiftInput) shiftInput.value = shiftName;
+  const timingInput = document.getElementById('deskShiftTiming');
+  if (timingInput) timingInput.value = timing || '';
   const shiftFeesInput = document.getElementById('deskShiftFees');
   if (shiftFeesInput) shiftFeesInput.value = fee;
 
@@ -609,21 +623,27 @@ window.setDeskShift = function(shiftName, fee, btn) {
     btn.style.color = '#1d4ed8';
   }
 
-  calcDeskFees();
+  calcDeskFees(true); // Automatic as per shift!
 };
 
-window.calcDeskFees = function() {
-  const shiftFee = Number(document.getElementById('deskShiftFees')?.value || 1000);
-  const lockerFee = Number(document.getElementById('deskLockerFees')?.value || 0);
+window.calcDeskFees = function(autoPaid = false) {
+  const shiftFee = Number(document.getElementById('deskShiftFees')?.value || 1200);
   const regFee = 200; // One-time admission registration fee
-  const total = shiftFee + lockerFee + regFee;
+  const total = shiftFee + regFee;
 
   const totalEl = document.getElementById('deskTotalFees');
   if (totalEl) totalEl.value = total;
 
   const discount = Number(document.getElementById('deskDiscount')?.value || 0);
-  const paid = Number(document.getElementById('deskPaid')?.value || 0);
-  const pending = Math.max(0, total - discount - paid);
+  const netPayable = Math.max(0, total - discount);
+
+  const paidEl = document.getElementById('deskPaid');
+  if (autoPaid && paidEl) {
+    paidEl.value = netPayable;
+  }
+
+  const paid = Number(paidEl?.value || 0);
+  const pending = Math.max(0, netPayable - paid);
 
   const pendingEl = document.getElementById('deskPending');
   if (pendingEl) pendingEl.value = pending;
@@ -771,7 +791,12 @@ function deskQuickAdmit(e) {
   const fromDate = document.getElementById('deskFromDate')?.value || new Date().toISOString().slice(0, 10);
   const toDate = document.getElementById('deskToDate')?.value || '';
   const admDate = document.getElementById('deskAdmDate')?.value || new Date().toISOString().slice(0, 10);
-  const name = document.getElementById('deskName').value.trim();
+  
+  const firstName = (document.getElementById('deskFirstName')?.value || '').trim();
+  const middleName = (document.getElementById('deskMiddleName')?.value || '').trim();
+  const surname = (document.getElementById('deskSurname')?.value || '').trim();
+  const name = [firstName, middleName, surname].filter(Boolean).join(' ') || (document.getElementById('deskName')?.value || '').trim() || 'Student';
+
   const gender = document.getElementById('deskGender')?.value || 'Male';
   const mobile = document.getElementById('deskMobile').value.trim();
   const email = document.getElementById('deskEmail')?.value.trim() || '';
@@ -788,16 +813,17 @@ function deskQuickAdmit(e) {
   const pincode = document.getElementById('deskPincode')?.value.trim() || '';
 
   const shift = document.getElementById('deskShift')?.value || 'Full Day';
+  const shiftTiming = document.getElementById('deskShiftTiming')?.value || '07:00 AM to 09:00 PM';
   const seatStatus = document.getElementById('deskSeatStatus')?.value || 'Fixed Seat';
   const seat = document.getElementById('deskSeat')?.value.trim() || 'Physical Allocation at Front Desk';
 
-  const shiftFees = Number(document.getElementById('deskShiftFees')?.value || 1000);
-  const lockerFees = Number(document.getElementById('deskLockerFees')?.value || 0);
-  const total = Number(document.getElementById('deskTotalFees')?.value || (shiftFees + lockerFees + 200));
+  const shiftFees = Number(document.getElementById('deskShiftFees')?.value || 1200);
+  const regFee = Number(document.getElementById('deskRegFee')?.value || 200);
+  const total = Number(document.getElementById('deskTotalFees')?.value || (shiftFees + regFee));
   const discount = Number(document.getElementById('deskDiscount')?.value || 0);
-  const paid = Number(document.getElementById('deskPaid')?.value || 0);
+  const paid = Number(document.getElementById('deskPaid')?.value || (total - discount));
   const pending = Number(document.getElementById('deskPending')?.value || 0);
-  const mode = document.getElementById('deskPayMode')?.value || 'UPI / QR';
+  const mode = document.getElementById('deskPayMode')?.value || 'UPI / QR (PhonePe / GPay / Paytm)';
 
   const members = store.get('c2s_lib_members', []);
   const regNo = document.getElementById('deskRegNo')?.value || ('C2SLIB-' + String(members.length + 1).padStart(5, '0'));
@@ -805,6 +831,9 @@ function deskQuickAdmit(e) {
   const newMember = {
     regNo,
     name,
+    firstName,
+    middleName,
+    surname,
     gender,
     mobile,
     email,
@@ -826,10 +855,11 @@ function deskQuickAdmit(e) {
     toDate,
     admDate,
     shift,
+    shiftTiming,
     seatStatus,
     seat,
     shiftFees,
-    lockerFees,
+    regFee,
     discount,
     total,
     paid,
