@@ -4666,3 +4666,175 @@ window.copyStudentReferralLink = function(regNo) {
     prompt('Copy your referral link:', link);
   });
 };
+
+/* ==========================================================================
+   DYNAMIC SCROLL ENGINE, STAT COUNTERS & 24H LIBRARY SANCTUARY INTERACTION
+   ========================================================================== */
+
+let currentSelectedLibShift = 'Full Day';
+let currentSelectedLibShiftTime = '07:00 AM – 09:00 PM';
+let currentSelectedLibSeat = 'Desk A-04';
+
+window.selectLibraryShift = function(name, time, duration, el) {
+  currentSelectedLibShift = name;
+  currentSelectedLibShiftTime = time;
+  
+  document.querySelectorAll('.lib-shift-card').forEach(card => card.classList.remove('active'));
+  if (el) el.classList.add('active');
+  
+  updateLibSummaryHUD();
+};
+
+window.selectLibrarySeat = function(seatName, el) {
+  if (el && el.classList.contains('occupied')) {
+    alert(seatName + ' is already occupied in this shift. Please choose another vacant desk or opt for Front Desk physical allocation!');
+    return;
+  }
+  
+  currentSelectedLibSeat = seatName;
+  document.querySelectorAll('.lib-seat-pill').forEach(pill => pill.classList.remove('selected'));
+  if (el) el.classList.add('selected');
+  
+  updateLibSummaryHUD();
+};
+
+function updateLibSummaryHUD() {
+  const summaryEl = document.getElementById('libSelectedSummaryText');
+  const priceEl = document.getElementById('libDynamicPriceText');
+  const bookBtn = document.getElementById('libMainBookBtn');
+  
+  if (summaryEl) {
+    summaryEl.textContent = currentSelectedLibSeat + ' • ' + currentSelectedLibShift + ' Shift (' + currentSelectedLibShiftTime + ')';
+  }
+  
+  if (priceEl) {
+    priceEl.textContent = '₹1,200';
+  }
+  
+  if (bookBtn) {
+    bookBtn.textContent = 'Instant Book ' + currentSelectedLibSeat + ' (' + currentSelectedLibShift + ') →';
+  }
+}
+
+window.proceedToLibraryBooking = function() {
+  const seatParam = encodeURIComponent(currentSelectedLibSeat);
+  const shiftParam = encodeURIComponent(currentSelectedLibShift);
+  window.location.href = '/library/admission.html?seat=' + seatParam + '&shift=' + shiftParam;
+};
+
+window.shareLibraryReferralWhatsApp = function() {
+  const text = '🏛️ Join C2S 24-Hour AC Study Library in Patrapada, Bhubaneswar (Opp. Sani Mandir)!\n\n' +
+    '✨ Personal warm reading light for every desk\n' +
+    '⚡ Individual charging socket at each seat\n' +
+    '💺 High-back ergonomic chair\n' +
+    '📶 5G Ultra-Fast Wi-Fi & Pinpoint Silence\n' +
+    '🔒 Personal Locker & Clean Washroom\n\n' +
+    '💰 Just ₹1000/mo (Full Day 7 AM to 9 PM). Register now:\nhttps://c2seri.com/library/admission.html?ref=7DAYSFREE';
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+};
+
+// Scroll Progress Bar & Floating Dock
+function initDynamicScrollEngine() {
+  const progressBar = document.getElementById('c2sScrollProgressBar');
+  const floatingBar = document.getElementById('c2sFloatingBar');
+  
+  window.addEventListener('scroll', function() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    
+    if (progressBar && scrollHeight > 0) {
+      const progress = (scrollTop / scrollHeight) * 100;
+      progressBar.style.width = progress + '%';
+    }
+    
+    if (floatingBar) {
+      if (scrollTop > 320) {
+        floatingBar.classList.add('active');
+      } else {
+        floatingBar.classList.remove('active');
+      }
+    }
+  }, { passive: true });
+}
+
+// IntersectionObserver for Scroll-Reveal & Animated Counters
+function initScrollAnimationsAndCounters() {
+  // 1. Tag auto-scroll reveal elements
+  const revealTargets = document.querySelectorAll(
+    '.section-header, .adda-stat-card, .facility-card, .c2s-blog-card, .library-sanctuary-card, .prime-metric-row, .card, .grid2 > div'
+  );
+  
+  revealTargets.forEach(el => {
+    if (!el.classList.contains('c2s-scroll-reveal')) {
+      el.classList.add('c2s-scroll-reveal');
+    }
+  });
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          
+          // Animate stat counters if inside
+          const statCounts = entry.target.querySelectorAll('.stat-count-big, .metric-item strong');
+          statCounts.forEach(animateCounter);
+          
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.1
+    });
+
+    document.querySelectorAll('.c2s-scroll-reveal').forEach(el => observer.observe(el));
+  } else {
+    // Fallback for older browsers
+    document.querySelectorAll('.c2s-scroll-reveal').forEach(el => el.classList.add('is-revealed'));
+  }
+}
+
+function animateCounter(el) {
+  if (el.dataset.animated) return;
+  el.dataset.animated = 'true';
+  
+  const text = el.textContent.trim();
+  const match = text.match(/^([\d,\.]+)(.*)$/);
+  if (!match) return;
+  
+  const rawNum = parseFloat(match[1].replace(/,/g, ''));
+  const suffix = match[2] || '';
+  if (isNaN(rawNum)) return;
+  
+  const duration = 1400;
+  const start = performance.now();
+  
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const easeOutQuad = 1 - (1 - progress) * (1 - progress);
+    const current = Math.floor(rawNum * easeOutQuad);
+    
+    el.textContent = current.toLocaleString('en-IN') + suffix;
+    
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      el.textContent = text;
+    }
+  }
+  
+  requestAnimationFrame(update);
+}
+
+// Auto Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    initDynamicScrollEngine();
+    initScrollAnimationsAndCounters();
+  });
+} else {
+  initDynamicScrollEngine();
+  initScrollAnimationsAndCounters();
+}
