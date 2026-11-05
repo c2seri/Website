@@ -63,6 +63,50 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ==========================================================================
+   GLOBAL HIGH-CONTRAST TYPOGRAPHY & LINK DEFENSE
+   Prevents invisible white text on white/light backgrounds across the entire website
+   ========================================================================== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display, 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif);
+  letter-spacing: -0.025em;
+  color: #0f172a;
+}
+
+h1 { color: #0a192f; }
+h2 { color: #0a192f; }
+h3 { color: #0f172a; }
+h4 { color: #0f172a; }
+h5 { color: #1e293b; }
+h6 { color: #334155; }
+
+/* Explicit Dark Container Exceptions ONLY */
+.site-footer h1, .site-footer h2, .site-footer h3, .site-footer h4, .site-footer h5, .site-footer h6,
+.site-footer a:not(.btn),
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6,
+[data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3, [data-theme="dark"] h4,
+.c2s-career-pass-view h1, .c2s-career-pass-view h2, .c2s-career-pass-view h3, .c2s-career-pass-view h4,
+.theatre-seat-container h1, .theatre-seat-container h2, .theatre-seat-container h3, .theatre-seat-container h4,
+.slide-theme-navy h1, .slide-theme-navy h2, .slide-theme-navy h3, .slide-theme-navy h4,
+.slide-theme-blue h1, .slide-theme-blue h2, .slide-theme-blue h3, .slide-theme-blue h4,
+.c2s-auth-card h1, .c2s-auth-card h2, .c2s-auth-card h3, .c2s-auth-card h4,
+.study-hall-interactive-card h1, .study-hall-interactive-card h2, .study-hall-interactive-card h3, .study-hall-interactive-card h4,
+.digital-id-card h1, .digital-id-card h2, .digital-id-card h3, .digital-id-card h4,
+.mega-featured-card h4,
+.c2s-banner-heading,
+.c2s-auth-title,
+.c2s-wa-popup-info h4,
+body[style*="background:#091426"] h1,
+body[style*="background:#091426"] h2,
+body[style*="background:#091426"] h3,
+body[style*="background:#091426"] h4,
+body[style*="background: #091426"] h1,
+body[style*="background: #091426"] h2,
+body[style*="background: #091426"] h3,
+body[style*="background: #091426"] h4 {
+  color: #ffffff;
+}
+
 a {
   color: var(--c2s-blue-700);
   text-decoration: none;
@@ -1850,25 +1894,71 @@ a:hover {
 }
 
 .btn.ghost {
-  background: var(--c2s-slate-100);
-  color: var(--c2s-slate-800);
-  border: 1px solid var(--c2s-slate-200);
+  background: var(--c2s-slate-100) !important;
+  color: #1e293b !important;
+  border: 1px solid var(--c2s-slate-200) !important;
 }
 
 .btn.ghost:hover {
-  background: var(--c2s-slate-200);
-  color: var(--c2s-navy-800);
+  background: #0f2a5c !important;
+  color: #ffffff !important;
+  border-color: #0f2a5c !important;
 }
 
-.btn.light {
-  background: #fff;
-  color: var(--c2s-navy-800);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.btn.light,
+.btn.white,
+.btn[style*="background:#ffffff"],
+.btn[style*="background: #ffffff"],
+.btn[style*="background:#fff"],
+.btn[style*="background: #fff"] {
+  background: #ffffff !important;
+  color: #0f2a5c !important;
+  border: 1.5px solid #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-.btn.light:hover {
-  background: #f8fafc;
-  color: var(--c2s-orange-600);
+.btn.light:hover,
+.btn.white:hover,
+.btn[style*="background:#ffffff"]:hover,
+.btn[style*="background: #ffffff"]:hover,
+.btn[style*="background:#fff"]:hover,
+.btn[style*="background: #fff"]:hover {
+  background: #0f2a5c !important;
+  color: #ffffff !important;
+  border-color: #0f2a5c !important;
+}
+
+/* Desk shift chips & 360 Viewpoint Switchers */
+.desk-shift-chip {
+  background: #ffffff !important;
+  color: #1e293b !important;
+  border: 1.5px solid #cbd5e1 !important;
+}
+.desk-shift-chip:hover {
+  border-color: #1d4ed8 !important;
+  color: #1d4ed8 !important;
+  background: #eff6ff !important;
+}
+.desk-shift-chip.active {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  border-color: #1d4ed8 !important;
+}
+
+.c2s-360-vp-btn {
+  background: #ffffff;
+  color: #0f2a5c !important;
+  border: 1.5px solid #cbd5e1;
+}
+.c2s-360-vp-btn:hover {
+  background: #eff6ff !important;
+  color: #1d4ed8 !important;
+  border-color: #3b82f6 !important;
+}
+.c2s-360-vp-btn.active {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  border-color: #1d4ed8 !important;
 }
 
 .btn.dark {
