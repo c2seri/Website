@@ -39,6 +39,9 @@ function switchRole(role) {
   if (role === 'admin') {
     document.getElementById('btnRoleAdmin').classList.add('active');
     document.getElementById('roleViewAdmin').classList.remove('hidden');
+    if (typeof populateAdminMonthDropdown === 'function') {
+      populateAdminMonthDropdown();
+    }
     renderSuperAdmin();
   } else if (role === 'desk') {
     document.getElementById('btnRoleDesk').classList.add('active');
@@ -65,6 +68,12 @@ function isDateInFilter(dateStr) {
   const now = new Date();
   const todayStr = now.toISOString().slice(0, 10);
   const targetStr = d.toISOString().slice(0, 10);
+
+  if (currentAdminDateFilter && currentAdminDateFilter.startsWith('month_')) {
+    const monthKey = currentAdminDateFilter.replace('month_', '');
+    const [y, m] = monthKey.split('-').map(Number);
+    return d.getFullYear() === y && (d.getMonth() + 1) === m;
+  }
 
   if (currentAdminDateFilter === 'today') {
     return targetStr === todayStr;
@@ -101,6 +110,85 @@ function isDateInFilter(dateStr) {
   return true;
 }
 
+window.populateAdminMonthDropdown = function() {
+  const select = document.getElementById('adminMonthDropdown');
+  if (!select) return;
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonthIdx = now.getMonth();
+
+  let optionsHtml = '<option value="">Choose Individual Month ▾</option>';
+
+  for (let offset = 0; offset < 24; offset++) {
+    const d = new Date(currentYear, currentMonthIdx - offset, 1);
+    const yr = d.getFullYear();
+    const mo = d.getMonth();
+    const val = `${yr}-${String(mo + 1).padStart(2, '0')}`;
+    const label = `${monthNames[mo]} ${yr}`;
+    const isCurrent = offset === 0 ? ' (Current)' : '';
+    optionsHtml += `<option value="${val}">${label}${isCurrent}</option>`;
+  }
+
+  select.innerHTML = optionsHtml;
+};
+
+window.applyAdminMonthDropdown = function(val) {
+  if (!val) {
+    applyAdminDateFilter('this_month');
+    return;
+  }
+
+  const [yearStr, monthStr] = val.split('-');
+  const year = parseInt(yearStr, 10);
+  const month = parseInt(monthStr, 10);
+
+  // Compute first & last day of selected month
+  const fromDate = `${year}-${String(month).padStart(2, '0')}-01`;
+  const lastDay = new Date(year, month, 0).getDate();
+  const toDate = `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+
+  const fromInput = document.getElementById('adminFilterFromDate');
+  const toInput = document.getElementById('adminFilterToDate');
+  if (fromInput) fromInput.value = fromDate;
+  if (toInput) toInput.value = toDate;
+
+  // De-activate other quick buttons
+  const modes = ['today', '7days', 'this_month', 'last_month', 'this_quarter', 'all_time'];
+  modes.forEach(m => {
+    let btnId = 'filterBtn' + m;
+    if (m === '7days') btnId = 'filterBtn7Days';
+    if (m === 'this_month') btnId = 'filterBtnThisMonth';
+    if (m === 'last_month') btnId = 'filterBtnLastMonth';
+    if (m === 'this_quarter') btnId = 'filterBtnQuarter';
+    if (m === 'all_time') btnId = 'filterBtnAllTime';
+    if (m === 'today') btnId = 'filterBtnToday';
+    const btn = document.getElementById(btnId);
+    if (btn) btn.classList.remove('active');
+  });
+
+  currentAdminDateFilter = 'month_' + val;
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const monthLabel = `${monthNames[month - 1]} ${year}`;
+
+  const labelEl = document.getElementById('kpiLabelAdmissions');
+  if (labelEl) {
+    labelEl.textContent = `${monthLabel} Admissions`;
+  }
+
+  renderSuperAdmin();
+  renderMemberList();
+};
+
 window.applyAdminDateFilter = function(filterMode) {
   currentAdminDateFilter = filterMode;
 
@@ -117,6 +205,20 @@ window.applyAdminDateFilter = function(filterMode) {
     const btn = document.getElementById(btnId);
     if (btn) btn.classList.toggle('active', m === filterMode);
   });
+
+  // Sync or reset the month dropdown
+  const mSelect = document.getElementById('adminMonthDropdown');
+  if (mSelect) {
+    if (filterMode === 'this_month') {
+      const now = new Date();
+      mSelect.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    } else if (filterMode === 'last_month') {
+      const lm = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1);
+      mSelect.value = `${lm.getFullYear()}-${String(lm.getMonth() + 1).padStart(2, '0')}`;
+    } else if (!filterMode.startsWith('month_')) {
+      mSelect.value = '';
+    }
+  }
 
   const labelEl = document.getElementById('kpiLabelAdmissions');
   if (labelEl) {
@@ -877,14 +979,19 @@ function renderMemberList(filterQuery = '') {
   const tbody = document.getElementById('adminMemberBody');
   if (!tbody) return;
 
-  const q = filterQuery.toLowerCase();
-  const filtered = members.filter(m => 
-    !q || 
-    (m.name || '').toLowerCase().includes(q) || 
-    (m.regNo || '').toLowerCase().includes(q) || 
-    (m.mobile || '').includes(q) ||
-    (m.studyPurpose || m.examPref || '').toLowerCase().includes(q)
-  );
+  const q = filterQuery.toLowerCase().trim();
+  const filtered = members.filter(m => {
+    const matchesQ = !q || 
+      (m.name || '').toLowerCase().includes(q) || 
+      (m.regNo || '').toLowerCase().includes(q) || 
+      (m.mobile || '').includes(q) ||
+      (m.studyPurpose || m.examPref || '').toLowerCase().includes(q);
+    
+    // When no search query is typed, filter by active date range (e.g. chosen month)
+    // When admin actively searches, search all members across history
+    const matchesDate = q ? true : isDateInFilter(m.admDate || m.date);
+    return matchesQ && matchesDate;
+  });
 
   tbody.innerHTML = filtered.length ? filtered.map(m => {
     const avatarHtml = m.photo ? 
@@ -1904,6 +2011,9 @@ function teacherPublishPost(e) {
 
 /* Run on load */
 document.addEventListener('DOMContentLoaded', () => {
+  if (typeof populateAdminMonthDropdown === 'function') {
+    populateAdminMonthDropdown();
+  }
   switchRole('admin');
 });
 
