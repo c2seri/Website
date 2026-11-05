@@ -103,10 +103,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261105_1345">
+  <link rel="stylesheet" href="styles.css?v=20261105_1350">
   <script src="exams.js" defer></script>
   <script src="blogs-data.js" defer></script>
-  <script src="app.js?v=20261105_1345" defer></script>
+  <script src="app.js?v=20261105_1350" defer></script>
   <script src="cohort-engine.js" defer></script>
 </head>
 
@@ -1971,247 +1971,88 @@
       </div>
 
       <!-- ==========================================================================
-           24-HOUR AIR-CONDITIONED STUDY SANCTUARY (INTERACTIVE DYNAMIC SHOWCASE)
+           24-HOUR A/C STUDY LIBRARY SHOWCASE (COMPACT GATEWAY CARD TO /library)
            ========================================================================== -->
-      <div id="librarySanctuarySection" class="library-sanctuary-wrap">
-        <div class="library-sanctuary-card">
-          <!-- Top Tag & Live Vacancy Pulse -->
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-            <div class="library-sanctuary-badge">
-              <span class="live-dot-green"></span>
-              <span>🏛️ BHUBANESWAR'S #1 24H AC STUDY SANCTUARY • PATRAPADA</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#047857;background:#ecfdf5;padding:5px 12px;border-radius:999px;font-weight:750;">
-              <span>🟢 Live Status: <strong>18 Desks Vacant Right Now</strong></span>
-            </div>
-          </div>
-
-          <h2 style="font-size:28px;font-weight:900;color:#0f172a;margin:10px 0 6px;letter-spacing:-0.02em;">
-            Peaceful Study Sanctuary &amp; Dedicated Reading Rooms
-          </h2>
-          <p style="font-size:15px;color:#475569;margin:0 0 20px;max-width:880px;line-height:1.6;">
-            A dedicated, noise-isolated study haven opposite Sani Mandir, NH-16 Patrapada. Designed specifically for UPSC, OPSC, Bank PO, and SSC aspirants seeking uncompromising silence, high-speed Wi-Fi, and individual personal desk lights.
-          </p>
-
-          <!-- 1. Interactive Shift Switcher (4 Shifts) -->
-          <div style="margin-top:24px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-              <span style="font-size:14px;font-weight:800;color:#0f172a;text-transform:uppercase;letter-spacing:0.5px;">
-                ⏱️ Choose Your Target Shift (Click to Preview Pricing &amp; Timings):
-              </span>
-              <span class="small" style="color:#64748b;">Registration Fee: <strong>₹200 (One-Time)</strong> • Monthly: <strong>₹1000/mo</strong></span>
-            </div>
-
-            <div class="lib-shifts-selector-grid" id="libShiftsGrid">
-              <!-- Shift 1: Morning -->
-              <div class="lib-shift-card" onclick="selectLibraryShift('Morning', '06:00 AM – 12:00 PM', '6 Hours', this)">
-                <span class="lib-shift-tag">SHIFT 1</span>
-                <div class="lib-shift-title">Morning Shift</div>
-                <div class="lib-shift-time">06:00 AM – 12:00 PM</div>
-                <div class="lib-shift-price">₹1,000 <span style="font-size:12px;color:#64748b;font-weight:600;">/ mo</span></div>
-                <div style="font-size:11.5px;color:#64748b;margin-top:4px;">Duration: 6 Hours Early Prep</div>
-              </div>
-
-              <!-- Shift 2: Afternoon -->
-              <div class="lib-shift-card" onclick="selectLibraryShift('Afternoon', '12:00 PM – 06:00 PM', '6 Hours', this)">
-                <span class="lib-shift-tag">SHIFT 2</span>
-                <div class="lib-shift-title">Afternoon Shift</div>
-                <div class="lib-shift-time">12:00 PM – 06:00 PM</div>
-                <div class="lib-shift-price">₹1,000 <span style="font-size:12px;color:#64748b;font-weight:600;">/ mo</span></div>
-                <div style="font-size:11.5px;color:#64748b;margin-top:4px;">Duration: 6 Hours Peak Focus</div>
-              </div>
-
-              <!-- Shift 3: Full Day (POPULAR & USER REQUESTED 7 AM TO 9 PM) -->
-              <div class="lib-shift-card active" onclick="selectLibraryShift('Full Day', '07:00 AM – 09:00 PM', '14 Hours (Subah 7 se Raat 9)', this)">
-                <span class="lib-shift-tag" style="background:#ea580c;color:#fff;">MOST POPULAR • 14 HOURS</span>
-                <div class="lib-shift-title">Full Day Shift</div>
-                <div class="lib-shift-time" style="color:#ea580c;">07:00 AM – 09:00 PM</div>
-                <div class="lib-shift-price">₹1,000 <span style="font-size:12px;color:#64748b;font-weight:600;">/ mo</span></div>
-                <div style="font-size:11.5px;color:#64748b;margin-top:4px;">Full 14h Sanctuary Access</div>
-              </div>
-
-              <!-- Shift 4: Night Shift -->
-              <div class="lib-shift-card" onclick="selectLibraryShift('Night', '09:00 PM – 06:00 AM', '9 Hours Overnight', this)">
-                <span class="lib-shift-tag">SHIFT 4 • OVERNIGHT</span>
-                <div class="lib-shift-title">Night Shift</div>
-                <div class="lib-shift-time">09:00 PM – 06:00 AM</div>
-                <div class="lib-shift-price">₹1,000 <span style="font-size:12px;color:#64748b;font-weight:600;">/ mo</span></div>
-                <div style="font-size:11.5px;color:#64748b;margin-top:4px;">Pinpoint Silence Overnight</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2. The 8 Guaranteed Amenities for Everyone (User Requested Exact List) -->
-          <div style="margin-top:32px;">
-            <div style="font-size:14px;font-weight:800;color:#0f172a;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">
-              ⭐ What Every Enrolled Student Gets (Zero Hidden Charges):
-            </div>
-            <div class="lib-amenity-grid-8">
-              <div class="lib-amenity-item">
-                <div class="lib-amenity-icon-box">💡</div>
-                <div>
-                  <strong style="display:block;font-size:14px;color:#0f172a;margin-bottom:2px;">Personal Light for Desk</strong>
-                  <span style="font-size:12px;color:#64748b;line-height:1.4;display:block;">Dedicated warm LED reading light at every desk for comfortable eye relief.</span>
-                </div>
-              </div>
-              <div class="lib-amenity-item">
-                <div class="lib-amenity-icon-box">⚡</div>
-                <div>
-                  <strong style="display:block;font-size:14px;color:#0f172a;margin-bottom:2px;">Individual Charging Socket</strong>
-                  <span style="font-size:12px;color:#64748b;line-height:1.4;display:block;">Fast-charge dual 220V sockets right at your cubicle for laptop and mobile.</span>
-                </div>
-              </div>
-              <div class="lib-amenity-item">
-                <div class="lib-amenity-icon-box">💺</div>
-                <div>
-                  <strong style="display:block;font-size:14px;color:#0f172a;margin-bottom:2px;">Ergonomic High-Back Chair</strong>
-                  <span style="font-size:12px;color:#64748b;line-height:1.4;display:block;">Orthopaedic breathable mesh chairs with spine support for 12+ hours sitting.</span>
-                </div>
-              </div>
-              <div class="lib-amenity-item">
-                <div class="lib-amenity-icon-box">📶</div>
-                <div>
-                  <strong style="display:block;font-size:14px;color:#0f172a;margin-bottom:2px;">Free High-Speed 5G Wi-Fi</strong>
-                  <span style="font-size:12px;color:#64748b;line-height:1.4;display:block;">Dual optical-fiber internet for bufferless video lectures and mock tests.</span>
-                </div>
-              </div>
-              <div class="lib-amenity-item">
-                <div class="lib-amenity-icon-box">🧘</div>
-                <div>
-                  <strong style="display:block;font-size:14px;color:#0f172a;margin-bottom:2px;">Warm &amp; Shanti Environment</strong>
-                  <span style="font-size:12px;color:#64748b;line-height:1.4;display:block;">Pinpoint acoustic silence. Zero noise and disturbance guaranteed.</span>
-                </div>
-              </div>
-              <div class="lib-amenity-item">
-                <div class="lib-amenity-icon-box">🔒</div>
-                <div>
-                  <strong style="display:block;font-size:14px;color:#0f172a;margin-bottom:2px;">Secure Locker Facility</strong>
-                  <span style="font-size:12px;color:#64748b;line-height:1.4;display:block;">Dedicated lockable lockers to safely store heavy books and notes.</span>
-                </div>
-              </div>
-              <div class="lib-amenity-item">
-                <div class="lib-amenity-icon-box">🚻</div>
-                <div>
-                  <strong style="display:block;font-size:14px;color:#0f172a;margin-bottom:2px;">Clean &amp; Sanitized Washroom</strong>
-                  <span style="font-size:12px;color:#64748b;line-height:1.4;display:block;">Hygienic, continuously cleaned dry washrooms with fresh sanitization.</span>
-                </div>
-              </div>
-              <div class="lib-amenity-item">
-                <div class="lib-amenity-icon-box">💧</div>
-                <div>
-                  <strong style="display:block;font-size:14px;color:#0f172a;margin-bottom:2px;">Pure RO Hot &amp; Cold Water</strong>
-                  <span style="font-size:12px;color:#64748b;line-height:1.4;display:block;">RO mineral water dispenser plus separate discussion &amp; dining hall.</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3. Interactive Mini Seat Picker & Live Selection -->
-          <div class="lib-seat-picker-wrap">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-              <div>
-                <span style="font-size:11px;font-weight:800;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:2px;">
-                  INTERACTIVE SEAT ALLOCATION
+      <section id="libraryShowcaseSection" style="margin:40px 0 30px;">
+        <div style="background:linear-gradient(135deg, #091e42 0%, #0f2a5c 50%, #1e3a8a 100%);border-radius:20px;padding:36px 36px 32px;color:#ffffff;box-shadow:0 16px 40px -10px rgba(15,42,92,0.25);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.1);">
+          <div style="position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;">
+            <div style="max-width:680px;flex:1 1 500px;">
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+                <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.18);border:1px solid rgba(52,211,153,0.4);color:#6ee7b7;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:0.4px;">
+                  <span style="width:7px;height:7px;background:#34d399;border-radius:50%;display:inline-block;box-shadow:0 0 6px #34d399;"></span>
+                  CAMPUS OPEN 24 HOURS • 7 DAYS
                 </span>
-                <strong style="font-size:17px;color:#ffffff;">Select Your Preferred Desk Cubicle:</strong>
-              </div>
-              <div style="display:flex;align-items:center;gap:12px;font-size:12px;">
-                <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;background:#38bdf8;border-radius:3px;"></span> Available</span>
-                <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;background:#ea580c;border-radius:3px;"></span> Selected</span>
-                <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;background:#334155;border-radius:3px;"></span> Occupied</span>
-              </div>
-            </div>
-
-            <!-- Seat Grid -->
-            <div class="lib-seat-grid" id="libSeatGrid">
-              <!-- Zone A: Silent Cubicles -->
-              <div class="lib-seat-pill" onclick="selectLibrarySeat('Desk A-01', this)">Desk A-01</div>
-              <div class="lib-seat-pill" onclick="selectLibrarySeat('Desk A-02', this)">Desk A-02</div>
-              <div class="lib-seat-pill occupied" title="Occupied in Current Shift">Desk A-03</div>
-              <div class="lib-seat-pill selected" onclick="selectLibrarySeat('Desk A-04', this)">Desk A-04 ★</div>
-              <div class="lib-seat-pill" onclick="selectLibrarySeat('Desk A-05', this)">Desk A-05</div>
-              <div class="lib-seat-pill" onclick="selectLibrarySeat('Desk A-06', this)">Desk A-06</div>
-              <!-- Zone B: Digital Power Hub -->
-              <div class="lib-seat-pill" onclick="selectLibrarySeat('Desk B-01', this)">Desk B-01</div>
-              <div class="lib-seat-pill" onclick="selectLibrarySeat('Desk B-02', this)">Desk B-02</div>
-              <div class="lib-seat-pill occupied" title="Occupied in Current Shift">Desk B-03</div>
-              <div class="lib-seat-pill" onclick="selectLibrarySeat('Desk B-04', this)">Desk B-04</div>
-              <div class="lib-seat-pill" onclick="selectLibrarySeat('Desk B-05', this)">Desk B-05</div>
-              <div class="lib-seat-pill" onclick="selectLibrarySeat('Desk B-06', this)">Desk B-06</div>
-            </div>
-
-            <!-- Selected Desk HUD Bar -->
-            <div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:14px 20px;margin-top:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-              <div>
-                <span style="font-size:12px;color:#94a3b8;display:block;">Currently Selected Seat &amp; Shift:</span>
-                <span style="font-size:15px;font-weight:800;color:#ffffff;" id="libSelectedSummaryText">
-                  Desk A-04 &bull; Full Day Shift (07:00 AM – 09:00 PM)
+                <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:#cbd5e1;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:700;">
+                  📍 Opp. Sani Mandir, NH-16 Patrapada, Bhubaneswar
                 </span>
               </div>
-              <div style="display:flex;align-items:center;gap:14px;">
-                <div style="text-align:right;">
-                  <span style="font-size:11px;color:#94a3b8;display:block;">First Month Total Fee:</span>
-                  <strong style="font-size:18px;color:#34d399;" id="libDynamicPriceText">₹1,200</strong>
-                  <span style="font-size:10.5px;color:#94a3b8;"> (₹1000 + ₹200 reg)</span>
+
+              <h2 style="font-size:28px;font-weight:900;color:#ffffff;margin:0 0 8px;letter-spacing:-0.5px;line-height:1.25;">
+                We Also Provide Bhubaneswar's Premier 24h Study Library
+              </h2>
+              <p style="font-size:14.5px;color:#cbd5e1;margin:0 0 20px;line-height:1.6;">
+                Along with Classroom Coaching and CBT Mock Tests, C2S runs an exclusive 24-Hour fully air-conditioned study sanctuary for serious aspirants preparing for UPSC, OPSC, Banking, SSC, and Railway examinations.
+              </p>
+
+              <!-- Why C2S Library Grid -->
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:12px;margin-bottom:8px;">
+                <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,0.06);padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);">
+                  <span style="font-size:20px;">💡</span>
+                  <div>
+                    <strong style="display:block;font-size:13px;color:#ffffff;">Personal Desk Light &amp; Sockets</strong>
+                    <span style="font-size:11.5px;color:#94a3b8;">Warm LED &amp; dual 220V plug at each cubicle</span>
+                  </div>
                 </div>
-                <button type="button" id="libMainBookBtn" onclick="proceedToLibraryBooking()" class="floating-cta-btn" style="padding:10px 22px;font-size:14px;">
-                  Instant Book Selected Desk →
-                </button>
+
+                <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,0.06);padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);">
+                  <span style="font-size:20px;">📶</span>
+                  <div>
+                    <strong style="display:block;font-size:13px;color:#ffffff;">High-Speed 5G Wi-Fi &amp; Full A/C</strong>
+                    <span style="font-size:11.5px;color:#94a3b8;">Dual optical fiber connections</span>
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,0.06);padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);">
+                  <span style="font-size:20px;">🪑</span>
+                  <div>
+                    <strong style="display:block;font-size:13px;color:#ffffff;">Ergonomic Spine-Care Chairs</strong>
+                    <span style="font-size:11.5px;color:#94a3b8;">Built for 14h continuous study</span>
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,0.06);padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);">
+                  <span style="font-size:20px;">🤫</span>
+                  <div>
+                    <strong style="display:block;font-size:13px;color:#ffffff;">100% Pin-Drop Silence</strong>
+                    <span style="font-size:11.5px;color:#94a3b8;">Strict acoustic discipline</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- 4. PHYSICAL WALK-IN OPTION (User Requested: "seat selection baad mein physically karna chahta hai") -->
-          <div class="lib-walkin-banner">
-            <div>
-              <div style="display:inline-block;padding:2px 8px;background:#2563eb;color:#fff;border-radius:6px;font-size:11px;font-weight:800;margin-bottom:4px;">
-                📍 PREFER IN-PERSON SELECTION?
-              </div>
-              <strong style="display:block;font-size:15px;color:#0f172a;margin-bottom:2px;">
-                Physical Seat Selection at Patrapada Front Desk
-              </strong>
-              <span style="font-size:13px;color:#475569;">
-                Online seat number nahi select karna chahte? Seedha centre visit karke classroom &amp; library physically dekhein aur counsellor se apna man-pasand seat allocate karwayein!
+            <div style="background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,0.18);border-radius:16px;padding:24px 28px;text-align:center;min-width:260px;flex:1 1 280px;max-width:340px;box-shadow:0 12px 28px rgba(0,0,0,0.2);">
+              <span style="font-size:11px;font-weight:800;letter-spacing:1px;color:#f97316;text-transform:uppercase;display:block;margin-bottom:6px;">
+                DEDICATED SANCTUARY PORTAL
               </span>
-            </div>
-            <a href="/library/admission.html?seat=Physically+at+Front+Desk" class="btn" style="background:#1e3a8a;color:#fff;border-radius:10px;padding:9px 18px;font-size:13px;font-weight:800;text-decoration:none;white-space:nowrap;">
-              Get Direct Walk-In Pass →
-            </a>
-          </div>
-
-          <!-- 5. REFER & EARN BANNER (User Requested: "refer 1 student & extend library 7 days free") -->
-          <div class="lib-refer-banner">
-            <div>
-              <div style="display:inline-block;padding:2px 8px;background:#059669;color:#fff;border-radius:6px;font-size:11px;font-weight:800;margin-bottom:4px;">
-                🎁 REFER &amp; EARN REWARD
-              </div>
-              <strong style="display:block;font-size:15px;color:#065f46;margin-bottom:2px;">
-                Refer 1 Student for Library &amp; Get 7 Days FREE Library Extension!
+              <strong style="font-size:19px;color:#ffffff;display:block;margin-bottom:6px;">
+                C2S 24h Study Library
               </strong>
-              <span style="font-size:13px;color:#047857;">
-                Apne friend ya fellow aspirant ko C2S Library refer karein. Unke admission par aapka monthly tenure 7 days bilkul FREE extend ho jayega.
+              <span style="font-size:13px;color:#cbd5e1;display:block;margin-bottom:18px;line-height:1.5;">
+                Reserve seats, inspect shift timings, check live desk occupancy &amp; explore 360° virtual tour.
               </span>
-            </div>
-            <button type="button" onclick="shareLibraryReferralWhatsApp()" class="btn" style="background:#059669;color:#fff;border-radius:10px;padding:9px 18px;font-size:13px;font-weight:800;border:none;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;">
-              <span>📲 Share on WhatsApp</span>
-            </button>
-          </div>
 
-          <!-- 6. 360° Virtual Tour Quick Launcher -->
-          <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:16px;padding:20px 24px;margin-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
-            <div style="display:flex;align-items:center;gap:14px;">
-              <span style="font-size:32px;">🌐</span>
-              <div>
-                <strong style="font-size:15px;color:#0f172a;display:block;">Interactive 360° Virtual Sanctuary Tour</strong>
-                <span style="font-size:13px;color:#64748b;">Rotate and explore the ambient reading environment, ergonomic cubicles, and individual desk lamps online.</span>
-              </div>
+              <a href="/library" class="btn" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#f97316;color:#ffffff;font-size:14px;font-weight:850;padding:12px 20px;border-radius:10px;text-decoration:none;box-shadow:0 4px 14px rgba(249,115,22,0.4);transition:all 0.18s;margin-bottom:10px;">
+                <span>Visit 24h Study Library</span>
+                <span>→</span>
+              </a>
+
+              <a href="/library/#virtualTourSection" class="btn" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,0.12);color:#ffffff;font-size:12.5px;font-weight:750;padding:9px 16px;border-radius:10px;text-decoration:none;border:1px solid rgba(255,255,255,0.2);">
+                <span>🌐 Take 360° Virtual Tour</span>
+              </a>
             </div>
-            <a href="/library/#virtualTourSection" class="btn" style="background:#ea580c;color:#fff;border-radius:10px;padding:9px 18px;font-size:13px;font-weight:800;text-decoration:none;white-space:nowrap;">
-              Launch Full 360° Tour →
-            </a>
           </div>
         </div>
-      </div>
+      </section>
 
       <!-- SECTION: Why C2S — Facilities (7 Official Poster Facilities) -->
       <div class="section-header">
@@ -4718,8 +4559,8 @@
       <span>🏛️ 24h Study Library</span>
       <span style="color:#fdba74;">₹1,000/mo</span>
     </div>
-    <button type="button" onclick="var s = document.getElementById('librarySanctuarySection'); if(s) s.scrollIntoView({behavior:'smooth'}); else window.navigateToLibrary();" class="floating-cta-btn">
-      Reserve Desk ❯
+    <button type="button" onclick="window.navigateToLibrary();" class="floating-cta-btn">
+      24h Library ❯
     </button>
     <button type="button" onclick="openCohortSelection()" class="floating-career-btn">
       🎓 Career Pass
