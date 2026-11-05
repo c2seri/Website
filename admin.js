@@ -507,7 +507,111 @@ function exportLedgerCSV() {
 }
 
 /* 3. Front Desk & Employee Desk */
+window.LIBRARY_SHIFTS_CONFIG = {
+  "Morning": { name: "Morning Shift (07:00 AM – 02:00 PM)", timing: "07:00 AM to 02:00 PM", fee: 800 },
+  "Afternoon": { name: "Afternoon Shift (02:30 PM – 09:00 PM)", timing: "02:30 PM to 09:00 PM", fee: 800 },
+  "Full Day": { name: "Full Day (07:00 AM – 09:00 PM)", timing: "07:00 AM to 09:00 PM", fee: 1200 },
+  "Night": { name: "Night Shift (09:30 PM – 06:30 AM)", timing: "09:30 PM to 06:30 AM", fee: 1000 }
+};
+
+window.normalizeSeatCode = function(seatStr) {
+  if (!seatStr) return '';
+  const str = String(seatStr).trim();
+  const match = str.match(/([ABC])[-_\s]*0*(\d+)/i);
+  if (match) {
+    const zone = match[1].toUpperCase();
+    const num = parseInt(match[2], 10);
+    return `${zone}-${String(num).padStart(2, '0')}`;
+  }
+  return str;
+};
+
+window.getMemberExpiryDate = function(m) {
+  if (!m) return null;
+  const raw = m.toDate || m.validTill || m.to;
+  if (!raw) return null;
+  const str = String(raw).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+  const dmyMatch = str.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
+  if (dmyMatch) {
+    return `${dmyMatch[3]}-${String(dmyMatch[2]).padStart(2, '0')}-${String(dmyMatch[1]).padStart(2, '0')}`;
+  }
+  const d = new Date(str);
+  if (!isNaN(d.getTime())) {
+    return d.toISOString().slice(0, 10);
+  }
+  return null;
+};
+
+window.syncExpiredSeatsAndMembers = function() {
+  const members = store.get('c2s_lib_members', []);
+  const taken = store.get('c2s_lib_taken', {});
+  const today = new Date().toISOString().slice(0, 10);
+  let updated = false;
+
+  members.forEach(m => {
+    const toDate = getMemberExpiryDate(m);
+    if (!toDate) return;
+
+    const isPhysical = !m.seat || m.seat.toLowerCase().includes('walk-in') || m.seat.toLowerCase().includes('physical');
+    const seatCode = normalizeSeatCode(m.seat);
+
+    // Business Logic: If today > toDate, membership has expired without renewal.
+    // Status becomes Inactive, and seat is automatically released into the pool.
+    if (today > toDate) {
+      if (m.status !== 'Inactive' && m.status !== 'Expired') {
+        m.status = 'Inactive';
+        m.inactiveReason = `Expired on ${toDate}`;
+        updated = true;
+      }
+      if (!isPhysical && seatCode) {
+        if (taken[seatCode] || taken['Desk ' + seatCode] || taken['Zone ' + seatCode]) {
+          delete taken[seatCode];
+          delete taken['Desk ' + seatCode];
+          delete taken['Zone ' + seatCode];
+          updated = true;
+        }
+      }
+    } else {
+      // Renewed before or on expiry day (today <= toDate): member is Active and seat is retained!
+      if (m.status === 'Inactive' || m.status === 'Expired' || !m.status) {
+        m.status = 'Active';
+        delete m.inactiveReason;
+        updated = true;
+      }
+      if (!isPhysical && seatCode) {
+        if (!taken[seatCode]) {
+          taken[seatCode] = true;
+          updated = true;
+        }
+      }
+    }
+  });
+
+  if (updated) {
+    store.set('c2s_lib_members', members);
+    store.set('c2s_lib_taken', taken);
+  }
+};
+
+window.getAvailableSeats = function(currentSeatToIgnore = null) {
+  const taken = store.get('c2s_lib_taken', {});
+  const ignoreNorm = currentSeatToIgnore ? normalizeSeatCode(currentSeatToIgnore) : null;
+  const list = [];
+  ['A', 'B', 'C'].forEach(zone => {
+    for (let i = 1; i <= 16; i++) {
+      const code = `${zone}-${String(i).padStart(2, '0')}`;
+      const isTaken = Boolean(taken[code] || taken[`Zone ${zone}-${i}`] || taken[`Desk ${code}`]);
+      if (!isTaken || (ignoreNorm && ignoreNorm === code)) {
+        list.push(code);
+      }
+    }
+  });
+  return list;
+};
+
 function renderFrontDesk() {
+  syncExpiredSeatsAndMembers();
   renderSeatController();
   renderMemberList();
   initDeskAdmissionForm();
@@ -519,17 +623,20 @@ function renderSeatController() {
   if (!container) return;
 
   let html = '<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px;">';
-  ['Zone A (Silent Cubicles)', 'Zone B (5G Wi-Fi Hub)', 'Zone C (Focus Pods)'].forEach((zoneName, zIdx) => {
-    const zonePrefix = ['Zone A', 'Zone B', 'Zone C'][zIdx];
+  [
+    { name: 'Zone A (Silent Cubicles)', prefix: 'A' },
+    { name: 'Zone B (5G Wi-Fi Hub)', prefix: 'B' },
+    { name: 'Zone C (Focus Pods)', prefix: 'C' }
+  ].forEach(zone => {
     html += `<div style="background:#f8fafc;padding:16px;border-radius:12px;border:1px solid #e2e8f0;">
-      <h4 style="margin:0 0 10px;font-size:14px;color:var(--c2s-navy-900);">${zoneName}</h4>
+      <h4 style="margin:0 0 10px;font-size:14px;color:var(--c2s-navy-900);">${zone.name}</h4>
       <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;">`;
 
     for (let i = 1; i <= 16; i++) {
-      const id = zonePrefix + '-' + i;
-      const isTaken = Boolean(taken[id]);
-      html += `<button type="button" class="btn ${isTaken ? 'orange' : 'ghost'}" style="padding:6px 4px;font-size:11.5px;font-weight:800;" onclick="toggleAdminSeat('${id}')">
-        ${isTaken ? '🔴' : '🟢'} ${i}
+      const code = `${zone.prefix}-${String(i).padStart(2, '0')}`;
+      const isTaken = Boolean(taken[code] || taken[`Desk ${code}`] || taken[`Zone ${zone.prefix}-${i}`]);
+      html += `<button type="button" class="btn ${isTaken ? 'orange' : 'ghost'}" style="padding:6px 4px;font-size:11.5px;font-weight:800;" onclick="toggleAdminSeat('${code}')">
+        ${isTaken ? '🔴' : '🟢'} ${code}
       </button>`;
     }
     html += '</div></div>';
@@ -539,11 +646,13 @@ function renderSeatController() {
 }
 
 function toggleAdminSeat(id) {
+  const code = normalizeSeatCode(id);
   const taken = store.get('c2s_lib_taken', {});
-  if (taken[id]) {
-    delete taken[id];
+  if (taken[code] || taken['Desk ' + code]) {
+    delete taken[code];
+    delete taken['Desk ' + code];
   } else {
-    taken[id] = true;
+    taken[code] = true;
   }
   store.set('c2s_lib_taken', taken);
   renderSeatController();
@@ -742,14 +851,22 @@ function renderMemberList(filterQuery = '') {
     const photoBadge = m.photo ?
       `<span style="display:inline-flex;align-items:center;gap:3px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:2px 7px;border-radius:999px;font-size:11px;font-weight:750;">📷 Photo</span>` : '';
 
+    const expDate = getMemberExpiryDate(m);
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const isExpired = expDate ? (todayStr > expDate) : (m.status === 'Inactive' || m.status === 'Expired');
+    const statusPill = isExpired ?
+      `<span class="pill" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:10px;padding:2px 6px;font-weight:800;display:inline-block;margin-top:2px;">⚠️ Inactive (${expDate || 'Expired'})</span>` :
+      `<span class="pill" style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-size:10px;padding:2px 6px;font-weight:800;display:inline-block;margin-top:2px;">🟢 Active (${expDate || 'Till ' + (m.toDate || 'Valid')})</span>`;
+
     return `
-      <tr>
+      <tr style="${isExpired ? 'background:#fffbfb;' : ''}">
         <td>
           <div style="display:flex;align-items:center;gap:10px;">
             ${avatarHtml}
             <div>
               <strong style="display:block;font-size:13.5px;color:#0f172a;">${m.name}</strong>
               <span style="font-size:11px;color:#64748b;">${m.gender || 'Student'} • ${m.qualification || m.examPref || 'Aspirant'}</span>
+              <div>${statusPill}</div>
             </div>
           </div>
         </td>
@@ -764,7 +881,7 @@ function renderMemberList(filterQuery = '') {
         </td>
         <td>
           <span class="pill" style="font-size:11.5px;padding:3px 9px;margin-bottom:3px;display:inline-block;">${m.shift}</span>
-          <span style="font-size:11.5px;color:#2563eb;font-weight:700;display:block;">💺 ${m.seat || 'Front Desk'}</span>
+          <span style="font-size:11.5px;color:${isExpired ? '#dc2626' : '#2563eb'};font-weight:700;display:block;">💺 ${m.seat || 'Front Desk'} ${isExpired ? '(Released)' : ''}</span>
         </td>
         <td>
           <div style="font-size:13px;font-weight:800;color:#047857;">₹${m.paid || 0} Paid</div>
@@ -778,6 +895,9 @@ function renderMemberList(filterQuery = '') {
         </td>
         <td>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button type="button" class="btn orange" style="padding:4px 8px;font-size:11.5px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:3px;" onclick="openRenewalModal('${m.regNo}')" title="Renew Membership / Change Shift">
+              <span>🔄 Renew</span>
+            </button>
             <button type="button" class="btn ghost" style="padding:4px 8px;font-size:11.5px;font-weight:750;" onclick="openStudent360('${m.regNo}')">
               👁️ Profile
             </button>
@@ -1173,6 +1293,305 @@ window.saveStudentNotes = function() {
   notes[currentModalStudent.regNo] = document.getElementById('modalStudentNotes').value;
   store.set('c2s_student_notes', notes);
   alert('✓ Staff remarks updated for ' + currentModalStudent.name);
+};
+
+/* ==========================================================================
+   FEATURE: MEMBERSHIP RENEWAL & SHIFT / SEAT RETENTION ENGINE
+   ========================================================================== */
+window.openRenewalModal = function(regNo) {
+  if (!regNo && currentModalStudent) regNo = currentModalStudent.regNo;
+  const members = store.get('c2s_lib_members', []);
+  const m = members.find(item => item.regNo === regNo);
+  if (!m) return alert('Member record not found for: ' + regNo);
+
+  const today = new Date().toISOString().slice(0, 10);
+  const expiryDate = getMemberExpiryDate(m);
+  const isExpired = expiryDate ? (today > expiryDate) : (m.status === 'Inactive' || m.status === 'Expired');
+
+  document.getElementById('renewRegNo').value = m.regNo;
+  document.getElementById('renewModalMemberInfo').textContent = `${m.name} • ${m.regNo} • 📱 ${m.mobile || 'N/A'}`;
+
+  const banner = document.getElementById('renewSeatStatusBanner');
+  const keepOptionWrap = document.getElementById('renewSeatOptionKeepWrap');
+  const keepRadio = document.getElementById('renewSeatChoiceKeep');
+  const changeRadio = document.getElementById('renewSeatChoiceChange');
+  const keepLabel = document.getElementById('renewSeatKeepLabel');
+  const keepSub = document.getElementById('renewSeatKeepSub');
+  const changeBox = document.getElementById('renewSeatChangeBox');
+
+  const seatCode = normalizeSeatCode(m.seat);
+  const taken = store.get('c2s_lib_taken', {});
+  const isOldSeatTakenBySomeoneElse = seatCode && Boolean(taken[seatCode]) && isExpired;
+
+  if (!isExpired) {
+    // Before or on expiry date: Seat is retained!
+    banner.style.background = '#ecfdf5';
+    banner.style.border = '1.5px solid #a7f3d0';
+    banner.style.color = '#065f46';
+    banner.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;margin-bottom:4px;">
+        <span>🟢 Active Member — Seat Retained</span>
+      </div>
+      <div>
+        Current validity: <strong>${expiryDate || m.toDate || 'Active'}</strong>. Because renewal is being done <strong>on or before expiry</strong>, desk <strong>${m.seat || 'Front Desk'}</strong> is securely reserved for you.
+      </div>
+    `;
+    keepOptionWrap.style.display = 'flex';
+    keepRadio.checked = true;
+    keepLabel.textContent = `🟢 Keep Current Retained Desk (${m.seat || 'Assigned Desk'})`;
+    keepSub.textContent = `Seat is locked and held for you. Seamless continuation from ${expiryDate || 'current term'}.`;
+    changeBox.style.display = 'none';
+
+    // Seamless continuation: starts from expiry date
+    document.getElementById('renewFromDate').value = expiryDate || today;
+  } else {
+    // After expiry date: Seat was released!
+    banner.style.background = '#fef2f2';
+    banner.style.border = '1.5px solid #fecaca';
+    banner.style.color = '#991b1b';
+    banner.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;margin-bottom:4px;">
+        <span>⚠️ Membership Expired — Seat Released</span>
+      </div>
+      <div>
+        Expired on: <strong>${expiryDate || m.toDate || 'Past Date'}</strong>. Because renewal was not completed on or before expiry, desk <strong>${m.seat || 'Previous Desk'}</strong> was automatically released into the pool. Please select an available desk to reactivate your membership.
+      </div>
+    `;
+
+    if (!isOldSeatTakenBySomeoneElse && seatCode) {
+      keepOptionWrap.style.display = 'flex';
+      keepRadio.checked = true;
+      keepLabel.textContent = `Re-claim Previous Desk (${m.seat}) (Currently Vacant)`;
+      keepSub.textContent = `Your previous desk happens to still be vacant. You may reclaim it or switch.`;
+      changeBox.style.display = 'none';
+    } else {
+      keepOptionWrap.style.display = 'none';
+      changeRadio.checked = true;
+      changeBox.style.display = 'block';
+    }
+
+    // Renewal term starts from today
+    document.getElementById('renewFromDate').value = today;
+  }
+
+  // Populate Vacant Seats dropdown
+  const vacantList = getAvailableSeats(isExpired && !isOldSeatTakenBySomeoneElse ? seatCode : null);
+  const selectEl = document.getElementById('renewNewSeatSelect');
+  if (selectEl) {
+    let optHtml = '<option value="">-- Choose an Available Desk --</option>';
+    ['A', 'B', 'C'].forEach(zone => {
+      const zoneName = zone === 'A' ? 'Zone A (Silent Cubicles)' : (zone === 'B' ? 'Zone B (5G Wi-Fi Hub)' : 'Zone C (Focus Pods)');
+      const zoneSeats = vacantList.filter(s => s.startsWith(zone + '-'));
+      if (zoneSeats.length) {
+        optHtml += `<optgroup label="${zoneName}">`;
+        zoneSeats.forEach(s => {
+          optHtml += `<option value="Desk ${s}">Desk ${s}</option>`;
+        });
+        optHtml += `</optgroup>`;
+      }
+    });
+    optHtml += `<optgroup label="Walk-in / Physical"><option value="Walk-in Physical Allocation">Walk-in Physical Allocation</option></optgroup>`;
+    selectEl.innerHTML = optHtml;
+  }
+
+  // Set Shift
+  const shiftSelect = document.getElementById('renewShift');
+  if (shiftSelect) {
+    if (m.shift && m.shift.includes('Morning')) shiftSelect.value = 'Morning';
+    else if (m.shift && m.shift.includes('Afternoon')) shiftSelect.value = 'Afternoon';
+    else if (m.shift && m.shift.includes('Night')) shiftSelect.value = 'Night';
+    else shiftSelect.value = 'Full Day';
+  }
+
+  // Reset duration to 1 Month and calculate
+  document.getElementById('renewDuration').value = '1';
+  onRenewShiftChange();
+  onRenewDurationChange();
+
+  const modal = document.getElementById('membershipRenewalModal');
+  if (modal) modal.classList.add('open');
+};
+
+window.closeRenewalModal = function() {
+  const modal = document.getElementById('membershipRenewalModal');
+  if (modal) modal.classList.remove('open');
+};
+
+window.toggleRenewSeatSelection = function() {
+  const choice = document.querySelector('input[name="renewSeatChoice"]:checked')?.value;
+  const box = document.getElementById('renewSeatChangeBox');
+  if (box) {
+    box.style.display = choice === 'change' ? 'block' : 'none';
+  }
+};
+
+window.onRenewShiftChange = function() {
+  const shiftKey = document.getElementById('renewShift')?.value || 'Full Day';
+  const shiftCfg = LIBRARY_SHIFTS_CONFIG[shiftKey] || LIBRARY_SHIFTS_CONFIG['Full Day'];
+  const timingEl = document.getElementById('renewShiftTiming');
+  if (timingEl) timingEl.value = shiftCfg.timing;
+  const rateDisplay = document.getElementById('renewFeeRateDisplay');
+  if (rateDisplay) rateDisplay.textContent = `₹${shiftCfg.fee.toLocaleString('en-IN')} / month`;
+  recalcRenewPayment();
+};
+
+window.onRenewDurationChange = function() {
+  const dur = document.getElementById('renewDuration')?.value || '1';
+  const durDisplay = document.getElementById('renewDurationDisplay');
+  if (durDisplay) durDisplay.textContent = `${dur} Month${Number(dur) > 1 ? 's' : ''}`;
+  recalcRenewDates();
+  recalcRenewPayment();
+};
+
+window.recalcRenewDates = function() {
+  const fromEl = document.getElementById('renewFromDate');
+  const toEl = document.getElementById('renewToDate');
+  const durEl = document.getElementById('renewDuration');
+  if (!fromEl || !toEl || !durEl || !fromEl.value) return;
+
+  const months = parseInt(durEl.value, 10) || 1;
+  const parts = fromEl.value.split('-');
+  if (parts.length === 3) {
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10) - 1;
+    const d = parseInt(parts[2], 10);
+    const target = new Date(y, m + months, d);
+    toEl.value = target.toISOString().slice(0, 10);
+  }
+};
+
+window.recalcRenewPayment = function() {
+  const shift = document.getElementById('renewShift')?.value || 'Full Day';
+  const dur = parseInt(document.getElementById('renewDuration')?.value || '1', 10);
+  const rate = LIBRARY_SHIFTS_CONFIG[shift]?.fee || 1200;
+  const total = rate * dur;
+
+  const totalEl = document.getElementById('renewTotalFee');
+  const discountEl = document.getElementById('renewDiscount');
+  const paidEl = document.getElementById('renewPaid');
+  const pendingEl = document.getElementById('renewPending');
+
+  if (totalEl) totalEl.value = total;
+  const discount = Math.max(0, parseInt(discountEl?.value || '0', 10) || 0);
+  const netPayable = Math.max(0, total - discount);
+
+  if (paidEl) {
+    paidEl.value = netPayable;
+  }
+  const paid = Math.max(0, parseInt(paidEl?.value || '0', 10) || 0);
+  const pending = Math.max(0, netPayable - paid);
+  if (pendingEl) pendingEl.value = pending;
+};
+
+window.processRenewal = function(e) {
+  e.preventDefault();
+  const regNo = document.getElementById('renewRegNo')?.value;
+  if (!regNo) return alert('Member registration ID missing.');
+
+  const members = store.get('c2s_lib_members', []);
+  const m = members.find(item => item.regNo === regNo);
+  if (!m) return alert('Member record not found: ' + regNo);
+
+  const shiftKey = document.getElementById('renewShift')?.value || 'Full Day';
+  const shiftCfg = LIBRARY_SHIFTS_CONFIG[shiftKey] || LIBRARY_SHIFTS_CONFIG['Full Day'];
+  const newShift = shiftCfg.name;
+  const newShiftTiming = shiftCfg.timing;
+
+  const seatChoice = document.querySelector('input[name="renewSeatChoice"]:checked')?.value || 'keep';
+  let newSeat = m.seat;
+  if (seatChoice === 'change') {
+    const sel = document.getElementById('renewNewSeatSelect');
+    newSeat = sel?.value || m.seat;
+    if (!newSeat) return alert('Please select a valid seat.');
+  }
+
+  const newFromDate = document.getElementById('renewFromDate')?.value;
+  const newToDate = document.getElementById('renewToDate')?.value;
+  const duration = document.getElementById('renewDuration')?.value || '1';
+
+  const totalFee = Number(document.getElementById('renewTotalFee')?.value || (shiftCfg.fee * Number(duration)));
+  const discount = Number(document.getElementById('renewDiscount')?.value || 0);
+  const paid = Number(document.getElementById('renewPaid')?.value || (totalFee - discount));
+  const pending = Number(document.getElementById('renewPending')?.value || 0);
+  const payMode = document.getElementById('renewPayMode')?.value || 'UPI / QR';
+
+  const today = new Date().toISOString().slice(0, 10);
+  const oldSeatCode = normalizeSeatCode(m.seat);
+  const newSeatCode = normalizeSeatCode(newSeat);
+
+  const taken = store.get('c2s_lib_taken', {});
+
+  // If changing seat, verify seat is not occupied by another member
+  if (newSeatCode && newSeatCode !== oldSeatCode && taken[newSeatCode]) {
+    return alert(`Seat ${newSeat} is already occupied by another active student. Please choose an open desk.`);
+  }
+
+  // Update taken desk
+  if (oldSeatCode && oldSeatCode !== newSeatCode) {
+    delete taken[oldSeatCode];
+    delete taken['Desk ' + oldSeatCode];
+    delete taken['Zone ' + oldSeatCode];
+  }
+  if (newSeatCode && !newSeat.toLowerCase().includes('walk-in') && !newSeat.toLowerCase().includes('physical')) {
+    taken[newSeatCode] = true;
+  }
+  store.set('c2s_lib_taken', taken);
+
+  // Update member object
+  m.status = 'Active';
+  delete m.inactiveReason;
+  m.shift = newShift;
+  m.shiftTiming = newShiftTiming;
+  m.seat = newSeat;
+  m.fromDate = newFromDate;
+  m.toDate = newToDate;
+  m.validTill = newToDate;
+  m.paid = Number(m.paid || 0) + paid;
+  m.pending = pending;
+  m.lastRenewalDate = today;
+  m.renewalHistory = m.renewalHistory || [];
+  m.renewalHistory.push({
+    date: today,
+    fromDate: newFromDate,
+    toDate: newToDate,
+    duration: duration + ' Month(s)',
+    shift: newShift,
+    seat: newSeat,
+    paid: paid,
+    pending: pending,
+    mode: payMode
+  });
+
+  store.set('c2s_lib_members', members);
+
+  // Update session user if matching
+  const curUser = store.get('c2s_lib_user', null);
+  if (curUser && curUser.regNo === m.regNo) {
+    store.set('c2s_lib_user', m);
+  }
+
+  // Record ledger entry
+  const ledger = store.get('c2s_lib_ledger', []);
+  ledger.unshift({
+    date: today,
+    desc: `Renewal ${m.regNo} (${m.name}, ${newShift}, Seat: ${newSeat})`,
+    amt: paid
+  });
+  store.set('c2s_lib_ledger', ledger);
+
+  // Dispatch receipt
+  if (typeof window.dispatchAdmissionReceipt === 'function') {
+    window.dispatchAdmissionReceipt(m);
+  }
+
+  alert(`🎉 Membership Renewed Successfully!\n\nCandidate: ${m.name} (${m.regNo})\nShift: ${newShift}\nDesk: ${newSeat}\nValidity: ${newFromDate} to ${newToDate}\nPaid: ₹${paid} (${payMode})\n\nSeat is locked and active!`);
+
+  closeRenewalModal();
+  renderFrontDesk();
+  renderSuperAdmin();
+  if (typeof renderShiftAttendance === 'function') {
+    renderShiftAttendance();
+  }
 };
 
 window.resendStudentReceipt = function(regNo) {

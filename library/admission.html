@@ -59,6 +59,20 @@
         </p>
       </div>
 
+      <!-- RENEWAL FAST-TRACK BANNER -->
+      <div style="background:linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);border:2px solid #3b82f6;border-radius:14px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;box-shadow:0 4px 12px rgba(59,130,246,0.08);">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-size:32px;">🔄</span>
+          <div>
+            <strong style="color:#0f2a5c;font-size:16px;display:block;">Already a Registered Member? Renew Membership &amp; Manage Shift / Seat</strong>
+            <span style="font-size:12.5px;color:#475569;">Renew on or before expiry day to retain your exact desk! Shift change and seat change options available.</span>
+          </div>
+        </div>
+        <button type="button" class="btn orange" onclick="openStudentRenewalModal()" style="padding:10px 20px;font-size:13.5px;font-weight:800;border:none;border-radius:8px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;">
+          <span>🔄 Member Renewal / Shift Change →</span>
+        </button>
+      </div>
+
       <form onsubmit="libAdmit(event)">
         <!-- 1. Access Validation -->
         <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:24px 0 14px;color:var(--c2s-navy-900);">
@@ -625,6 +639,175 @@
     </div>
   </div>
 
+  <!-- MODAL: STUDENT MEMBERSHIP RENEWAL & SHIFT / SEAT MANAGER -->
+  <div id="studentRenewalModal" class="c2s-admin-modal-backdrop">
+    <div class="c2s-admin-modal-card" style="max-width:680px;max-height:92vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;border-bottom:1.5px solid #e2e8f0;padding-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font-size:28px;">🔄</span>
+          <div>
+            <span class="pill orange" style="font-size:11px;font-weight:800;">ONLINE MEMBERSHIP RENEWAL</span>
+            <h3 style="margin:4px 0 2px;font-size:20px;color:var(--c2s-navy-900);">Renew Membership &amp; Manage Desk</h3>
+            <span style="font-size:12px;color:#64748b;">Retain your desk, change shift, or select an open desk</span>
+          </div>
+        </div>
+        <button type="button" class="btn ghost" onclick="closeStudentRenewalModal()" style="padding:4px 10px;font-size:16px;line-height:1;">✕</button>
+      </div>
+
+      <!-- Step 1: Member Lookup -->
+      <div style="background:#f8fafc;padding:14px 16px;border-radius:12px;border:1.5px solid #e2e8f0;margin-bottom:16px;">
+        <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:6px;">
+          Find Your Membership by Mobile No or Reg ID:
+        </label>
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="studentRenewQuery" placeholder="e.g. 9777481909 or C2SLIB-00001" style="flex:1;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;font-weight:700;">
+          <button type="button" class="btn orange" onclick="lookupStudentForRenewal()" style="padding:9px 18px;font-size:13px;font-weight:800;border:none;border-radius:8px;cursor:pointer;">
+            🔍 Find Member
+          </button>
+        </div>
+        <div id="studentRenewLookupAlert" style="display:none;margin-top:8px;"></div>
+      </div>
+
+      <!-- Step 2: Renewal Form & Seat Policy (Shown after member lookup) -->
+      <div id="studentRenewDetailsBox" style="display:none;">
+        <!-- Member Profile Header -->
+        <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:10px;padding:12px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <div>
+            <strong id="studentRenewNameDisplay" style="font-size:15px;color:#1e3a8a;display:block;">Student Name</strong>
+            <span id="studentRenewRegDisplay" style="font-size:12px;color:#3b82f6;font-weight:700;">REG-0000</span>
+          </div>
+          <span class="pill green" style="font-size:11px;font-weight:800;">✓ Verified Member</span>
+        </div>
+
+        <!-- Seat Retention / Expiry Status Banner -->
+        <div id="studentRenewStatusBanner" style="padding:12px 14px;border-radius:10px;margin-bottom:16px;font-size:13px;line-height:1.5;">
+          <!-- Dynamically populated -->
+        </div>
+
+        <form onsubmit="processStudentRenewal(event)">
+          <input type="hidden" id="studentRenewRegNo">
+
+          <!-- Shift Selection (Change Shift Allowed) -->
+          <div style="margin-bottom:16px;">
+            <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:6px;">
+              Study Shift <span style="font-size:11.5px;color:#2563eb;font-weight:600;">(Shift change allowed at renewal)</span> <span style="color:#dc2626;">*</span>
+            </label>
+            <select id="studentRenewShift" onchange="onStudentRenewShiftChange()" required style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;font-weight:700;">
+              <option value="Morning">Morning Shift (07:00 AM – 02:00 PM) — ₹800 / month</option>
+              <option value="Afternoon">Afternoon Shift (02:30 PM – 09:00 PM) — ₹800 / month</option>
+              <option value="Full Day" selected>Full Day (07:00 AM – 09:00 PM) — ₹1,200 / month</option>
+              <option value="Night">Night Shift (09:30 PM – 06:30 AM) — ₹1,000 / month</option>
+            </select>
+          </div>
+
+          <!-- Seat Allocation (Keep Same Seat vs Change Seat) -->
+          <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:16px;">
+            <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:8px;">
+              Seat / Desk Retention Policy <span style="color:#dc2626;">*</span>
+            </label>
+            
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <label id="studentRenewSeatOptionKeepWrap" style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;padding:10px 12px;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;">
+                <input type="radio" name="studentRenewSeatChoice" id="studentRenewSeatChoiceKeep" value="keep" checked onchange="toggleStudentRenewSeatChoice()" style="margin-top:3px;">
+                <div>
+                  <strong style="display:block;font-size:13px;color:#0f172a;" id="studentRenewSeatKeepLabel">🟢 Keep My Retained Desk</strong>
+                  <span style="font-size:11.5px;color:#64748b;" id="studentRenewSeatKeepSub">Guaranteed retention for renewals made before or on expiry day.</span>
+                </div>
+              </label>
+
+              <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;padding:10px 12px;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;">
+                <input type="radio" name="studentRenewSeatChoice" id="studentRenewSeatChoiceChange" value="change" onchange="toggleStudentRenewSeatChoice()" style="margin-top:3px;">
+                <div>
+                  <strong style="display:block;font-size:13px;color:#0f172a;">💺 Change to a Different Desk</strong>
+                  <span style="font-size:11.5px;color:#64748b;">Select any open, vacant cubicle or pod across Zone A, B, or C.</span>
+                </div>
+              </label>
+            </div>
+
+            <!-- Seat Change Dropdown -->
+            <div id="studentRenewSeatChangeBox" style="display:none;margin-top:12px;padding-top:12px;border-top:1px dashed #cbd5e1;">
+              <label style="display:block;font-size:12.5px;font-weight:750;color:#0f2a5c;margin-bottom:5px;">
+                Select New Available Desk:
+              </label>
+              <select id="studentRenewNewSeatSelect" style="width:100%;padding:9px 12px;border:1.5px solid #3b82f6;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;font-weight:700;">
+                <!-- Populated with vacant desks -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Duration & Dates Grid -->
+          <div style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:12px;margin-bottom:16px;">
+            <div>
+              <label style="display:block;font-size:12px;font-weight:750;color:#0f172a;margin-bottom:4px;">
+                Duration <span style="color:#dc2626;">*</span>
+              </label>
+              <select id="studentRenewDuration" onchange="onStudentRenewDurationChange()" style="width:100%;padding:9px 8px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:12.5px;font-weight:750;background:#fff;">
+                <option value="1" selected>1 Month</option>
+                <option value="2">2 Months</option>
+                <option value="3">3 Months</option>
+                <option value="6">6 Months</option>
+                <option value="12">12 Months (1 Year)</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="display:block;font-size:12px;font-weight:750;color:#0f172a;margin-bottom:4px;">
+                From Date
+              </label>
+              <input type="date" id="studentRenewFromDate" readonly style="width:100%;padding:8px 8px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:12px;font-weight:700;background:#f8fafc;">
+            </div>
+
+            <div>
+              <label style="display:block;font-size:12px;font-weight:750;color:#0f172a;margin-bottom:4px;">
+                To Date (Auto)
+              </label>
+              <input type="date" id="studentRenewToDate" readonly style="width:100%;padding:8px 8px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:12px;font-weight:700;background:#f1f5f9;color:#0f2a5c;">
+            </div>
+          </div>
+
+          <!-- Fees Calculation -->
+          <div style="background:#f1f5f9;border-radius:12px;padding:14px 16px;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:12.5px;">
+              <span style="color:#475569;">Monthly Rate:</span>
+              <strong id="studentRenewRateDisplay" style="color:#0f172a;">₹1,200 / month</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:12.5px;">
+              <span style="color:#475569;">Duration:</span>
+              <strong id="studentRenewDurationDisplay" style="color:#0f172a;">1 Month</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12.5px;">
+              <span style="color:#475569;">Registration Fee:</span>
+              <strong style="color:#059669;">₹0 (Waived for Renewal)</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1.5px solid #cbd5e1;">
+              <strong style="font-size:15px;color:#0f2a5c;">Total Renewal Payable:</strong>
+              <strong id="studentRenewTotalFee" style="font-size:20px;color:#047857;font-weight:900;">₹1,200</strong>
+            </div>
+            <input type="hidden" id="studentRenewPaid" value="1200">
+          </div>
+
+          <!-- Payment Mode -->
+          <div style="margin-bottom:18px;">
+            <label style="display:block;font-size:12.5px;font-weight:750;color:#0f172a;margin-bottom:4px;">
+              Payment Mode <span style="color:#dc2626;">*</span>
+            </label>
+            <select id="studentRenewPayMode" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;font-weight:700;color:#0f172a;background:#fff;">
+              <option value="UPI / QR (PhonePe / GPay / Paytm)" selected>UPI / QR (PhonePe / GPay / Paytm)</option>
+              <option value="Cash at Reception Desk">Cash at Reception Desk</option>
+              <option value="Debit Card / POS">Debit Card / POS</option>
+            </select>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="display:flex;justify-content:flex-end;gap:10px;">
+            <button type="button" class="btn ghost" onclick="closeStudentRenewalModal()" style="font-size:13px;padding:9px 18px;">Cancel</button>
+            <button type="submit" class="btn orange" style="font-size:13px;padding:10px 24px;font-weight:800;border:none;border-radius:8px;cursor:pointer;">✓ Confirm &amp; Renew Membership</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Ultra-Premium Floating WhatsApp Desk (Patrapada Centre) -->
   <div class="c2s-wa-fab-wrap" id="c2sWaFabWrap">
     <!-- Quick WhatsApp Counselling Popup Card -->
@@ -691,6 +874,18 @@
       var p = document.getElementById('c2sWaPopup');
       if (p && p.classList.contains('open') && wrap && !wrap.contains(ev.target)) {
         p.classList.remove('open');
+      }
+    });
+
+    // Auto-open renewal modal if URL has ?renew=1
+    document.addEventListener('DOMContentLoaded', function() {
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('renew') === '1' || params.has('renew')) {
+        setTimeout(function() {
+          if (typeof openStudentRenewalModal === 'function') {
+            openStudentRenewalModal(params.get('q') || '');
+          }
+        }, 150);
       }
     });
   </script>
