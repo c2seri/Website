@@ -103,10 +103,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20261105_1330">
   <script src="exams.js" defer></script>
   <script src="blogs-data.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="app.js?v=20261105_1330" defer></script>
   <script src="cohort-engine.js" defer></script>
 </head>
 
@@ -257,7 +257,7 @@
                 <!-- Right Pane: Dynamic Cards (Changes based on left selection) -->
                 <div class="pw-drawer-right">
                   <!-- 1. Panel: UPSC / Only IAS (Active By Default in User Screenshot) -->
-                  <div class="pw-cards-panel active" id="pwPanel-upsc">
+                  <div class="pw-cards-panel active" id="pwPanel-upsc" style="display:block !important;">
                     <div class="pw-panel-header">
                       <span class="pw-panel-tag">CIVIL SERVICES &amp; STATE COMMISSIONS</span>
                       <h3 class="pw-panel-title">Only IAS / Civil Services</h3>
@@ -298,7 +298,7 @@
                   </div>
 
                   <!-- 2. Panel: Odisha State Exams -->
-                  <div class="pw-cards-panel" id="pwPanel-odisha">
+                  <div class="pw-cards-panel" id="pwPanel-odisha" style="display:none;">
                     <div class="pw-panel-header">
                       <span class="pw-panel-tag">ODISHA RECRUITMENT COMMISSIONS</span>
                       <h3 class="pw-panel-title">Odisha State Examinations</h3>
@@ -355,7 +355,7 @@
                   </div>
 
                   <!-- 3. Panel: SSC -->
-                  <div class="pw-cards-panel" id="pwPanel-ssc">
+                  <div class="pw-cards-panel" id="pwPanel-ssc" style="display:none;">
                     <div class="pw-panel-header">
                       <span class="pw-panel-tag">CENTRAL STAFF SELECTION COMMISSION</span>
                       <h3 class="pw-panel-title">Staff Selection Commission (SSC)</h3>
@@ -412,7 +412,7 @@
                   </div>
 
                   <!-- 4. Panel: Banking & Financial -->
-                  <div class="pw-cards-panel" id="pwPanel-bank">
+                  <div class="pw-cards-panel" id="pwPanel-bank" style="display:none;">
                     <div class="pw-panel-header">
                       <span class="pw-panel-tag">PUBLIC SECTOR &amp; APEX FINANCIAL</span>
                       <h3 class="pw-panel-title">Banking &amp; Insurance Recruitments</h3>
@@ -469,7 +469,7 @@
                   </div>
 
                   <!-- 5. Panel: Railways -->
-                  <div class="pw-cards-panel" id="pwPanel-railway">
+                  <div class="pw-cards-panel" id="pwPanel-railway" style="display:none;">
                     <div class="pw-panel-header">
                       <span class="pw-panel-tag">MINISTRY OF RAILWAYS (RRB &amp; RRC)</span>
                       <h3 class="pw-panel-title">Railway Recruitment Board (RRB)</h3>
@@ -510,7 +510,7 @@
                   </div>
 
                   <!-- 6. Panel: JEE / NEET -->
-                  <div class="pw-cards-panel" id="pwPanel-jeeneet">
+                  <div class="pw-cards-panel" id="pwPanel-jeeneet" style="display:none;">
                     <div class="pw-panel-header">
                       <span class="pw-panel-tag">ENGINEERING &amp; MEDICAL ENTRANCE</span>
                       <h3 class="pw-panel-title">Competitive Exams (JEE / NEET / Research)</h3>
@@ -551,7 +551,7 @@
                   </div>
 
                   <!-- 7. Panel: School Boards -->
-                  <div class="pw-cards-panel" id="pwPanel-school">
+                  <div class="pw-cards-panel" id="pwPanel-school" style="display:none;">
                     <div class="pw-panel-header">
                       <span class="pw-panel-tag">K-12 &amp; JUNIOR COLLEGE WING</span>
                       <h3 class="pw-panel-title">School Boards (CBSE &amp; CHSE +2)</h3>
@@ -608,7 +608,7 @@
                   </div>
 
                   <!-- 8. Panel: Defence & Police -->
-                  <div class="pw-cards-panel" id="pwPanel-defence">
+                  <div class="pw-cards-panel" id="pwPanel-defence" style="display:none;">
                     <div class="pw-panel-header">
                       <span class="pw-panel-tag">ARMED FORCES &amp; UNIFORMED SERVICES</span>
                       <h3 class="pw-panel-title">Defence, Police &amp; Paramilitary</h3>
@@ -649,7 +649,7 @@
                   </div>
 
                   <!-- 9. Panel: Teaching Exams -->
-                  <div class="pw-cards-panel" id="pwPanel-teaching">
+                  <div class="pw-cards-panel" id="pwPanel-teaching" style="display:none;">
                     <div class="pw-panel-header">
                       <span class="pw-panel-tag">TEACHER ELIGIBILITY &amp; RECRUITMENT</span>
                       <h3 class="pw-panel-title">Teaching Eligibility Examinations</h3>

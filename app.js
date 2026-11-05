@@ -87,12 +87,16 @@ window.switchPwCategory = function(catId) {
     }
   });
 
-  // Update right panels
+  // Update right panels (Set class AND inline display for 100% bulletproof rendering)
   document.querySelectorAll('.pw-cards-panel').forEach(panel => {
     if (panel.id === `pwPanel-${catId}`) {
       panel.classList.add('active');
+      panel.style.setProperty('display', 'block', 'important');
+      panel.style.setProperty('opacity', '1', 'important');
+      panel.style.setProperty('visibility', 'visible', 'important');
     } else {
       panel.classList.remove('active');
+      panel.style.setProperty('display', 'none', 'important');
     }
   });
 };

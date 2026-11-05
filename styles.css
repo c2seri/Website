@@ -8924,13 +8924,16 @@ html, body {
 
 /* Right Dynamic Cards Pane */
 .pw-drawer-right {
-  flex: 1;
-  background: #ffffff;
-  padding: 22px 28px;
-  overflow-y: auto;
-  max-height: 520px;
-  display: flex;
-  flex-direction: column;
+  flex: 1 1 0% !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  background: #ffffff !important;
+  padding: 22px 28px !important;
+  overflow-y: auto !important;
+  max-height: 520px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
 }
 .pw-drawer-right::-webkit-scrollbar {
   width: 5px;
@@ -8941,15 +8944,14 @@ html, body {
 }
 
 .pw-cards-panel {
-  display: none;
+  display: none !important;
+  width: 100% !important;
 }
 .pw-cards-panel.active {
-  display: block;
-  animation: pwFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-}
-@keyframes pwFadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+  display: block !important;
+  width: 100% !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .pw-panel-header {
@@ -8973,9 +8975,10 @@ html, body {
 
 /* Exact PW Card Style */
 .pw-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  width: 100% !important;
 }
 .pw-exam-card {
   display: flex;
