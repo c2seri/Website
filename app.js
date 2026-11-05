@@ -101,6 +101,25 @@ window.switchPwCategory = function(catId) {
   });
 };
 
+// Bind bulletproof hover and click event listeners to all category buttons
+function initPwCategoryListeners() {
+  document.querySelectorAll('.pw-cat-btn').forEach(btn => {
+    const cat = btn.getAttribute('data-cat');
+    if (!cat) return;
+    btn.addEventListener('mouseenter', () => window.switchPwCategory(cat));
+    btn.addEventListener('mouseover', () => window.switchPwCategory(cat));
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.switchPwCategory(cat);
+    });
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPwCategoryListeners);
+} else {
+  initPwCategoryListeners();
+}
+
 // All Exams PW-Style Click Toggle (Open on click & Disappear if clicked again)
 window.toggleAllExamsMenu = function(btn, event) {
   if (event) {

@@ -8811,6 +8811,9 @@ html, body {
 /* ==========================================================================
    PW-STYLE TWO-PANE DRAWER FOR "ALL EXAMS" (EXACT PHYSICS WALLAH UI)
    ========================================================================== */
+.nav-item.has-all-exams.open .mega-menu.pw-all-exams-drawer,
+.nav-item.has-all-exams:hover .mega-menu.pw-all-exams-drawer,
+.nav-item .pw-all-exams-drawer,
 .pw-all-exams-drawer {
   display: flex !important;
   flex-direction: row !important;
@@ -8860,6 +8863,9 @@ html, body {
   cursor: pointer;
   transition: all 0.15s ease;
   font-family: inherit;
+}
+.pw-cat-btn * {
+  pointer-events: none !important;
 }
 .pw-cat-btn:hover {
   background: #f1f5f9;
