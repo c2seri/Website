@@ -162,15 +162,36 @@
           <div class="header-nav-line header-nav-line-1">
             <div class="mobile-nav-heading">🎯 Exam Preparation &amp; Batches</div>
 
-            <!-- 1. Exams Directory (204+) Mega-Menu with Subgroups -->
-            <div class="nav-item has-mega">
-              <button class="nav-link" data-nav="exams" onclick="toggleDropdown(this)">
-                <span>🎯 Exams Directory</span>
-                <span class="nav-badge-pill badge-orange">204+</span>
-                <span class="nav-arrow">&#9662;</span>
+            <!-- 1. All Exams (PW Style Mega-Menu with Click-Toggle) -->
+            <div class="nav-item has-mega has-all-exams">
+              <button type="button" class="nav-link all-exams-nav-btn" data-nav="all-exams" onclick="toggleAllExamsMenu(this, event)" aria-expanded="false" aria-haspopup="true">
+                <span class="all-exams-title">All Exams</span>
+                <svg class="all-exams-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
               </button>
-              <div class="mega-menu">
-                <div class="mega-grid" style="grid-template-columns: repeat(4, 1fr) 1.25fr; gap: 16px;">
+              <div class="mega-menu pw-all-exams-menu">
+                <!-- PW Style Popular Goals Quick-Tabs Top Header -->
+                <div class="pw-menu-header">
+                  <div class="pw-menu-header-left">
+                    <span class="pw-menu-tag">🔥 POPULAR GOALS:</span>
+                    <div class="pw-header-chips">
+                      <button type="button" class="pw-chip-tag" onclick="filterExam('Odisha State', 'OPSC');closeMobileNav();">OPSC OAS</button>
+                      <button type="button" class="pw-chip-tag" onclick="filterExam('Odisha State', 'OSSC');closeMobileNav();">OSSC CGL</button>
+                      <button type="button" class="pw-chip-tag" onclick="filterExam('Odisha State', 'ODISHA-POLICE');closeMobileNav();">Odisha Police SI</button>
+                      <button type="button" class="pw-chip-tag" onclick="filterExam('All India', 'BANK');closeMobileNav();">Bank PO/Clerk</button>
+                      <button type="button" class="pw-chip-tag" onclick="filterExam('All India', 'SSC');closeMobileNav();">SSC CGL</button>
+                      <button type="button" class="pw-chip-tag" onclick="filterExam('All India', 'RAILWAY');closeMobileNav();">Railway NTPC</button>
+                      <button type="button" class="pw-chip-tag" onclick="filterExam('All India', 'UPSC');closeMobileNav();">UPSC CSE</button>
+                    </div>
+                  </div>
+                  <button type="button" class="pw-goal-select-btn" onclick="openCohortSelection();closeMobileNav();">
+                    🎯 Choose Goal / Cohort →
+                  </button>
+                </div>
+
+                <div class="pw-mega-grid-inner">
+                  <div class="mega-grid" style="grid-template-columns: repeat(4, 1fr) 1.25fr; gap: 16px;">
                   <!-- Col 1: Odisha State Recruitments -->
                   <div>
                     <div class="mega-col-title">🏛️ Odisha State Exams</div>
@@ -347,17 +368,46 @@
                     </div>
                   </div>
 
-                  <!-- Col 5: Featured Card -->
-                  <div class="mega-featured-card" style="background:linear-gradient(135deg, #0a2540 0%, #1e3a8a 100%);color:#fff;border-radius:14px;padding:20px;">
-                    <h4 style="color:#fdba74;font-size:16px;margin:0 0 8px;">🎯 All India &amp; Odisha Exam Directory</h4>
-                    <p style="font-size:13px;color:#cbd5e1;line-height:1.5;margin:0 0 16px;">204 Central &amp; State exam syllabi, multi-stage selection patterns, eligibility criteria &amp; cutoffs.</p>
-                    <button class="btn orange" style="width:100%;padding:10px;font-size:13px;font-weight:750;" onclick="show('exams');closeMobileNav();">
-                      Explore Complete 204 Directory →
-                    </button>
+                  <!-- Col 5: PW / C2S Career Pass Card -->
+                  <div class="mega-featured-card" style="background:linear-gradient(135deg, #0a2540 0%, #1e3a8a 100%);color:#fff;border-radius:14px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;">
+                    <div>
+                      <div style="display:inline-block;background:rgba(251, 146, 60, 0.2);color:#fdba74;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;border:1px solid rgba(251,146,60,0.4);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">PW / C2S CAREER PASS</div>
+                      <h4 style="color:#ffffff;font-size:16px;margin:0 0 8px;font-weight:800;">1 Pass for 200+ Govt Exams</h4>
+                      <p style="font-size:12.5px;color:#cbd5e1;line-height:1.5;margin:0 0 14px;">Access all CBT mock test series, bilingual notes, syllabus breakdowns &amp; 24h Study Library.</p>
+                      <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:14px;">
+                        <span style="font-size:24px;font-weight:900;color:#38bdf8;">₹1,000</span>
+                        <span style="font-size:12px;color:#94a3b8;font-weight:600;">/ month</span>
+                      </div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:8px;">
+                      <button type="button" class="btn orange" style="width:100%;padding:10px;font-size:13px;font-weight:750;" onclick="show('pass');closeMobileNav();">
+                        Explore Career Pass →
+                      </button>
+                      <button type="button" class="btn ghost" style="width:100%;padding:8px;font-size:12px;font-weight:700;color:#cbd5e1;border-color:rgba(255,255,255,0.25);" onclick="show('exams');closeMobileNav();">
+                        Explore Complete 204 Directory →
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              <!-- PW Style Footer Bar -->
+              <div class="pw-menu-footer">
+                <div class="pw-footer-left">
+                  <span class="pw-dot-live"></span>
+                  <span><strong>12,500+ Aspirants</strong> preparing across Odisha &amp; Pan-India</span>
+                </div>
+                <div class="pw-footer-links">
+                  <a href="https://wa.me/919777481909?text=Hi%20C2S,%20I%20need%20exam%20guidance" target="_blank" rel="noopener noreferrer" class="pw-footer-link">
+                    💬 Academic Counsellor Desk
+                  </a>
+                  <a href="tel:9777481909" class="pw-footer-link">
+                    📞 Helpline: 9777481909
+                  </a>
+                </div>
+              </div>
             </div>
+          </div>
 
             <!-- 2. CBT Test Series Pro (Mega-Menu with Subgroups) -->
             <div class="nav-item has-mega">
@@ -993,177 +1043,243 @@
           </div>
         </div>
 
-        <!-- 2. Exact Adda247 Split Hero Section on Subtle Blueprint Grid -->
-        <div class="adda-hero-canvas">
-          <div class="adda-hero-grid">
-            <!-- Left Column: Trust Badge, Headline, Search & Chips -->
-            <div class="adda-hero-left">
-              <!-- Trust Pill (Adda247 Exact Reference) -->
-              <div class="adda-trust-pill">
-                <div class="adda-avatar-stack">
-                  <span class="adda-avatar" style="background:#2563eb;">AK</span>
-                  <span class="adda-avatar" style="background:#ea580c;">SM</span>
-                  <span class="adda-avatar" style="background:#059669;">RD</span>
+        <!-- 2. PW / Testbook Style: One Destination for Complete Exam Preparation (Directly Below Hero Running Photos) -->
+        <section class="pw-destination-section" id="c2sDestinationSection">
+          <div class="pw-destination-container">
+            <div class="pw-destination-grid">
+              <!-- Left Column: Copy, Subtag, CTAs, App Badges, Live Search -->
+              <div class="pw-destination-left">
+                <h1 class="pw-destination-title">
+                  One Destination for<br>
+                  <span class="pw-highlight-text">Complete Exam Preparation</span>
+                </h1>
+                
+                <!-- Learn > Practice > Improve > Succeed Flow -->
+                <div class="pw-destination-flow">
+                  <span class="flow-step">Learn</span>
+                  <span class="flow-arrow">&#9658;</span>
+                  <span class="flow-step">Practice</span>
+                  <span class="flow-arrow">&#9658;</span>
+                  <span class="flow-step">Improve</span>
+                  <span class="flow-arrow">&#9658;</span>
+                  <span class="flow-step">Succeed</span>
                 </div>
-                <strong>12, 500+ Aspirants Trust C2S</strong>
-                <span class="adda-pulse-dot"></span>
-              </div>
 
-              <!-- Big Bold Headline with Red/Orange Accent (Adda247 Typography) -->
-              <h1 class="adda-main-headline">
-                Odisha's <span class="adda-highlight-red">Most Trusted</span> Platform for Govt Exams, Smart Classrooms &amp; 24h Library
-              </h1>
+                <p class="pw-destination-subtext">
+                  Start your preparation for selections. For Free!
+                </p>
 
-              <!-- Large Rounded Search Bar with Live Autocomplete -->
-              <div class="adda-search-box">
-                <div class="adda-search-input-wrap">
-                  <svg class="adda-search-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                  <input id="heroSearchInput" type="search" placeholder="Find Live Batches, 204+ Exams, Test Series, Library Shifts &amp; Class Notes..." oninput="handleHeroAutocomplete(this.value)" onkeydown="if(event.key==='Enter'){handleHeroSearch(this.value)}" autocomplete="off">
+                <!-- CTA Row: Green Button + Google Play & App Store Badges -->
+                <div class="pw-destination-cta-row">
+                  <button type="button" class="pw-btn-green" onclick="openCohortSelection()">
+                    <span>Get Started For Free</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </button>
+
+                  <div class="pw-store-badges">
+                    <a href="https://wa.me/919777481909?text=Hi%20C2S,%20I%20want%20to%20get%20started%20for%20free" target="_blank" rel="noopener noreferrer" class="pw-store-btn" aria-label="Get it on Google Play">
+                      <svg class="pw-store-icon" viewBox="0 0 24 24" width="22" height="22"><path fill="#EA4335" d="M3.6 1.48L13.1 11.2 3.6 20.92c-.36-.37-.6-.89-.6-1.52V3c0-.63.24-1.15.6-1.52z"/><path fill="#FBBC04" d="M16.48 7.76L13.1 11.2l3.38 3.44 3.84-2.22c1.09-.63 1.09-1.65 0-2.28l-3.84-2.38z"/><path fill="#4285F4" d="M3.6 1.48c.31-.32.74-.48 1.25-.48.45 0 .91.13 1.35.39l10.28 5.96L13.1 11.2 3.6 1.48z"/><path fill="#34A853" d="M13.1 11.2l3.38 3.44-10.28 5.96c-.44.26-.9.39-1.35.39-.51 0-.94-.16-1.25-.48L13.1 11.2z"/></svg>
+                      <div class="pw-store-text">
+                        <span class="pw-store-small">GET IT ON</span>
+                        <strong class="pw-store-name">Google Play</strong>
+                      </div>
+                    </a>
+
+                    <a href="https://wa.me/919777481909?text=Hi%20C2S,%20I%20am%20an%20iOS%20user%20and%20want%20to%20prepare" target="_blank" rel="noopener noreferrer" class="pw-store-btn" aria-label="Download on the App Store">
+                      <svg class="pw-store-icon" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.93-2.85-.9.04-2 .6-2.65 1.35-.58.66-1.09 1.73-.95 2.76.99.08 2.05-.51 2.67-1.26z"/></svg>
+                      <div class="pw-store-text">
+                        <span class="pw-store-small">Download on the</span>
+                        <strong class="pw-store-name">App Store</strong>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Integrated Fast Live Search Bar -->
+                <div class="pw-search-box-wrap">
+                  <div class="pw-search-bar">
+                    <svg class="pw-search-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input id="heroSearchInput" type="search" placeholder="Search 204+ Exams, CBT Mocks, Live Batches, Library Shifts..." oninput="handleHeroAutocomplete(this.value)" onkeydown="if(event.key==='Enter'){handleHeroSearch(this.value)}" autocomplete="off">
+                    <button class="pw-search-btn" onclick="handleHeroSearch(document.getElementById('heroSearchInput').value)">Search Exams</button>
+                  </div>
                   <div id="heroAutocompleteDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:#ffffff;border:1.5px solid #cbd5e1;border-radius:12px;box-shadow:0 12px 30px rgba(15, 23, 42, 0.15);max-height:340px;overflow-y:auto;z-index:1000;margin-top:6px;"></div>
-                  <button class="adda-search-submit" onclick="handleHeroSearch(document.getElementById('heroSearchInput').value)">Search 200+ Exams</button>
-                </div>
 
-                <!-- Adda247 Quick Keyword Chips with Authentic Official Board Logos -->
-                <div class="adda-quick-chips">
-                  <button type="button" class="adda-chip" onclick="quickFilterTarget('OSSC-CGL')">
-                    <img src="images/logos/odisha.svg" alt="OSSC" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;" decoding="async">
-                    <span>OSSC CGL</span>
-                  </button>
-                  <button type="button" class="adda-chip" onclick="quickFilterTarget('ODISHA-POLICE-SI')">
-                    <img src="images/logos/odisha.svg" alt="Odisha Police" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;" decoding="async">
-                    <span>Odisha Police SI</span>
-                  </button>
-                  <button type="button" class="adda-chip" onclick="quickFilterTarget('IBPS-PO')">
-                    <img src="images/logos/sbi.svg" alt="Banking" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;" decoding="async">
-                    <span>Bank PO (SBI/IBPS)</span>
-                  </button>
-                  <button type="button" class="adda-chip" onclick="quickFilterTarget('SSC-CGL')">
-                    <img src="images/logos/ssc.webp" alt="SSC" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;" decoding="async">
-                    <span>SSC CGL</span>
-                  </button>
-                  <button type="button" class="adda-chip" onclick="quickFilterTarget('RRB-NTPC-GRAD')">
-                    <img src="images/logos/railways.jpg" alt="Railway" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;" decoding="async">
-                    <span>Railway NTPC</span>
-                  </button>
-                  <button type="button" class="adda-chip" onclick="quickFilterTarget('OPSC-OAS')">
-                    <img src="images/logos/odisha.svg" alt="OPSC" style="width:16px;height:16px;object-fit:contain;border-radius:50%;vertical-align:middle;" decoding="async">
-                    <span>OPSC OAS</span>
-                  </button>
-                  <button type="button" class="adda-chip library-chip" onclick="window.navigateToLibrary()">
-                    <span>📖 24h Study Library</span>
-                  </button>
+                  <!-- Quick Search Chips -->
+                  <div class="pw-quick-chips-row">
+                    <span class="chips-label">Popular:</span>
+                    <button type="button" class="pw-inline-chip" onclick="quickFilterTarget('OSSC-CGL')">
+                      <img src="images/logos/odisha.svg" alt="OSSC" style="width:14px;height:14px;border-radius:50%;" decoding="async">
+                      OSSC CGL
+                    </button>
+                    <button type="button" class="pw-inline-chip" onclick="quickFilterTarget('ODISHA-POLICE-SI')">
+                      <img src="images/logos/odisha.svg" alt="Police" style="width:14px;height:14px;border-radius:50%;" decoding="async">
+                      Police SI
+                    </button>
+                    <button type="button" class="pw-inline-chip" onclick="quickFilterTarget('IBPS-PO')">
+                      <img src="images/logos/sbi.svg" alt="Bank" style="width:14px;height:14px;border-radius:50%;" decoding="async">
+                      Bank PO
+                    </button>
+                    <button type="button" class="pw-inline-chip" onclick="quickFilterTarget('SSC-CGL')">
+                      <img src="images/logos/ssc.webp" alt="SSC" style="width:14px;height:14px;border-radius:50%;" decoding="async">
+                      SSC CGL
+                    </button>
+                    <button type="button" class="pw-inline-chip" onclick="quickFilterTarget('RRB-NTPC-GRAD')">
+                      <img src="images/logos/railways.jpg" alt="RRB" style="width:14px;height:14px;border-radius:50%;" decoding="async">
+                      Railway NTPC
+                    </button>
+                    <button type="button" class="pw-inline-chip library-chip" onclick="window.navigateToLibrary()">
+                      📖 24h Library
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <!-- High-Converting CTA Strip -->
-              <div class="adda-cta-row">
-                <button class="adda-btn-primary" onclick="scrollToPanIndiaExams()">
-                  Explore 204 Govt Exams ↓
-                </button>
-                <a href="https://wa.me/919777481909?text=Hi%20C2S,%20I%20want%20to%20book%20a%20free%203-day%20demo%20class%20at%20Patrapada" target="_blank" rel="noopener noreferrer" class="adda-btn-secondary">
-                  Book Free 3-Day Demo Class →
-                </a>
-                <a href="tel:9777481909" class="adda-helpline-pill">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                  <span>Helpline: <strong>9777481909</strong></span>
-                </a>
+              <!-- Right Column: Symmetrical Artwork Matching User's Screenshot -->
+              <div class="pw-destination-right">
+                <div class="pw-illustration-container">
+                  <svg class="pw-illustration-svg" viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- 3D Isometric Base Platform -->
+                    <polygon points="120,380 440,380 520,320 200,320" fill="#bae6fd" opacity="0.6"/>
+                    <polygon points="120,380 200,320 200,340 120,400" fill="#7dd3fc" opacity="0.8"/>
+                    <polygon points="120,400 440,400 440,380 120,380" fill="#38bdf8" opacity="0.9"/>
+                    <polygon points="440,400 520,340 520,320 440,380" fill="#0284c7" opacity="0.7"/>
+
+                    <!-- Floating Analytics & Bar Chart (Top Left) -->
+                    <rect x="70" y="80" width="130" height="90" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" filter="drop-shadow(0 10px 15px rgba(0,0,0,0.06))"/>
+                    <rect x="85" y="130" width="16" height="30" rx="3" fill="#93c5fd"/>
+                    <rect x="110" y="115" width="16" height="45" rx="3" fill="#60a5fa"/>
+                    <rect x="135" y="100" width="16" height="60" rx="3" fill="#3b82f6"/>
+                    <rect x="160" y="90" width="16" height="70" rx="3" fill="#1d4ed8"/>
+                    <path d="M85 125 L118 110 L143 95 L168 85" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+                    <circle cx="168" cy="85" r="4" fill="#10b981"/>
+
+                    <!-- Growth Trajectory Board (Center Top) -->
+                    <rect x="220" y="40" width="140" height="110" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" filter="drop-shadow(0 10px 20px rgba(0,0,0,0.08))"/>
+                    <path d="M235 120 Q 270 100, 295 75 T 345 50" fill="none" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M235 120 Q 270 100, 295 75 T 345 50 L 345 135 L 235 135 Z" fill="url(#greenGrad)" opacity="0.2"/>
+                    <defs>
+                      <linearGradient id="greenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#10b981"/>
+                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                      </linearGradient>
+                    </defs>
+                    <circle cx="345" cy="50" r="5" fill="#10b981"/>
+                    <polygon points="345,45 352,50 345,55" fill="#10b981"/>
+
+                    <!-- Clock / Study Timer (Top Right) -->
+                    <circle cx="435" cy="110" r="32" fill="#ffffff" stroke="#38bdf8" stroke-width="3" filter="drop-shadow(0 8px 16px rgba(0,0,0,0.06))"/>
+                    <line x1="435" y1="110" x2="435" y2="92" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/>
+                    <line x1="435" y1="110" x2="448" y2="110" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+                    <circle cx="435" cy="110" r="3" fill="#0f172a"/>
+                    <!-- Clock Bells -->
+                    <path d="M415 82 C412 80, 420 74, 424 78" stroke="#38bdf8" stroke-width="2.5" fill="none"/>
+                    <path d="M455 82 C458 80, 450 74, 446 78" stroke="#38bdf8" stroke-width="2.5" fill="none"/>
+
+                    <!-- Standing Mentor / Student Pointing Up (Center) -->
+                    <!-- Body & Clothes -->
+                    <ellipse cx="280" cy="100" rx="14" ry="16" fill="#fbcfe8"/>
+                    <!-- Head & Hair -->
+                    <circle cx="280" cy="95" r="13" fill="#ea580c" opacity="0.3"/>
+                    <path d="M270 95 Q 280 82 290 92 Q 285 80 272 85 Z" fill="#1e293b"/>
+                    <!-- Torso -->
+                    <path d="M266 114 L 294 114 L 298 190 L 262 190 Z" fill="#3b82f6"/>
+                    <!-- Arm pointing to graph -->
+                    <line x1="290" y1="125" x2="330" y2="70" stroke="#fbcfe8" stroke-width="6" stroke-linecap="round"/>
+                    <circle cx="330" cy="70" r="4" fill="#0284c7"/>
+                    <!-- Legs -->
+                    <path d="M265 190 L 278 280 L 286 280 L 278 190" fill="#1e293b"/>
+                    <path d="M282 190 L 295 280 L 303 280 L 295 190" fill="#0f172a"/>
+
+                    <!-- Floating Books -->
+                    <polygon points="170,230 205,215 240,230 205,245" fill="#f97316"/>
+                    <polygon points="170,230 205,245 205,255 170,240" fill="#ea580c"/>
+                    <polygon points="205,245 240,230 240,240 205,255" fill="#c2410c"/>
+
+                    <polygon points="120,260 150,248 180,260 150,272" fill="#3b82f6"/>
+                    <polygon points="120,260 150,272 150,280 120,268" fill="#2563eb"/>
+                    <polygon points="150,272 180,260 180,268 150,280" fill="#1d4ed8"/>
+
+                    <!-- Sitting Student Reading Book (Left Cross-Legged) -->
+                    <!-- Head & Hair -->
+                    <circle cx="225" cy="205" r="14" fill="#fde68a"/>
+                    <path d="M214 202 Q 224 190 236 198 Q 230 188 216 192 Z" fill="#1e293b"/>
+                    <!-- Glasses -->
+                    <circle cx="221" cy="205" r="3.5" stroke="#1e293b" stroke-width="1.2" fill="none"/>
+                    <circle cx="229" cy="205" r="3.5" stroke="#1e293b" stroke-width="1.2" fill="none"/>
+                    <line x1="224.5" y1="205" x2="225.5" y2="205" stroke="#1e293b" stroke-width="1.2"/>
+                    <!-- Torso in Orange/Coral Hoodie -->
+                    <path d="M212 222 C 205 235, 205 270, 215 285 L 242 285 C 248 270, 248 235, 238 222 Z" fill="#f97316"/>
+                    <!-- Open Book in Hands -->
+                    <polygon points="205,270 225,278 225,260 205,252" fill="#ffffff" stroke="#cbd5e1"/>
+                    <polygon points="245,270 225,278 225,260 245,252" fill="#ffffff" stroke="#cbd5e1"/>
+                    <polygon points="205,252 225,260 245,252 225,248" fill="#ef4444"/>
+                    <!-- Folded Legs -->
+                    <ellipse cx="228" cy="295" rx="30" ry="14" fill="#1e293b"/>
+
+                    <!-- Sitting Student at Desk with Laptop (Right) -->
+                    <!-- Desk -->
+                    <rect x="360" y="270" width="95" height="10" rx="3" fill="#1e293b"/>
+                    <line x1="375" y1="280" x2="375" y2="340" stroke="#1e293b" stroke-width="5"/>
+                    <line x1="440" y1="280" x2="440" y2="340" stroke="#1e293b" stroke-width="5"/>
+                    <!-- Laptop -->
+                    <polygon points="380,268 405,268 408,270 377,270" fill="#94a3b8"/>
+                    <polygon points="382,250 403,250 405,268 380,268" fill="#38bdf8"/>
+                    <!-- Student -->
+                    <circle cx="370" cy="210" r="13" fill="#fde68a"/>
+                    <path d="M360 208 Q 368 196 378 202 Z" fill="#0f172a"/>
+                    <!-- Body -->
+                    <path d="M358 226 L 382 226 L 384 285 L 354 285 Z" fill="#059669"/>
+                    <!-- Sitting stool/legs -->
+                    <path d="M355 285 L 368 340 L 378 340 L 365 285" fill="#1e293b"/>
+                  </svg>
+                </div>
               </div>
             </div>
 
-            <!-- Right Column: Adda247 Signature Card Showcase (Test Prime Reference) -->
-            <div class="adda-hero-right">
-              <div class="adda-prime-card">
-                <!-- Top Brand Tag -->
-                <div class="prime-tag-strip">
-                  <span class="prime-badge red">C2S Test Prime</span>
-                  <span class="prime-live-status">● Real TCS Engine</span>
+            <!-- Symmetrical 4-Stat Strip (Exact Match to User Screenshot) -->
+            <div class="pw-stats-strip">
+              <div class="pw-stat-item">
+                <div class="pw-stat-icon-wrap teal">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
                 </div>
-
-                <!-- Main Card Title -->
-                <h3 class="prime-card-title">
-                  ODISHA'S #1 <span class="text-orange">LOCKED CBT MOCK TEST</span> &amp; CLASSROOM SUBSCRIPTION
-                </h3>
-
-                <!-- Central Visual Mockup (Adda247 Red Accent & Screen Graphic) -->
-                <div class="prime-visual-display">
-                  <div class="mockup-laptop">
-                    <div class="laptop-screen">
-                      <div class="screen-topbar">
-                        <span>C2S Real CBT Exam Screen</span>
-                        <span class="timer-pill">⏱️ 01:59:45</span>
-                      </div>
-                      <div class="screen-question-preview">
-                        <strong>Q.12 (OSSC CGL Tier-1)</strong>
-                        <p>General Awareness &amp; Odisha Geography...</p>
-                        <div class="screen-options">
-                          <span class="opt active">A. Mahanadi Basin</span>
-                          <span class="opt">B. Rushikulya</span>
-                          <span class="opt">C. Brahmani</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="laptop-base"></div>
-                  </div>
-                  <div class="mockup-float-card">
-                    <span class="badge-icon">🏆</span>
-                    <div>
-                      <strong>AIR 1 Simulation</strong>
-                      <small>Instant Percentile</small>
-                    </div>
-                  </div>
+                <div class="pw-stat-meta">
+                  <span class="pw-stat-label">Registered Students</span>
+                  <strong class="pw-stat-number">12,500+ Aspirants</strong>
                 </div>
+              </div>
 
-                <!-- 3 Metric Pillars (Adda247 Style: 800+ Exams, 1.5 Lakh+ Tests, etc.) -->
-                <div class="prime-metric-row">
-                  <div class="metric-item">
-                    <strong>204+</strong>
-                    <span>Govt Exams</span>
-                  </div>
-                  <div class="metric-item">
-                    <strong>100+</strong>
-                    <span>CBT Mocks</span>
-                  </div>
-                  <div class="metric-item">
-                    <strong>24/7</strong>
-                    <span>AC Library</span>
-                  </div>
+              <div class="pw-stat-item">
+                <div class="pw-stat-icon-wrap amber">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
                 </div>
-
-                <!-- Feature Icons with Checkmarks -->
-                <div class="prime-feature-pills">
-                  <span class="p-pill">🎯 Real Exam Pattern</span>
-                  <span class="p-pill">📊 Smart Analytics</span>
-                  <span class="p-pill">⚡ All India Ranking</span>
+                <div class="pw-stat-meta">
+                  <span class="pw-stat-label">Student Selections</span>
+                  <strong class="pw-stat-number">450+ Officers</strong>
                 </div>
+              </div>
 
-                <!-- Action Button -->
-                <button type="button" class="prime-action-btn" onclick="show('tests')">
-                  Attempt Free CBT Mock Test Now →
-                </button>
+              <div class="pw-stat-item">
+                <div class="pw-stat-icon-wrap blue">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="m9 14 2 2 4-4"/></svg>
+                </div>
+                <div class="pw-stat-meta">
+                  <span class="pw-stat-label">Tests Attempted</span>
+                  <strong class="pw-stat-number">1.2+ Lakh Tests</strong>
+                </div>
+              </div>
+
+              <div class="pw-stat-item">
+                <div class="pw-stat-icon-wrap purple">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                </div>
+                <div class="pw-stat-meta">
+                  <span class="pw-stat-label">Study Sanctuary</span>
+                  <strong class="pw-stat-number">24h Non-Stop</strong>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- 3. Adda247 Symmetrical Stats Counter Bar -->
-        <div class="adda-stats-ribbon">
-          <div class="adda-stat-card">
-            <div class="stat-count-big blue">12, 500+</div>
-            <div class="stat-label-text">Aspirants Trained in Odisha &amp; Pan-India</div>
-          </div>
-          <div class="adda-stat-card">
-            <div class="stat-count-big red">204+</div>
-            <div class="stat-label-text">Central &amp; State Govt Examinations Covered</div>
-          </div>
-          <div class="adda-stat-card">
-            <div class="stat-count-big green">24/7</div>
-            <div class="stat-label-text">Air-Conditioned Study Sanctuary (Patrapada)</div>
-          </div>
-          <div class="adda-stat-card">
-            <div class="stat-count-big purple">10+ Yrs</div>
-            <div class="stat-label-text">Senior Faculty Mentors &amp; Selected Officers</div>
-          </div>
-        </div>
+        </section>
       </div>
 
       <!-- SECTION: 204+ Pan-India Govt Exams Directory -->

@@ -67,9 +67,38 @@ window.toggleDropdown = function(btn) {
   const wasOpen = parent.classList.contains('open') || parent.classList.contains('open-mobile');
   document.querySelectorAll('.nav-item').forEach(item => {
     item.classList.remove('open', 'open-mobile');
+    const b = item.querySelector('.all-exams-nav-btn');
+    if (b) b.setAttribute('aria-expanded', 'false');
   });
   if (!wasOpen) {
     parent.classList.add('open', 'open-mobile');
+  }
+};
+
+// All Exams PW-Style Click Toggle (Open on click & Disappear if clicked again)
+window.toggleAllExamsMenu = function(btn, event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  const parent = btn ? btn.closest('.nav-item') : document.querySelector('.has-all-exams');
+  if (!parent) return;
+  const wasOpen = parent.classList.contains('open');
+
+  // Close all other dropdowns
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('open', 'open-mobile');
+    const b = item.querySelector('.all-exams-nav-btn');
+    if (b) b.setAttribute('aria-expanded', 'false');
+  });
+
+  // Toggle: If it was open, it disappears (closes). If closed, it opens.
+  if (!wasOpen) {
+    parent.classList.add('open');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+  } else {
+    parent.classList.remove('open');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
   }
 };
 
@@ -78,6 +107,8 @@ window.closeMobileNav = function() {
   if (topnav) topnav.classList.remove('open', 'active');
   document.querySelectorAll('.nav-item').forEach(item => {
     item.classList.remove('open', 'open-mobile');
+    const b = item.querySelector('.all-exams-nav-btn');
+    if (b) b.setAttribute('aria-expanded', 'false');
   });
 };
 
@@ -91,6 +122,8 @@ document.addEventListener('click', function(e) {
   if (!e.target.closest('.nav-item') && !e.target.closest('.hamburger')) {
     document.querySelectorAll('.nav-item').forEach(item => {
       item.classList.remove('open', 'open-mobile');
+      const b = item.querySelector('.all-exams-nav-btn');
+      if (b) b.setAttribute('aria-expanded', 'false');
     });
   }
 });
