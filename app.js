@@ -1809,13 +1809,22 @@ function renderBooks() {
           <span style="font-size:13px;color:#94a3b8;text-decoration:line-through;margin-left:6px;">${b.mrp}</span>
           <span style="font-size:11px;color:#059669;font-weight:750;margin-left:6px;">40% OFF</span>
         </div>
-        <div style="display:flex;gap:8px;">
-          <button class="btn ghost" style="padding:7px 12px;font-size:12px;" onclick="downloadSamplePdf('${b.title}')">
-            Download Free Sample PDF ↓
-          </button>
-          <button class="btn orange" style="padding:7px 14px;font-size:12.5px;" onclick="orderBookDesk('${b.title}')">
-            Order / Desk Pickup →
-          </button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          ${b.isMagazine ? `
+            <a href="current-affairs-reader.html" class="btn blue" style="padding:7px 14px;font-size:12px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+              📖 Read Online (Mobile / Desktop)
+            </a>
+            <button class="btn orange" style="padding:7px 14px;font-size:12px;font-weight:800;" onclick="downloadMagazinePdf('${b.title}', 'September 2026')">
+              📥 Download PDF (Pay ₹15)
+            </button>
+          ` : `
+            <button class="btn ghost" style="padding:7px 12px;font-size:12px;" onclick="downloadSamplePdf('${b.title}')">
+              Download Free Sample PDF ↓
+            </button>
+            <button class="btn orange" style="padding:7px 14px;font-size:12.5px;" onclick="orderBookDesk('${b.title}')">
+              Order / Desk Pickup →
+            </button>
+          `}
         </div>
       </div>
     </div>
@@ -1901,7 +1910,16 @@ function renderCurrentAffairs() {
 }
 
 function downloadCaPdf(caId) {
-  const ca = CURRENT_AFFAIRS.find(x => x.id === caId) || CURRENT_AFFAIRS[0];
+  const ca = CURRENT_AFFAIRS.find(x => x.id === caId || x.title === caId) || CURRENT_AFFAIRS[0];
+  if (ca.pdfDownloadUrl) {
+    const a = document.createElement("a");
+    a.href = ca.pdfDownloadUrl;
+    a.download = ca.pdfFileName || "C2S-Current-Affairs-September-2026.pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    return;
+  }
   let textContent = "%PDF-1.4\n% C2S College to Service — Weekly Current Affairs Digest\n";
   textContent += "Title: " + ca.title + "\nEdition: " + ca.edition + "\nCentre: NH-16 Patrapada, Bhubaneswar\n\n";
   
@@ -2138,26 +2156,13 @@ window.downloadMagazinePdf = function(title, month) {
 
 window.simulateMagDownload = function(month) {
   setTimeout(() => {
-    alert("Payment verified for 'Notes of Current events (" + month + ")'! Your printable monthly magazine PDF is downloading now.");
+    const selectedMonth = month || 'September 2026';
+    alert("Payment verified for 'Notes of Current events (" + selectedMonth + ")'! Your printable 87-page monthly magazine PDF is downloading now.");
     const modal = document.getElementById('c2sMagPayModal');
     if (modal) modal.remove();
-    const content = "%PDF-1.4\n% C2S College to Service — Notes of Current events Monthly Magazine (" + month + ")\n" +
-      "Title: Notes of Current events\nIssue: " + month + "\nPrice: Rs. 15 / month\n" +
-      "Publisher: C2S Academic Publications, NH-16 Patrapada, Bhubaneswar (751019)\n" +
-      "Helplines: 9777481909 / 9658177712\n\n" +
-      "[1. NATIONAL & INTERNATIONAL AFFAIRS]\n" +
-      "• Key Union Cabinet decisions, major statutory bills & international summits.\n" +
-      "• High-level economic indicators, RBI Monetary Policy updates & inflation indexes.\n\n" +
-      "[2. ODISHA STATE GK & SPECIAL COMPENDIUM]\n" +
-      "• Odisha state budget allocations, welfare schemes & industrial projects.\n" +
-      "• High-yield state heritage, culture, awards & appointments for OPSC / OSSC.\n\n" +
-      "[3. 50 PRACTICE MCQS WITH DETAILED EXPLANATIONS]\n" +
-      "• Fully graded practice questions strictly aligned with latest TCS & OSSC patterns.\n";
-    const blob = new Blob([content], { type: "application/pdf" });
-    const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url;
-    a.download = "C2S_Notes_of_Current_events_" + month.replace(/\s+/g, '_') + ".pdf";
+    a.href = "materials/C2S-Current-Affairs-September-2026.pdf";
+    a.download = "C2S-Current-Affairs-September-2026.pdf";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -2176,18 +2181,23 @@ renderBooks = function() {
         <div style="margin:10px 0;background:#eff6ff;padding:10px 12px;border-radius:10px;border:1.5px solid #bfdbfe;">
           <label style="font-size:11.5px;font-weight:750;color:#1e40af;display:block;margin-bottom:4px;">Select Month / Edition:</label>
           <select id="cardMagMonth_${container.id}_${b.id}" style="width:100%;padding:6px 10px;border-radius:6px;border:1px solid #93c5fd;font-size:12.5px;font-weight:700;color:#0f2a5c;">
-            <option value="November 2026">November 2026 Edition (Latest)</option>
-            <option value="October 2026">October 2026 Edition</option>
-            <option value="September 2026">September 2026 Edition</option>
-            <option value="August 2026">August 2026 Edition</option>
+            <option value="September 2026" selected>September 2026 Full Edition (87 Pages Loaded)</option>
+            <option value="October 2026">October 2026 Edition (Upcoming)</option>
+            <option value="August 2026">August 2026 Edition (Archive)</option>
+            <option value="July 2026">July 2026 Edition (Archive)</option>
           </select>
         </div>
       ` : '';
 
       const actionButtons = isMag ? `
-        <button class="btn orange" style="padding:7px 16px;font-size:12.5px;font-weight:850;width:100%;border-radius:8px;" onclick="downloadMagazinePdf('${b.title}', document.getElementById('cardMagMonth_${container.id}_${b.id}')?.value)">
-          Download PDF (Pay ₹15/month) ↓
-        </button>
+        <div style="display:flex;gap:8px;width:100%;flex-wrap:wrap;">
+          <a href="current-affairs-reader.html" class="btn blue" style="padding:8px 12px;font-size:12px;font-weight:850;flex:1;text-align:center;text-decoration:none;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;gap:4px;">
+            📖 Read Online (Mobile / Lap / Desktop)
+          </a>
+          <button class="btn orange" style="padding:8px 12px;font-size:12px;font-weight:850;flex:1;border-radius:8px;" onclick="downloadMagazinePdf('${b.title}', document.getElementById('cardMagMonth_${container.id}_${b.id}')?.value || 'September 2026')">
+            📥 Download PDF (Pay ₹15)
+          </button>
+        </div>
       ` : `
         <button class="btn ghost" style="padding:6px 10px;font-size:11.5px;" onclick="downloadSamplePdf('${b.title}')">
           Sample PDF ↓
@@ -2235,47 +2245,150 @@ renderBooks = function() {
   });
 };
 
-// Enhance renderCurrentAffairs to render both standalone and homepage
-const originalRenderCurrentAffairs = renderCurrentAffairs;
-renderCurrentAffairs = function() {
-  const targets = [document.getElementById("currentAffairsList"), document.getElementById("homeCaGrid")];
-  targets.forEach(container => {
-    if (!container) return;
-    container.innerHTML = CURRENT_AFFAIRS.map(ca => `
-      <div class="card" style="border:1.5px solid #e2e8f0;border-left:5px solid #1d4ed8;border-radius:16px;padding:24px;box-shadow:0 4px 16px -2px rgba(15,23,42,0.05);margin-bottom:20px;">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
-          <div>
-            <span class="pill blue" style="font-weight:800;font-size:11.5px;">${ca.badge}</span>
-            <h3 style="font-size:20px;font-weight:900;color:#0a192f;margin:8px 0 2px;">${ca.title}</h3>
-            <span style="font-size:12px;color:#64748b;">Editorial Period: ${ca.period} • Bhubaneswar Desk</span>
-          </div>
-          <button class="btn orange" style="padding:8px 16px;font-size:13px;font-weight:750;" onclick="downloadCaPdf('${ca.title}')">
-            Download Printable Digest (PDF) ↓
+// Enhance renderCurrentAffairs to render Monthwise Portal with Digital Reader
+renderCurrentAffairs = function(filterMonth) {
+  const container = document.getElementById("currentAffairsList");
+  const homeContainer = document.getElementById("homeCaGrid");
+
+  const activeMonth = filterMonth || "sep-2026";
+
+  const renderContent = (isHome) => {
+    return `
+      <!-- Monthwise Filter Bar -->
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:14px 18px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <span style="font-size:13px;font-weight:800;color:#0f172a;">📅 Select Month:</span>
+          <button class="btn ${activeMonth === 'sep-2026' ? 'blue' : 'ghost'}" style="padding:6px 14px;font-size:12.5px;font-weight:800;" onclick="renderCurrentAffairs('sep-2026')">
+            September 2026 (Full 87 Pgs)
+          </button>
+          <button class="btn ${activeMonth === 'aug-2026' ? 'blue' : 'ghost'}" style="padding:6px 14px;font-size:12.5px;font-weight:800;" onclick="renderCurrentAffairs('aug-2026')">
+            August 2026 (Archive)
+          </button>
+          <button class="btn ${activeMonth === 'weekly' ? 'blue' : 'ghost'}" style="padding:6px 14px;font-size:12.5px;font-weight:800;" onclick="renderCurrentAffairs('weekly')">
+            Weekly Digests
           </button>
         </div>
-
-        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;margin-bottom:16px;">
-          ${ca.sections.map(sec => `
-            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px;">
-              <div style="font-weight:800;font-size:13px;color:#1e3a8a;margin-bottom:8px;">${sec.category}</div>
-              <ul style="margin:0;padding-left:16px;font-size:12.5px;color:#334155;line-height:1.55;">
-                ${sec.items.map(it => `<li>${it}</li>`).join('')}
-              </ul>
-            </div>
-          `).join('')}
-        </div>
-
-        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-          <span style="font-size:13px;font-weight:750;color:#1d4ed8;">
-            📝 Includes 25 Weekly Exam MCQs with In-Depth Solutions
-          </span>
-          <button class="btn" style="background:#1d4ed8;color:#fff;padding:6px 14px;font-size:12px;" onclick="downloadCaPdf('${ca.title}')">
-            Download 25 MCQs PDF ↓
-          </button>
-        </div>
+        <a href="current-affairs-reader.html" class="btn orange" style="padding:7px 16px;font-size:13px;font-weight:800;text-decoration:none;">
+          📖 Open Full-Screen Digital Reader →
+        </a>
       </div>
-    `).join('');
-  });
+
+      <!-- September 2026 Spotlight Hero -->
+      ${activeMonth === 'sep-2026' ? `
+        <div class="card" style="background:linear-gradient(135deg, #0f172a, #1e3a8a);color:#ffffff;border-radius:18px;padding:28px 24px;margin-bottom:28px;box-shadow:0 12px 30px rgba(15,23,42,0.18);position:relative;overflow:hidden;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="pill orange" style="font-size:11px;font-weight:800;">🔥 SEPTEMBER 2026 FULL EDITION</span>
+              <span class="pill" style="background:rgba(255,255,255,0.15);color:#93c5fd;font-size:11px;font-weight:800;">87 PAGES COMPLETE</span>
+              <span class="pill" style="background:rgba(255,255,255,0.15);color:#86efac;font-size:11px;font-weight:800;">159 PRACTICE MCQS</span>
+            </div>
+            <a href="materials/C2S-Current-Affairs-September-2026.pdf" download="C2S-Current-Affairs-September-2026.pdf" class="btn orange" style="padding:8px 18px;font-size:13px;font-weight:800;text-decoration:none;box-shadow:0 4px 12px rgba(234,88,12,0.35);">
+              📥 Download Printable PDF (87 Pages)
+            </a>
+          </div>
+
+          <h3 style="font-size:clamp(22px, 3vw, 28px);font-weight:900;color:#ffffff;margin:0 0 8px;">
+            Notes of Current events — September 2026 Edition
+          </h3>
+          <p style="color:#cbd5e1;font-size:14.5px;margin:0 0 20px;line-height:1.6;max-width:850px;">
+            Complete editorial publication containing Newly Appointments, Sports, Awards & Honours, Military Exercises, National & International Events, Global Indexes, and 159 Exam-Standard Practice MCQs with 100% verified answers. Optimized for reading on mobile, tablet, laptop, and desktop.
+          </p>
+
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px;">
+            <a href="current-affairs-reader.html" class="btn" style="background:#ffffff;color:#0f172a;padding:10px 22px;font-size:14px;font-weight:850;text-decoration:none;border-radius:10px;">
+              📖 Read Online (Mobile / Lap / Desktop)
+            </a>
+            <a href="current-affairs-reader.html#sec-appointments" class="btn" style="background:rgba(255,255,255,0.2);color:#ffffff;border:1px solid rgba(255,255,255,0.3);padding:10px 18px;font-size:14px;font-weight:800;text-decoration:none;border-radius:10px;">
+              🎯 Practice 159 MCQs Online
+            </a>
+            <a href="materials/C2S-Current-Affairs-September-2026.pdf" download="C2S-Current-Affairs-September-2026.pdf" class="btn ghost" style="color:#fdba74;border:1px solid rgba(253,186,116,0.5);padding:10px 18px;font-size:14px;font-weight:800;text-decoration:none;border-radius:10px;">
+              📥 Instant PDF Download ↓
+            </a>
+          </div>
+
+          <!-- Quick Topic Pills -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:10px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.15);">
+            <a href="current-affairs-reader.html#sec-appointments" style="background:rgba(255,255,255,0.08);padding:10px 12px;border-radius:8px;text-decoration:none;color:#fff;">
+              <div style="font-weight:800;font-size:13px;color:#93c5fd;">👔 Appointments</div>
+              <div style="font-size:11.5px;color:#cbd5e1;">Pages 1–14 • 29 MCQs</div>
+            </a>
+            <a href="current-affairs-reader.html#sec-sports" style="background:rgba(255,255,255,0.08);padding:10px 12px;border-radius:8px;text-decoration:none;color:#fff;">
+              <div style="font-weight:800;font-size:13px;color:#93c5fd;">🏆 Sports Records</div>
+              <div style="font-size:11.5px;color:#cbd5e1;">Pages 15–36 • 40 MCQs</div>
+            </a>
+            <a href="current-affairs-reader.html#sec-awards" style="background:rgba(255,255,255,0.08);padding:10px 12px;border-radius:8px;text-decoration:none;color:#fff;">
+              <div style="font-weight:800;font-size:13px;color:#93c5fd;">🎖️ Awards & Honours</div>
+              <div style="font-size:11.5px;color:#cbd5e1;">Pages 37–47 • 25 MCQs</div>
+            </a>
+            <a href="current-affairs-reader.html#sec-military-exercises" style="background:rgba(255,255,255,0.08);padding:10px 12px;border-radius:8px;text-decoration:none;color:#fff;">
+              <div style="font-weight:800;font-size:13px;color:#93c5fd;">⚔️ Defence Exercises</div>
+              <div style="font-size:11.5px;color:#cbd5e1;">Pages 48–56 • 15 MCQs</div>
+            </a>
+            <a href="current-affairs-reader.html#sec-national-international" style="background:rgba(255,255,255,0.08);padding:10px 12px;border-radius:8px;text-decoration:none;color:#fff;">
+              <div style="font-weight:800;font-size:13px;color:#93c5fd;">🌍 National & Intl</div>
+              <div style="font-size:11.5px;color:#cbd5e1;">Pages 57–82 • 40 MCQs</div>
+            </a>
+            <a href="current-affairs-reader.html#sec-indexes" style="background:rgba(255,255,255,0.08);padding:10px 12px;border-radius:8px;text-decoration:none;color:#fff;">
+              <div style="font-weight:800;font-size:13px;color:#93c5fd;">📊 Global Indexes</div>
+              <div style="font-size:11.5px;color:#cbd5e1;">Pages 83–87 • 10 MCQs</div>
+            </a>
+          </div>
+        </div>
+      ` : ''}
+
+      <!-- Detailed Categories List -->
+      <div style="display:flex;flex-direction:column;gap:22px;">
+        ${(activeMonth === 'sep-2026' ? [CURRENT_AFFAIRS[0]] : (activeMonth === 'aug-2026' ? CURRENT_AFFAIRS.slice(1, 2) : CURRENT_AFFAIRS.slice(1))).map(ca => `
+          <div class="card" style="border:1.5px solid #e2e8f0;border-left:5px solid #1d4ed8;border-radius:16px;padding:24px;box-shadow:0 4px 16px -2px rgba(15,23,42,0.05);">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+              <div>
+                <span class="pill blue" style="font-weight:800;font-size:11.5px;">${ca.badge || ca.edition}</span>
+                <h3 style="font-size:20px;font-weight:900;color:#0a192f;margin:8px 0 2px;">${ca.title}</h3>
+                <span style="font-size:12px;color:#64748b;">Editorial Period: ${ca.period || ca.dateRange} • Bhubaneswar Desk</span>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                ${ca.readerUrl ? `
+                  <a href="${ca.readerUrl}" class="btn blue" style="padding:8px 14px;font-size:12.5px;font-weight:800;text-decoration:none;">
+                    📖 Open Reader
+                  </a>
+                ` : ''}
+                <button class="btn orange" style="padding:8px 16px;font-size:12.5px;font-weight:800;" onclick="downloadCaPdf('${ca.id || ca.title}')">
+                  📥 Download Printable PDF
+                </button>
+              </div>
+            </div>
+
+            <p style="font-size:13.5px;color:#475569;margin-bottom:16px;line-height:1.6;">${ca.summary}</p>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;margin-bottom:16px;">
+              ${(ca.categories || ca.sections || []).map(sec => `
+                <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px;">
+                  <div style="font-weight:800;font-size:13px;color:#1e3a8a;margin-bottom:8px;">${sec.name || sec.category}</div>
+                  <ul style="margin:0;padding-left:16px;font-size:12.5px;color:#334155;line-height:1.55;">
+                    ${sec.items.map(it => `<li>${it}</li>`).join('')}
+                  </ul>
+                </div>
+              `).join('')}
+            </div>
+
+            ${ca.quiz && ca.quiz.length ? `
+              <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                <span style="font-size:13px;font-weight:750;color:#1d4ed8;">
+                  📝 Includes ${ca.quiz.length} Practice MCQs with In-Depth Solutions
+                </span>
+                <a href="${ca.readerUrl || 'current-affairs-reader.html'}" class="btn" style="background:#1d4ed8;color:#fff;padding:6px 14px;font-size:12px;font-weight:800;text-decoration:none;">
+                  Practice All Questions Online →
+                </a>
+              </div>
+            ` : ''}
+          </div>
+        `).join('')}
+      </div>
+    `;
+  };
+
+  if (container) container.innerHTML = renderContent(false);
+  if (homeContainer) homeContainer.innerHTML = renderContent(true);
 };
 
 window.handleHeroAutocomplete = function(val) {

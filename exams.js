@@ -5096,22 +5096,24 @@ const COURSES = [
 const BOOKS_MATERIAL = [
   {
     id: "MAG-NOTES-OF-CURRENT-EVENTS",
-    title: "Notes of Current events",
-    subtitle: "C2S Monthly Current Affairs Magazine for Civil Services, State PCS, SSC, Banking & Railways",
-    badge: "🔥 Newly Launched Monthly Magazine",
-    pages: "64 Pages / Monthly Issue",
-    edition: "Monthly Digital Magazine (November 2026)",
+    title: "Notes of Current events (September 2026 Edition)",
+    subtitle: "C2S Official Monthly Current Affairs & GK Magazine — Complete 87-Page Edition",
+    badge: "🔥 September 2026 Full Edition (87 Pages)",
+    pages: "87 Pages / Full Issue",
+    edition: "Monthly Magazine (September 2026)",
     language: "Bilingual (English & Odia)",
     targetExams: "UPSC CSE, OPSC OAS, OSSC CGL, SSC CGL/CHSL, Banking PO/Clerk, Railway NTPC, Police SI",
     price: "₹15",
     period: "/month",
     mrp: "₹50",
     isMagazine: true,
-    samplePdf: "c2s-notes-of-current-events-sample.pdf",
+    readerUrl: "current-affairs-reader.html",
+    pdfUrl: "materials/C2S-Current-Affairs-September-2026.pdf",
+    samplePdf: "materials/C2S-Current-Affairs-September-2026.pdf",
     highlights: [
-      "Authoritative monthly coverage of National, International & Odisha State GK",
-      "Cabinet decisions, Govt schemes, Economic indicators & Budget highlights",
-      "Chapterwise high-yield practice MCQs with detailed explanations",
+      "Complete 87-page coverage: Appointments, Sports, Awards, Defence, National & Indexes",
+      "159 Exam-Standard Practice Questions with 100% verified Answer Keys",
+      "Responsive Digital Reader mode optimized for Mobile, Laptop and Desktop",
       "Instant printable PDF download available immediately upon paying ₹15/month"
     ]
   },
@@ -5217,6 +5219,176 @@ const BOOKS_MATERIAL = [
    High-yield editorial text + instant PDF download engine
    ========================================================================== */
 const CURRENT_AFFAIRS = [
+  {
+    id: "CA-MONTHLY-SEP-2026",
+    title: "Notes of Current events — September 2026 Edition",
+    edition: "September 2026 (Monthly Full Edition)",
+    dateRange: "01 Sept 2026 – 30 Sept 2026",
+    pdfFileName: "C2S-Current-Affairs-September-2026.pdf",
+    pdfDownloadUrl: "materials/C2S-Current-Affairs-September-2026.pdf",
+    readerUrl: "current-affairs-reader.html",
+    pageCount: "87 Pages (Full Magazine)",
+    downloadCount: "5,840+ Active Students",
+    badge: "🔥 September 2026 Full Edition (87 Pages)",
+    period: "September 2026",
+    summary: "Complete 87-page authoritative monthly magazine: Newly Appointments, Sports, Awards & Honours, Military Exercises, National & International Events, Global Indexes, and 159 Exam-Standard Practice MCQs with 100% verified answers.",
+    categories: [
+      {
+        name: "👔 Newly Appointments & Administrative Posts",
+        items: [
+          "RBI Appoints Suman Ray as Executive Director (DICGC oversight).",
+          "Air Marshal Sandeep Thareja appointed Director General Armed Forces Medical Services (DGAFMS).",
+          "Crown Prince Haakon ascends the throne as King Haakon VIII of Norway.",
+          "Anil Chakravarthy named President & CEO of Adobe Inc. succeeding Shantanu Narayen.",
+          "Justice Sanjay Kumar Agrawal appointed Chief Justice of Rajasthan High Court.",
+          "Air Marshal (Retd.) Jeetendra Mishra appointed first CEO of Shri Ram Janmabhoomi Teerth Kshetra Trust.",
+          "Dr. Dinesh Sharma takes oath as Lieutenant Governor of Andaman & Nicobar Islands.",
+          "John Ternus named next CEO of Apple Inc. succeeding Tim Cook.",
+          "Ülle Madise elected as the next President of Estonia.",
+          "Major Navya Shekhawat becomes First Woman Army Aide-de-Camp (ADC) to President Droupadi Murmu.",
+          "Luke J. Lindberg appointed Executive Director of the United Nations World Food Programme (WFP).",
+          "Dr. Khalilur Rahman of Bangladesh elected President of the 81st UN General Assembly (UNGA).",
+          "Hansraj Singh Verma designated Ambassador of India to the Republic of Cuba.",
+          "Senior journalist Rajat Sharma re-elected President of News Broadcasters & Digital Association (NBDA)."
+        ]
+      },
+      {
+        name: "🏆 Sports, Tournaments & World Records",
+        items: [
+          "India selected to host inaugural ICC Women's Champions Trophy 2027 (matches in Mumbai & Vadodara).",
+          "East Zone clinches Duleep Trophy 2026 title under captaincy of Ishan Kishan.",
+          "2026 Pickleball World Cup in Da Nang, Vietnam: Indian contingent secures historic tally of 41 medals (7 Gold, 17 Silver, 17 Bronze).",
+          "Germany wins FIH Men's Hockey World Cup 2026 in Wavre, Belgium defeating Spain 1–0.",
+          "Argentina wins FIH Women's Hockey World Cup 2026 in Amstelveen, Netherlands.",
+          "Mohun Bagan SG star Lallianzuala Chhangte & Manisha Kalyan named FPAI Indian Footballers of the Year.",
+          "Vaibhav Sooryavanshi becomes youngest player to score a half-century in Duleep Trophy at 15 years 157 days.",
+          "Smriti Mandhana becomes highest run-scorer in Women's International Cricket (surpassing Mithali Raj's 10,868 runs) and first woman to breach 11,000 international runs.",
+          "Lionel Messi announces retirement from international football on 31 August 2026.",
+          "Suzuki Cup 2026: Historic India vs Japan men's T20I at Sano Cricket Ground, Tochigi.",
+          "Abhishek Sharma smashes world-record 30-ball T20I century against Afghanistan.",
+          "India Women win T20 Asia Cup 2026 defeating Sri Lanka by 72 runs in Dubai.",
+          "India wins both Men's Junior Asia Cup and Women's Junior Asia Cup Hockey 2026 in Moqi, China.",
+          "Alexander Zverev wins US Open 2026 Men's Singles championship in New York.",
+          "2027 World Athletics Championships awarded to Beijing, China (10–19 Sept 2027).",
+          "20th Asian Games 2026 in Aichi-Nagoya, Japan: Mascot HONOHON, Motto 'Imagine One Asia'.",
+          "Pune selected to host the UCI Road World Championships in 2032.",
+          "Savita Punia becomes most-capped Indian women's hockey player with 321 appearances.",
+          "Mark Wood announces retirement from international cricket.",
+          "Jos Buttler becomes first batter in history to score 15,000 runs in T20 cricket.",
+          "Sri Lankan all-rounder Sonal Dinusha voted ICC Men's Player of the Month for August 2026."
+        ]
+      },
+      {
+        name: "🎖️ Awards, Honours & Fellowships",
+        items: [
+          "Joheirry Mola of Dominican Republic crowned 73rd Miss World 2026 in Nha Trang, Vietnam.",
+          "Former CJI Justice Dipak Misra conferred with Kalinga Ratna Award 2026 in Cuttack, Odisha.",
+          "Commonwealth Public Leadership Recognition 2026 awarded to Maharashtra CM Eknath Shinde in London.",
+          "Roger Federer inducted into the International Tennis Hall of Fame (Class of 2025) in Newport, USA.",
+          "Tenzing Norgay National Adventure Award 2024: Lifetime Achievement conferred on veteran mountaineer Shiv Prasad Chamoli.",
+          "Ramon Magsaysay Award 2026 honourees: Diplomat Tommy Koh (Singapore), educator Runa Khan (Bangladesh), human rights champion Bo Kyi (Myanmar).",
+          "78th Primetime Emmy Awards 2026: Satirical comedy 'Widow's Bay' sweeps 14 trophies; 'The Pitt' wins Outstanding Drama.",
+          "54th Dadasaheb Phalke Award (2024) conferred on legendary actor Anant Nag for seminal contribution to Indian cinema.",
+          "National Lata Mangeshkar Award 2026 instituted by Madhya Pradesh conferred on music maestro Shantanu Moitra."
+        ]
+      },
+      {
+        name: "⚔️ Bilateral & Multinational Military Exercises",
+        items: [
+          "Exercise Samudra Laksamana 2026: 4th bilateral maritime exercise between Indian Navy (INS Mysore) and Royal Malaysian Navy at Lumut.",
+          "Exercise Veer Guardian 2026: Bilateral air combat exercise between IAF (Su-30MKI, Rafale, Tejas) and JASDF (F-2A) at Jodhpur.",
+          "Exercise SLINEX-26: Bilateral naval drill between Indian Navy (INS Kavaratti, INS Jyoti) and Sri Lanka Navy off Visakhapatnam.",
+          "Exercise Tarang Shakti 2026: India's premier multinational air exercise hosted at Jodhpur under theme 'Power in Partnership' with 7 participating air forces and 32 observer nations.",
+          "Exercise VARUNA 2026: 24th edition of Indo-French bilateral naval exercise in the Mediterranean Sea off Toulon (INS Trishul).",
+          "Exercise NOMADIC ELEPHANT 2026: Joint counter-insurgency military exercise between Indian Army and Mongolian Armed Forces in Pithoragarh, Uttarakhand.",
+          "Exercise Yudh Abhyas 2026: 22nd edition of India–United States joint military exercise in Auli, Uttarakhand and Mahajan, Rajasthan."
+        ]
+      },
+      {
+        name: "🌍 National, Odisha State & International Events",
+        items: [
+          "Princess Elisabeth Island: Belgium constructs world's first artificial energy island in the North Sea (45 km offshore).",
+          "Anak Krakatau volcanic eruption generates 1,000-metre ash plume in the Sunda Strait, Indonesia.",
+          "India overtakes Russia to become the world's 4th-largest foreign exchange reserve holder with US$785.7 Billion.",
+          "Sohar Port in Oman operationalized as critical strategic shipping route bypassing Bab-el-Mandeb.",
+          "International Literacy Day observed on 8 September under UNESCO theme 'Literacy for People, the Planet and Prosperity'.",
+          "International Day of Peace observed globally on 21 September.",
+          "Sugar Production in India: Maharashtra regains #1 position producing 99 lakh tonnes, surpassing Uttar Pradesh (93.5 lakh tonnes).",
+          "Swachh Vayu Survekshan 2026: Lucknow ranks #1 in Million-Plus cities; Odisha's Rourkela ranks #1 in 3–10 Lakh category; Kalinga Nagar ranks #1 in Under 3 Lakh category.",
+          "EOS-05: ISRO launches India's first state-of-the-art Earth-observation satellite into Geosynchronous Orbit via GSLV-F17 from Sriharikota.",
+          "Elena Mishra (4-year-old chess prodigy from Odisha) becomes youngest female player on official FIDE rating list with Blitz rating of 1432.",
+          "Bihar & Jharkhand state governments sign historic MoU to resolve multi-decade dispute over Sone River water sharing.",
+          "Five endangered baby orangutans rescued during anti-smuggling operation in Balasore, Odisha and rehabilitated at Nandankanan Zoological Park.",
+          "Nuakhai agrarian festival celebrated across Western Odisha; first harvest 'Nabanna' offered to Maa Samaleswari.",
+          "Marathi feature film 'Gondhal' directed by Santosh Davakhar chosen as India's official entry for 99th Academy Awards (Oscars).",
+          "ByteDance founder Zhang Yiming becomes Asia's richest person with personal net worth surpassing US$105 Billion.",
+          "India's 51st Doppler Weather Radar inaugurated at Jamadarpali, Sambalpur, Odisha by IMD.",
+          "Meenakshi Sundareswarar Temple in Madurai witnesses grand Maha Kumbhabhishekam after 17 years.",
+          "DURGA E-Auto Scheme: Delhi government rolls out special pink electric auto-rickshaws for women and transgender drivers.",
+          "Karnataka government grants Tulu second additional official language status in Dakshina Kannada and Udupi districts.",
+          "Cyclone name 'Arnab' officially contributed by Bangladesh in WMO/ESCAP cyclone naming roster.",
+          "Sagarmala Finance Corporation Ltd announces plans to launch India's first Blue Bond to finance coastal and maritime infrastructure.",
+          "Union Home Minister Amit Shah inaugurates 3rd National Conference of Anti-Narcotics Task Force (ANTF) in New Delhi.",
+          "Operation Toofan 2026 launched by Kerala Police and Excise to eliminate synthetic drug trafficking syndicates.",
+          "18th BRICS Summit 2026 scheduled at Bharat Mandapam, New Delhi under Indian Presidency with theme 'Building for Resilience, Innovation, Cooperation and Sustainability'."
+        ]
+      },
+      {
+        name: "📊 Global Indexes, Reports & Institutional Rankings",
+        items: [
+          "Electoral Democracy Index 2026 (V-Dem Institute): India ranks 106th out of 179 countries with score of 0.38.",
+          "Global Gender Gap Report 2026 (World Economic Forum): India ranks 131st out of 145 economies with gender parity score of 64.5%.",
+          "India Electric Mobility Index (IEMI) 2025 (NITI Aayog): Delhi secures #1 spot with composite index score of 84/100.",
+          "Global Business Climate Survey 2026 (Business Sweden): India ranks #1 out of 41 international markets as preferred investment hub.",
+          "QS Global MBA Rankings 2027: IIM Bangalore emerges as India's highest-ranked business school at Joint 64th globally."
+        ]
+      }
+    ],
+    quiz: [
+      {
+        q: "Who was appointed Executive Director of the Reserve Bank of India with effect from 1 September 2026?",
+        opts: ["Suman Ray", "Sanjay Malhotra", "Shaktikanta Das", "T. Rabi Sankar"],
+        ans: 0,
+        exp: "Suman Ray was appointed as Executive Director of RBI looking after Deposit Insurance and Credit Guarantee Corporation (DICGC)."
+      },
+      {
+        q: "Which country was selected to host the inaugural ICC Women's Champions Trophy 2027?",
+        opts: ["Sri Lanka", "India", "Australia", "England"],
+        ans: 1,
+        exp: "ICC officially shifted the inaugural ICC Women's Champions Trophy 2027 from Sri Lanka to India, with matches scheduled in Mumbai and Vadodara."
+      },
+      {
+        q: "Who was crowned the 73rd Miss World 2026 in Nha Trang, Vietnam?",
+        opts: ["Opal Suchata Chuangsri", "Joheirry Mola", "Krystyna Pyszkova", "Karolina Bielawska"],
+        ans: 1,
+        exp: "Joheirry Mola of the Dominican Republic won the 73rd Miss World pageant held in Nha Trang, Vietnam."
+      },
+      {
+        q: "Exercise Samudra Laksamana 2026 was conducted between the Indian Navy and which country?",
+        opts: ["Indonesia", "Malaysia", "Singapore", "Thailand"],
+        ans: 1,
+        exp: "Exercise Samudra Laksamana is a bilateral naval drill between India and the Royal Malaysian Navy, held at Lumut, Malaysia."
+      },
+      {
+        q: "Which country is developing the world's first artificial energy island, named Princess Elisabeth Island?",
+        opts: ["Denmark", "Belgium", "Netherlands", "Germany"],
+        ans: 1,
+        exp: "Belgium is building Princess Elisabeth Island in the North Sea, 45 km offshore, to integrate offshore wind energy."
+      },
+      {
+        q: "Which city secured the 1st Rank in the Million-Plus population category of Swachh Vayu Survekshan 2026?",
+        opts: ["Indore", "Lucknow", "Bhubaneswar", "Surat"],
+        ans: 1,
+        exp: "Lucknow secured the 1st rank in Swachh Vayu Survekshan 2026 for cities with population above 10 Lakh."
+      },
+      {
+        q: "What was India's rank in the Electoral Democracy Index according to the 2026 V-Dem Democracy Report?",
+        opts: ["98th", "106th", "121st", "131st"],
+        ans: 1,
+        exp: "India was ranked 106th out of 179 countries in the 2026 V-Dem Electoral Democracy Index."
+      }
+    ]
+  },
   {
     id: "CA-WEEK-NOV-1-7-2024",
     title: "Weekly Current Affairs Digest: 1st Nov – 7th Nov 2024",
