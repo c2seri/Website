@@ -4952,7 +4952,7 @@ function initDynamicScrollEngine() {
 function initScrollAnimationsAndCounters() {
   // 1. Tag auto-scroll reveal elements
   const revealTargets = document.querySelectorAll(
-    '.section-header, .adda-stat-card, .facility-card, .c2s-blog-card, .library-sanctuary-card, .prime-metric-row, .card, .grid2 > div'
+    '.section-header, .facility-card, .c2s-blog-card, .prime-metric-row'
   );
   
   revealTargets.forEach(el => {

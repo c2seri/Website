@@ -8322,15 +8322,14 @@ html, body {
 }
 
 .c2s-scroll-reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .c2s-scroll-reveal.is-revealed {
   opacity: 1 !important;
-  transform: translateY(0) !important;
+  transform: none !important;
 }
 
 .c2s-scroll-reveal-delay-1 { transition-delay: 0.1s; }
