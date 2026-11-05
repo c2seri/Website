@@ -48,6 +48,66 @@ const store = {
   set(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
 };
 const TESTS = [
+
+ {id:"JAIIB-IEIFS-1", exam:"JAIIB", title:"JAIIB: Indian Economy & Financial System (Paper 1 Full Mock)", minutes:15, calculatorAllowed:true,
+  qs:[
+    ["Which body formulates and implements Monetary Policy in India?",["Ministry of Finance","Reserve Bank of India (RBI)","SEBI","NITI Aayog"],1],
+    ["In national income accounting, what is Net Domestic Product (NDP)?",["GDP minus Depreciation","GDP plus Net Foreign Income","GNP minus Indirect Taxes","NNP plus Subsidies"],0],
+    ["The Reserve Bank of India was established on 1 April 1935 on the recommendation of which body?",["Narasimham Committee","Hilton Young Commission","Raghuram Rajan Committee","Verma Committee"],1],
+    ["What is the maximum deposit insurance coverage provided by DICGC per depositor per bank?",["₹1 Lakh","₹2 Lakhs","₹5 Lakhs","₹10 Lakhs"],2],
+    ["What is the mandatory Priority Sector Lending (PSL) target for Domestic Commercial Banks?",["25% of ANBC","40% of ANBC","50% of ANBC","32% of ANBC"],1],
+    ["What does MSF stand for in RBI's liquidity framework?",["Marginal Standing Facility","Monetary Stability Fund","Market Stabilization Framework","Mandatory Statutory Facility"],0],
+    ["Which financial market segment deals in short-term credit instruments with maturity up to 1 year?",["Capital Market","Money Market","Forex Futures","Derivatives Exchange"],1],
+    ["External Benchmark Lending Rate (EBLR) linked to Repo Rate was made mandatory by RBI in which year?",["2016","2018","2019","2021"],2]
+  ]},
+ {id:"JAIIB-PPB-1", exam:"JAIIB", title:"JAIIB: Principles & Practices of Banking (Paper 2 Full Mock)", minutes:15, calculatorAllowed:true,
+  qs:[
+    ["When a customer deposits money in a bank, what is the legal relationship between Bank and Customer?",["Trustee and Beneficiary","Debtor (Bank) and Creditor (Customer)","Agent and Principal","Bailor and Bailee"],1],
+    ["Under Section 138 of the Negotiable Instruments Act 1881, dishonour of cheque is due to?",["Insufficient Funds","Technical signature defect","Post-dated presentation","Bearer alteration"],0],
+    ["What is the maximum limit for contactless card transactions without PIN entry in India?",["₹2,000","₹5,000","₹10,000","₹15,000"],1],
+    ["Under SARFAESI Act 2002, secured creditors can enforce security interest without court intervention if account is classified as?",["SMA-0","SMA-1","Non-Performing Asset (NPA)","Standard Asset"],2],
+    ["Which entity manages the Central KYC Registry (CKYCR) in India?",["RBI","CERSAI","NPCI","IBA"],1]
+  ]},
+ {id:"JAIIB-AFM-1", exam:"JAIIB", title:"JAIIB: Accounting & Financial Management for Bankers (Paper 3 Full Mock)", minutes:15, calculatorAllowed:true,
+  qs:[
+    ["Which accounting convention requires that all anticipated losses be provided for but unrealized gains ignored?",["Materiality","Prudence (Conservatism)","Consistency","Going Concern"],1],
+    ["Current Ratio is calculated by which formula?",["Current Assets / Current Liabilities","Quick Assets / Current Liabilities","Total Debt / Equity","Net Profit / Sales"],0],
+    ["Depreciation under Straight Line Method (SLM) is based on?",["Historical Cost minus Scrap Value divided by Useful Life","Written Down Value multiplied by rate","Sales revenue percentage","Current market replacement cost"],0],
+    ["A company has Current Ratio of 2.5:1 and Current Liabilities of ₹4,00,000. What is the value of Current Assets?",["₹8,00,000","₹10,00,000","₹12,50,000","₹16,00,000"],1]
+  ]},
+ {id:"JAIIB-RBWM-1", exam:"JAIIB", title:"JAIIB: Retail Banking & Wealth Management (Paper 4 Full Mock)", minutes:15, calculatorAllowed:true,
+  qs:[
+    ["Which credit scoring company provides the widely used 300–900 credit bureau score in India?",["CRISIL","TransUnion CIBIL","ICRA","CARE"],1],
+    ["Under RBI guidelines, what is the standard Loan-to-Value (LTV) ratio for home loans up to ₹30 Lakhs?",["Up to 90%","Up to 80%","Up to 75%","Up to 60%"],0],
+    ["Equated Monthly Installment (EMI) consists of which two components?",["Principal and Interest","Principal and Processing Fee","Interest and Stamp Duty","Insurance and Margin"],0],
+    ["What is the key differentiator between Retail Banking and Corporate/Wholesale Banking?",["High volume and low value transactions","Low volume and large ticket sizes","Exclusively government clients","Zero collateral requirement"],0]
+  ]},
+ {id:"SSC-CHSL-MOCK-1", exam:"SSC CHSL", title:"SSC CHSL 2026: Tier-1 Full Length TCS Mock Test 1", minutes:15, calculatorAllowed:false,
+  qs:[
+    ["If the cost price of 15 articles is equal to the selling price of 12 articles, what is the profit percentage?",["20%","25%","30%","33.33%"],1],
+    ["Find the missing term in the sequence: 4, 9, 25, 49, 121, ?",["144","169","196","225"],1],
+    ["Select the correctly spelt word:",["Accomodation","Accommodation","Acomodation","Accomadation"],1],
+    ["Who is the guardian of the Fundamental Rights of Indian citizens?",["Parliament","Supreme Court & High Courts","Prime Minister","President of India"],1],
+    ["In computers, what is the permanent memory called?",["RAM","ROM","Cache","Virtual Memory"],1],
+    ["If A can complete a work in 12 days and B in 24 days, in how many days can they complete it together?",["6 days","8 days","9 days","10 days"],1],
+    ["Antonym of the word 'OBSTINATE':",["Stubborn","Flexible","Rigid","Adamant"],1],
+    ["Which city in India ranks #1 in Million-Plus category in Swachh Vayu Survekshan 2026?",["Indore (MP)","Lucknow (UP)","Bhubaneswar (Odisha)","Surat (Gujarat)"],1]
+  ]},
+ {id:"SSC-CHSL-MOCK-2", exam:"SSC CHSL", title:"SSC CHSL 2026: Tier-1 Full Length TCS Mock Test 2", minutes:15, calculatorAllowed:false,
+  qs:[
+    ["A train running at 72 km/h crosses a 200 m long platform in 20 seconds. What is the length of the train?",["150 m","200 m","250 m","300 m"],1],
+    ["Pointing to a photograph, a woman says: 'He is the son of the only brother of my mother.' Who is he to her?",["Brother","Cousin (Maternal)","Nephew","Uncle"],1],
+    ["Synonym of 'CANDID':",["Secretive","Frank / Honest","Shy","Arrogant"],1],
+    ["Which schedule of the Indian Constitution contains the list of recognized languages?",["7th Schedule","8th Schedule","9th Schedule","10th Schedule"],1],
+    ["What is the value of sin 30° + cos 60°?",["0.5","1.0","1.5","2.0"],1]
+  ]},
+ {id:"SSC-CHSL-PYQ-1", exam:"SSC CHSL", title:"SSC CHSL Official 2024 Shift-1 Solved Paper Mock", minutes:15, calculatorAllowed:false,
+  qs:[
+    ["Two successive discounts of 20% and 10% are equivalent to a single discount of?",["28%","30%","32%","25%"],0],
+    ["In an examination, 65% students passed in Maths and 60% passed in English. If 40% passed in both, what % failed in both?",["15%","20%","25%","10%"],0],
+    ["Who was the Viceroy of India when the Indian National Congress was founded in 1885?",["Lord Curzon","Lord Dufferin","Lord Ripon","Lord Dalhousie"],1],
+    ["Select the passive voice: 'The chef prepared a sumptuous meal.'",["A sumptuous meal is prepared by the chef.","A sumptuous meal was prepared by the chef.","A sumptuous meal had been prepared by the chef.","The meal was being prepared by the chef."],1]
+  ]},
  {id:"BANK-MOCK-1", exam:"BANK", title:"BANK Mock Test 1", minutes:10, calculatorAllowed:true,
   qs:[["What is 15% of 240?",["24","36","30","48"],1],["A train covers 180 km in 3 hours. Speed?",["50 km/h","60 km/h","70 km/h","40 km/h"],1],["Next: 2, 6, 12, 20, ?",["28","30","32","36"],1],["Synonym of 'Rapid'?",["Slow","Fast","Weak","Late"],1]]},
  {id:"SSC-MOCK-1", exam:"SSC", title:"SSC Mock Test 1", minutes:10, calculatorAllowed:false,
@@ -325,18 +385,299 @@ window.loadMoreDirectoryExams = function() {
   renderExams();
 };
 
+
+/* ==========================================================================
+   PW + TESTBOOK TEST SERIES PACKAGES & DIWALI LAUNCH ENGINE
+   ========================================================================== */
+function getExamSvg(exam) {
+  if (!exam) return "📝";
+  if (exam.includes("JAIIB")) return "🏛️";
+  if (exam.includes("CHSL") || exam === "SSC") return "⚡";
+  if (exam === "BANK") return "🏦";
+  if (exam === "RAILWAY") return "🚂";
+  if (exam === "OSSC") return "🏢";
+  if (exam === "UPSC") return "🇮🇳";
+  return "🎯";
+};
+
+const TEST_PACKAGES = [
+  {
+    id: "PKG-JAIIB-2026",
+    title: "JAIIB 2026 Complete Test Series Package",
+    exam: "JAIIB",
+    category: "jaiib",
+    badge: "🪔 Diwali Special Mega Launch",
+    bannerTag: "FOR PROMOTIONAL & BANKING OFFICERS (IIBF)",
+    description: "Strictly aligned with latest revised IIBF 4-Paper syllabus. 40+ Full Mocks, 80+ Chapter Tests, real CBT countdown timer, on-screen financial calculator, and bilingual detailed solutions.",
+    price: 499,
+    mrp: 1499,
+    discount: "67% OFF",
+    launchDate: "Diwali 2026 Special Launch",
+    highlights: [
+      "All 4 Compulsory Papers: IE&IFS, PPB, AFM & RBWM",
+      "40 Full-Length Mocks (10 per Paper) + 80 Topic Tests",
+      "Real IIBF Exam Interface with Timed Submissions",
+      "Case Study Scenarios & Formula Worksheets",
+      "Detailed Bilingual Explanations & Sectional Cutoff Tracker"
+    ],
+    tests: ["JAIIB-IEIFS-1", "JAIIB-PPB-1", "JAIIB-AFM-1", "JAIIB-RBWM-1"]
+  },
+  {
+    id: "PKG-SSC-CHSL-2026",
+    title: "SSC CHSL (10+2) 2026 Complete Test Series Package",
+    exam: "SSC CHSL",
+    category: "chsl",
+    badge: "🪔 Diwali Special Mega Launch",
+    bannerTag: "TIER-1 & TIER-2 COMPREHENSIVE PACK",
+    description: "Prepared by TCS-pattern experts. 50+ Full-Length Mocks, 100+ Sectional Tests, Previous Year Papers (2020-2024), and Computer Knowledge module.",
+    price: 299,
+    mrp: 999,
+    discount: "70% OFF",
+    launchDate: "Diwali 2026 Special Launch",
+    highlights: [
+      "50 Full-Length Tier-1 Mocks (TCS Latest Interface)",
+      "25 Tier-2 Mains Mocks with Typing Speed Diagnostic",
+      "100+ Chapter-wise Speed & Accuracy Tests",
+      "Previous 5 Years Solved Papers (2020–2024)",
+      "All-India Rank, Percentile & Weak Topic Diagnostic"
+    ],
+    tests: ["SSC-CHSL-MOCK-1", "SSC-CHSL-MOCK-2", "SSC-CHSL-PYQ-1"]
+  },
+  {
+    id: "PKG-BANKING-ALL",
+    title: "Banking & Insurance All-in-One Mock Pass",
+    exam: "BANK",
+    category: "banking",
+    badge: "Popular Banking Pack",
+    bannerTag: "SBI PO/CLERK, IBPS PO/CLERK, RRB",
+    description: "Complete mock series for all major public sector bank exams with high difficulty reasoning and DI.",
+    price: 399,
+    mrp: 1199,
+    discount: "66% OFF",
+    launchDate: "Available Now",
+    highlights: ["60+ Full Mocks", "Bilingual", "Financial Calculator Allowed", "Sectional Time Limits"],
+    tests: ["BANK-MOCK-1"]
+  },
+  {
+    id: "PKG-OSSC-CGL",
+    title: "OSSC CGL & Odisha State Exam Test Series",
+    exam: "OSSC",
+    category: "ossc",
+    badge: "Odisha State Special",
+    bannerTag: "OSSC, OSSSC & OPSC PATTERN",
+    description: "Odisha-specific general studies, Odia language, and arithmetic mocks.",
+    price: 249,
+    mrp: 799,
+    discount: "68% OFF",
+    launchDate: "Available Now",
+    highlights: ["35+ Full Mocks", "Special Focus on Odisha GK & Culture", "Negative Marking Simulation"],
+    tests: ["OSSC-MOCK-1"]
+  },
+  {
+    id: "PKG-RAILWAY-NTPC",
+    title: "Railway RRB NTPC & Group D Comprehensive Pass",
+    exam: "RAILWAY",
+    category: "railway",
+    badge: "Railway Special",
+    bannerTag: "CBT-1 & CBT-2 STAGES",
+    description: "Extensive question bank for RRB NTPC, ALP, and Group D.",
+    price: 249,
+    mrp: 699,
+    discount: "64% OFF",
+    launchDate: "Available Now",
+    highlights: ["45+ Full Mocks", "General Science Special Modules", "Scratch Pad Notes"],
+    tests: ["RAILWAY-MOCK-1"]
+  }
+];
+
+let activeTestCategory = "all";
+
+function filterTestPackages(cat) {
+  activeTestCategory = cat;
+  document.querySelectorAll(".test-cat-pill").forEach(p => {
+    p.classList.toggle("active", p.dataset.cat === cat);
+  });
+  renderTestPackages();
+};
+
+function renderTestPackages() {
+  const container = document.getElementById("testPackagesGrid");
+  if (!container) return;
+
+  const filtered = activeTestCategory === "all" 
+    ? TEST_PACKAGES 
+    : (activeTestCategory === "banking" 
+        ? TEST_PACKAGES.filter(p => p.category === "banking" || p.category === "jaiib")
+        : (activeTestCategory === "ssc"
+            ? TEST_PACKAGES.filter(p => p.category === "ssc" || p.category === "chsl")
+            : TEST_PACKAGES.filter(p => p.category === activeTestCategory)));
+
+  const unlockedPkgs = store.get("c2s_unlocked_packages", []);
+
+  container.innerHTML = filtered.map(pkg => {
+    const isUnlocked = unlockedPkgs.includes(pkg.id) || store.get("c2s_all_access_pass", false);
+    const isDiwali = pkg.badge.includes("Diwali");
+
+    return `
+      <div class="card test-pkg-card" style="border:${isDiwali ? '2px solid #ea580c' : '1.5px solid #e2e8f0'};border-radius:18px;padding:24px;background:#ffffff;box-shadow:${isDiwali ? '0 12px 30px rgba(234,88,12,0.12)' : '0 4px 16px rgba(15,23,42,0.06)'};display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;">
+        ${isDiwali ? '<div style="position:absolute;top:0;right:0;background:linear-gradient(135deg, #ea580c, #c2410c);color:#fff;font-size:10.5px;font-weight:900;padding:4px 14px;border-bottom-left-radius:12px;text-transform:uppercase;letter-spacing:0.5px;">🪔 DIWALI LAUNCH</div>' : ''}
+        
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+            <span class="pill ${isDiwali ? 'orange' : 'blue'}" style="font-weight:800;font-size:11px;">${pkg.badge}</span>
+            <span style="font-size:11.5px;font-weight:750;color:#64748b;">${pkg.bannerTag}</span>
+          </div>
+
+          <h3 style="font-size:20px;font-weight:900;color:#0f172a;margin:4px 0 6px;line-height:1.3;">${pkg.title}</h3>
+          <p style="font-size:13px;color:#475569;margin:0 0 14px;line-height:1.55;">${pkg.description}</p>
+
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:800;color:#1e3a8a;margin-bottom:6px;text-transform:uppercase;">Package Inclusions:</div>
+            <ul style="margin:0;padding-left:16px;font-size:12.5px;color:#334155;line-height:1.6;">
+              ${pkg.highlights.map(h => `<li>${h}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:14px;border-top:1px solid #f1f5f9;margin-bottom:14px;">
+            <div>
+              <span style="font-size:24px;font-weight:900;color:#1e3a8a;">₹${pkg.price}</span>
+              <span style="font-size:13.5px;color:#94a3b8;text-decoration:line-through;margin-left:6px;">₹${pkg.mrp}</span>
+              <span style="font-size:11.5px;font-weight:800;color:#16a34a;margin-left:6px;">${pkg.discount}</span>
+            </div>
+            <span style="font-size:11.5px;color:#64748b;font-weight:700;">Complete Mock Pass</span>
+          </div>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            ${isUnlocked ? `
+              <button class="btn green" style="width:100%;padding:10px;font-weight:850;font-size:13px;" onclick="scrollToTestsAndHighlight('${pkg.id}')">
+                ✓ Package Unlocked — Do Exams Below ↓
+              </button>
+            ` : `
+              <button class="btn orange" style="flex:1;padding:10px 14px;font-weight:850;font-size:13px;" onclick="openPackageBuyModal('${pkg.id}')">
+                ⚡ Buy Package (₹${pkg.price})
+              </button>
+              <button class="btn ghost" style="flex:1;padding:10px 12px;font-weight:750;font-size:12.5px;" onclick="scrollToTestsAndHighlight('${pkg.id}')">
+                📝 Free Demo Mock
+              </button>
+            `}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+};
+
+function scrollToAvailableTests() {
+  const el = document.getElementById("availableTestsSection");
+  if (el) el.scrollIntoView({ behavior: "smooth" });
+};
+
+function scrollToTestsAndHighlight(pkgId) {
+  const pkg = TEST_PACKAGES.find(p => p.id === pkgId);
+  const el = document.getElementById("availableTestsSection");
+  if (el) el.scrollIntoView({ behavior: "smooth" });
+  if (pkg && pkg.tests && pkg.tests.length) {
+    const firstTestCard = document.querySelector(`[data-testid="${pkg.tests[0]}"]`);
+    if (firstTestCard) {
+      firstTestCard.style.outline = "3px solid #f97316";
+      setTimeout(() => { firstTestCard.style.outline = "none"; }, 2500);
+    }
+  }
+};
+
+function openPackageBuyModal(pkgId) {
+  const pkg = TEST_PACKAGES.find(p => p.id === pkgId);
+  if (!pkg) return;
+
+  const existing = document.getElementById("c2sPackageBuyModal");
+  if (existing) existing.remove();
+
+  const modalHtml = `
+    <div id="c2sPackageBuyModal" style="position:fixed;inset:0;background:rgba(15,23,42,0.8);backdrop-filter:blur(6px);z-index:999999;display:flex;align-items:center;justify-content:center;padding:16px;">
+      <div style="background:#ffffff;border-radius:20px;max-width:460px;width:100%;padding:26px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.3);border:1.5px solid #e2e8f0;text-align:center;position:relative;">
+        <button onclick="document.getElementById('c2sPackageBuyModal').remove()" style="position:absolute;top:14px;right:14px;background:#f1f5f9;border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;color:#64748b;">✕</button>
+        <span class="pill orange" style="font-size:11px;font-weight:800;margin-bottom:8px;">${pkg.badge}</span>
+        <h3 style="margin:6px 0 4px;color:#0a192f;font-size:22px;font-weight:900;">${pkg.title}</h3>
+        <p style="font-size:13px;color:#64748b;margin:0 0 16px;">${pkg.bannerTag}</p>
+        
+        <div style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:14px;padding:16px;margin-bottom:18px;">
+          <div style="font-size:12px;color:#64748b;font-weight:700;">TOTAL SPECIAL PACKAGE PRICE</div>
+          <div style="font-size:36px;font-weight:900;color:#1e3a8a;margin:2px 0;">₹${pkg.price} <span style="font-size:14px;color:#94a3b8;text-decoration:line-through;">₹${pkg.mrp}</span></div>
+          <div style="font-size:12px;color:#16a34a;font-weight:800;">✓ Flat ${pkg.discount} Applied • Unlimited Re-attempts &amp; Solutions</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="upi://pay?pa=c2sstudy@sbi&pn=C2S%20College%20To%20Service&am=${pkg.price}.00&cu=INR&tn=${encodeURIComponent(pkg.title)}" class="btn orange" style="padding:12px;font-size:14px;font-weight:800;text-decoration:none;border-radius:10px;" onclick="confirmPackagePurchase('${pkg.id}')">
+            📲 Pay ₹${pkg.price} via UPI (GPay / PhonePe / Paytm)
+          </a>
+          <button type="button" class="btn" style="background:#0f172a;color:#ffffff;padding:11px;font-size:13px;font-weight:750;border-radius:10px;border:none;cursor:pointer;" onclick="confirmPackagePurchase('${pkg.id}')">
+            ⚡ Activate Package / Pay at Patrapada Desk
+          </button>
+        </div>
+        <p style="font-size:11.5px;color:#94a3b8;margin-top:12px;">Instant activation unlocks all mocks inside this package immediately.</p>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+};
+
+function confirmPackagePurchase(pkgId) {
+  const pkg = TEST_PACKAGES.find(p => p.id === pkgId);
+  const pkgName = pkg ? pkg.title : "Test Series Package";
+  
+  setTimeout(() => {
+    alert("🎉 Congratulations! Your '" + pkgName + "' is now successfully ACTIVATED! All exams inside this package are unlocked for CBT simulation.");
+    const modal = document.getElementById("c2sPackageBuyModal");
+    if (modal) modal.remove();
+    
+    // Store in unlocked packages
+    const unlocked = store.get("c2s_unlocked_packages", []);
+    if (!unlocked.includes(pkgId)) {
+      unlocked.push(pkgId);
+      store.set("c2s_unlocked_packages", unlocked);
+    }
+    
+    // Also unlock each individual test
+    if (pkg && pkg.tests) {
+      const testsUnlocked = store.get("c2s_unlocked_tests", []);
+      pkg.tests.forEach(tId => {
+        if (!testsUnlocked.includes(tId)) testsUnlocked.push(tId);
+      });
+      store.set("c2s_unlocked_tests", testsUnlocked);
+    }
+    
+    renderTests();
+    scrollToAvailableTests();
+  }, 400);
+};
+
+window.getExamSvg = getExamSvg;
+window.scrollToAvailableTests = scrollToAvailableTests;
+window.scrollToTestsAndHighlight = scrollToTestsAndHighlight;
+window.openPackageBuyModal = openPackageBuyModal;
+window.confirmPackagePurchase = confirmPackagePurchase;
+window.renderTestPackages = renderTestPackages;
+window.filterTestPackages = filterTestPackages;
+
+
+
 function renderTests(){
+  if (window.renderTestPackages) window.renderTestPackages();
+
   const customTests = store.get("c2s_custom_tests", []);
   const allTests = [...TESTS, ...customTests];
   const given = store.get("c2s_main_given", []);
   const givenIds = new Set(given.map(g => g.testId));
-  const avail = TESTS.filter(t => !givenIds.has(t.id));
-  const examTheme = { 'BANK': 'bank', 'SSC': 'ssc', 'RAILWAY': 'railway', 'OSSC': 'ossc', 'UPSC': 'upsc' };
+  const avail = allTests.filter(t => !givenIds.has(t.id));
+  const examTheme = { 'BANK': 'bank', 'SSC': 'ssc', 'RAILWAY': 'railway', 'OSSC': 'ossc', 'UPSC': 'upsc', 'JAIIB': 'bank', 'SSC CHSL': 'ssc' };
 
-  $("#availTests").innerHTML = avail.length ? '<div class="test-grid">' + avail.map(t => {
+  if ($("#availTests")) $("#availTests").innerHTML = avail.length ? '<div class="test-grid">' + avail.map(t => {
     const unlocked = isTestUnlocked(t.id);
+    const isDemo = t.id === "BANK-MOCK-1" || t.id === "JAIIB-IEIFS-1" || t.id === "SSC-CHSL-MOCK-1";
     return `
-      <div class="tb-test-card ${unlocked ? 'unlocked' : 'locked'}">
+      <div class="tb-test-card ${unlocked ? 'unlocked' : 'locked'}" data-testid="${t.id}">
         <div class="tb-test-header ${examTheme[t.exam] || 'bank'}">
           <div class="tb-exam-badge-disc">${getExamSvg(t.exam)}</div>
           <span class="tb-student-pill">⏱ ${t.minutes} Mins • ${t.qs.length} Qs</span>
@@ -344,10 +685,10 @@ function renderTests(){
         <div class="tb-test-body">
           <div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-              <span class="pill ${t.exam==='OSSC'||t.exam==='RAILWAY'?'green':t.exam==='UPSC'?'purple':'blue'}">${t.exam}</span>
+              <span class="pill ${t.exam.includes('JAIIB') ? 'orange' : (t.exam.includes('CHSL') ? 'blue' : (t.exam==='OSSC'||t.exam==='RAILWAY'?'green':t.exam==='UPSC'?'purple':'blue'))}">${t.exam}</span>
               ${unlocked 
-                ? '<span class="status-unlocked-badge">✓ UNLOCKED</span>' 
-                : '<span class="status-locked-badge">🔒 PREMIUM TEST</span>'
+                ? (isDemo ? '<span class="status-unlocked-badge" style="background:#dcfce7;color:#15803d;border:1px solid #86efac;">🌟 FREE DEMO MOCK</span>' : '<span class="status-unlocked-badge">✓ UNLOCKED</span>') 
+                : '<span class="status-locked-badge">🔒 INCLUDED IN PACKAGE</span>'
               }
             </div>
             <h3 class="tb-test-title">${t.title}</h3>
@@ -359,13 +700,13 @@ function renderTests(){
           </div>
           ${unlocked
             ? `<button class="btn orange" style="width:100%;padding:11px;font-weight:800;" onclick="startTest('${t.id}')">Start Test Engine →</button>`
-            : `<button class="btn" style="width:100%;padding:11px;font-weight:800;background:#0f2444;color:#fff;" onclick="openTestPaymentModal('${t.id}','single')">🔒 Unlock Test (₹49) / Pass →</button>`
+            : `<button class="btn" style="width:100%;padding:11px;font-weight:800;background:#0f2444;color:#fff;" onclick="openTestPaymentModal('${t.id}','single')">🔒 Unlock Test / Buy Package →</button>`
           }
         </div>
       </div>`;
   }).join("") + '</div>' : "<p class='small'>All available mock tests have been completed. Check your scores and solutions in Given Tests below.</p>";
 
-  $("#givenTests").innerHTML = given.length ? given.map(g => `
+  if ($("#givenTests")) $("#givenTests").innerHTML = given.length ? given.map(g => `
     <div class="card" style="border-left:5px solid var(--c2s-emerald-600);margin-bottom:14px;">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
         <h4 style="margin:0;font-size:18px;color:var(--c2s-navy-800);">${g.title}</h4>
@@ -828,8 +1169,19 @@ function completeMainLogin(channel, target, live) { /* Handled in verifyStudentL
 
 let exam=null, violations=0, timerInt=null, secondsLeft=0;
 function startTest(id){
-  if (!isTestUnlocked(id)) { openTestPaymentModal(id); return; }
-  const u=store.get("c2s_main_user",null); if(!u) return alert("Please login with OTP (Main Login) first.");
+  if (!isTestUnlocked(id)) { 
+    if (typeof TEST_PACKAGES !== "undefined") {
+      const pkg = TEST_PACKAGES.find(p => p.tests && p.tests.includes(id));
+      if (pkg) { openPackageBuyModal(pkg.id); return; }
+    }
+    openTestPaymentModal(id); 
+    return; 
+  }
+  let u = store.get("c2s_main_user", null);
+  if (!u) {
+    u = { name: "Candidate (Demo)", regNo: "C2S-" + Math.floor(10000 + Math.random() * 90000), mobile: "9777481909" };
+    store.set("c2s_main_user", u);
+  }
   const t=TESTS.find(x=>x.id===id); if(!t) return;
   const given=store.get("c2s_main_given", []); if(given.some(g=>g.testId===id)) return alert("This test has already been given. See Given Tests.");
   exam={test:t, answers:Array(t.qs.length).fill(null), idx:0}; violations=0;
@@ -1535,8 +1887,16 @@ document.addEventListener('DOMContentLoaded', () => {
 // TEST SERIES MONETIZATION & ACCESS ENGINE (TESTBOOK PASS MODEL)
 // ==========================================================================
 function isTestUnlocked(testId) {
-  if (testId === "BANK-MOCK-1") return true; // Free Demo Test
+  // Free Demo Mocks for sample testing & Diwali launch
+  if (testId === "BANK-MOCK-1" || testId === "JAIIB-IEIFS-1" || testId === "SSC-CHSL-MOCK-1") return true;
   if (store.get("c2s_all_access_pass", false)) return true;
+
+  // Check if test's package is unlocked
+  const unlockedPackages = store.get("c2s_unlocked_packages", []);
+  if (typeof TEST_PACKAGES !== "undefined") {
+    const pkg = TEST_PACKAGES.find(p => p.tests && p.tests.includes(testId));
+    if (pkg && unlockedPackages.includes(pkg.id)) return true;
+  }
   
   // Super Admin Complimentary Access Grant Check
   const user = store.get("c2s_main_user", null);
