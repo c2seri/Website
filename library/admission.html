@@ -558,6 +558,21 @@
       if (modal) modal.style.display = 'none';
     };
 
+    window.switchModalBpView = function(viewType) {
+      const img = document.getElementById('modalBpImg');
+      const b3d = document.getElementById('modalBtnBp3D');
+      const b2d = document.getElementById('modalBtnBp2D');
+      if (viewType === '3d') {
+        if (img) img.src = '/images/library/c2s-library-3d-master-layout.jpg';
+        if (b3d) { b3d.style.background = '#2563eb'; b3d.style.color = '#fff'; }
+        if (b2d) { b2d.style.background = 'transparent'; b2d.style.color = '#94a3b8'; }
+      } else {
+        if (img) img.src = '/images/library/c2s-library-floor-plan.jpg';
+        if (b2d) { b2d.style.background = '#2563eb'; b2d.style.color = '#fff'; }
+        if (b3d) { b3d.style.background = 'transparent'; b3d.style.color = '#94a3b8'; }
+      }
+    };
+
     window.handleDeclarationBoxClick = function(e) {
       if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON')) return;
       openLibraryRulesModal();
@@ -925,21 +940,31 @@
     <div style="background:#0f172a;border-radius:20px;border:1.5px solid #334155;max-width:850px;width:100%;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,0.6);color:#f8fafc;">
       
       <!-- Modal Header -->
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid #334155;background:#1e293b;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid #334155;background:#1e293b;flex-wrap:wrap;gap:10px;">
         <div>
           <h3 style="margin:0;font-size:17px;font-weight:850;color:#ffffff;display:flex;align-items:center;gap:8px;">
-            <span>🗺️</span> C2S Library Floor Plan Architectural Blueprint
+            <span>🗺️</span> C2S Library Floor Plan &amp; 3D Architectural Board
           </h3>
-          <div style="font-size:11.5px;color:#94a3b8;margin-top:2px;">149 Total Desks &bull; 4 Aisle Bays &bull; NH-16 Patrapada Centre</div>
+          <div style="font-size:11.5px;color:#94a3b8;margin-top:2px;">149 Total Desks (2 Floors) &bull; 4 Study Aisles &bull; NH-16 Patrapada Centre</div>
         </div>
-        <button type="button" onclick="closeFloorBlueprintModal()" style="background:#334155;border:none;color:#cbd5e1;font-size:18px;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900;">
-          ✕
-        </button>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="display:flex;gap:4px;background:#0f172a;padding:3px;border-radius:8px;border:1px solid #334155;">
+            <button type="button" id="modalBtnBp3D" onclick="switchModalBpView('3d')" style="padding:4px 10px;font-size:11.5px;font-weight:800;background:#2563eb;color:#fff;border-radius:6px;border:none;cursor:pointer;">
+              🌟 3D Master Layout
+            </button>
+            <button type="button" id="modalBtnBp2D" onclick="switchModalBpView('2d')" style="padding:4px 10px;font-size:11.5px;font-weight:800;background:transparent;color:#94a3b8;border-radius:6px;border:none;cursor:pointer;">
+              📐 2D Top View
+            </button>
+          </div>
+          <button type="button" onclick="closeFloorBlueprintModal()" style="background:#334155;border:none;color:#cbd5e1;font-size:18px;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900;">
+            ✕
+          </button>
+        </div>
       </div>
 
       <!-- Blueprint Image Body (Scrollable/Zoomable) -->
       <div style="padding:16px;overflow-y:auto;text-align:center;background:#020617;display:flex;align-items:center;justify-content:center;">
-        <img src="/images/library/c2s-library-floor-plan.jpg" alt="C2S Library Floor Plan Blueprint" style="max-width:100%;max-height:68vh;height:auto;object-fit:contain;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.5);">
+        <img id="modalBpImg" src="/images/library/c2s-library-3d-master-layout.jpg" alt="C2S Library Floor Plan Master Blueprint" style="max-width:100%;max-height:68vh;height:auto;object-fit:contain;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.5);">
       </div>
 
       <!-- Modal Footer with Legend & Action -->

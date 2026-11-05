@@ -402,12 +402,27 @@
               <button type="button" class="btn" onclick="resetBlueprintZoom()" style="background:#1e293b;color:#f8fafc;border:1px solid #475569;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:750;cursor:pointer;">
                 ⟲ Reset
               </button>
-              <a href="/images/library/c2s-library-floor-plan.jpg" target="_blank" class="btn" style="background:#3b82f6;color:#ffffff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
-                ⛶ High-Res Blueprint ↗
+              <a id="btnBpHresLink" href="/images/library/c2s-library-3d-master-layout.jpg" target="_blank" class="btn" style="background:#3b82f6;color:#ffffff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+                ⛶ High-Res View ↗
               </a>
               <button type="button" class="btn" onclick="toggleTourMode('2d')" style="background:#ea580c;color:#ffffff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:800;border:none;cursor:pointer;">
                 💺 Pick Desk in Matrix &rarr;
               </button>
+            </div>
+          </div>
+
+          <!-- Sub-Tab Switcher: 3D Master Board vs Top-View Blueprint -->
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;background:#1e293b;padding:8px 14px;border-radius:12px;border:1px solid #334155;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" id="btnBpView3D" class="btn" onclick="switchBlueprintView('3d')" style="padding:6px 14px;font-size:12.5px;font-weight:800;background:#2563eb;color:#fff;border-radius:8px;border:none;cursor:pointer;">
+                🌟 3D Master Layout &amp; Cutaway View
+              </button>
+              <button type="button" id="btnBpView2D" class="btn" onclick="switchBlueprintView('2d')" style="padding:6px 14px;font-size:12.5px;font-weight:800;background:#0f172a;color:#94a3b8;border-radius:8px;border:1px solid #334155;cursor:pointer;">
+                📐 Layout (Top View Schematic)
+              </button>
+            </div>
+            <div style="font-size:11.5px;color:#94a3b8;">
+              <span id="bpViewSubtitle">Photorealistic 3D Cutaway + Verified Campus Photos</span>
             </div>
           </div>
 
@@ -416,10 +431,10 @@
             <!-- Blueprint Image Stage -->
             <div style="position:relative;background:#020617;border-radius:14px;border:1px solid #334155;overflow:hidden;min-height:520px;display:flex;align-items:center;justify-content:center;padding:16px;">
               <div id="blueprintImageWrapper" style="transition:transform 0.2s ease;transform-origin:center center;text-align:center;">
-                <img id="blueprintImg" src="/images/library/c2s-library-floor-plan.jpg" alt="C2S Library Floor Plan Architectural Blueprint" style="max-width:100%;max-height:680px;height:auto;object-fit:contain;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.6);display:block;margin:0 auto;" />
+                <img id="blueprintImg" src="/images/library/c2s-library-3d-master-layout.jpg" alt="C2S Library 3D Master Architectural Layout" style="max-width:100%;max-height:680px;height:auto;object-fit:contain;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.6);display:block;margin:0 auto;" />
               </div>
               <div style="position:absolute;bottom:12px;left:12px;background:rgba(15,23,42,0.9);backdrop-filter:blur(6px);border:1px solid #334155;padding:6px 12px;border-radius:8px;font-size:11.5px;color:#cbd5e1;">
-                💡 <strong>Blueprint Architecture:</strong> 149 Desks &bull; 4 Study Aisles &bull; Central Ventilation
+                💡 <strong>Master Layout:</strong> 149 Desks (2 Floors) &bull; 4 Study Aisles &bull; Central Ventilation
               </div>
             </div>
 
@@ -771,6 +786,51 @@
         bpZoom = 1;
         var wrapper = document.getElementById('blueprintImageWrapper');
         if (wrapper) wrapper.style.transform = 'scale(1)';
+      }
+
+      function switchBlueprintView(viewType) {
+        var img = document.getElementById('blueprintImg');
+        var btn3d = document.getElementById('btnBpView3D');
+        var btn2d = document.getElementById('btnBpView2D');
+        var link = document.getElementById('btnBpHresLink');
+        var sub = document.getElementById('bpViewSubtitle');
+
+        if (viewType === '3d') {
+          if (img) {
+            img.src = '/images/library/c2s-library-3d-master-layout.jpg';
+            img.alt = 'C2S Library 3D Master Layout & Cutaway Model';
+          }
+          if (btn3d) {
+            btn3d.style.background = '#2563eb';
+            btn3d.style.color = '#fff';
+            btn3d.style.border = 'none';
+          }
+          if (btn2d) {
+            btn2d.style.background = '#0f172a';
+            btn2d.style.color = '#94a3b8';
+            btn2d.style.border = '1px solid #334155';
+          }
+          if (link) link.href = '/images/library/c2s-library-3d-master-layout.jpg';
+          if (sub) sub.textContent = 'Photorealistic 3D Cutaway + Verified Campus Photos';
+        } else {
+          if (img) {
+            img.src = '/images/library/c2s-library-floor-plan.jpg';
+            img.alt = 'C2S Library Architectural Floor Plan Blueprint';
+          }
+          if (btn2d) {
+            btn2d.style.background = '#2563eb';
+            btn2d.style.color = '#fff';
+            btn2d.style.border = 'none';
+          }
+          if (btn3d) {
+            btn3d.style.background = '#0f172a';
+            btn3d.style.color = '#94a3b8';
+            btn3d.style.border = '1px solid #334155';
+          }
+          if (link) link.href = '/images/library/c2s-library-floor-plan.jpg';
+          if (sub) sub.textContent = 'Exact Desk Numbering & Spatial Blueprint';
+        }
+        resetBlueprintZoom();
       }
 
       function jumpToDeskRange(min, max) {
