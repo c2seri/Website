@@ -577,7 +577,12 @@
     <!-- Member Directory with Search & Dues -->
     <div class="admin-table-wrap">
       <div style="padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-        <h3 style="margin:0;font-size:16px;color:var(--c2s-navy-900);">👥 Registered Members &amp; Admission Records</h3>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <h3 style="margin:0;font-size:16px;color:var(--c2s-navy-900);">👥 Registered Members &amp; Admission Records</h3>
+          <button type="button" class="btn orange" style="padding:6px 14px;font-size:12.5px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;" onclick="openRenewalModal('')">
+            <span>🔄 Renew Any Member</span>
+          </button>
+        </div>
         <input id="memberSearch" placeholder="Search by name, reg no or mobile…" style="max-width:280px;" oninput="filterAdminMembers()">
       </div>
       <table class="admin-table">
@@ -1587,17 +1592,27 @@
 
 <!-- MODAL 3: MEMBERSHIP RENEWAL & SHIFT / SEAT MANAGER -->
 <div id="membershipRenewalModal" class="c2s-admin-modal-backdrop">
-  <div class="c2s-admin-modal-card" style="max-width:700px;max-height:92vh;overflow-y:auto;">
+  <div class="c2s-admin-modal-card" style="max-width:720px;max-height:92vh;overflow-y:auto;">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;border-bottom:1.5px solid #e2e8f0;padding-bottom:12px;">
       <div style="display:flex;align-items:center;gap:12px;">
         <span style="font-size:28px;">🔄</span>
         <div>
-          <span class="pill orange" style="font-size:11px;font-weight:800;">MEMBERSHIP RENEWAL ENGINE</span>
+          <span class="pill orange" style="font-size:11px;font-weight:800;">ADMIN MEMBERSHIP RENEWAL ENGINE</span>
           <h3 style="margin:4px 0 2px;font-size:20px;color:#0f2a5c;">Renew Membership &amp; Manage Shift / Seat</h3>
-          <span style="font-size:12px;color:#64748b;" id="renewModalMemberInfo">Loading member details…</span>
+          <span style="font-size:12px;color:#64748b;" id="renewModalMemberInfo">Select any student or review current selection…</span>
         </div>
       </div>
       <button type="button" class="btn ghost" onclick="closeRenewalModal()" style="padding:4px 10px;font-size:16px;line-height:1;">✕</button>
+    </div>
+
+    <!-- 1. Member Selector: Admin can choose ANY student to renew -->
+    <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:12px 16px;margin-bottom:16px;">
+      <label style="display:block;font-size:12.5px;font-weight:800;color:#1e3a8a;margin-bottom:6px;">
+        👤 Select Student / Member To Renew <span style="font-size:11px;color:#2563eb;font-weight:600;">(Admin can renew any registered member)</span> <span style="color:#dc2626;">*</span>
+      </label>
+      <select id="renewMemberSelect" onchange="onSelectMemberToRenew(this.value)" style="width:100%;padding:10px 12px;border:1.5px solid #3b82f6;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;font-weight:750;">
+        <!-- Populated with all active and expired members -->
+      </select>
     </div>
 
     <!-- Seat Retention / Expiry Status Banner -->
@@ -1687,8 +1702,8 @@
         </div>
       </div>
 
-      <!-- Fees & Payment Calculation -->
-      <div style="background:#f1f5f9;border-radius:12px;padding:14px 16px;margin-bottom:18px;">
+      <!-- Fees & Payment Calculation (Kitna Payment Diya + Dues) -->
+      <div style="background:#f1f5f9;border-radius:12px;padding:16px;margin-bottom:18px;border:1.5px solid #e2e8f0;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13px;">
           <span style="color:#475569;">Shift Fee Rate:</span>
           <strong id="renewFeeRateDisplay" style="color:#0f172a;">₹1,200 / month</strong>
@@ -1701,6 +1716,7 @@
           <span style="color:#475569;">Registration Fee:</span>
           <strong style="color:#059669;">₹0 (Waived for Renewal)</strong>
         </div>
+
         <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:10px;margin-top:10px;padding-top:10px;border-top:1.5px solid #cbd5e1;">
           <div>
             <label style="font-size:11px;font-weight:750;color:#475569;display:block;">Total Fee (₹)</label>
@@ -1711,27 +1727,63 @@
             <input type="number" id="renewDiscount" value="0" min="0" oninput="recalcRenewPayment()" style="width:100%;padding:7px 8px;border:1.5px solid #cbd5e1;border-radius:6px;font-weight:750;">
           </div>
           <div>
-            <label style="font-size:11px;font-weight:750;color:#475569;display:block;">Paid (₹) <span style="color:#dc2626;">*</span></label>
-            <input type="number" id="renewPaid" required oninput="recalcRenewPayment()" style="width:100%;padding:7px 8px;border:1.5px solid #10b981;border-radius:6px;font-weight:800;color:#047857;">
+            <label style="font-size:11px;font-weight:750;color:#047857;display:block;">Payment Received (₹) <span style="color:#dc2626;">*</span></label>
+            <input type="number" id="renewPaid" required oninput="this.dataset.userEdited='true'; recalcRenewPayment()" style="width:100%;padding:7px 8px;border:2px solid #10b981;border-radius:6px;font-weight:900;color:#047857;background:#fff;font-size:14px;">
           </div>
           <div>
-            <label style="font-size:11px;font-weight:750;color:#475569;display:block;">Pending (₹)</label>
+            <label style="font-size:11px;font-weight:750;color:#dc2626;display:block;">Pending Dues (₹)</label>
             <input type="number" id="renewPending" value="0" readonly style="width:100%;padding:7px 8px;border:1.5px solid #cbd5e1;border-radius:6px;font-weight:800;color:#dc2626;background:#fff;">
           </div>
         </div>
+
+        <!-- Quick Payment Presets Bar -->
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center;">
+          <span style="font-size:11px;color:#64748b;font-weight:700;">Payment Presets:</span>
+          <button type="button" class="btn ghost" style="padding:3px 9px;font-size:11px;font-weight:750;color:#047857;background:#ecfdf5;border-color:#a7f3d0;" onclick="setRenewPaidPreset('full')">✓ Full Paid</button>
+          <button type="button" class="btn ghost" style="padding:3px 9px;font-size:11px;font-weight:750;color:#d97706;background:#fffbeb;border-color:#fde68a;" onclick="setRenewPaidPreset('half')">Half Paid (50%)</button>
+          <button type="button" class="btn ghost" style="padding:3px 9px;font-size:11px;font-weight:750;color:#dc2626;background:#fef2f2;border-color:#fecaca;" onclick="setRenewPaidPreset('zero')">₹0 (Full Dues)</button>
+        </div>
       </div>
 
-      <!-- Payment Mode -->
-      <div style="margin-bottom:20px;">
-        <label style="display:block;font-size:12.5px;font-weight:750;color:#0f172a;margin-bottom:4px;">
-          Payment Mode <span style="color:#dc2626;">*</span>
+      <!-- Payment Mode & Live Receipt Details -->
+      <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:18px;">
+        <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:8px;">
+          💳 Payment Mode &amp; Receipt Records <span style="color:#dc2626;">*</span>
         </label>
-        <select id="renewPayMode" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;font-weight:700;color:#0f172a;background:#fff;">
-          <option value="UPI / QR (PhonePe / GPay / Paytm)" selected>UPI / QR (PhonePe / GPay / Paytm)</option>
-          <option value="Cash at Front Desk">Cash at Front Desk</option>
-          <option value="Debit Card / Credit Card (POS)">Debit Card / Credit Card (POS)</option>
-          <option value="Net Banking / IMPS">Net Banking / IMPS</option>
-        </select>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+          <div>
+            <label style="font-size:11.5px;font-weight:750;color:#475569;display:block;margin-bottom:4px;">
+              Received Via (Payment Mode) <span style="color:#dc2626;">*</span>
+            </label>
+            <select id="renewPayMode" onchange="updateRenewPaymentSummary()" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;font-weight:700;color:#0f172a;background:#fff;">
+              <option value="UPI / QR (PhonePe / GPay / Paytm)" selected>📱 UPI / QR (PhonePe / GPay / Paytm)</option>
+              <option value="Cash at Front Desk">💵 Cash at Front Desk</option>
+              <option value="Debit Card / Credit Card (POS)">💳 Debit Card / Credit Card (POS)</option>
+              <option value="Net Banking / IMPS / NEFT">🏦 Net Banking / IMPS / NEFT</option>
+              <option value="Cheque / DD">🧾 Cheque / Demand Draft</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="font-size:11.5px;font-weight:750;color:#475569;display:block;margin-bottom:4px;">
+              Transaction / Memo Reference (Optional)
+            </label>
+            <input type="text" id="renewTxnRef" placeholder="e.g. UTR # / UPI Ref / Cash Memo #" oninput="updateRenewPaymentSummary()" style="width:100%;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:12.5px;">
+          </div>
+        </div>
+
+        <!-- Live Payment Visual Slip Card (Admin checks exact payment & mode) -->
+        <div id="renewLivePaymentSummary" style="background:#ecfdf5;border:1.5px solid #a7f3d0;border-radius:10px;padding:12px 16px;font-size:12.5px;color:#065f46;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <div>
+            <span style="display:block;font-weight:850;font-size:14px;" id="renewSummaryAmountLine">💰 Payment Received: ₹1,200</span>
+            <span style="font-size:12px;color:#047857;" id="renewSummaryModeLine">Payment Mode: 📱 UPI / QR (PhonePe / GPay / Paytm)</span>
+          </div>
+          <div style="text-align:right;">
+            <span class="pill green" id="renewSummaryStatusPill" style="font-size:11px;padding:3px 9px;font-weight:800;">✓ FULL PAYMENT</span>
+            <span style="display:block;font-size:11.5px;color:#059669;margin-top:2px;font-weight:700;" id="renewSummaryPendingLine">Pending: ₹0</span>
+          </div>
+        </div>
       </div>
 
       <!-- Action Buttons -->

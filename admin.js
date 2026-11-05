@@ -885,6 +885,7 @@ function renderMemberList(filterQuery = '') {
         </td>
         <td>
           <div style="font-size:13px;font-weight:800;color:#047857;">₹${m.paid || 0} Paid</div>
+          <span style="font-size:11px;color:#2563eb;font-weight:750;display:block;">💳 ${m.lastPaymentMode || m.mode || 'UPI / QR'}</span>
           ${m.pending > 0 ? `<div style="font-size:11px;font-weight:800;color:#dc2626;">₹${m.pending} Pending</div>` : `<span style="font-size:10.5px;color:#059669;font-weight:700;">✓ Cleared</span>`}
         </td>
         <td>
@@ -1218,7 +1219,7 @@ window.openStudent360 = function(regNo) {
   document.getElementById('modalStudentMobile').textContent = m.mobile || 'N/A';
   document.getElementById('modalStudentSeat').textContent = (m.seat || 'Physical Walk-in') + (m.seatStatus ? ` (${m.seatStatus})` : '');
   document.getElementById('modalStudentShift').textContent = m.shift || 'Full Day';
-  document.getElementById('modalStudentPayment').textContent = '₹' + (m.paid || 0) + ' Paid (' + (m.mode || 'UPI') + ')';
+  document.getElementById('modalStudentPayment').textContent = '₹' + (m.paid || 0) + ' Paid (' + (m.lastPaymentMode || m.mode || 'UPI / QR') + ')' + (m.pending > 0 ? ` • Pending: ₹${m.pending}` : '');
 
   // Photo in Modal
   const photoImg = document.getElementById('modalStudentPhoto');
@@ -1299,9 +1300,28 @@ window.saveStudentNotes = function() {
    FEATURE: MEMBERSHIP RENEWAL & SHIFT / SEAT RETENTION ENGINE
    ========================================================================== */
 window.openRenewalModal = function(regNo) {
-  if (!regNo && currentModalStudent) regNo = currentModalStudent.regNo;
   const members = store.get('c2s_lib_members', []);
-  const m = members.find(item => item.regNo === regNo);
+  if (!members.length) return alert('No registered library members found in system.');
+
+  if (!regNo) {
+    regNo = currentModalStudent ? currentModalStudent.regNo : members[0].regNo;
+  }
+
+  // Populate Member Dropdown so admin can select and renew ANY member
+  const memberSelectEl = document.getElementById('renewMemberSelect');
+  if (memberSelectEl) {
+    memberSelectEl.innerHTML = members.map(item => {
+      const exp = getMemberExpiryDate(item);
+      const today = new Date().toISOString().slice(0, 10);
+      const isExp = exp ? (today > exp) : (item.status === 'Inactive' || item.status === 'Expired');
+      const statLabel = isExp ? '⚠️ Inactive / Expired' : '🟢 Active';
+      return `<option value="${item.regNo}" ${item.regNo === regNo ? 'selected' : ''}>
+        ${item.name} (${item.regNo}) • Desk: ${item.seat || 'Front Desk'} • Shift: ${item.shift || 'Full Day'} • [${statLabel}]
+      </option>`;
+    }).join('');
+  }
+
+  const m = members.find(item => item.regNo === regNo) || members[0];
   if (!m) return alert('Member record not found for: ' + regNo);
 
   const today = new Date().toISOString().slice(0, 10);
@@ -1412,6 +1432,12 @@ window.openRenewalModal = function(regNo) {
   if (modal) modal.classList.add('open');
 };
 
+window.onSelectMemberToRenew = function(selectedRegNo) {
+  if (selectedRegNo) {
+    openRenewalModal(selectedRegNo);
+  }
+};
+
 window.closeRenewalModal = function() {
   const modal = document.getElementById('membershipRenewalModal');
   if (modal) modal.classList.remove('open');
@@ -1432,6 +1458,8 @@ window.onRenewShiftChange = function() {
   if (timingEl) timingEl.value = shiftCfg.timing;
   const rateDisplay = document.getElementById('renewFeeRateDisplay');
   if (rateDisplay) rateDisplay.textContent = `₹${shiftCfg.fee.toLocaleString('en-IN')} / month`;
+  const paidEl = document.getElementById('renewPaid');
+  if (paidEl && paidEl.dataset) delete paidEl.dataset.userEdited;
   recalcRenewPayment();
 };
 
@@ -1439,6 +1467,8 @@ window.onRenewDurationChange = function() {
   const dur = document.getElementById('renewDuration')?.value || '1';
   const durDisplay = document.getElementById('renewDurationDisplay');
   if (durDisplay) durDisplay.textContent = `${dur} Month${Number(dur) > 1 ? 's' : ''}`;
+  const paidEl = document.getElementById('renewPaid');
+  if (paidEl && paidEl.dataset) delete paidEl.dataset.userEdited;
   recalcRenewDates();
   recalcRenewPayment();
 };
@@ -1460,6 +1490,68 @@ window.recalcRenewDates = function() {
   }
 };
 
+window.setRenewPaidPreset = function(type) {
+  const total = Number(document.getElementById('renewTotalFee')?.value || 0);
+  const discount = Number(document.getElementById('renewDiscount')?.value || 0);
+  const net = Math.max(0, total - discount);
+  const paidEl = document.getElementById('renewPaid');
+  if (!paidEl) return;
+
+  paidEl.dataset = paidEl.dataset || {};
+  paidEl.dataset.userEdited = 'true';
+
+  if (type === 'full') {
+    paidEl.value = net;
+  } else if (type === 'half') {
+    paidEl.value = Math.round(net / 2);
+  } else if (type === 'zero') {
+    paidEl.value = 0;
+  }
+  recalcRenewPayment();
+};
+
+window.updateRenewPaymentSummary = function() {
+  const total = Math.max(0, Number(document.getElementById('renewTotalFee')?.value || 0));
+  const discount = Math.max(0, Number(document.getElementById('renewDiscount')?.value || 0));
+  const net = Math.max(0, total - discount);
+  const paid = Math.max(0, Number(document.getElementById('renewPaid')?.value || 0));
+  const pending = Math.max(0, net - paid);
+  const mode = document.getElementById('renewPayMode')?.value || 'UPI / QR (PhonePe / GPay / Paytm)';
+  const ref = (document.getElementById('renewTxnRef')?.value || '').trim();
+
+  const amtLine = document.getElementById('renewSummaryAmountLine');
+  const modeLine = document.getElementById('renewSummaryModeLine');
+  const pill = document.getElementById('renewSummaryStatusPill');
+  const pendingLine = document.getElementById('renewSummaryPendingLine');
+  const banner = document.getElementById('renewLivePaymentSummary');
+
+  if (amtLine) amtLine.textContent = `💰 Payment Received: ₹${paid.toLocaleString('en-IN')}${ref ? ' • Ref: ' + ref : ''}`;
+  if (modeLine) modeLine.textContent = `Payment Mode: ${mode}`;
+  if (pendingLine) pendingLine.textContent = `Pending Dues: ₹${pending.toLocaleString('en-IN')}`;
+
+  if (pill && banner) {
+    if (paid >= net && net > 0) {
+      pill.className = 'pill green';
+      pill.textContent = '✓ FULL PAYMENT CLEARED';
+      banner.style.background = '#ecfdf5';
+      banner.style.borderColor = '#a7f3d0';
+      banner.style.color = '#065f46';
+    } else if (paid > 0) {
+      pill.className = 'pill orange';
+      pill.textContent = '⚠️ PARTIAL PAYMENT';
+      banner.style.background = '#fffbeb';
+      banner.style.borderColor = '#fde68a';
+      banner.style.color = '#92400e';
+    } else {
+      pill.className = 'pill red';
+      pill.textContent = '🔴 ZERO PAYMENT (FULL DUES)';
+      banner.style.background = '#fef2f2';
+      banner.style.borderColor = '#fecaca';
+      banner.style.color = '#991b1b';
+    }
+  }
+};
+
 window.recalcRenewPayment = function() {
   const shift = document.getElementById('renewShift')?.value || 'Full Day';
   const dur = parseInt(document.getElementById('renewDuration')?.value || '1', 10);
@@ -1475,12 +1567,14 @@ window.recalcRenewPayment = function() {
   const discount = Math.max(0, parseInt(discountEl?.value || '0', 10) || 0);
   const netPayable = Math.max(0, total - discount);
 
-  if (paidEl) {
+  if (paidEl && !(paidEl.dataset && paidEl.dataset.userEdited)) {
     paidEl.value = netPayable;
   }
   const paid = Math.max(0, parseInt(paidEl?.value || '0', 10) || 0);
   const pending = Math.max(0, netPayable - paid);
   if (pendingEl) pendingEl.value = pending;
+
+  updateRenewPaymentSummary();
 };
 
 window.processRenewal = function(e) {
@@ -1513,7 +1607,8 @@ window.processRenewal = function(e) {
   const discount = Number(document.getElementById('renewDiscount')?.value || 0);
   const paid = Number(document.getElementById('renewPaid')?.value || (totalFee - discount));
   const pending = Number(document.getElementById('renewPending')?.value || 0);
-  const payMode = document.getElementById('renewPayMode')?.value || 'UPI / QR';
+  const payMode = document.getElementById('renewPayMode')?.value || 'UPI / QR (PhonePe / GPay / Paytm)';
+  const txnRef = (document.getElementById('renewTxnRef')?.value || '').trim();
 
   const today = new Date().toISOString().slice(0, 10);
   const oldSeatCode = normalizeSeatCode(m.seat);
@@ -1548,6 +1643,10 @@ window.processRenewal = function(e) {
   m.validTill = newToDate;
   m.paid = Number(m.paid || 0) + paid;
   m.pending = pending;
+  m.mode = payMode;
+  m.lastPaymentMode = payMode;
+  m.lastPaymentAmount = paid;
+  m.lastPaymentRef = txnRef;
   m.lastRenewalDate = today;
   m.renewalHistory = m.renewalHistory || [];
   m.renewalHistory.push({
@@ -1559,7 +1658,8 @@ window.processRenewal = function(e) {
     seat: newSeat,
     paid: paid,
     pending: pending,
-    mode: payMode
+    mode: payMode,
+    ref: txnRef
   });
 
   store.set('c2s_lib_members', members);
@@ -1570,11 +1670,11 @@ window.processRenewal = function(e) {
     store.set('c2s_lib_user', m);
   }
 
-  // Record ledger entry
+  // Record ledger entry with payment mode & reference
   const ledger = store.get('c2s_lib_ledger', []);
   ledger.unshift({
     date: today,
-    desc: `Renewal ${m.regNo} (${m.name}, ${newShift}, Seat: ${newSeat})`,
+    desc: `Renewal ${m.regNo} (${m.name}, ${newShift}, Seat: ${newSeat}) • Mode: ${payMode}${txnRef ? ' (Ref: ' + txnRef + ')' : ''}`,
     amt: paid
   });
   store.set('c2s_lib_ledger', ledger);
@@ -1584,7 +1684,7 @@ window.processRenewal = function(e) {
     window.dispatchAdmissionReceipt(m);
   }
 
-  alert(`🎉 Membership Renewed Successfully!\n\nCandidate: ${m.name} (${m.regNo})\nShift: ${newShift}\nDesk: ${newSeat}\nValidity: ${newFromDate} to ${newToDate}\nPaid: ₹${paid} (${payMode})\n\nSeat is locked and active!`);
+  alert(`🎉 Membership Renewed Successfully!\n\nCandidate: ${m.name} (${m.regNo})\nShift: ${newShift}\nDesk: ${newSeat}\nValidity: ${newFromDate} to ${newToDate}\nPayment Collected: ₹${paid} (${payMode})${txnRef ? '\nRef: ' + txnRef : ''}\nPending Balance: ₹${pending}\n\nSeat is locked and active!`);
 
   closeRenewalModal();
   renderFrontDesk();
