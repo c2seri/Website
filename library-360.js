@@ -385,7 +385,7 @@
     }
   }
 
-  // Draw Interactive Desk Pin
+  // Draw Interactive Seat Pin
   function drawDeskHotspot(x, y, deskId) {
     const isSelected = selectedDesk === deskId;
     const isOccupied = occupiedDesks.has(deskId);
@@ -416,8 +416,8 @@
     ctx.fillStyle = '#ffffff';
     ctx.fill();
 
-    // Desk Label Pill with Verified Price
-    const labelText = `Desk ${deskId}`;
+    // Seat Label Pill with Verified Price
+    const labelText = `Seat ${deskId}`;
     const priceText = isOccupied ? 'Occupied' : '₹1000/mo';
     ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
     const textW = Math.max(76, (ctx.measureText ? ctx.measureText(labelText).width : 40) + 24);
@@ -435,7 +435,7 @@
     ctx.fill();
     ctx.stroke();
 
-    // Desk Title
+    // Seat Title
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
     ctx.textAlign = 'center';
@@ -716,7 +716,7 @@
     if (tagEl) tagEl.textContent = vp.tag;
   };
 
-  // Desk Selection & Bottom HUD Update
+  // Seat Selection & Bottom HUD Update
   window.onSelect360Desk = function(deskId) {
     selectedDesk = deskId;
     const isOcc = occupiedDesks.has(deskId);
@@ -726,7 +726,7 @@
     const hudStatus = document.getElementById('hudDeskStatus');
     const hudCta = document.getElementById('hudBookCta');
 
-    if (hudDeskName) hudDeskName.textContent = `Desk ${deskId}`;
+    if (hudDeskName) hudDeskName.textContent = `Seat ${deskId}`;
     if (hudZoneName) {
       const zoneLetter = deskId.charAt(0);
       hudZoneName.textContent = zoneLetter === 'A' ? 'Zone A • Silent Cubicle' : (zoneLetter === 'B' ? 'Zone B • Digital Power Hub' : 'Zone C • Silent Pod');
@@ -746,7 +746,7 @@
         hudCta.style.cursor = "not-allowed";
       } else {
         hudCta.disabled = false;
-        hudCta.textContent = `Reserve Desk ${deskId} Online (₹1000/mo) →`;
+        hudCta.textContent = `Reserve Seat ${deskId} Online (₹1000/mo) →`;
         hudCta.style.background = "#ea580c";
         hudCta.style.cursor = "pointer";
         hudCta.onclick = function() {

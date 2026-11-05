@@ -64,7 +64,7 @@ window.getLibraryWifiCredentials = function(seatStr) {
   if (seatNum !== null && seatNum >= 1 && seatNum <= 24) {
     return {
       floor: "2nd Floor",
-      seatRange: "Desks 01 to 24",
+      seatRange: "Seats 01 to 24",
       ssids: ["C2S_Wifi_5G"],
       primarySsid: "C2S_Wifi_5G",
       password: "Mama@123",
@@ -74,7 +74,7 @@ window.getLibraryWifiCredentials = function(seatStr) {
   } else if (seatNum !== null && seatNum >= 25 && seatNum <= 149) {
     return {
       floor: "1st Floor",
-      seatRange: "Desks 25 to 149",
+      seatRange: "Seats 25 to 149",
       ssids: ["C2S -1", "C2S-2"],
       primarySsid: "C2S -1 / C2S-2",
       password: "Mama@123",
@@ -278,8 +278,8 @@ window.setLibraryFloor = function(floorNum) {
   const floorBadge = document.getElementById("currentFloorLabelBadge");
   if (floorBadge) {
     floorBadge.textContent = currentLibraryFloor === 1 ? 
-      "1st Floor • Desks S-25 to S-149 (Zones B, C, D • 125 Seats)" : 
-      "2nd Floor • Desks S-1 to S-24 (Zone A • 24 Seats)";
+      "1st Floor • Seats S-25 to S-149 (Zones B, C, D • 125 Seats)" : 
+      "2nd Floor • Seats S-1 to S-24 (Zone A • 24 Seats)";
   }
   renderTheatreSeats();
 };
@@ -296,32 +296,32 @@ function renderTheatreSeats() {
     //            Zone-D (S-110 to S-149, 2 rows: 110-130, 131-149)
     const zones = currentLibraryFloor === 2 ? [
       {
-        title: "Zone A (2nd Floor • Desks S-1 to S-24)",
+        title: "Zone A (2nd Floor • Seats S-1 to S-24)",
         rows: [
-          { label: "Row 1 (Desks S-1 to S-12)", start: 1, end: 12 },
-          { label: "Row 2 (Desks S-13 to S-24)", start: 13, end: 24 }
+          { label: "Row 1 (Seats S-1 to S-12)", start: 1, end: 12 },
+          { label: "Row 2 (Seats S-13 to S-24)", start: 13, end: 24 }
         ]
       }
     ] : [
       {
-        title: "Zone B (1st Floor • Desks S-25 to S-67 • Left Wall Bay)",
+        title: "Zone B (1st Floor • Seats S-25 to S-67 • Left Wall Bay)",
         rows: [
-          { label: "Row 1 • Outer Wall A/C (Desks S-25 to S-46)", start: 25, end: 46 },
-          { label: "Row 2 • Inner Row (Desks S-47 to S-67)", start: 47, end: 67 }
+          { label: "Row 1 • Outer Wall A/C (Seats S-25 to S-46)", start: 25, end: 46 },
+          { label: "Row 2 • Inner Row (Seats S-47 to S-67)", start: 47, end: 67 }
         ]
       },
       {
-        title: "Zone C (1st Floor • Desks S-68 to S-109 • Center Sanctuary)",
+        title: "Zone C (1st Floor • Seats S-68 to S-109 • Center Sanctuary)",
         rows: [
-          { label: "Row 1 • Center Aisle Facing (Desks S-68 to S-88)", start: 68, end: 88 },
-          { label: "Row 2 • Center Aisle Facing (Desks S-89 to S-109)", start: 89, end: 109 }
+          { label: "Row 1 • Center Aisle Facing (Seats S-68 to S-88)", start: 68, end: 88 },
+          { label: "Row 2 • Center Aisle Facing (Seats S-89 to S-109)", start: 89, end: 109 }
         ]
       },
       {
-        title: "Zone D (1st Floor • Desks S-110 to S-149 • Right Wall Bay)",
+        title: "Zone D (1st Floor • Seats S-110 to S-149 • Right Wall Bay)",
         rows: [
-          { label: "Row 1 • Aisle Facing (Desks S-110 to S-130)", start: 110, end: 130 },
-          { label: "Row 2 • Right Wall A/C & Entrance (Desks S-131 to S-149)", start: 131, end: 149 }
+          { label: "Row 1 • Aisle Facing (Seats S-110 to S-130)", start: 110, end: 130 },
+          { label: "Row 2 • Right Wall A/C & Entrance (Seats S-131 to S-149)", start: 131, end: 149 }
         ]
       }
     ];
@@ -333,7 +333,7 @@ function renderTheatreSeats() {
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
             <strong style="color:#0f2a5c;font-size:14.5px;">💺 ${zone.title}</strong>
             <span style="font-size:11px;color:#059669;font-weight:800;background:#ecfdf5;padding:3px 10px;border-radius:6px;border:1px solid #a7f3d0;">
-              Desk No = Locker No
+              Seat No = Locker No
             </span>
           </div>
       `;
@@ -397,13 +397,13 @@ function pickSeat(id) {
   if (isNumbered) {
     const seatCode = "S-" + num;
     if (taken[seatCode] || taken["Desk-" + String(num).padStart(3, "0")] || taken["Desk " + num] || taken["Desk #" + num] || taken[String(num)] || (num % 7 === 0 && !taken[seatCode] && selectedSeat !== seatCode)) {
-      alert("Seat " + seatCode + " is currently occupied by an active student. Please choose an open green desk.");
+      alert("Seat " + seatCode + " is currently occupied by an active student. Please choose an open green seat.");
       return;
     }
     selectedSeat = seatCode;
   } else {
     if (taken[id]) {
-      alert("Desk " + id + " is currently occupied. Please choose an open green desk.");
+      alert("Desk " + id + " is currently occupied. Please choose an open green seat.");
       return;
     }
     selectedSeat = id;
@@ -464,10 +464,10 @@ function updateInspectorHUD() {
     const shiftPrice = SHIFTS[selShift]?.defaultPrice || 1200;
     if (hudPrice) hudPrice.textContent = selShift + ": ₹" + shiftPrice + "/mo";
   } else {
-    if (hudDeskName) hudDeskName.textContent = "Select Any Desk Above";
-    if (hudZoneName) hudZoneName.textContent = "149 Total Desks • 2 Floors (Zones A, B, C, D)";
+    if (hudDeskName) hudDeskName.textContent = "Select Any Seat Above";
+    if (hudZoneName) hudZoneName.textContent = "149 Total Seats • 2 Floors (Zones A, B, C, D)";
     if (hudDeskStatus) {
-      hudDeskStatus.innerHTML = '<span style="color:#94a3b8;">Click any green desk: 2nd Floor (S-1 to S-24) or 1st Floor (S-25 to S-149)</span>';
+      hudDeskStatus.innerHTML = '<span style="color:#94a3b8;">Click any green seat: 2nd Floor (S-1 to S-24) or 1st Floor (S-25 to S-149)</span>';
     }
     if (hudBookCta) {
       hudBookCta.onclick = function() {
@@ -482,7 +482,7 @@ function updateInspectorHUD() {
 
 function proceedToAdmissionWithSeat() {
   if (!selectedSeat) {
-    alert("Please click a green 3D desk on the floor map to select your preferred study station.");
+    alert("Please click a green 3D seat on the floor map to select your preferred study station.");
     return;
   }
   window.location.href = "admission.html?seat=" + encodeURIComponent(selectedSeat);
@@ -892,7 +892,7 @@ function libAdmit(e) {
           </div>
         ` : `
           <div style="background:rgba(16,185,129,0.12);border:1px dashed rgba(52,211,153,0.4);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#a7f3d0;line-height:1.5;">
-            🪑 <strong>Online Desk Reserved:</strong> Aapka desk <strong>${m.seat}</strong> reserve kar diya gaya hai. Centre aakar sidhe apni desk par baithkar padhai shuru karein.
+            🪑 <strong>Online Desk Reserved:</strong> Aapka seat <strong>${m.seat}</strong> reserve kar diya gaya hai. Centre aakar sidhe apni seat par baithkar padhai shuru karein.
           </div>
         `}
 
@@ -937,10 +937,10 @@ function renderDigitalID() {
     const expDate = typeof getMemberExpiryDate === "function" ? getMemberExpiryDate(u) : (u.toDate || u.validTill);
     const todayStr = new Date().toISOString().slice(0, 10);
     const isExpired = expDate ? (todayStr > expDate) : (u.status === 'Inactive' || u.status === 'Expired');
-    const uWifi = window.getLibraryWifiCredentials ? window.getLibraryWifiCredentials(u.seat) : { floor: "1st Floor", primarySsid: "C2S -1 / C2S-2", password: "Mama@123", seatRange: "Desks 25 to 149" };
+    const uWifi = window.getLibraryWifiCredentials ? window.getLibraryWifiCredentials(u.seat) : { floor: "1st Floor", primarySsid: "C2S -1 / C2S-2", password: "Mama@123", seatRange: "Seats 25 to 149" };
 
     const statusBadge = isExpired ?
-      `<span class="pill" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:11px;padding:4px 12px;font-weight:800;">⚠️ EXPIRED (Desk Released)</span>` :
+      `<span class="pill" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:11px;padding:4px 12px;font-weight:800;">⚠️ EXPIRED (Seat Released)</span>` :
       `<span class="pill green" style="font-size:11.5px;padding:4px 12px;font-weight:800;">✓ ACTIVE PASS (Valid till: ${expDate || u.toDate || 'Active'})</span>`;
 
     container.innerHTML = `
@@ -965,7 +965,7 @@ function renderDigitalID() {
             <div style="font-size:15px;font-weight:800;color:#38bdf8;margin-bottom:8px;letter-spacing:1px;">${u.regNo}</div>
 
             <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;">Assigned Shift &amp; Seat</div>
-            <div style="font-size:14.5px;color:#fff;font-weight:700;margin-bottom:6px;">${u.shift || 'Full Day (07:00 AM – 09:00 PM)'} &bull; <span style="color:${isExpired ? '#f87171' : '#38bdf8'};">${u.seat || 'Assigned Desk'} ${isExpired ? '(Released)' : ''}</span></div>
+            <div style="font-size:14.5px;color:#fff;font-weight:700;margin-bottom:6px;">${u.shift || 'Full Day (07:00 AM – 09:00 PM)'} &bull; <span style="color:${isExpired ? '#f87171' : '#38bdf8'};">${u.seat || 'Assigned Seat'} ${isExpired ? '(Released)' : ''}</span></div>
             ${u.examPref ? `<div style="font-size:11px;color:#94a3b8;text-transform:uppercase;margin-top:6px;">Target Goal</div><div style="font-size:13px;color:#34d399;font-weight:750;">🎯 ${u.examPref}</div>` : ''}
           </div>
 
@@ -1014,7 +1014,7 @@ function renderDigitalID() {
 
     // Also synchronize top dashboard pass card values if present
     const deskDisplay = document.getElementById("dashDeskDisplay");
-    if (deskDisplay) deskDisplay.textContent = u.seat || "Desk #14";
+    if (deskDisplay) deskDisplay.textContent = u.seat || "Seat #14";
     const shiftDisplay = document.getElementById("dashShiftDisplay");
     if (shiftDisplay) shiftDisplay.textContent = u.shift || "Full Day (07:00 AM – 09:00 PM)";
     const wifiDisplay = document.getElementById("dashWifiDisplay");
@@ -1026,7 +1026,7 @@ function renderDigitalID() {
       const isFull = u.shift && (u.shift.includes("Full Day") || u.shift.includes("24 Hours"));
       const seatM = (u.seat || "").match(/\d+/);
       const lockerNum = seatM ? seatM[0] : "14";
-      lockerDisplay.textContent = isFull ? `Locker #${lockerNum} (Desk = Locker)` : "No Locker (Partial Shift)";
+      lockerDisplay.textContent = isFull ? `Locker #${lockerNum} (Seat = Locker)` : "No Locker (Partial Shift)";
     }
   } else {
     container.innerHTML = "";
@@ -1093,7 +1093,7 @@ function verifyLibOtp() {
       name: "Enrolled Student Member",
       mobile: preview.target,
       shift: "Full Day (07:00 AM – 09:00 PM)",
-      seat: "Desk A-14",
+      seat: "Seat A-14",
       paid: 1000,
       pending: 0,
       examPref: "OSSC CGL / Odisha Police SI"
@@ -1210,7 +1210,7 @@ window.onBranchChange = function() {
   if (!sel || !snippet) return;
   const val = sel.value;
   if (val.includes("Patrapada")) {
-    snippet.innerHTML = "✓ 149 Desks across 2 Floors • Open 24 Hours • Free Weekly Math/Reasoning Classes • Free CBT Tests • Underground Parking • Fiber Wi-Fi";
+    snippet.innerHTML = "✓ 149 Seats across 2 Floors • Open 24 Hours • Free Weekly Math/Reasoning Classes • Free CBT Tests • Underground Parking • Fiber Wi-Fi";
     snippet.style.color = "#1e3a8a";
   } else if (val.includes("Jayadev")) {
     snippet.innerHTML = "🟡 Coming Soon • 100 Proposed Desks in Central Bhubaneswar • Pre-Registration &amp; Early-Bird Concession";
@@ -1243,7 +1243,7 @@ window.checkBranchUrlParams = function() {
 
     if (badge && mode === 'local') {
       badge.style.display = 'inline-block';
-      // Automatically activate physical front desk selection mode for walk-ins on tablet
+      // Automatically activate physical front seat selection mode for walk-ins on tablet
       const physicalRadio = document.querySelector('input[name="seatPrefMethod"][value="physical"]');
       if (physicalRadio) {
         physicalRadio.checked = true;
@@ -1358,12 +1358,12 @@ window.lookupStudentForRenewal = function() {
     banner.style.border = '1.5px solid #a7f3d0';
     banner.style.color = '#065f46';
     banner.innerHTML = `
-      <div style="font-weight:800;font-size:14px;margin-bottom:4px;">🟢 Active Membership — Desk Retained</div>
-      <div>Current validity: <strong>${expiryDate || m.toDate || 'Active'}</strong>. Because you are renewing <strong>on or before expiry</strong>, your desk <strong>${m.seat || 'Assigned Desk'}</strong> is reserved for you.</div>
+      <div style="font-weight:800;font-size:14px;margin-bottom:4px;">🟢 Active Membership — Seat Retained</div>
+      <div>Current validity: <strong>${expiryDate || m.toDate || 'Active'}</strong>. Because you are renewing <strong>on or before expiry</strong>, your desk <strong>${m.seat || 'Assigned Seat'}</strong> is reserved for you.</div>
     `;
     keepOptionWrap.style.display = 'flex';
     keepRadio.checked = true;
-    keepLabel.textContent = `🟢 Keep Current Desk (${m.seat || 'Assigned Desk'}) (Reserved for you)`;
+    keepLabel.textContent = `🟢 Keep Current Seat (${m.seat || 'Assigned Seat'}) (Reserved for you)`;
     keepSub.textContent = `Retain your exact seat without losing your desk. Seamless extension from ${expiryDate || 'current end date'}.`;
     changeBox.style.display = 'none';
 
@@ -1373,15 +1373,15 @@ window.lookupStudentForRenewal = function() {
     banner.style.border = '1.5px solid #fecaca';
     banner.style.color = '#991b1b';
     banner.innerHTML = `
-      <div style="font-weight:800;font-size:14px;margin-bottom:4px;">⚠️ Membership Expired — Desk Released</div>
-      <div>Expired on: <strong>${expiryDate || m.toDate || 'Past Date'}</strong>. Because renewal was not done on or before the expiry date, desk <strong>${m.seat || 'Previous Desk'}</strong> was automatically released. Please select an available desk below.</div>
+      <div style="font-weight:800;font-size:14px;margin-bottom:4px;">⚠️ Membership Expired — Seat Released</div>
+      <div>Expired on: <strong>${expiryDate || m.toDate || 'Past Date'}</strong>. Because renewal was not done on or before the expiry date, desk <strong>${m.seat || 'Previous Seat'}</strong> was automatically released. Please select an available desk below.</div>
     `;
 
     if (!isOldSeatTakenBySomeoneElse && seatCode) {
       keepOptionWrap.style.display = 'flex';
       keepRadio.checked = true;
-      keepLabel.textContent = `Re-claim Previous Desk (${m.seat}) (Currently Vacant)`;
-      keepSub.textContent = `Your old desk happens to still be vacant. You may keep it or switch to any other vacant desk.`;
+      keepLabel.textContent = `Re-claim Previous Seat (${m.seat}) (Currently Vacant)`;
+      keepSub.textContent = `Your old seat happens to still be vacant. You may keep it or switch to any other vacant seat.`;
       changeBox.style.display = 'none';
     } else {
       keepOptionWrap.style.display = 'none';
@@ -1396,7 +1396,7 @@ window.lookupStudentForRenewal = function() {
   const vacantList = getAvailableSeats(isExpired && !isOldSeatTakenBySomeoneElse ? seatCode : null);
   const selectEl = document.getElementById('studentRenewNewSeatSelect');
   if (selectEl) {
-    let optHtml = '<option value="">-- Choose an Available Desk --</option>';
+    let optHtml = '<option value="">-- Choose an Available Seat --</option>';
     ['A', 'B', 'C'].forEach(zone => {
       const zoneName = zone === 'A' ? 'Zone A (Silent Cubicles)' : (zone === 'B' ? 'Zone B (5G Wi-Fi Hub)' : 'Zone C (Focus Pods)');
       const zoneSeats = vacantList.filter(s => s.startsWith(zone + '-'));
@@ -1514,7 +1514,7 @@ window.processStudentRenewal = function(e) {
   const taken = store.get('c2s_lib_taken', {});
 
   if (newSeatCode && newSeatCode !== oldSeatCode && taken[newSeatCode]) {
-    return alert(`Desk ${newSeat} is already occupied. Please select another vacant desk.`);
+    return alert(`Desk ${newSeat} is already occupied. Please select another vacant seat.`);
   }
 
   // Update taken desk
@@ -1634,7 +1634,7 @@ window.quickDemoMemberLogin = function() {
     mobile: "9777481909",
     email: "prakash.member@gmail.com",
     shift: "Full Day (07:00 AM – 09:00 PM)",
-    seat: "Desk #14",
+    seat: "Seat #14",
     zone: "Zone A (Executive 2nd Floor)",
     validTill: "30 Nov 2026",
     wifiPassword: "Mama@123",
@@ -1666,7 +1666,7 @@ window.quickDemoMemberLogin = function() {
   const portal = document.getElementById("libMemberPortal");
   if (portal) portal.style.display = "block";
   
-  alert("🏛️ Welcome Prakash Behera! Your Digital Pass & Assigned Desk A-14 are ready.");
+  alert("🏛️ Welcome Prakash Behera! Your Digital Pass & Assigned Seat A-14 are ready.");
 };
 
 window.shareLibraryReferralWhatsapp = function() {

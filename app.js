@@ -498,6 +498,7 @@ function filterTestPackages(cat) {
     p.classList.toggle("active", p.dataset.cat === cat);
   });
   renderTestPackages();
+  renderTests();
 };
 
 function renderTestPackages() {
@@ -648,6 +649,7 @@ function confirmPackagePurchase(pkgId) {
       store.set("c2s_unlocked_tests", testsUnlocked);
     }
     
+    renderTestPackages();
     renderTests();
     scrollToAvailableTests();
   }, 400);
@@ -667,11 +669,43 @@ function renderTests(){
   if (window.renderTestPackages) window.renderTestPackages();
 
   const customTests = store.get("c2s_custom_tests", []);
-  const allTests = [...TESTS, ...customTests];
+  const allTests = [...ENRICHED_TESTS, ...customTests];
   const given = store.get("c2s_main_given", []);
   const givenIds = new Set(given.map(g => g.testId));
-  const avail = allTests.filter(t => !givenIds.has(t.id));
+
+  // Dynamic filter according to chosen Exam Category
+  let categoryFiltered = allTests.filter(t => !givenIds.has(t.id));
+  if (activeTestCategory === "jaiib") {
+    categoryFiltered = categoryFiltered.filter(t => t.exam === "JAIIB");
+  } else if (activeTestCategory === "chsl") {
+    categoryFiltered = categoryFiltered.filter(t => t.exam === "SSC CHSL");
+  } else if (activeTestCategory === "banking") {
+    categoryFiltered = categoryFiltered.filter(t => t.exam === "BANK" || t.exam === "JAIIB");
+  } else if (activeTestCategory === "ssc") {
+    categoryFiltered = categoryFiltered.filter(t => t.exam === "SSC" || t.exam === "SSC CHSL");
+  } else if (activeTestCategory === "railway") {
+    categoryFiltered = categoryFiltered.filter(t => t.exam === "RAILWAY");
+  } else if (activeTestCategory === "ossc") {
+    categoryFiltered = categoryFiltered.filter(t => t.exam === "OSSC");
+  }
+  const avail = categoryFiltered;
   const examTheme = { 'BANK': 'bank', 'SSC': 'ssc', 'RAILWAY': 'railway', 'OSSC': 'ossc', 'UPSC': 'upsc', 'JAIIB': 'bank', 'SSC CHSL': 'ssc' };
+
+  const availHeader = document.getElementById("availableTestsSection");
+  if (availHeader) {
+    const catLabels = {
+      all: "All Target Exams",
+      jaiib: "🪔 JAIIB 2026 (Banking) Package",
+      chsl: "⚡ SSC CHSL 2026 Package",
+      banking: "🏛️ Banking & Insurance Package",
+      ssc: "📋 SSC Exams Package",
+      railway: "🚂 Railway NTPC Package",
+      ossc: "🏢 OSSC / Odisha State Package"
+    };
+    const currentLabel = catLabels[activeTestCategory] || "Selected Exam Package";
+    const h2 = availHeader.querySelector("h2");
+    if (h2) h2.innerHTML = `2. Do The Exams Available in Package <span style="font-size:14px;color:#f97316;font-weight:800;margin-left:8px;">[${currentLabel} &bull; ${avail.length} Papers]</span>`;
+  }
 
   if ($("#availTests")) $("#availTests").innerHTML = avail.length ? '<div class="test-grid">' + avail.map(t => {
     const unlocked = isTestUnlocked(t.id);
@@ -1911,7 +1945,14 @@ function isTestUnlocked(testId) {
 }
 
 function openTestPaymentModal(testId, preselectPlan = "single") {
-  const t = TESTS.find(x => x.id === testId);
+  if (testId && typeof TEST_PACKAGES !== "undefined") {
+    const pkg = TEST_PACKAGES.find(p => p.tests && p.tests.includes(testId));
+    if (pkg) {
+      openPackageBuyModal(pkg.id);
+      return;
+    }
+  }
+  const t = (typeof ENRICHED_TESTS !== "undefined" ? ENRICHED_TESTS : TESTS).find(x => x.id === testId);
   const modal = document.getElementById("testPaymentModal");
   if (!modal) return;
   modal.dataset.testId = testId || "";
@@ -3213,6 +3254,107 @@ if (document.readyState === "loading") {
 // Enriched mock tests with faculty explanations
 const ENRICHED_TESTS = [
   {
+    id: "JAIIB-IEIFS-1",
+    exam: "JAIIB",
+    title: "JAIIB: Indian Economy & Financial System (Paper 1 Full Mock)",
+    minutes: 15,
+    calculatorAllowed: true,
+    qs: [
+      ["Which body formulates and implements Monetary Policy in India?", ["Ministry of Finance", "Reserve Bank of India (RBI)", "SEBI", "NITI Aayog"], 1, "Under Section 45ZB of the amended RBI Act 1934, the Monetary Policy Committee (MPC) of the Reserve Bank of India is mandated to fix the benchmark policy rate required to maintain price stability with growth.", "Indian Economy & Financial System"],
+      ["In national income accounting, what is Net Domestic Product (NDP)?", ["GDP minus Depreciation", "GDP plus Net Foreign Income", "GNP minus Indirect Taxes", "NNP plus Subsidies"], 0, "Net Domestic Product (NDP) = Gross Domestic Product (GDP) minus Depreciation (Consumption of Fixed Capital).", "Indian Economy & Financial System"],
+      ["The Reserve Bank of India was established on 1 April 1935 on the recommendation of which body?", ["Narasimham Committee", "Hilton Young Commission", "Raghuram Rajan Committee", "Verma Committee"], 1, "The Royal Commission on Indian Currency and Finance (popularly Hilton Young Commission) in 1926 recommended setting up a central bank, resulting in the enactment of the RBI Act 1934.", "Banking History & Regulation"],
+      ["What is the maximum deposit insurance coverage provided by DICGC per depositor per bank?", ["₹1 Lakh", "₹2 Lakhs", "₹5 Lakhs", "₹10 Lakhs"], 2, "DICGC covers both principal and interest up to a maximum statutory ceiling of ₹5,00,000 per depositor per insured commercial / cooperative bank.", "Banking Laws & Insurance"],
+      ["What is the mandatory Priority Sector Lending (PSL) target for Domestic Commercial Banks?", ["25% of ANBC", "40% of ANBC", "50% of ANBC", "32% of ANBC"], 1, "Under RBI Master Directions, the overall Priority Sector Lending target for domestic commercial banks is 40% of Adjusted Net Bank Credit (ANBC) or CEOBE.", "Priority Sector Lending"],
+      ["What does MSF stand for in RBI's liquidity framework?", ["Marginal Standing Facility", "Monetary Stability Fund", "Market Stabilization Framework", "Mandatory Statutory Facility"], 0, "MSF (Marginal Standing Facility) is an overnight emergency lending window for scheduled banks against approved government securities.", "Monetary Policy Operations"],
+      ["Which financial market segment deals in short-term credit instruments with maturity up to 1 year?", ["Capital Market", "Money Market", "Forex Futures", "Derivatives Exchange"], 1, "The Money Market deals in short-term financial instruments (T-Bills, Commercial Papers, CPs, CDs) having maturities up to 365 days.", "Financial Markets"],
+      ["External Benchmark Lending Rate (EBLR) linked to Repo Rate was made mandatory by RBI in which year?", ["2016", "2018", "2019", "2021"], 2, "RBI mandated all scheduled commercial banks to link floating rate retail and MSME loans to external benchmarks (such as Repo rate) effective October 1, 2019.", "Monetary Policy Transmission"]
+    ]
+  },
+  {
+    id: "JAIIB-PPB-1",
+    exam: "JAIIB",
+    title: "JAIIB: Principles & Practices of Banking (Paper 2 Full Mock)",
+    minutes: 15,
+    calculatorAllowed: true,
+    qs: [
+      ["When a customer deposits money in a bank, what is the legal relationship between Bank and Customer?", ["Trustee and Beneficiary", "Debtor (Bank) and Creditor (Customer)", "Agent and Principal", "Bailor and Bailee"], 1, "The deposit becomes bank funds; the bank is indebted to repay upon demand. Hence Bank is Debtor and Customer is Creditor.", "Banker-Customer Relationship"],
+      ["Under Section 138 of the Negotiable Instruments Act 1881, dishonour of cheque is due to?", ["Insufficient Funds", "Technical signature defect", "Post-dated presentation", "Bearer alteration"], 0, "Section 138 of the NI Act 1881 criminalizes dishonour of cheques strictly for insufficiency of funds or exceeding credit arrangement limits.", "Negotiable Instruments Act"],
+      ["What is the maximum limit for contactless card transactions without PIN entry in India?", ["₹2,000", "₹5,000", "₹10,000", "₹15,000"], 1, "RBI relaxed the Additional Factor of Authentication (PIN) for contactless card payments at PoS terminals up to ₹5,000 per transaction.", "Digital Banking & Payments"],
+      ["Under SARFAESI Act 2002, secured creditors can enforce security interest without court intervention if account is classified as?", ["SMA-0", "SMA-1", "Non-Performing Asset (NPA)", "Standard Asset"], 2, "Section 13(2) of SARFAESI Act empowers secured lenders to enforce collateral without court intervention once an account is classified as NPA.", "Recovery & SARFAESI"],
+      ["Which entity manages the Central KYC Registry (CKYCR) in India?", ["RBI", "CERSAI", "NPCI", "IBA"], 1, "CERSAI (Central Registry of Securitisation Asset Reconstruction and Security Interest of India) is the authorized operating body for CKYCR.", "KYC & Anti-Money Laundering"]
+    ]
+  },
+  {
+    id: "JAIIB-AFM-1",
+    exam: "JAIIB",
+    title: "JAIIB: Accounting & Financial Management for Bankers (Paper 3 Full Mock)",
+    minutes: 15,
+    calculatorAllowed: true,
+    qs: [
+      ["Which accounting convention requires that all anticipated losses be provided for but unrealized gains ignored?", ["Materiality", "Prudence (Conservatism)", "Consistency", "Going Concern"], 1, "The Prudence (Conservatism) convention requires accountants to anticipate no profit, but provide for all possible losses.", "Accounting Principles & Concepts"],
+      ["Current Ratio is calculated by which formula?", ["Current Assets / Current Liabilities", "Quick Assets / Current Liabilities", "Total Debt / Equity", "Net Profit / Sales"], 0, "Current Ratio = Current Assets divided by Current Liabilities. Ideal standard ratio for commercial assessment is 2:1.", "Financial Ratio Analysis"],
+      ["Depreciation under Straight Line Method (SLM) is based on?", ["Historical Cost minus Scrap Value divided by Useful Life", "Written Down Value multiplied by rate", "Sales revenue percentage", "Current market replacement cost"], 0, "Under SLM, annual depreciation is constant: (Asset Cost - Salvage Value) / Estimated Useful Life.", "Depreciation Accounting"],
+      ["A company has Current Ratio of 2.5:1 and Current Liabilities of ₹4,00,000. What is the value of Current Assets?", ["₹8,00,000", "₹10,00,000", "₹12,50,000", "₹16,00,000"], 1, "Current Ratio = Current Assets / Current Liabilities => Current Assets = 2.5 * ₹4,00,000 = ₹10,00,000.", "Financial Ratio Analysis"]
+    ]
+  },
+  {
+    id: "JAIIB-RBWM-1",
+    exam: "JAIIB",
+    title: "JAIIB: Retail Banking & Wealth Management (Paper 4 Full Mock)",
+    minutes: 15,
+    calculatorAllowed: true,
+    qs: [
+      ["Which credit scoring company provides the widely used 300–900 credit bureau score in India?", ["CRISIL", "TransUnion CIBIL", "ICRA", "CARE"], 1, "TransUnion CIBIL is India's premier credit bureau rating retail borrowers on a credit score scale between 300 and 900.", "Credit Scoring & Retail Lending"],
+      ["Under RBI guidelines, what is the standard Loan-to-Value (LTV) ratio for home loans up to ₹30 Lakhs?", ["Up to 90%", "Up to 80%", "Up to 75%", "Up to 60%"], 0, "For individual housing loans up to ₹30 Lakhs, RBI permits an LTV ratio of up to 90%.", "Retail Housing Loans"],
+      ["Equated Monthly Installment (EMI) consists of which two components?", ["Principal and Interest", "Principal and Processing Fee", "Interest and Stamp Duty", "Insurance and Margin"], 0, "EMI amortizes the total borrowed sum through combined payments of periodic Interest and Principal reduction.", "Retail Loan Calculations"],
+      ["What is the key differentiator between Retail Banking and Corporate/Wholesale Banking?", ["High volume and low value transactions", "Low volume and large ticket sizes", "Exclusively government clients", "Zero collateral requirement"], 0, "Retail banking is mass-market banking dealing with large numbers of individuals with relatively low transaction sizes.", "Retail Banking Landscape"]
+    ]
+  },
+  {
+    id: "SSC-CHSL-MOCK-1",
+    exam: "SSC CHSL",
+    title: "SSC CHSL 2026: Tier-1 Full Length TCS Mock Test 1",
+    minutes: 15,
+    calculatorAllowed: false,
+    qs: [
+      ["If the cost price of 15 articles is equal to the selling price of 12 articles, what is the profit percentage?", ["20%", "25%", "30%", "33.33%"], 1, "15 * CP = 12 * SP => SP/CP = 15/12 = 5/4. Profit % = ((5-4)/4) * 100 = 25%.", "Quantitative Aptitude"],
+      ["Find the missing term in the sequence: 4, 9, 25, 49, 121, ?", ["144", "169", "196", "225"], 1, "Terms are squares of prime numbers: 2^2=4, 3^2=9, 5^2=25, 7^2=49, 11^2=121. The next prime number is 13, whose square is 169.", "General Intelligence & Reasoning"],
+      ["Select the correctly spelt word:", ["Accomodation", "Accommodation", "Acomodation", "Accomadation"], 1, "'Accommodation' is spelled with double 'c' and double 'm'.", "English Language"],
+      ["Who is the guardian of the Fundamental Rights of Indian citizens?", ["Parliament", "Supreme Court & High Courts", "Prime Minister", "President of India"], 1, "Under Articles 32 and 226, the Supreme Court and High Courts have writ jurisdiction and act as the sentinel of Fundamental Rights.", "General Awareness"],
+      ["In computers, what is the permanent memory called?", ["RAM", "ROM", "Cache", "Virtual Memory"], 1, "ROM (Read-Only Memory) is non-volatile permanent memory whose contents are retained when power is switched off.", "Computer Knowledge"],
+      ["If A can complete a work in 12 days and B in 24 days, in how many days can they complete it together?", ["6 days", "8 days", "9 days", "10 days"], 1, "Combined 1-day work = 1/12 + 1/24 = 3/24 = 1/8. Total time = 8 days.", "Quantitative Aptitude"],
+      ["Antonym of the word 'OBSTINATE':", ["Stubborn", "Flexible", "Rigid", "Adamant"], 1, "'Obstinate' means stubborn or unyielding. Its antonym is 'Flexible' or 'Yielding'.", "English Language"],
+      ["Which city in India ranks #1 in Million-Plus category in Swachh Vayu Survekshan 2026?", ["Indore (MP)", "Lucknow (UP)", "Bhubaneswar (Odisha)", "Surat (Gujarat)"], 1, "In MoEFCC's Swachh Vayu Survekshan 2026 clean air rankings, Lucknow secured Rank 1 in the Million-Plus category.", "Current Affairs & GK"]
+    ]
+  },
+  {
+    id: "SSC-CHSL-MOCK-2",
+    exam: "SSC CHSL",
+    title: "SSC CHSL 2026: Tier-1 Full Length TCS Mock Test 2",
+    minutes: 15,
+    calculatorAllowed: false,
+    qs: [
+      ["A train running at 72 km/h crosses a 200 m long platform in 20 seconds. What is the length of the train?", ["150 m", "200 m", "250 m", "300 m"], 1, "Speed = 72 * (5/18) = 20 m/s. Total distance = Speed * Time = 20 * 20 = 400 m. Train length = 400 - 200 = 200 m.", "Quantitative Aptitude"],
+      ["Pointing to a photograph, a woman says: 'He is the son of the only brother of my mother.' Who is he to her?", ["Brother", "Cousin (Maternal)", "Nephew", "Uncle"], 1, "The only brother of her mother is her maternal uncle (Mama). The son of maternal uncle is her maternal cousin.", "General Intelligence & Reasoning"],
+      ["Synonym of 'CANDID':", ["Secretive", "Frank / Honest", "Shy", "Arrogant"], 1, "'Candid' means truthful, open and straightforward. Synonym is Frank / Honest.", "English Language"],
+      ["Which schedule of the Indian Constitution contains the list of recognized languages?", ["7th Schedule", "8th Schedule", "9th Schedule", "10th Schedule"], 1, "The Eighth Schedule to the Constitution of India lists 22 officially recognized languages.", "General Awareness"],
+      ["What is the value of sin 30° + cos 60°?", ["0.5", "1.0", "1.5", "2.0"], 1, "sin 30° = 1/2 = 0.5. cos 60° = 1/2 = 0.5. Total = 0.5 + 0.5 = 1.0.", "Quantitative Aptitude"]
+    ]
+  },
+  {
+    id: "SSC-CHSL-PYQ-1",
+    exam: "SSC CHSL",
+    title: "SSC CHSL Official 2024 Shift-1 Solved Paper Mock",
+    minutes: 15,
+    calculatorAllowed: false,
+    qs: [
+      ["Two successive discounts of 20% and 10% are equivalent to a single discount of?", ["28%", "30%", "32%", "25%"], 0, "Net discount = 20 + 10 - (20 * 10)/100 = 30 - 2 = 28%.", "Quantitative Aptitude"],
+      ["In an examination, 65% students passed in Maths and 60% passed in English. If 40% passed in both, what % failed in both?", ["15%", "20%", "25%", "10%"], 0, "P(M U E) = 65% + 60% - 40% = 85%. Percent failed in both = 100% - 85% = 15%.", "Quantitative Aptitude"],
+      ["Who was the Viceroy of India when the Indian National Congress was founded in 1885?", ["Lord Curzon", "Lord Dufferin", "Lord Ripon", "Lord Dalhousie"], 1, "The Indian National Congress was founded in December 1885 during the viceroyalty of Lord Dufferin (1884–1888).", "Indian History"],
+      ["Select the passive voice: 'The chef prepared a sumptuous meal.'", ["A sumptuous meal is prepared by the chef.", "A sumptuous meal was prepared by the chef.", "A sumptuous meal had been prepared by the chef.", "The meal was being prepared by the chef."], 1, "Simple past 'prepared' takes 'was prepared' in passive voice.", "English Language"]
+    ]
+  },
+  {
     id: "BANK-MOCK-1",
     exam: "BANK",
     title: "BANK PO / Clerk Prelims Mock 1",
@@ -4394,7 +4536,7 @@ function getInitialExpenses() {
     { id: "EXP-103", date: today, category: "Housekeeping, Sanitization & Cleaning", amount: 400, vendor: "Patrapada Super Store", mode: "Cash / Petty Cash", billNo: "V-89", notes: "Floor cleaner, Lizol, air freshener & garbage bags", billFile: null, loggedBy: "Front Desk (Rina Sahu)" },
     { id: "EXP-104", date: yesterday, category: "5G Wi-Fi / High-Speed Internet", amount: 1200, vendor: "Airtel Xstream Fiber", mode: "UPI / GPay", billNo: "AIR-10293", notes: "Monthly 300 Mbps unlimited optical lease for study library", billFile: null, loggedBy: "Office Admin" },
     { id: "EXP-105", date: yesterday, category: "Staff Tea, Coffee & Refreshments", amount: 280, vendor: "Campus Cafeteria", mode: "Cash / Petty Cash", billNo: "Daily Log", notes: "Morning & evening faculty tea + biscuits", billFile: null, loggedBy: "Front Desk (Rina Sahu)" },
-    { id: "EXP-106", date: yesterday, category: "Hardware, Cables & Electric Repairs", amount: 650, vendor: "Sani Mandir Electricals", mode: "Cash / Petty Cash", billNo: "SM-441", notes: "Replaced 2 modular sockets on Desk B-08 & C-04", billFile: null, loggedBy: "Technician Ashok" }
+    { id: "EXP-106", date: yesterday, category: "Hardware, Cables & Electric Repairs", amount: 650, vendor: "Sani Mandir Electricals", mode: "Cash / Petty Cash", billNo: "SM-441", notes: "Replaced 2 modular sockets on Seat B-08 & C-04", billFile: null, loggedBy: "Technician Ashok" }
   ];
 }
 
@@ -4433,8 +4575,8 @@ function getSeedActivityLogs() {
     { type: "admission", title: "New Classroom Enrolment", desc: "Rohan Kumar (C2S-2026-0101) registered for OSSC CGL Target Batch. Fee ₹7,500 collected.", time: "10 mins ago", badge: "ADMISSION", color: "#059669" },
     { type: "expense", title: "Electricity Meter Voucher Logged", desc: "TPCODL Smart Meter recharge ₹1,500 recorded by Front Desk with bill ref TP-2026-9812.", time: "18 mins ago", badge: "EXPENSE", color: "#dc2626" },
     { type: "test", title: "Mock Test Submitted", desc: "Priyanka Jena completed BANK Mock Test 1. Score: 8/10 (80% Accuracy).", time: "25 mins ago", badge: "CBT TEST", color: "#2563eb" },
-    { type: "library", title: "Study Desk Check-in", desc: "Soumya Ranjan Biswal checked in at Desk B-06 (Afternoon Shift).", time: "42 mins ago", badge: "24H LIBRARY", color: "#d97706" },
-    { type: "situation", title: "Desk Vacate & Re-open", desc: "Bikram Mallick marked Placed in SBI Clerk! Desk A-02 freed up for waitlisted student.", time: "1 hour ago", badge: "SELECTION 🏆", color: "#059669" }
+    { type: "library", title: "Study Seat Check-in", desc: "Soumya Ranjan Biswal checked in at Seat B-06 (Afternoon Shift).", time: "42 mins ago", badge: "24H LIBRARY", color: "#d97706" },
+    { type: "situation", title: "Desk Vacate & Re-open", desc: "Bikram Mallick marked Placed in SBI Clerk! Seat A-02 freed up for waitlisted student.", time: "1 hour ago", badge: "SELECTION 🏆", color: "#059669" }
   ];
 }
 
@@ -4934,7 +5076,7 @@ window.renderAdminLibrary = function() {
 
 window.sendAbsenteeCareWhatsapp = function(mobile, name, seat) {
   const cleanMob = (mobile || "").replace(/[^0-9]/g, "");
-  const text = encodeURIComponent("Namaste " + name + ", C2S Library Desk notice: We observed you have been absent from your reserved Desk " + seat + " for a few days. Is everything well with your preparation? Please let our front desk know if you need any academic support or seat schedule modification. Helpline: 9777481909.");
+  const text = encodeURIComponent("Namaste " + name + ", C2S Library Seat notice: We observed you have been absent from your reserved Desk " + seat + " for a few days. Is everything well with your preparation? Please let our front desk know if you need any academic support or seat schedule modification. Helpline: 9777481909.");
   window.open("https://wa.me/91" + cleanMob + "?text=" + text, "_blank");
 };
 
@@ -5056,7 +5198,7 @@ window.triggerDeskSwapModal = function() {
 
   content.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px solid #f1f5f9;padding-bottom:12px;margin-bottom:16px;">
-      <h3 style="margin:0;font-size:17.5px;color:#0f172a;">🔄 Case 2: Modify Shift or Swap Study Desk</h3>
+      <h3 style="margin:0;font-size:17.5px;color:#0f172a;">🔄 Case 2: Modify Shift or Swap Study Seat</h3>
       <button type="button" onclick="closeAdminModal()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#64748b;">&times;</button>
     </div>
 
@@ -5247,7 +5389,7 @@ window.executeDuplicateRefund = function() {
 window.triggerDeskMaintenanceModal = function() {
   const desk = prompt("Enter Desk Number to toggle Maintenance Block (e.g. B-08 or A-14):", "B-08");
   if (!desk) return;
-  alert("🔧 DESK STATUS UPDATED!\n\nDesk " + desk + " has been marked 'UNDER MAINTENANCE (Socket Repair / AC Service)'.\nIt is locked from front desk seat bookings until technician inspection is cleared.");
+  alert("🔧 SEAT STATUS UPDATED!\n\nDesk " + desk + " has been marked 'UNDER MAINTENANCE (Socket Repair / AC Service)'.\nIt is locked from front desk seat bookings until technician inspection is cleared.");
 };
 
 // SITUATION 7: CBT LAB SLOT ALLOCATION
@@ -5470,7 +5612,7 @@ window.copyStudentReferralLink = function(regNo) {
 
 let currentSelectedLibShift = 'Full Day';
 let currentSelectedLibShiftTime = '07:00 AM – 09:00 PM';
-let currentSelectedLibSeat = 'Desk A-04';
+let currentSelectedLibSeat = 'Seat A-04';
 
 window.selectLibraryShift = function(name, time, duration, el) {
   currentSelectedLibShift = name;
@@ -5484,7 +5626,7 @@ window.selectLibraryShift = function(name, time, duration, el) {
 
 window.selectLibrarySeat = function(seatName, el) {
   if (el && el.classList.contains('occupied')) {
-    alert(seatName + ' is already occupied in this shift. Please choose another vacant desk or opt for Front Desk physical allocation!');
+    alert(seatName + ' is already occupied in this shift. Please choose another vacant seat or opt for Front Desk physical allocation!');
     return;
   }
   
@@ -5521,7 +5663,7 @@ window.proceedToLibraryBooking = function() {
 
 window.shareLibraryReferralWhatsApp = function() {
   const text = '🏛️ Join C2S 24-Hour AC Study Library in Patrapada, Bhubaneswar (Opp. Sani Mandir)!\n\n' +
-    '✨ Personal warm reading light for every desk\n' +
+    '✨ Personal warm reading light for every seat\n' +
     '⚡ Individual charging socket at each seat\n' +
     '💺 High-back ergonomic chair\n' +
     '📶 5G Ultra-Fast Wi-Fi & Pinpoint Silence\n' +
