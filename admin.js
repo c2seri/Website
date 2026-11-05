@@ -785,8 +785,121 @@ function filterAdminMembers() {
   renderMemberList(q);
 }
 
+window.LIBRARY_RULES_LIST = [
+  "Maintain complete silence inside the library. Avoid loud conversations and unnecessary phone calls.",
+  "ID proof and Photo are mandatory to avail all facilities from the library.",
+  "Mobile phones must be kept on silent mode; no other mode is allowed.",
+  "No phone calls are allowed inside the reading area.",
+  "Keep your seat and surroundings clean. Keep the premises clean. Use dustbins for waste disposal.",
+  "Eating, smoking, and chewing tobacco are strictly prohibited inside library.",
+  "Smoking, vaping, and the use of tobacco products are strictly prohibited anywhere inside the building. Any violation may lead to immediate cancellation of library membership.",
+  "Drinking water is allowed only in designated areas.",
+  "Use library furniture and books carefully.",
+  "Do not damage, write on, or tear books or furniture.",
+  "Maintain your allotted seat only.",
+  "Follow your registered shift timing.",
+  "Entry is allowed only after attendance/registration.",
+  "Visitors are not allowed without permission.",
+  "Do not disturb other students.",
+  "Switch off lights and fans if instructed while leaving.",
+  "Bags should be kept in the designated area, if applicable.",
+  "The entire building including library is under 24×7 CCTV surveillance for the safety and security of all students and staff.",
+  "Management reserves the right to cancel membership for misconduct.",
+  "Follow all instructions given by the library staff.",
+  "Keep your ID card with you and produce it when asked.",
+  "Any misconduct, indiscipline, or nuisance will result in immediate termination of library membership without refund.",
+  "Management reserves the right to refuse or cancel admission in case of violation of library rules.",
+  "Help maintain a peaceful and disciplined study environment."
+];
+
+window.LIBRARY_DECLARATION_TEXT = [
+  "I hereby declare that I have carefully read and fully understood all the rules, regulations, terms, and conditions of the library before taking admission.",
+  "I agree to follow all library rules, maintain discipline, respect the study environment, and comply with the instructions issued by the library management from time to time.",
+  "I understand that any violation of the library rules may result in appropriate action, including suspension or cancellation of my library membership, as per the library’s policy.",
+  "I confirm that I have taken admission voluntarily and only after understanding and accepting all the above rules and conditions."
+];
+
+window.printLibraryRulesSheet = function(student = {}) {
+  const name = student.name || document.getElementById('deskName')?.value || "___________________________";
+  const mobile = student.mobile || document.getElementById('deskMobile')?.value || "__________________";
+  const regNo = student.regNo || document.getElementById('deskRegNo')?.value || "__________________";
+  const shift = student.shift || document.getElementById('deskShift')?.value || "Full Day Shift";
+  const dateStr = student.date || new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+  const win = window.open('', '_blank');
+  if (!win) {
+    alert("Please allow popups to print the Library Rules & Declaration Sheet.");
+    return;
+  }
+  win.document.write(`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Library Use Rules &amp; Instructions — C2S Library</title>
+  <style>
+    @page { size: A4; margin: 15mm 14mm; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 10.5pt; line-height: 1.42; color: #111; margin: 0; padding: 12px; }
+    .title { text-align: center; font-size: 13pt; font-weight: 800; text-decoration: underline; margin: 8px 0 10px; letter-spacing: 0.5px; }
+    .rules-list { padding-left: 22px; margin: 6px 0 12px; }
+    .rules-list li { margin-bottom: 3.5px; font-size: 9.8pt; line-height: 1.34; }
+    .decl-box { border-top: 1.5px solid #222; padding-top: 8px; margin-top: 10px; }
+    .decl-title { font-weight: 800; font-size: 10.5pt; margin-bottom: 6px; letter-spacing: 0.5px; }
+    .decl-p { font-size: 9.5pt; margin: 3.5px 0; text-align: justify; line-height: 1.35; }
+    .sig-row { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 24px; padding: 0 8px; }
+    .ftr { text-align: center; font-size: 9.5pt; margin-top: 16px; font-weight: 700; }
+    @media print {
+      body { padding: 0; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print" style="margin-bottom:12px;background:#f1f5f9;padding:10px 14px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;">
+    <strong style="color:#0f2a5c;">C2S Library Official Admission T&amp;C Sheet</strong>
+    <button onclick="window.print()" style="padding:6px 18px;background:#ea580c;color:#fff;border:none;border-radius:6px;font-weight:700;cursor:pointer;">🖨️ Print A4 Sheet</button>
+  </div>
+
+  <div class="title">LIBRARY USE RULES &amp; INSTRUCTIONS</div>
+
+  <ol class="rules-list">
+    ${window.LIBRARY_RULES_LIST.map(r => `<li>${r}</li>`).join('')}
+  </ol>
+
+  <div class="decl-box">
+    <div class="decl-title">DECLARATION</div>
+    ${window.LIBRARY_DECLARATION_TEXT.map(p => `<p class="decl-p">${p}</p>`).join('')}
+  </div>
+
+  <div class="sig-row">
+    <div>
+      <strong>Date:</strong> ${dateStr}
+    </div>
+    <div style="text-align:right;">
+      <div style="min-height:26px;"></div>
+      <div style="border-top:1px solid #000;padding-top:4px;min-width:230px;text-align:center;">
+        <strong>Full Signature Of the Applicant</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="ftr">
+    <div><strong>C2S Library</strong></div>
+    <div>&ldquo;Your Selection, Our Mission.&rdquo;</div>
+  </div>
+</body>
+</html>`);
+  win.document.close();
+};
+
 function deskQuickAdmit(e) {
   e.preventDefault();
+
+  const acceptTerms = document.getElementById('deskAcceptTerms');
+  if (acceptTerms && !acceptTerms.checked) {
+    alert("Please verify that the student has read, agreed, and signed the 24 Library Use Rules & Declaration.");
+    acceptTerms.focus();
+    return;
+  }
 
   const fromDate = document.getElementById('deskFromDate')?.value || new Date().toISOString().slice(0, 10);
   const toDate = document.getElementById('deskToDate')?.value || '';
@@ -865,6 +978,8 @@ function deskQuickAdmit(e) {
     paid,
     pending,
     mode,
+    termsAccepted: true,
+    declarationDate: admDate,
     date: admDate
   };
 

@@ -872,6 +872,59 @@
           </div>
         </div>
 
+        <!-- 5. LIBRARY USE RULES, INSTRUCTIONS & DECLARATION (OFFICIAL C2S T&C) -->
+        <div style="margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;background:#091e42;color:#ffffff;font-size:12px;font-weight:800;letter-spacing:0.8px;padding:9px 16px;border-radius:6px;text-transform:uppercase;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+            <span>5. LIBRARY USE RULES, INSTRUCTIONS &amp; APPLICANT DECLARATION (T&amp;C)</span>
+            <button type="button" class="btn" style="background:#ea580c;color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:750;cursor:pointer;" onclick="printLibraryRulesSheet()">
+              🖨️ Print Official A4 Rules &amp; Declaration Form
+            </button>
+          </div>
+
+          <div style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:10px;padding:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+              <strong style="color:#0f2a5c;font-size:13.5px;">Official 24 Rules of Conduct &bull; Patrapada Centre</strong>
+              <span style="font-size:11.5px;color:#15803d;background:#dcfce7;padding:3px 8px;border-radius:4px;font-weight:750;">✓ Mandatory Compliance</span>
+            </div>
+
+            <div style="max-height:160px;overflow-y:auto;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:12px 16px;font-size:12px;line-height:1.6;color:#334155;margin-bottom:12px;">
+              <ol style="margin:0;padding-left:18px;">
+                <li><strong>Maintain complete silence</strong> inside the library. Avoid loud conversations and unnecessary phone calls.</li>
+                <li><strong>ID proof and Photo</strong> are mandatory to avail all facilities from the library.</li>
+                <li>Mobile phones must be kept on <strong>silent mode</strong>; no other mode is allowed.</li>
+                <li><strong>No phone calls</strong> are allowed inside the reading area.</li>
+                <li>Keep your seat and surroundings clean. Keep the premises clean. Use dustbins for waste disposal.</li>
+                <li>Eating, smoking, and chewing tobacco are <strong>strictly prohibited</strong> inside library.</li>
+                <li><strong>Smoking, vaping, and the use of tobacco products are strictly prohibited</strong> anywhere inside the building. Any violation may lead to immediate cancellation of library membership.</li>
+                <li>Drinking water is allowed only in designated areas.</li>
+                <li>Use library furniture and books carefully.</li>
+                <li>Do not damage, write on, or tear books or furniture.</li>
+                <li>Maintain your allotted seat only.</li>
+                <li>Follow your registered shift timing.</li>
+                <li>Entry is allowed only after attendance/registration.</li>
+                <li>Visitors are not allowed without permission.</li>
+                <li>Do not disturb other students.</li>
+                <li>Switch off lights and fans if instructed while leaving.</li>
+                <li>Bags should be kept in the designated area, if applicable.</li>
+                <li>The entire building including library is under <strong>24&times;7 CCTV surveillance</strong> for the safety and security of all students and staff.</li>
+                <li>Management reserves the right to cancel membership for misconduct.</li>
+                <li>Follow all instructions given by the library staff.</li>
+                <li>Keep your ID card with you and produce it when asked.</li>
+                <li><strong>Any misconduct, indiscipline, or nuisance will result in immediate termination of library membership without refund.</strong></li>
+                <li>Management reserves the right to refuse or cancel admission in case of violation of library rules.</li>
+                <li>Help maintain a peaceful and disciplined study environment.</li>
+              </ol>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px;background:#eff6ff;padding:10px 14px;border-radius:8px;border:1px solid #bfdbfe;">
+              <input type="checkbox" id="deskAcceptTerms" checked required style="width:18px;height:18px;cursor:pointer;accent-color:#2563eb;">
+              <label for="deskAcceptTerms" style="font-size:12.5px;font-weight:750;color:#1e40af;cursor:pointer;">
+                Student has read, agreed, and signed the 24 Library Use Rules &amp; Declaration (Physical / Digital Form Verified).
+              </label>
+            </div>
+          </div>
+        </div>
+
         <!-- Form Submit & Action Buttons -->
         <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;border-top:1.5px solid #e2e8f0;padding-top:18px;margin-top:10px;">
           <button type="submit" class="btn" style="background:#ea580c;color:#ffffff;font-size:14px;font-weight:850;padding:12px 28px;border-radius:10px;border:none;cursor:pointer;box-shadow:0 4px 14px rgba(234,88,12,0.35);">
@@ -1455,7 +1508,8 @@
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
       <a href="#" id="modalBtnWhatsApp" target="_blank" class="btn" style="background:#25d366;color:#fff;font-size:12.5px;padding:8px 14px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">📲 Open WhatsApp</a>
       <button type="button" id="modalBtnResendReceipt" class="btn orange" style="font-size:12.5px;padding:8px 14px;">✉️ Resend Receipt &amp; Login</button>
-      <button type="button" class="btn ghost" style="font-size:12.5px;padding:8px 14px;" onclick="window.print()">🖨️ Print Student Pass</button>
+      <button type="button" class="btn ghost" style="font-size:12.5px;padding:8px 14px;" onclick="printLibraryRulesSheet(currentModalStudent || {})">🖨️ Print Rules &amp; Declaration Slip</button>
+      <button type="button" class="btn ghost" style="font-size:12.5px;padding:8px 14px;" onclick="window.print()">🪪 Print Student Pass</button>
     </div>
 
     <!-- Staff Remarks -->
