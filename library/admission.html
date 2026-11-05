@@ -422,17 +422,14 @@
             </button>
           </div>
 
-          <!-- Digital Signature & Date -->
-          <div class="grid2" style="margin-top:18px;padding-top:14px;border-top:1px solid #e2e8f0;">
-            <div>
-              <label style="font-weight:750;font-size:13px;color:var(--c2s-navy-900);">Full Signature Of the Applicant (Digital Consent) <span style="color:#dc2626;">*</span></label>
-              <input id="applicantSignature" required placeholder="Type your Full Name as signature" style="font-weight:750;border-color:#cbd5e1;">
-              <span class="small" style="color:#64748b;font-size:11px;margin-top:3px;display:block;">Digital verification matching applicant identity.</span>
+          <!-- Date of Declaration & Digital Consent -->
+          <div style="margin-top:16px;padding-top:12px;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <div style="font-size:12px;color:#64748b;">
+              🔒 Digital Consent recorded automatically on submission with verified mobile number &amp; timestamp.
             </div>
-            <div>
-              <label style="font-weight:750;font-size:13px;color:var(--c2s-navy-900);">Date of Declaration</label>
-              <input id="declarationDate" readonly style="background:#f1f5f9;font-weight:750;color:#0f2a5c;">
-              <span class="small" style="color:#64748b;font-size:11px;margin-top:3px;display:block;">Auto-stamped on current date.</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <label style="font-weight:750;font-size:12.5px;color:var(--c2s-navy-900);margin:0;">Date of Declaration:</label>
+              <input id="declarationDate" readonly style="background:#f1f5f9;font-weight:750;color:#0f2a5c;width:125px;padding:6px 10px;font-size:12px;border:1px solid #cbd5e1;border-radius:6px;">
             </div>
           </div>
         </div>
@@ -754,12 +751,6 @@
       if (cb) cb.checked = true;
       const badge = document.getElementById('declarationAcceptedBadge');
       if (badge) badge.style.display = 'inline-flex';
-
-      const sig = document.getElementById('applicantSignature');
-      const cand = document.getElementById('candName');
-      if (sig && (!sig.value || !sig.value.trim()) && cand && cand.value.trim()) {
-        sig.value = cand.value.trim();
-      }
       closeLibraryRulesModal();
     };
   </script>

@@ -764,7 +764,7 @@ function libAdmit(e) {
   const mName = ($("#candMiddleName")?.value || "").trim();
   const sName = ($("#candSurname")?.value || "").trim();
   const candName = [fName, mName, sName].filter(Boolean).join(" ") || $("#candName")?.value || "Student";
-  const signature = ($("#applicantSignature")?.value || candName).trim();
+  const signature = candName;
   const durationMonths = Number(document.getElementById("membershipDuration")?.value || 1);
 
   const m = {
