@@ -956,23 +956,75 @@ window.calcDeskFees = function(autoPaid = false) {
   if (pendingEl) pendingEl.value = Math.max(0, netPayable - paid);
 };
 
+window.triggerDeskLiveSelfie = function() {
+  const captureInput = document.getElementById('deskPhotoCapture');
+  if (captureInput) {
+    captureInput.click();
+  } else {
+    const mainInput = document.getElementById('deskPhoto');
+    if (mainInput) mainInput.click();
+  }
+};
+
+window.clearDeskPhoto = function() {
+  currentDeskPhotoData = '';
+  const input1 = document.getElementById('deskPhoto');
+  if (input1) input1.value = '';
+  const input2 = document.getElementById('deskPhotoCapture');
+  if (input2) input2.value = '';
+  const wrap = document.getElementById('deskPhotoPreviewWrap');
+  if (wrap) wrap.style.display = 'none';
+};
+
 window.previewDeskPhoto = function(input) {
   if (!input.files || !input.files[0]) return;
   const file = input.files[0];
-  if (file.size > 500 * 1024) {
-    alert('Photo size exceeds 500 KB limit. Please choose a smaller passport photo.');
+  if (file.size > 15 * 1024 * 1024) {
+    alert('Photo or selfie exceeds 15 MB limit. Please select a smaller photo or selfie.');
     input.value = '';
     return;
   }
   const reader = new FileReader();
   reader.onload = function(e) {
-    currentDeskPhotoData = e.target.result;
-    const preview = document.getElementById('deskPhotoPreview');
-    const wrap = document.getElementById('deskPhotoPreviewWrap');
-    if (preview && wrap) {
-      preview.src = currentDeskPhotoData;
-      wrap.style.display = 'flex';
-    }
+    const rawData = e.target.result;
+    // Auto-compress / scale image via HTML5 Canvas so even high-res phone selfies fit smoothly
+    const img = new Image();
+    img.onload = function() {
+      const maxDim = 800;
+      let w = img.width, h = img.height;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) {
+          h = Math.round((h * maxDim) / w);
+          w = maxDim;
+        } else {
+          w = Math.round((w * maxDim) / h);
+          h = maxDim;
+        }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      currentDeskPhotoData = canvas.toDataURL('image/jpeg', 0.88);
+
+      const preview = document.getElementById('deskPhotoPreview');
+      const wrap = document.getElementById('deskPhotoPreviewWrap');
+      if (preview && wrap) {
+        preview.src = currentDeskPhotoData;
+        wrap.style.display = 'flex';
+      }
+    };
+    img.onerror = function() {
+      currentDeskPhotoData = rawData;
+      const preview = document.getElementById('deskPhotoPreview');
+      const wrap = document.getElementById('deskPhotoPreviewWrap');
+      if (preview && wrap) {
+        preview.src = currentDeskPhotoData;
+        wrap.style.display = 'flex';
+      }
+    };
+    img.src = rawData;
   };
   reader.readAsDataURL(file);
 };

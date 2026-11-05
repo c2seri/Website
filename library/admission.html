@@ -212,16 +212,25 @@
         </div>
 
         <!-- Photo & Aadhaar Card Uploads (Compulsory) -->
-        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:16px;background:#f8fafc;padding:16px;border-radius:12px;border:1.5px dashed #cbd5e1;margin-top:14px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px;background:#f8fafc;padding:16px;border-radius:12px;border:1.5px dashed #cbd5e1;margin-top:14px;">
           <div>
             <label style="display:block;font-size:13px;font-weight:800;color:#0f172a;margin-bottom:3px;">
-              📷 Candidate Photo <span style="color:#dc2626;">*</span> <span style="font-size:12px;font-weight:600;color:#64748b;">(Passport Size Picture)</span>
+              📷 Candidate Photo / Selfie <span style="color:#dc2626;">*</span> <span style="font-size:12px;font-weight:700;color:#0284c7;">(Passport Photo OR Clear Selfie Accepted)</span>
             </label>
-            <input type="file" id="studPhoto" required accept="image/jpeg,image/png,image/jpg" onchange="previewPublicPhoto(this)" style="font-size:12px;color:#475569;margin-bottom:4px;">
-            <span style="display:block;font-size:11px;color:#64748b;">Only JPEG, JPG, PNG files are allowed. Max size 500 KB. (Compulsory)</span>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap;">
+              <input type="file" id="studPhoto" required accept="image/*" onchange="previewPublicPhoto(this)" style="font-size:12px;color:#475569;flex:1;">
+              <button type="button" class="btn" style="padding:4px 10px;font-size:11px;background:#0284c7;color:#fff;border-radius:6px;font-weight:700;display:inline-flex;align-items:center;gap:4px;cursor:pointer;" onclick="triggerLiveSelfie()">
+                🤳 Live Selfie Camera
+              </button>
+            </div>
+            <input type="file" id="studPhotoCapture" accept="image/*" capture="user" onchange="previewPublicPhoto(this)" style="display:none;">
+            <span style="display:block;font-size:11px;color:#64748b;">Upload passport photo, gallery image, or capture a live selfie directly from phone/laptop camera (JPG, PNG, WebP up to 15 MB).</span>
             <div id="studPhotoPreviewWrap" style="display:none;margin-top:8px;align-items:center;gap:10px;">
-              <img id="studPhotoPreview" src="" alt="Photo Preview" style="width:48px;height:58px;object-fit:cover;border-radius:6px;border:1.5px solid #cbd5e1;box-shadow:0 2px 6px rgba(0,0,0,0.1);">
-              <span style="font-size:11.5px;color:#047857;font-weight:750;">✓ Passport Photo Attached</span>
+              <img id="studPhotoPreview" src="" alt="Photo Preview" style="width:52px;height:62px;object-fit:cover;border-radius:8px;border:2px solid #10b981;box-shadow:0 2px 8px rgba(16,185,129,0.2);">
+              <div>
+                <span style="font-size:12px;color:#047857;font-weight:800;display:block;">✓ Photo / Selfie Attached</span>
+                <button type="button" onclick="clearPublicPhoto()" style="background:none;border:none;color:#dc2626;font-size:11px;cursor:pointer;padding:0;text-decoration:underline;">✕ Remove / Retake</button>
+              </div>
             </div>
           </div>
 
@@ -229,8 +238,8 @@
             <label style="display:block;font-size:13px;font-weight:800;color:#0f172a;margin-bottom:3px;">
               🪪 Aadhar Card <span style="color:#dc2626;">*</span> <span style="font-size:12px;font-weight:600;color:#64748b;">(Identity Proof)</span>
             </label>
-            <input type="file" id="studAadhar" required accept="image/jpeg,image/png,image/jpg,application/pdf,.doc,.docx" onchange="previewPublicAadhar(this)" style="font-size:12px;color:#475569;margin-bottom:4px;">
-            <span style="display:block;font-size:11px;color:#64748b;">Only PDF or .DOC or .DOCX or JPG/PNG formats are allowed. Max size 2 MB. (Compulsory)</span>
+            <input type="file" id="studAadhar" required accept="image/*,application/pdf,.doc,.docx" onchange="previewPublicAadhar(this)" style="font-size:12px;color:#475569;margin-bottom:4px;">
+            <span style="display:block;font-size:11px;color:#64748b;">Only PDF or .DOC or .DOCX or JPG/PNG formats are allowed. Max size 5 MB. (Compulsory)</span>
             <div id="studAadharPreviewWrap" style="display:none;margin-top:8px;align-items:center;gap:10px;">
               <span style="font-size:22px;">📄</span>
               <span id="studAadharName" style="font-size:12px;color:#047857;font-weight:750;">Aadhaar Attached</span>
@@ -238,7 +247,7 @@
           </div>
         </div>
         <p class="small" style="color:var(--c2s-slate-500);margin-top:6px;">
-          * Photo and Aadhaar identity proof are mandatory for security, biometric access, and library records.
+          * Candidate Photo/Selfie and Aadhaar identity proof are mandatory for security, biometric access, and library records.
         </p>
 
         <!-- 3. Present Address -->

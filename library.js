@@ -492,23 +492,75 @@ let publicPhotoData = '';
 let publicAadharData = '';
 let publicAadharFileName = '';
 
+window.triggerLiveSelfie = function() {
+  const captureInput = document.getElementById('studPhotoCapture');
+  if (captureInput) {
+    captureInput.click();
+  } else {
+    const mainInput = document.getElementById('studPhoto');
+    if (mainInput) mainInput.click();
+  }
+};
+
+window.clearPublicPhoto = function() {
+  publicPhotoData = '';
+  const input1 = document.getElementById('studPhoto');
+  if (input1) input1.value = '';
+  const input2 = document.getElementById('studPhotoCapture');
+  if (input2) input2.value = '';
+  const wrap = document.getElementById('studPhotoPreviewWrap');
+  if (wrap) wrap.style.display = 'none';
+};
+
 window.previewPublicPhoto = function(input) {
   if (!input.files || !input.files[0]) return;
   const file = input.files[0];
-  if (file.size > 500 * 1024) {
-    alert('Photo size exceeds 500 KB limit. Please choose a smaller passport photo.');
+  if (file.size > 15 * 1024 * 1024) {
+    alert('Photo or selfie exceeds 15 MB limit. Please select a smaller photo or selfie.');
     input.value = '';
     return;
   }
   const reader = new FileReader();
   reader.onload = function(e) {
-    publicPhotoData = e.target.result;
-    const preview = document.getElementById('studPhotoPreview');
-    const wrap = document.getElementById('studPhotoPreviewWrap');
-    if (preview && wrap) {
-      preview.src = publicPhotoData;
-      wrap.style.display = 'flex';
-    }
+    const rawData = e.target.result;
+    // Auto-compress / scale image via HTML5 Canvas so even a 10MB phone selfie fits smoothly in local records
+    const img = new Image();
+    img.onload = function() {
+      const maxDim = 800;
+      let w = img.width, h = img.height;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) {
+          h = Math.round((h * maxDim) / w);
+          w = maxDim;
+        } else {
+          w = Math.round((w * maxDim) / h);
+          h = maxDim;
+        }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      publicPhotoData = canvas.toDataURL('image/jpeg', 0.88);
+
+      const preview = document.getElementById('studPhotoPreview');
+      const wrap = document.getElementById('studPhotoPreviewWrap');
+      if (preview && wrap) {
+        preview.src = publicPhotoData;
+        wrap.style.display = 'flex';
+      }
+    };
+    img.onerror = function() {
+      publicPhotoData = rawData;
+      const preview = document.getElementById('studPhotoPreview');
+      const wrap = document.getElementById('studPhotoPreviewWrap');
+      if (preview && wrap) {
+        preview.src = publicPhotoData;
+        wrap.style.display = 'flex';
+      }
+    };
+    img.src = rawData;
   };
   reader.readAsDataURL(file);
 };
@@ -678,7 +730,7 @@ function libAdmit(e) {
 
   // Mandatory Photo and Aadhaar Check
   if (!publicPhotoData) {
-    alert("Please upload candidate Passport Size Photo (Compulsory).");
+    alert("Please upload candidate Photo or Selfie (Compulsory).");
     document.getElementById("studPhoto")?.focus();
     return;
   }
