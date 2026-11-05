@@ -1058,6 +1058,7 @@ function renderMemberList(filterQuery = '') {
             <div>
               <strong style="display:block;font-size:13.5px;color:#0f172a;">${m.name}</strong>
               <span style="font-size:11px;color:#64748b;">${m.gender || 'Student'} • ${m.qualification || m.examPref || 'Aspirant'}</span>
+              <span style="font-size:10.5px;color:#2563eb;font-weight:750;display:block;">📍 ${m.branch ? m.branch.split('—')[0].replace('🏛️', '').trim() : 'Patrapada (NH-16)'}</span>
               <div>${statusPill}</div>
             </div>
           </div>

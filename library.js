@@ -740,6 +740,8 @@ function libAdmit(e) {
     lockerNo: (selShift === "Full Day" || selShift === "24 Hours") ? 
       (seatVal.match(/\d+/) ? seatVal.match(/\d+/)[0] : "Attached") : 
       "None",
+    branch: ($("#branchPref")?.value || "Patrapada Flagship Branch (NH-16, Bhubaneswar)").trim(),
+    admissionMode: (new URLSearchParams(window.location.search).get("mode") === "local" ? "Local Branch Desk / Tablet Kiosk" : "Online Admission"),
     from: $("#fromDate")?.value || new Date().toISOString().slice(0, 10),
     to: $("#toDate")?.value || new Date(Date.now() + durationMonths * 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
     shiftFees: Number($("#shiftFees")?.value || (SHIFTS[selShift]?.defaultPrice || 1200) * durationMonths),
@@ -821,6 +823,10 @@ function libAdmit(e) {
         </div>
 
         <div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:16px;margin-bottom:18px;display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;">
+          <div>
+            <span style="font-size:11.5px;color:#94a3b8;display:block;">Sanctuary Branch:</span>
+            <strong style="font-size:14px;color:#38bdf8;">📍 ${m.branch || 'Patrapada Flagship Branch'}</strong>
+          </div>
           <div>
             <span style="font-size:11.5px;color:#94a3b8;display:block;">Seat Allocation Mode:</span>
             <strong style="font-size:14.5px;color:${isPhysical ? '#fdba74' : '#34d399'};">
@@ -1188,12 +1194,67 @@ window.getAvailableSeats = function(currentSeatToIgnore = null) {
   return list;
 };
 
+/* Branch Selection & Local Tablet Admission Controller */
+window.onBranchChange = function() {
+  const sel = document.getElementById("branchPref");
+  const snippet = document.getElementById("branchInfoSnippet");
+  if (!sel || !snippet) return;
+  const val = sel.value;
+  if (val.includes("Patrapada")) {
+    snippet.innerHTML = "✓ 149 Desks across 2 Floors • Open 24 Hours • Free Weekly Math/Reasoning Classes • Free CBT Tests • Underground Parking • Fiber Wi-Fi";
+    snippet.style.color = "#1e3a8a";
+  } else if (val.includes("Jayadev")) {
+    snippet.innerHTML = "🟡 Coming Soon • 100 Proposed Desks in Central Bhubaneswar • Pre-Registration &amp; Early-Bird Concession";
+    snippet.style.color = "#b45309";
+  } else if (val.includes("Cuttack")) {
+    snippet.innerHTML = "🟡 Coming Soon • 80 Proposed Desks near High Court &amp; Badambadi • Judicial &amp; OPSC Wing";
+    snippet.style.color = "#b45309";
+  }
+};
+
+window.checkBranchUrlParams = function() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const branch = params.get('branch');
+    const mode = params.get('mode');
+
+    const branchSelect = document.getElementById('branchPref');
+    const badge = document.getElementById('localAdmissionBadge');
+
+    if (branchSelect && branch) {
+      if (branch.toLowerCase().includes('patrapada')) {
+        branchSelect.value = "Patrapada Flagship Branch (NH-16, Bhubaneswar)";
+      } else if (branch.toLowerCase().includes('jayadev')) {
+        branchSelect.value = "Jayadev Vihar / Saheed Nagar Hub (Bhubaneswar)";
+      } else if (branch.toLowerCase().includes('cuttack')) {
+        branchSelect.value = "Cuttack Link Road / Badambadi Hub";
+      }
+      if (typeof window.onBranchChange === 'function') window.onBranchChange();
+    }
+
+    if (badge && mode === 'local') {
+      badge.style.display = 'inline-block';
+      // Automatically activate physical front desk selection mode for walk-ins on tablet
+      const physicalRadio = document.querySelector('input[name="seatPrefMethod"][value="physical"]');
+      if (physicalRadio) {
+        physicalRadio.checked = true;
+        if (typeof window.switchSeatPrefMethod === 'function') {
+          window.switchSeatPrefMethod('physical');
+        }
+      }
+    }
+  } catch(e) {
+    console.warn("Branch URL param check:", e);
+  }
+};
+
 /* Run on load */
 document.addEventListener("DOMContentLoaded", () => {
   syncExpiredSeatsAndMembers();
   renderShifts();
   renderTheatreSeats();
   renderDigitalID();
+  checkBranchUrlParams();
 });
 
 /* ==========================================================================
@@ -1662,9 +1723,11 @@ window.dispatchAdmissionReceipt = function(m) {
 
   // 1. Student WhatsApp Message with Login & Wi-Fi Details
   const studentText = `🎉 *WELCOME TO C2S 24H STUDY LIBRARY SANCTUARY!*
-Namaste *${m.name}*, your library admission and seat reservation has been confirmed at C2S Patrapada Centre!
+Namaste *${m.name}*, your library admission and seat reservation has been confirmed at C2S ${m.branch || 'Patrapada Centre'}!
 
 📋 *Registration ID:* ${m.regNo}
+🏛️ *Sanctuary Branch:* ${m.branch || 'Patrapada Flagship Branch (NH-16, Bhubaneswar)'}
+📲 *Admission Mode:* ${m.admissionMode || 'Local Spot Admission / Desk Tablet'}
 🪑 *Allocated Seat:* ${m.seat || 'Physical Selection at Front Desk'}
 ⏱️ *Shift:* ${m.shift}
 💰 *Fees Paid:* ₹${m.paid} (${m.mode})
@@ -1690,6 +1753,8 @@ _C2S — College to Service | Your Selection Our Mission_`;
 
   // 2. Owner Alert WhatsApp Message
   const ownerText = `📢 *NEW LIBRARY ADMISSION ALERT — C2S BHUBANESWAR*
+🏛️ *Branch:* ${m.branch || 'Patrapada Flagship Branch'}
+📲 *Mode:* ${m.admissionMode || 'Local Spot Admission / Desk Tablet'}
 👤 *Student:* ${m.name}
 📱 *Mobile:* ${m.mobile}
 📧 *Email:* ${m.email || 'N/A'}
