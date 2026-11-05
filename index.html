@@ -103,10 +103,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261105_1335">
+  <link rel="stylesheet" href="styles.css?v=20261105_1340">
   <script src="exams.js" defer></script>
   <script src="blogs-data.js" defer></script>
-  <script src="app.js?v=20261105_1335" defer></script>
+  <script src="app.js?v=20261105_1340" defer></script>
   <script src="cohort-engine.js" defer></script>
 </head>
 
@@ -1075,8 +1075,17 @@
                 <span class="nav-badge-pill badge-red">50+ NEW</span>
                 <span class="nav-arrow">&#9662;</span>
               </button>
-              <div class="dropdown-menu">
-                <div class="dropdown-subgroup-header">📢 Recruitment Notifications</div>
+              <div class="dropdown-menu" style="min-width:320px;">
+                <div class="dropdown-subgroup-header">📢 Official Government Notices</div>
+                <div class="dropdown-item" onclick="show('notices');closeMobileNav();" style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;margin:2px 0 8px 0;">
+                  <span style="font-size:18px;">📢</span>
+                  <div>
+                    <strong style="color:#c2410c;">Official Recruitment Notice Board</strong>
+                    <span class="small" style="display:block;color:#7c2d12;">All Pan-India &amp; Odisha Govt Notifications, Advt PDFs &amp; Deadlines</span>
+                  </div>
+                </div>
+
+                <div class="dropdown-subgroup-header">🔔 Exam Notifications &amp; Alerts</div>
                 <div class="dropdown-item" onclick="show('blog');closeMobileNav();">
                   <span>🔔</span>
                   <div><strong>Live Exam Notifications &amp; Dates</strong><span class="small" style="display:block">OSSC, OSSSC, OPSC, SSC, Railway</span></div>
@@ -1105,11 +1114,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- 3. Official Recruitment Notices Quick Link -->
-            <button class="nav-link" onclick="show('notices');closeMobileNav();" title="Official Government Recruitment Notice Board">
-              <span>📢 Recruitment Notice Board</span>
-            </button>
           </div>
         </nav>
       </div>
