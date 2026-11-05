@@ -259,7 +259,18 @@ function renderTheatreSeats() {
       }
 
       const floorLabel = currentLibraryFloor === 1 ? "Floor 1" : "Floor 2";
-      const zoneType = i <= 35 ? "Silent Cubicle" : (i <= 75 ? "5G Laptop Hub" : (i <= 110 ? "Focus Pod" : "Overnight Sanctuary"));
+      let zoneType = "Executive Bay";
+      if (i >= 25 && i <= 46) {
+        zoneType = "Left Wall (A/C)";
+      } else if (i >= 47 && i <= 88) {
+        zoneType = "Center Bay 1";
+      } else if (i >= 89 && i <= 130) {
+        zoneType = "Center Bay 2";
+      } else if (i >= 131 && i <= 149) {
+        zoneType = "Right Wall (A/C)";
+      } else if (i < 25) {
+        zoneType = "Silent Cubicle";
+      }
 
       html += `
         <div class="${cls}" title="Desk #${shortNum} (${floorLabel}) • ${statusText}" onclick="pickSeat('${seatCode}')">
@@ -361,9 +372,19 @@ function updateInspectorHUD() {
     const num = numMatch ? parseInt(numMatch[0], 10) : 1;
     const floor = num <= 75 ? "Floor 1" : "Floor 2";
     const deskDisplay = "Desk #" + num + " (" + floor + ")";
+    let bayName = "Executive Sanctuary Bay";
+    if (num >= 25 && num <= 46) {
+      bayName = "Left Wall Silent Bay • Dedicated A/C";
+    } else if (num >= 47 && num <= 88) {
+      bayName = "Center Double Bay 1 • Overhead Fans";
+    } else if (num >= 89 && num <= 130) {
+      bayName = "Center Double Bay 2 • High-Focus Double Aisle";
+    } else if (num >= 131 && num <= 149) {
+      bayName = "Right Wall Focus Bay • A/C & Reception Proximity";
+    }
 
     if (hudDeskName) hudDeskName.textContent = deskDisplay;
-    if (hudZoneName) hudZoneName.textContent = `${floor} • 149-Seat Study Sanctuary`;
+    if (hudZoneName) hudZoneName.textContent = `${floor} • ${bayName}`;
     if (hudDeskStatus) {
       hudDeskStatus.innerHTML = '<span style="color:#10b981;font-weight:800;">🟢 Vacant &amp; Available (Verified Seat)</span>';
     }
