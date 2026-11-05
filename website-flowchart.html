@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>C2S Complete Platform Architecture & Website Flowchart</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root {
+      --navy-900: #0a192f;
+      --navy-800: #0f2444;
+      --navy-700: #1e3a8a;
+      --orange-600: #ea580c;
+      --orange-500: #f97316;
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --slate-800: #1e293b;
+      --slate-600: #475569;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --border-color: #cbd5e1;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f1f5f9;
+      color: var(--slate-800);
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+    .top-actions-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    .top-actions-bar h1 {
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .top-btns {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: all 0.15s ease;
+    }
+    .btn-orange { background: var(--orange-600); color: #fff; }
+    .btn-orange:hover { background: #c2410c; }
+    .btn-white { background: #ffffff; color: var(--navy-900); }
+    .btn-white:hover { background: #e2e8f0; }
+    .btn-outline { background: transparent; border: 1.5px solid rgba(255,255,255,0.4); color: #fff; }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); }
+
+    .doc-container {
+      max-width: 1200px;
+      margin: 30px auto;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
+    }
+
+    .doc-header {
+      border-bottom: 2px solid var(--slate-100);
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .doc-title-badge {
+      display: inline-block;
+      background: #eff6ff;
+      color: var(--navy-700);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .doc-title {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--navy-900);
+      line-height: 1.25;
+    }
+    .doc-subtitle {
+      font-size: 14.5px;
+      color: var(--slate-600);
+      margin-top: 6px;
+      max-width: 780px;
+    }
+
+    .meta-box {
+      background: var(--slate-50);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 12px;
+      color: var(--slate-600);
+      text-align: right;
+    }
+    .meta-box strong { color: var(--navy-900); }
+
+    .flow-section {
+      margin-bottom: 44px;
+      page-break-inside: avoid;
+    }
+    .flow-section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .section-num {
+      width: 34px;
+      height: 34px;
+      background: var(--navy-900);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 900;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 850;
+      color: var(--navy-900);
+    }
+    .section-tag {
+      font-size: 11px;
+      font-weight: 800;
+      background: #ffedd5;
+      color: var(--orange-600);
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    /* Process Flow Diagram Layout */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      position: relative;
+    }
+    .flow-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      position: relative;
+      transition: transform 0.15s ease;
+    }
+    .flow-card.accent-blue { border-top: 4px solid #2563eb; }
+    .flow-card.accent-orange { border-top: 4px solid var(--orange-500); }
+    .flow-card.accent-emerald { border-top: 4px solid var(--emerald-500); }
+    .flow-card.accent-purple { border-top: 4px solid #8b5cf6; }
+
+    .flow-card-step {
+      font-size: 11px;
+      font-weight: 800;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .flow-card-title {
+      font-size: 16px;
+      font-weight: 850;
+      color: var(--navy-900);
+      margin-bottom: 8px;
+    }
+    .flow-card-desc {
+      font-size: 12.5px;
+      color: var(--slate-600);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .flow-card-points {
+      list-style: none;
+      font-size: 11.5px;
+      color: #334155;
+    }
+    .flow-card-points li {
+      margin-bottom: 4px;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .flow-card-points li::before {
+      content: "✓";
+      color: var(--emerald-600);
+      font-weight: 900;
+    }
+
+    .flow-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 20px;
+      font-weight: 900;
+      margin: 8px 0;
+    }
+
+    /* Comparison & Specification Tables */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 12.5px;
+    }
+    th {
+      background: #f8fafc;
+      color: var(--navy-900);
+      font-weight: 800;
+      padding: 12px 14px;
+      border-bottom: 1.5px solid #e2e8f0;
+      white-space: nowrap;
+    }
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) { background: #fafbfc; }
+
+    .badge-pill {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    .badge-pill.orange { background: #ffedd5; color: #c2410c; }
+    .badge-pill.blue { background: #dbeafe; color: #1d4ed8; }
+    .badge-pill.green { background: #dcfce7; color: #15803d; }
+
+    /* Print Optimization Rules */
+    @media print {
+      body { background: #ffffff; padding: 0; }
+      .top-actions-bar { display: none !important; }
+      .doc-container {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 15px !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+      .flow-section { page-break-inside: avoid; margin-bottom: 24px; }
+      .flow-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 10px !important; }
+      .flow-card { padding: 12px !important; }
+      th, td { padding: 8px 10px !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Navigation & Action Bar -->
+  <div class="top-actions-bar">
+    <h1>
+      <span>🏛️ C2S Architecture Blueprint</span>
+      <span style="font-size:12px;color:#cbd5e1;font-weight:600;">| Complete Platform & Website Flow</span>
+    </h1>
+    <div class="top-btns">
+      <button onclick="window.print()" class="btn btn-orange">
+        🖨️ Print / Save as PDF
+      </button>
+      <a href="C2S_Website_Complete_Flowchart.pdf" download="C2S_Website_Complete_Flowchart.pdf" class="btn btn-white">
+        📥 Direct Download PDF
+      </a>
+      <a href="/" class="btn btn-outline">
+        🌐 Back to Portal
+      </a>
+    </div>
+  </div>
+
+  <div class="doc-container">
+
+    <!-- Document Header -->
+    <div class="doc-header">
+      <div>
+        <span class="doc-title-badge">Official Architecture Document</span>
+        <h2 class="doc-title">C2S — College to Service | Complete Website Flowchart & Architecture</h2>
+        <p class="doc-subtitle">
+          End-to-End System Flowchart mapping every candidate, student, library member, and administrative interaction across 
+          <strong>Main Coaching Portal</strong>, <strong>PW &amp; Testbook CBT Test Series Hub</strong>, <strong>Current Affairs Magazine</strong>, 
+          <strong>24-Hour Study Sanctuary (Patrapada, Bhubaneswar)</strong>, and <strong>Super Admin Control Desk</strong>.
+        </p>
+      </div>
+      <div class="meta-box">
+        <div>Platform: <strong>C2S Ecosystem 2026</strong></div>
+        <div>Location: <strong>NH-16 Patrapada, Bhubaneswar</strong></div>
+        <div>Helpline: <strong>9777481909 / 9658177712</strong></div>
+        <div>Status: <strong>Production Ready &amp; Synchronized</strong></div>
+      </div>
+    </div>
+
+    <!-- SECTION 1: MASTER ECOSYSTEM OVERVIEW -->
+    <div class="flow-section">
+      <div class="flow-section-header">
+        <div class="section-num">1</div>
+        <div class="section-title">Master Ecosystem Architecture</div>
+        <span class="section-tag">High-Level Overview</span>
+      </div>
+
+      <div class="flow-grid">
+        <div class="flow-card accent-blue">
+          <div class="flow-card-step">Pillar 1</div>
+          <div class="flow-card-title">🏫 Coaching &amp; Exam Portal</div>
+          <div class="flow-card-desc">Comprehensive coaching hub for 204+ Central &amp; Odisha State Govt job exams.</div>
+          <ul class="flow-card-points">
+            <li>204+ Pan-India Directory (13 Categories)</li>
+            <li>Classroom Batches at NH-16 Patrapada</li>
+            <li>Interactive Goal &amp; Cohort Selector</li>
+            <li>Faculty Mentorship &amp; Daily Timetable</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-orange">
+          <div class="flow-card-step">Pillar 2</div>
+          <div class="flow-card-title">⚡ PW &amp; Testbook Test Series</div>
+          <div class="flow-card-desc">Direct-access CBT mock test portal without dropdowns, featuring Diwali inaugurals.</div>
+          <ul class="flow-card-points">
+            <li>Choose Exam Category Filter Tabs</li>
+            <li>Diwali Mega: JAIIB &amp; SSC CHSL Packs</li>
+            <li>Instant UPI / Desk Unlock Flow</li>
+            <li>TCS CBT Engine with Solutions Review</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-emerald">
+          <div class="flow-card-step">Pillar 3</div>
+          <div class="flow-card-title">📖 Books &amp; Current Affairs</div>
+          <div class="flow-card-desc">Digital publication &amp; monthly magazine hub with offline PDF downloads.</div>
+          <ul class="flow-card-points">
+            <li>"Notes of Current Events" Magazine</li>
+            <li>Month-wise PDFs (₹15/month)</li>
+            <li>Online Reader with Audio Narration</li>
+            <li>Printed handbooks at Patrapada Desk</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-purple">
+          <div class="flow-card-step">Pillar 4</div>
+          <div class="flow-card-title">🏛️ 24H Study Library Sanctuary</div>
+          <div class="flow-card-desc">149 study seats across 2 floors with attached personal lockers and dual Wi-Fi.</div>
+          <ul class="flow-card-points">
+            <li>2nd Floor (S1-S24) &amp; 1st Floor (S25-S149)</li>
+            <li>Full Day (₹1000) &amp; 24H Day+Night (₹2000)</li>
+            <li>Attached Lockers for Full Shifts Only</li>
+            <li>Dual Seat Allocation (Online vs Desk)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: TEST SERIES USER JOURNEY (PW + TESTBOOK COMBINATION) -->
+    <div class="flow-section">
+      <div class="flow-section-header">
+        <div class="section-num">2</div>
+        <div class="section-title">CBT Test Series User Journey (PW &amp; Testbook Engine)</div>
+        <span class="section-tag">Direct Click • No Dropdown</span>
+      </div>
+
+      <div class="flow-grid">
+        <div class="flow-card accent-blue">
+          <div class="flow-card-step">Step 1: Open Portal</div>
+          <div class="flow-card-title">Direct Click Navigation</div>
+          <div class="flow-card-desc">Candidate clicks <strong>⚡ Test Series</strong> in top navbar or mobile bottom bar.</div>
+          <ul class="flow-card-points">
+            <li>No dropdown menu; opens directly</li>
+            <li>Hero banner highlighting Diwali launches</li>
+            <li>PW + Testbook layout with category tabs</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-orange">
+          <div class="flow-card-step">Step 2: Choose Exam</div>
+          <div class="flow-card-title">Filter Target Exam</div>
+          <div class="flow-card-desc">Candidate taps their target exam category filter pill.</div>
+          <ul class="flow-card-points">
+            <li>🪔 JAIIB (Banking) — Diwali Special</li>
+            <li>⚡ SSC CHSL 2026 — Diwali Special</li>
+            <li>Banking, SSC, Railway, OSSC State</li>
+            <li>Packages &amp; test papers filter instantly</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-emerald">
+          <div class="flow-card-step">Step 3: Buy / Unlock</div>
+          <div class="flow-card-title">Package Checkout</div>
+          <div class="flow-card-desc">Candidate views package details and clicks Buy / Pay.</div>
+          <ul class="flow-card-points">
+            <li>JAIIB 4-Paper Pack (₹499, MRP ₹1499)</li>
+            <li>SSC CHSL Tier 1+2 Pack (₹299, MRP ₹999)</li>
+            <li>Instant UPI (GPay/PhonePe/Paytm) / Desk</li>
+            <li>Instant activation unlocks all test papers</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-purple">
+          <div class="flow-card-step">Step 4: Take Exam</div>
+          <div class="flow-card-title">TCS CBT Simulation</div>
+          <div class="flow-card-desc">Candidate attempts tests available in the package.</div>
+          <ul class="flow-card-points">
+            <li>Real-time countdown timer &amp; palette</li>
+            <li>On-screen financial calculator (JAIIB)</li>
+            <li>Anti-cheat 3-violation locked window</li>
+            <li>Instant score &amp; faculty detailed solutions</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: 24-HOUR STUDY LIBRARY SANCTUARY FLOW -->
+    <div class="flow-section">
+      <div class="flow-section-header">
+        <div class="section-num">3</div>
+        <div class="section-title">24-Hour Study Library Sanctuary Architecture</div>
+        <span class="section-tag">149 Seats • 2 Floors • Wi-Fi &amp; Lockers</span>
+      </div>
+
+      <div class="flow-grid">
+        <div class="flow-card accent-blue">
+          <div class="flow-card-step">Step 1: Explore &amp; Branch</div>
+          <div class="flow-card-title">Shift &amp; Branch Choice</div>
+          <div class="flow-card-desc">Aspirant explores facility features and selects study shift.</div>
+          <ul class="flow-card-points">
+            <li>Morning, Afternoon, Night part-shifts</li>
+            <li>Full Day (7 AM - 9 PM) = ₹1,000/mo</li>
+            <li>24-Hour Day &amp; Night = ₹2,000/mo</li>
+            <li>Branch Tab for local branch admissions</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-orange">
+          <div class="flow-card-step">Step 2: Seat &amp; Locker Rule</div>
+          <div class="flow-card-title">149 Seat Allocation</div>
+          <div class="flow-card-desc">Seat allocated across 2 dedicated study sanctuary floors.</div>
+          <ul class="flow-card-points">
+            <li>2nd Floor Zone A: Seats S-1 to S-24</li>
+            <li>1st Floor Zone B, C, D: Seats S-25 to S-149</li>
+            <li>Seat No = Locker No (attached above seat)</li>
+            <li>Locker available for Full Shift only</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-emerald">
+          <div class="flow-card-step">Step 3: Registration</div>
+          <div class="flow-card-title">Admission &amp; Date Lock</div>
+          <div class="flow-card-desc">Aspirant completes admission with non-alterable filing date.</div>
+          <ul class="flow-card-points">
+            <li>Admission Date = Locked to form filing date</li>
+            <li>Fee = Shift Fee + ₹200 one-time registration</li>
+            <li>Dual mode: Online 3D Grid OR Front Desk</li>
+            <li>Instant C2SLIB-XXXXX membership ID</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-purple">
+          <div class="flow-card-step">Step 4: Access Sanctuary</div>
+          <div class="flow-card-title">Wi-Fi &amp; Member Portal</div>
+          <div class="flow-card-desc">Member logs in with OTP to access Wi-Fi passwords and card.</div>
+          <ul class="flow-card-points">
+            <li>1st Floor: C2S-1 &amp; C2S-2 (Mama@123)</li>
+            <li>2nd Floor: C2S_Wifi_5G (Mama@123)</li>
+            <li>Digital Pass with live validity counter</li>
+            <li>Viral Referral Engine: Refer 1 = +7 Days Free</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Library Floor Matrix Table -->
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Floor</th>
+              <th>Zone Name</th>
+              <th>Seat Numbers</th>
+              <th>Total Capacity</th>
+              <th>Attached Locker Policy</th>
+              <th>Dedicated Wi-Fi Network</th>
+              <th>Wi-Fi Password</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>2nd Floor</strong></td>
+              <td><span class="badge-pill blue">Zone A</span></td>
+              <td>Seats S-1 to S-24</td>
+              <td>24 Seats</td>
+              <td>Lockers L-1 to L-24 (Full Shift Only)</td>
+              <td><code>C2S_Wifi_5G</code></td>
+              <td><code>Mama@123</code></td>
+            </tr>
+            <tr>
+              <td><strong>1st Floor</strong></td>
+              <td><span class="badge-pill orange">Zone B</span></td>
+              <td>Seats S-25 to S-67</td>
+              <td>43 Seats</td>
+              <td>Lockers L-25 to L-67 (Full Shift Only)</td>
+              <td><code>C2S-1</code> / <code>C2S-2</code></td>
+              <td><code>Mama@123</code></td>
+            </tr>
+            <tr>
+              <td><strong>1st Floor</strong></td>
+              <td><span class="badge-pill orange">Zone C</span></td>
+              <td>Seats S-68 to S-109</td>
+              <td>42 Seats</td>
+              <td>Lockers L-68 to L-109 (Full Shift Only)</td>
+              <td><code>C2S-1</code> / <code>C2S-2</code></td>
+              <td><code>Mama@123</code></td>
+            </tr>
+            <tr>
+              <td><strong>1st Floor</strong></td>
+              <td><span class="badge-pill orange">Zone D</span></td>
+              <td>Seats S-110 to S-149</td>
+              <td>40 Seats</td>
+              <td>Lockers L-110 to L-149 (Full Shift Only)</td>
+              <td><code>C2S-1</code> / <code>C2S-2</code></td>
+              <td><code>Mama@123</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 4: BOOKS & CURRENT AFFAIRS MAGAZINE ARCHITECTURE -->
+    <div class="flow-section">
+      <div class="flow-section-header">
+        <div class="section-num">4</div>
+        <div class="section-title">Current Affairs Magazine &amp; Study Materials Flow</div>
+        <span class="section-tag">"Notes of Current Events" • ₹15/month</span>
+      </div>
+
+      <div class="flow-grid">
+        <div class="flow-card accent-blue">
+          <div class="flow-card-step">Publication</div>
+          <div class="flow-card-title">Editorial Preparation</div>
+          <div class="flow-card-desc">Curated by C2S faculty covering National, International, Banking, State &amp; Static GK.</div>
+          <ul class="flow-card-points">
+            <li>Title: "Notes of Current Events"</li>
+            <li>Published month-wise (e.g. September 2026)</li>
+            <li>High-yield exam points &amp; MCQ worksheets</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-orange">
+          <div class="flow-card-step">Multi-Device Reading</div>
+          <div class="flow-card-title">Responsive Digital Reader</div>
+          <div class="flow-card-desc">Interactive in-app reader optimized for Mobile, Laptop, and Desktop.</div>
+          <ul class="flow-card-points">
+            <li>Night Mode &amp; font zoom adjustments</li>
+            <li>Category quick-navigation filters</li>
+            <li>Built-in AI voice read-aloud engine</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-emerald">
+          <div class="flow-card-step">Monetization</div>
+          <div class="flow-card-title">PDF Download at ₹15</div>
+          <div class="flow-card-desc">Aspirants download the full PDF to phone or laptop by paying ₹15/month.</div>
+          <ul class="flow-card-points">
+            <li>Instant UPI payment via QR / GPay</li>
+            <li>Immediate high-res PDF download link</li>
+            <li>VIP Scholar Bundle includes all issues free</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-purple">
+          <div class="flow-card-step">Physical Copy</div>
+          <div class="flow-card-title">Patrapada Desk Pickup</div>
+          <div class="flow-card-desc">Physical spiral-bound prints available at the Patrapada front desk.</div>
+          <ul class="flow-card-points">
+            <li>Free for Classroom Batch enrolled students</li>
+            <li>Special discount for library members</li>
+            <li>Weekly current affairs offline quizzes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: SUPER ADMIN & FRONT DESK OPERATIONS -->
+    <div class="flow-section">
+      <div class="flow-section-header">
+        <div class="section-num">5</div>
+        <div class="section-title">Super Admin &amp; Staff Operations Desk (admin.html)</div>
+        <span class="section-tag">Operational Control • P&amp;L • Seat Management</span>
+      </div>
+
+      <div class="flow-grid">
+        <div class="flow-card accent-blue">
+          <div class="flow-card-step">Module 1</div>
+          <div class="flow-card-title">📊 Live Financial P&amp;L</div>
+          <div class="flow-card-desc">Real-time ledger tracking Cash, UPI, Library Collections, and Batches.</div>
+          <ul class="flow-card-points">
+            <li>Gross revenue vs Pending dues</li>
+            <li>UPI transaction verification table</li>
+            <li>CSV export for institutional accounts</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-orange">
+          <div class="flow-card-step">Module 2</div>
+          <div class="flow-card-title">🪑 149-Seat Grid Manager</div>
+          <div class="flow-card-desc">Visual floor grid showing occupied, vacant, reserved, and cleaning seats.</div>
+          <ul class="flow-card-points">
+            <li>Instant seat swap &amp; shift re-assignment</li>
+            <li>Locker assignment verification</li>
+            <li>1-click check-in and vacancy release</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-emerald">
+          <div class="flow-card-step">Module 3</div>
+          <div class="flow-card-title">🎁 Access Granter Desk</div>
+          <div class="flow-card-desc">Grant complimentary passes to students for custom validity durations.</div>
+          <ul class="flow-card-points">
+            <li>7, 14, 30, 90, 365 Days duration overrides</li>
+            <li>Test Series Pro, Notes, or 24H Library</li>
+            <li>Audit trail with grant reasons logged</li>
+          </ul>
+        </div>
+
+        <div class="flow-card accent-purple">
+          <div class="flow-card-step">Module 4</div>
+          <div class="flow-card-title">🤝 Viral Referral Approvals</div>
+          <div class="flow-card-desc">Verify friend admissions and credit +7 days free library extensions.</div>
+          <ul class="flow-card-points">
+            <li>Automated member expiry extension</li>
+            <li>WhatsApp notification triggers</li>
+            <li>Referral fraud prevention checks</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 6: LOCALSTORAGE & STATE SYNCHRONIZATION BLUEPRINT -->
+    <div class="flow-section">
+      <div class="flow-section-header">
+        <div class="section-num">6</div>
+        <div class="section-title">System Data &amp; LocalStorage State Synchronization</div>
+        <span class="section-tag">Cross-Tab &amp; Cross-Portal Persistence</span>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Domain</th>
+              <th>Storage Key</th>
+              <th>Data Structure</th>
+              <th>Primary Purpose</th>
+              <th>Synchronized In</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Main Auth</strong></td>
+              <td><code>c2s_main_user</code></td>
+              <td>Object: <code>{ name, mobile, regNo, targetExam, role }</code></td>
+              <td>Main student login session &amp; profile</td>
+              <td><code>app.js</code>, <code>index.html</code></td>
+            </tr>
+            <tr>
+              <td><strong>Library Members</strong></td>
+              <td><code>c2s_lib_users</code></td>
+              <td>Array of Member Objects with Seat, Shift, Lockers</td>
+              <td>149-seat member registry &amp; expiry records</td>
+              <td><code>library.js</code>, <code>admin.html</code></td>
+            </tr>
+            <tr>
+              <td><strong>Seat Occupancy</strong></td>
+              <td><code>c2s_lib_seats</code></td>
+              <td>Map of 149 Seats with Status (vacant/occupied)</td>
+              <td>Real-time 2-floor seat allocation matrix</td>
+              <td><code>library.js</code>, <code>library-360.js</code></td>
+            </tr>
+            <tr>
+              <td><strong>Test Series Packages</strong></td>
+              <td><code>c2s_unlocked_packages</code></td>
+              <td>Array of Package IDs: <code>['PKG-JAIIB-2026', ...]</code></td>
+              <td>Unlocked test packages after UPI/Desk purchase</td>
+              <td><code>app.js</code>, <code>admin.html</code></td>
+            </tr>
+            <tr>
+              <td><strong>Test Attempts</strong></td>
+              <td><code>c2s_main_given</code></td>
+              <td>Array of Attempt Objects: <code>{ testId, score, answers, violations }</code></td>
+              <td>Student scorecards &amp; review solutions</td>
+              <td><code>app.js</code>, <code>dashboard.html</code></td>
+            </tr>
+            <tr>
+              <td><strong>Admin Overrides</strong></td>
+              <td><code>c2s_access_grants</code></td>
+              <td>Array of Overrides: <code>{ regNo, package, expiresAt }</code></td>
+              <td>Super Admin custom duration access granter</td>
+              <td><code>admin.js</code>, <code>app.js</code></td>
+            </tr>
+            <tr>
+              <td><strong>Referrals</strong></td>
+              <td><code>c2s_referrals</code></td>
+              <td>Array of Referral Claims: <code>{ referrer, friend, status }</code></td>
+              <td>+7-day free library extension tracking loop</td>
+              <td><code>library.js</code>, <code>admin.html</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Document Footer -->
+    <div style="margin-top:40px;padding-top:20px;border-top:1.5px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:12px;color:#64748b;">
+      <div>
+        © 2026 <strong>C2S — College to Service</strong>. NH-16 Near Sani Mandir, Patrapada, Bhubaneswar 751019.
+      </div>
+      <div>
+        Designed for High-Resolution Printing &amp; PDF Archiving.
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
