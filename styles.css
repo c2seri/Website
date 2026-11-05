@@ -8809,6 +8809,56 @@ html, body {
 }
 
 /* ==========================================================================
+   1LIBRARY.IN EXACT ADMISSION FORM RESPONSIVE UTILITIES
+   ========================================================================== */
+.admin-form-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.admin-upload-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.admin-address-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 16px;
+}
+.admin-shift-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 16px;
+}
+.admin-pay-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .admin-form-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .admin-address-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .admin-shift-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .admin-pay-grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+}
+@media (max-width: 600px) {
+  .admin-form-grid-4,
+  .admin-upload-grid-2,
+  .admin-address-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ==========================================================================
    PW-STYLE TWO-PANE DRAWER FOR "ALL EXAMS" (EXACT PHYSICS WALLAH UI)
    ========================================================================== */
 .nav-item.has-all-exams.open .mega-menu.pw-all-exams-drawer,

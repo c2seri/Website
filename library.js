@@ -245,6 +245,53 @@ function proceedToAdmissionWithSeat() {
   window.location.href = "admission.html?seat=" + encodeURIComponent(selectedSeat);
 }
 
+let publicPhotoData = '';
+let publicAadharData = '';
+let publicAadharFileName = '';
+
+window.previewPublicPhoto = function(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 500 * 1024) {
+    alert('Photo size exceeds 500 KB limit. Please choose a smaller passport photo.');
+    input.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    publicPhotoData = e.target.result;
+    const preview = document.getElementById('studPhotoPreview');
+    const wrap = document.getElementById('studPhotoPreviewWrap');
+    if (preview && wrap) {
+      preview.src = publicPhotoData;
+      wrap.style.display = 'flex';
+    }
+  };
+  reader.readAsDataURL(file);
+};
+
+window.previewPublicAadhar = function(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 2 * 1024 * 1024) {
+    alert('Aadhaar document exceeds 2 MB limit. Please select a smaller PDF or image.');
+    input.value = '';
+    return;
+  }
+  publicAadharFileName = file.name;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    publicAadharData = e.target.result;
+    const wrap = document.getElementById('studAadharPreviewWrap');
+    const nameEl = document.getElementById('studAadharName');
+    if (wrap && nameEl) {
+      nameEl.textContent = '✓ ' + file.name + ' (' + Math.round(file.size / 1024) + ' KB)';
+      wrap.style.display = 'flex';
+    }
+  };
+  reader.readAsDataURL(file);
+};
+
 /* 3. Admission Form Submission */
 function libAdmit(e) {
   e.preventDefault();
@@ -257,14 +304,28 @@ function libAdmit(e) {
   const m = {
     regNo,
     name: $("#candName").value,
+    gender: $("#gender")?.value || "Male",
     mobile: $("#studMobile").value,
     email: $("#studEmail")?.value || "",
+    dob: $("#dob")?.value || "",
+    fatherName: $("#fatherName")?.value || "",
+    motherName: $("#motherName")?.value || "",
+    guardianContact: $("#guardianContact")?.value || "",
+    qualification: $("#qualif")?.value || "",
+    studyPurpose: $("#examPref")?.value || "OSSC CGL / Competitive Exams",
+    examPref: $("#examPref")?.value || "OSSC CGL / Competitive Exams",
+    photo: publicPhotoData || "",
+    aadharCard: publicAadharData || "",
+    aadharFileName: publicAadharFileName || "",
+    address: [$("#plotNo")?.value, $("#lane")?.value].filter(Boolean).join(", "),
+    district: $("#district")?.value || "Khordha",
+    state: $("#state")?.value || "Odisha",
+    pincode: $("#pin")?.value || "",
     shift: selShift || "Full Day (07:00 AM – 09:00 PM)",
     seat: seatVal,
     seatMode: isPhysical ? "physical" : "online",
     from: $("#fromDate")?.value || new Date().toISOString().slice(0, 10),
     to: $("#toDate")?.value || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-    examPref: $("#examPref")?.value || "OSSC CGL / Competitive Exams",
     total: Number($("#totalFees")?.value || 1200),
     paid: Number($("#paidFees")?.value || 1200),
     pending: Number($("#pendingFees")?.value || 0),

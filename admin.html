@@ -583,12 +583,12 @@
       <table class="admin-table">
         <thead>
           <tr>
+            <th>Student / Photo</th>
             <th>Reg No</th>
-            <th>Student Name</th>
-            <th>Contact</th>
-            <th>Shift</th>
-            <th>Paid (₹)</th>
-            <th>Pending (₹)</th>
+            <th>Contact &amp; Guardian</th>
+            <th>Shift &amp; Seat</th>
+            <th>Fee Status</th>
+            <th>KYC Documents</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -596,27 +596,324 @@
       </table>
     </div>
 
-    <!-- Quick Admission Desk Form -->
-    <div class="card" id="quickAdmitSection">
-      <h3>📝 Quick Front-Desk Admission Form</h3>
-      <form onsubmit="deskQuickAdmit(event)">
-        <div class="grid2">
-          <div><label>Full Name</label><input id="deskName" required placeholder="Student Name"></div>
-          <div><label>Mobile Number</label><input id="deskMobile" required placeholder="10-digit mobile"></div>
-          <div><label>Target Exam Track</label><input id="deskExam" placeholder="e.g. OSSC, Bank, SSC, Police"></div>
-          <div><label>Shift Allocation</label>
-            <select id="deskShift">
-              <option value="Morning">Morning Shift (06:00 AM – 12:00 PM)</option>
-              <option value="Afternoon" selected>Afternoon Shift (02:30 PM – 09:00 PM • ₹1000/mo)</option>
-              <option value="Full Day">Full Day Shift (07:00 AM – 09:00 PM • 14 Hours)</option>
-              <option value="Night">Night Shift (09:00 PM – 06:00 AM)</option>
-            </select>
-          </div>
-          <div><label>Amount Paid (₹)</label><input type="number" id="deskPaid" value="1200" required></div>
-          <div><label>Pending Balance (₹)</label><input type="number" id="deskPending" value="0"></div>
+    <!-- ==========================================================================
+         OFFICIAL 1LIBRARY.IN SECTION-BY-SECTION ADMISSION FORM (EXACT MATCH)
+         ========================================================================== -->
+    <div class="card" id="quickAdmitSection" style="padding:0;overflow:hidden;border:1.5px solid #cbd5e1;border-radius:16px;box-shadow:0 10px 25px -5px rgba(15,23,42,0.08);background:#ffffff;">
+      <!-- Main Card Title Bar -->
+      <div style="background:#f8fafc;padding:16px 24px;border-bottom:1.5px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="background:#0f2a5c;color:#fff;font-size:12px;font-weight:800;padding:4px 10px;border-radius:6px;letter-spacing:0.5px;">ADMISSIONS</span>
+          <h3 style="margin:0;font-size:19px;color:#0f2a5c;font-weight:900;">Add New Admission</h3>
         </div>
-        <p class="small" style="margin:10px 0;">* ₹200 one-time non-refundable registration fee is included. Seat fee reference is ₹1000/mo (First month total: ₹1200).</p>
-        <button class="btn orange" type="submit">Issue Library Admission &amp; Generate Reg No</button>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:12px;color:#64748b;">📍 Branch: <strong>Patrapada (NH-16)</strong></span>
+          <span style="display:inline-block;width:1px;height:14px;background:#cbd5e1;"></span>
+          <span style="font-size:12px;color:#047857;font-weight:750;">🟢 C2S Library Active</span>
+        </div>
+      </div>
+
+      <form id="deskAdmissionForm" onsubmit="deskQuickAdmit(event)" style="padding:20px 24px;">
+
+        <!-- 1. ACCESS VALIDATION -->
+        <div style="margin-bottom:24px;">
+          <div style="background:#091e42;color:#ffffff;font-size:12px;font-weight:800;letter-spacing:0.8px;padding:9px 16px;border-radius:6px;text-transform:uppercase;margin-bottom:14px;">
+            ACCESS VALIDATION
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:16px;">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                From Date <span style="color:#dc2626;">*</span>
+              </label>
+              <input type="date" id="deskFromDate" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;" onchange="autoUpdateToDate(this.value)">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                To Date <span style="color:#dc2626;">*</span>
+              </label>
+              <input type="date" id="deskToDate" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. STUDENT INFORMATION -->
+        <div style="margin-bottom:24px;">
+          <div style="background:#091e42;color:#ffffff;font-size:12px;font-weight:800;letter-spacing:0.8px;padding:9px 16px;border-radius:6px;text-transform:uppercase;margin-bottom:14px;">
+            STUDENT INFORMATION
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px;margin-bottom:14px;" class="admin-form-grid-4">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Admission Date <span style="color:#dc2626;">*</span>
+              </label>
+              <input type="date" id="deskAdmDate" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Registration No <span style="color:#dc2626;">*</span>
+              </label>
+              <input id="deskRegNo" readonly style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f2a5c;background:#f8fafc;font-weight:800;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Candidate name <span style="color:#dc2626;">*</span>
+              </label>
+              <input id="deskName" required placeholder="Full Name" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Gender <span style="color:#dc2626;">*</span>
+              </label>
+              <select id="deskGender" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;">
+                <option value="">Select Gender</option>
+                <option value="Male" selected>Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px;margin-bottom:14px;" class="admin-form-grid-4">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Mobile No <span style="color:#dc2626;">*</span> <span style="font-size:11px;color:#64748b;font-weight:500;">(will be used for login)</span>
+              </label>
+              <input type="tel" id="deskMobile" required placeholder="10-digit mobile" maxlength="10" pattern="[0-9]{10}" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Email
+              </label>
+              <input type="email" id="deskEmail" placeholder="Email" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Date of Birth
+              </label>
+              <input type="date" id="deskDob" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Father Name
+              </label>
+              <input id="deskFather" placeholder="Father Name" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px;margin-bottom:16px;" class="admin-form-grid-4">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Mother Name
+              </label>
+              <input id="deskMother" placeholder="Mother Name" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Qualification
+              </label>
+              <input id="deskQualif" placeholder="Qualification (e.g. Graduation, +2)" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Study Purpose
+              </label>
+              <input id="deskExam" placeholder="Study Purpose (e.g. UPSC, OPSC, Bank, SSC)" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Guardian's Contact
+              </label>
+              <input type="tel" id="deskGuardian" placeholder="Guardian's Contact" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+          </div>
+
+          <!-- Document Upload Row: Photo & Aadhar Card (User Requested with Live Previews) -->
+          <div style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:16px;background:#f8fafc;padding:16px;border-radius:10px;border:1.5px dashed #cbd5e1;" class="admin-upload-grid-2">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:800;color:#0f172a;margin-bottom:3px;">
+                📷 Photo <span style="font-size:12px;font-weight:600;color:#64748b;">(Passport Size Picture)</span>
+              </label>
+              <input type="file" id="deskPhoto" accept="image/jpeg,image/png,image/jpg" onchange="previewDeskPhoto(this)" style="font-size:12px;color:#475569;margin-bottom:4px;">
+              <span style="display:block;font-size:11px;color:#64748b;">Only JPEG, JPG, PNG files are allowed. Max size 500 KB.</span>
+              <div id="deskPhotoPreviewWrap" style="display:none;margin-top:8px;align-items:center;gap:10px;">
+                <img id="deskPhotoPreview" src="" alt="Photo Preview" style="width:50px;height:60px;object-fit:cover;border-radius:6px;border:1.5px solid #cbd5e1;box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                <span style="font-size:11.5px;color:#047857;font-weight:750;">✓ Passport Photo Attached</span>
+              </div>
+            </div>
+
+            <div>
+              <label style="display:block;font-size:13px;font-weight:800;color:#0f172a;margin-bottom:3px;">
+                🪪 Aadhar Card <span style="font-size:12px;font-weight:600;color:#64748b;">(Identity Proof)</span>
+              </label>
+              <input type="file" id="deskAadhar" accept="image/jpeg,image/png,image/jpg,application/pdf,.doc,.docx" onchange="previewDeskAadhar(this)" style="font-size:12px;color:#475569;margin-bottom:4px;">
+              <span style="display:block;font-size:11px;color:#64748b;">Only PDF or .DOC or .DOCX or JPG/PNG formats are allowed. Max size 2 MB.</span>
+              <div id="deskAadharPreviewWrap" style="display:none;margin-top:8px;align-items:center;gap:10px;">
+                <span id="deskAadharIcon" style="font-size:22px;">📄</span>
+                <span id="deskAadharName" style="font-size:12px;color:#047857;font-weight:750;">Aadhaar Attached</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. ADDRESS -->
+        <div style="margin-bottom:24px;">
+          <div style="background:#091e42;color:#ffffff;font-size:12px;font-weight:800;letter-spacing:0.8px;padding:9px 16px;border-radius:6px;text-transform:uppercase;margin-bottom:14px;">
+            ADDRESS
+          </div>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:16px;" class="admin-address-grid">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Address
+              </label>
+              <input id="deskAddress" placeholder="Street / Plot / Locality" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                District
+              </label>
+              <input id="deskDistrict" placeholder="District" value="Khordha" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                State
+              </label>
+              <select id="deskState" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;">
+                <option value="Odisha" selected>Odisha</option>
+                <option value="West Bengal">West Bengal</option>
+                <option value="Bihar">Bihar</option>
+                <option value="Jharkhand">Jharkhand</option>
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                <option value="Other">Other State</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Pin Code
+              </label>
+              <input id="deskPincode" placeholder="Pin Code" maxlength="6" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. SHIFT ALLOCATION -->
+        <div style="margin-bottom:24px;">
+          <div style="background:#091e42;color:#ffffff;font-size:12px;font-weight:800;letter-spacing:0.8px;padding:9px 16px;border-radius:6px;text-transform:uppercase;margin-bottom:14px;">
+            SHIFT ALLOCATION
+          </div>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px;align-items:flex-start;" class="admin-shift-grid">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:8px;">
+                Shift <span style="color:#dc2626;">*</span>
+              </label>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;" id="deskShiftButtonsWrap">
+                <button type="button" class="btn desk-shift-chip" onclick="setDeskShift('Morning', 1000, this)" style="padding:8px 14px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;">
+                  Morning (6 AM - 12 PM)
+                </button>
+                <button type="button" class="btn desk-shift-chip" onclick="setDeskShift('Afternoon', 1000, this)" style="padding:8px 14px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;">
+                  Afternoon (12 PM - 6 PM)
+                </button>
+                <button type="button" class="btn desk-shift-chip active" onclick="setDeskShift('Full Day', 1000, this)" style="padding:8px 14px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #2563eb;background:#eff6ff;color:#1d4ed8;cursor:pointer;">
+                  Full Day (7 AM - 9 PM) ★
+                </button>
+                <button type="button" class="btn desk-shift-chip" onclick="setDeskShift('Night', 1000, this)" style="padding:8px 14px;font-size:12.5px;font-weight:750;border-radius:8px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;">
+                  Night (9 PM - 6 AM)
+                </button>
+              </div>
+              <input type="hidden" id="deskShift" value="Full Day">
+            </div>
+
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Seat Status <span style="color:#dc2626;">*</span>
+              </label>
+              <select id="deskSeatStatus" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;">
+                <option value="Fixed Seat" selected>Fixed Seat (Dedicated Desk)</option>
+                <option value="Flexi Seat">Flexible Seat</option>
+                <option value="Walk-in Physical Allocation">Walk-in Physical Allocation</option>
+                <option value="Reserved Sanctuary">Reserved Sanctuary Cubicle</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Desk / Seat No.
+              </label>
+              <input id="deskSeat" placeholder="e.g. Desk A-04 or Front Desk" value="Desk A-04" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;font-weight:700;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. PAYMENT DETAILS -->
+        <div style="margin-bottom:24px;">
+          <div style="background:#091e42;color:#ffffff;font-size:12px;font-weight:800;letter-spacing:0.8px;padding:9px 16px;border-radius:6px;text-transform:uppercase;margin-bottom:14px;">
+            PAYMENT DETAILS
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px;margin-bottom:14px;" class="admin-form-grid-4">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Shift Fees (₹)
+              </label>
+              <input type="number" id="deskShiftFees" value="1000" readonly style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f2a5c;background:#f8fafc;font-weight:750;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Locker Fees (₹)
+              </label>
+              <input type="number" id="deskLockerFees" value="0" min="0" oninput="calcDeskFees()" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Total Fees (₹) <span style="color:#dc2626;">*</span> <span style="font-size:11px;color:#64748b;">(includes ₹200 reg)</span>
+              </label>
+              <input type="number" id="deskTotalFees" value="1200" readonly style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:14px;color:#0f2a5c;background:#f8fafc;font-weight:900;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Discount (Amount) (₹)
+              </label>
+              <input type="number" id="deskDiscount" value="0" min="0" oninput="calcDeskFees()" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:16px;" class="admin-pay-grid-3">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Paid Fees (₹) <span style="color:#dc2626;">*</span>
+              </label>
+              <input type="number" id="deskPaid" value="1200" required oninput="calcDeskFees()" style="width:100%;padding:9px 12px;border:1.5px solid #10b981;border-radius:8px;font-size:14px;color:#047857;background:#ecfdf5;font-weight:900;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Pending Fees (₹)
+              </label>
+              <input type="number" id="deskPending" value="0" readonly style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:14px;color:#dc2626;background:#fef2f2;font-weight:900;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                Payment Mode <span style="color:#dc2626;">*</span>
+              </label>
+              <select id="deskPayMode" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;">
+                <option value="Cash at Front Desk">Cash at Front Desk</option>
+                <option value="UPI / QR (PhonePe / GPay / Paytm)" selected>UPI / QR (PhonePe / GPay / Paytm)</option>
+                <option value="Debit / Credit Card">Debit / Credit Card</option>
+                <option value="Net Banking / IMPS">Net Banking / IMPS</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Submit & Action Buttons -->
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;border-top:1.5px solid #e2e8f0;padding-top:18px;margin-top:10px;">
+          <button type="submit" class="btn" style="background:#ea580c;color:#ffffff;font-size:14px;font-weight:850;padding:12px 28px;border-radius:10px;border:none;cursor:pointer;box-shadow:0 4px 14px rgba(234,88,12,0.35);">
+            Submit Admission &amp; Issue Registration ID →
+          </button>
+          <button type="reset" class="btn ghost" onclick="resetDeskAdmissionForm()" style="padding:11px 20px;font-size:13px;">
+            Reset Form
+          </button>
+          <span style="font-size:12px;color:#64748b;margin-left:auto;">
+            🔒 Automatically saved to Database + Generates Biometric Reg No &amp; Dispatches Receipt.
+          </span>
+        </div>
       </form>
     </div>
 
@@ -1135,18 +1432,21 @@
 
 <!-- MODAL 1: STUDENT 360 PROFILE DOSSIER -->
 <div id="student360Modal" class="c2s-admin-modal-backdrop">
-  <div class="c2s-admin-modal-card">
+  <div class="c2s-admin-modal-card" style="max-width:760px;max-height:90vh;overflow-y:auto;">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
-      <div>
-        <span class="pill blue" id="modalStudentRegNo">REG-0000</span>
-        <h3 style="margin:6px 0 2px;font-size:22px;color:#0f2a5c;" id="modalStudentName">Student Profile</h3>
-        <span style="font-size:12.5px;color:#64748b;" id="modalStudentSub">Comprehensive 360° Dossier</span>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <img id="modalStudentPhoto" src="" alt="Student Photo" style="display:none;width:64px;height:76px;object-fit:cover;border-radius:8px;border:2px solid #cbd5e1;box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+        <div>
+          <span class="pill blue" id="modalStudentRegNo">REG-0000</span>
+          <h3 style="margin:6px 0 2px;font-size:22px;color:#0f2a5c;" id="modalStudentName">Student Profile</h3>
+          <span style="font-size:12.5px;color:#64748b;" id="modalStudentSub">Comprehensive 360° Dossier</span>
+        </div>
       </div>
       <button type="button" class="btn ghost" onclick="closeStudent360Modal()" style="padding:4px 10px;font-size:16px;line-height:1;">✕</button>
     </div>
 
     <!-- Student Key Attributes Grid -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px;margin-bottom:18px;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:12px;margin-bottom:18px;">
       <div style="background:#f8fafc;padding:12px;border-radius:10px;border:1px solid #e2e8f0;">
         <span style="font-size:11px;color:#64748b;display:block;">Contact Mobile:</span>
         <strong id="modalStudentMobile" style="font-size:14px;color:#0f172a;">-</strong>
@@ -1162,6 +1462,22 @@
       <div style="background:#f8fafc;padding:12px;border-radius:10px;border:1px solid #e2e8f0;">
         <span style="font-size:11px;color:#64748b;display:block;">Payment Status:</span>
         <strong id="modalStudentPayment" style="font-size:14px;color:#059669;">-</strong>
+      </div>
+    </div>
+
+    <!-- 1Library.in Comprehensive Profile Tabs & Fields -->
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:18px;">
+      <h4 style="margin:0 0 10px;font-size:13px;color:#0f2a5c;text-transform:uppercase;letter-spacing:0.5px;">📋 Student Information &amp; KYC Records</h4>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:10px;font-size:12.5px;">
+        <div><span style="color:#64748b;">Gender:</span> <strong id="modalStudentGender" style="color:#0f172a;">—</strong></div>
+        <div><span style="color:#64748b;">DOB:</span> <strong id="modalStudentDob" style="color:#0f172a;">—</strong></div>
+        <div><span style="color:#64748b;">Father's Name:</span> <strong id="modalStudentFather" style="color:#0f172a;">—</strong></div>
+        <div><span style="color:#64748b;">Mother's Name:</span> <strong id="modalStudentMother" style="color:#0f172a;">—</strong></div>
+        <div><span style="color:#64748b;">Qualification:</span> <strong id="modalStudentQual" style="color:#0f172a;">—</strong></div>
+        <div><span style="color:#64748b;">Guardian Contact:</span> <strong id="modalStudentGuardian" style="color:#0f172a;">—</strong></div>
+        <div><span style="color:#64748b;">Access Duration:</span> <strong id="modalStudentDates" style="color:#0f172a;">—</strong></div>
+        <div><span style="color:#64748b;">Address:</span> <strong id="modalStudentAddress" style="color:#0f172a;">—</strong></div>
+        <div style="grid-column:1 / -1;"><span style="color:#64748b;">Aadhaar Identity Proof:</span> <span id="modalStudentAadhar">—</span></div>
       </div>
     </div>
 

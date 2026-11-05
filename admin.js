@@ -510,6 +510,7 @@ function exportLedgerCSV() {
 function renderFrontDesk() {
   renderSeatController();
   renderMemberList();
+  initDeskAdmissionForm();
 }
 
 function renderSeatController() {
@@ -549,6 +550,141 @@ function toggleAdminSeat(id) {
   renderSuperAdmin();
 }
 
+let currentDeskPhotoData = '';
+let currentDeskAadharData = '';
+let currentDeskAadharFileName = '';
+
+function initDeskAdmissionForm() {
+  const members = store.get('c2s_lib_members', []);
+  const regEl = document.getElementById('deskRegNo');
+  if (regEl) {
+    regEl.value = 'C2SLIB-' + String(members.length + 1).padStart(5, '0');
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  const admDateEl = document.getElementById('deskAdmDate');
+  if (admDateEl && !admDateEl.value) admDateEl.value = today;
+
+  const fromDateEl = document.getElementById('deskFromDate');
+  if (fromDateEl && !fromDateEl.value) fromDateEl.value = today;
+
+  const toDateEl = document.getElementById('deskToDate');
+  if (toDateEl && !toDateEl.value) {
+    const d = new Date();
+    d.setDate(d.getDate() + 30);
+    toDateEl.value = d.toISOString().slice(0, 10);
+  }
+
+  calcDeskFees();
+}
+
+window.autoUpdateToDate = function(fromVal) {
+  if (!fromVal) return;
+  const toDateEl = document.getElementById('deskToDate');
+  if (!toDateEl) return;
+  try {
+    const d = new Date(fromVal);
+    d.setDate(d.getDate() + 30);
+    toDateEl.value = d.toISOString().slice(0, 10);
+  } catch (e) {}
+};
+
+window.setDeskShift = function(shiftName, fee, btn) {
+  const shiftInput = document.getElementById('deskShift');
+  if (shiftInput) shiftInput.value = shiftName;
+  const shiftFeesInput = document.getElementById('deskShiftFees');
+  if (shiftFeesInput) shiftFeesInput.value = fee;
+
+  // Highlight button
+  document.querySelectorAll('.desk-shift-chip').forEach(b => {
+    b.classList.remove('active');
+    b.style.borderColor = '#cbd5e1';
+    b.style.background = '#ffffff';
+    b.style.color = '#0f172a';
+  });
+  if (btn) {
+    btn.classList.add('active');
+    btn.style.borderColor = '#2563eb';
+    btn.style.background = '#eff6ff';
+    btn.style.color = '#1d4ed8';
+  }
+
+  calcDeskFees();
+};
+
+window.calcDeskFees = function() {
+  const shiftFee = Number(document.getElementById('deskShiftFees')?.value || 1000);
+  const lockerFee = Number(document.getElementById('deskLockerFees')?.value || 0);
+  const regFee = 200; // One-time admission registration fee
+  const total = shiftFee + lockerFee + regFee;
+
+  const totalEl = document.getElementById('deskTotalFees');
+  if (totalEl) totalEl.value = total;
+
+  const discount = Number(document.getElementById('deskDiscount')?.value || 0);
+  const paid = Number(document.getElementById('deskPaid')?.value || 0);
+  const pending = Math.max(0, total - discount - paid);
+
+  const pendingEl = document.getElementById('deskPending');
+  if (pendingEl) pendingEl.value = pending;
+};
+
+window.previewDeskPhoto = function(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 500 * 1024) {
+    alert('Photo size exceeds 500 KB limit. Please choose a smaller passport photo.');
+    input.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    currentDeskPhotoData = e.target.result;
+    const preview = document.getElementById('deskPhotoPreview');
+    const wrap = document.getElementById('deskPhotoPreviewWrap');
+    if (preview && wrap) {
+      preview.src = currentDeskPhotoData;
+      wrap.style.display = 'flex';
+    }
+  };
+  reader.readAsDataURL(file);
+};
+
+window.previewDeskAadhar = function(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 2 * 1024 * 1024) {
+    alert('Aadhaar document exceeds 2 MB limit. Please select a smaller PDF or image.');
+    input.value = '';
+    return;
+  }
+  currentDeskAadharFileName = file.name;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    currentDeskAadharData = e.target.result;
+    const wrap = document.getElementById('deskAadharPreviewWrap');
+    const nameEl = document.getElementById('deskAadharName');
+    if (wrap && nameEl) {
+      nameEl.textContent = '✓ ' + file.name + ' (' + Math.round(file.size / 1024) + ' KB)';
+      wrap.style.display = 'flex';
+    }
+  };
+  reader.readAsDataURL(file);
+};
+
+window.resetDeskAdmissionForm = function() {
+  const form = document.getElementById('deskAdmissionForm');
+  if (form) form.reset();
+  currentDeskPhotoData = '';
+  currentDeskAadharData = '';
+  currentDeskAadharFileName = '';
+  const photoWrap = document.getElementById('deskPhotoPreviewWrap');
+  if (photoWrap) photoWrap.style.display = 'none';
+  const aadharWrap = document.getElementById('deskAadharPreviewWrap');
+  if (aadharWrap) aadharWrap.style.display = 'none';
+  setTimeout(initDeskAdmissionForm, 50);
+};
+
 function renderMemberList(filterQuery = '') {
   const members = store.get('c2s_lib_members', []);
   const tbody = document.getElementById('adminMemberBody');
@@ -559,29 +695,69 @@ function renderMemberList(filterQuery = '') {
     !q || 
     (m.name || '').toLowerCase().includes(q) || 
     (m.regNo || '').toLowerCase().includes(q) || 
-    (m.mobile || '').includes(q)
+    (m.mobile || '').includes(q) ||
+    (m.studyPurpose || m.examPref || '').toLowerCase().includes(q)
   );
 
-  tbody.innerHTML = filtered.length ? filtered.map(m => `
-    <tr>
-      <td><strong>${m.regNo}</strong></td>
-      <td><strong>${m.name}</strong></td>
-      <td>${m.mobile || m.email || '—'}</td>
-      <td><span class="pill">${m.shift}</span></td>
-      <td style="color:var(--c2s-emerald-600);font-weight:750;">₹${m.paid || 0}</td>
-      <td style="color:${m.pending > 0 ? '#dc2626' : 'var(--c2s-slate-500)'};font-weight:750;">₹${m.pending || 0}</td>
-      <td>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          <button type="button" class="btn ghost" style="padding:4px 8px;font-size:11.5px;font-weight:750;" onclick="openStudent360('${m.regNo}')">
-            👁️ 360 Profile
-          </button>
-          <button type="button" class="btn" style="background:#25d366;color:#ffffff;padding:4px 8px;font-size:11.5px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;" onclick="resendStudentReceipt('${m.regNo}')" title="Resend WhatsApp Receipt & Login Link">
-            <span>📲 Receipt</span>
-          </button>
-        </div>
-      </td>
-    </tr>
-  `).join('') : '<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">No matching members found.</td></tr>';
+  tbody.innerHTML = filtered.length ? filtered.map(m => {
+    const avatarHtml = m.photo ? 
+      `<img src="${m.photo}" alt="${m.name}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #cbd5e1;box-shadow:0 2px 4px rgba(0,0,0,0.06);">` :
+      `<div style="width:36px;height:36px;border-radius:50%;background:#0f2a5c;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;">${(m.name || 'S').slice(0, 2).toUpperCase()}</div>`;
+
+    const aadharBadge = m.aadharCard ?
+      `<span style="display:inline-flex;align-items:center;gap:3px;background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;padding:2px 7px;border-radius:999px;font-size:11px;font-weight:750;">🪪 Verified</span>` :
+      `<span style="display:inline-flex;align-items:center;gap:3px;background:#f8fafc;color:#94a3b8;border:1px solid #e2e8f0;padding:2px 7px;border-radius:999px;font-size:11px;">Pending</span>`;
+
+    const photoBadge = m.photo ?
+      `<span style="display:inline-flex;align-items:center;gap:3px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:2px 7px;border-radius:999px;font-size:11px;font-weight:750;">📷 Photo</span>` : '';
+
+    return `
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:10px;">
+            ${avatarHtml}
+            <div>
+              <strong style="display:block;font-size:13.5px;color:#0f172a;">${m.name}</strong>
+              <span style="font-size:11px;color:#64748b;">${m.gender || 'Student'} • ${m.qualification || m.examPref || 'Aspirant'}</span>
+            </div>
+          </div>
+        </td>
+        <td>
+          <strong style="color:#0f2a5c;font-size:13px;letter-spacing:0.3px;">${m.regNo}</strong>
+          <span style="font-size:11px;color:#64748b;display:block;">${m.admDate || m.date || 'Active'}</span>
+        </td>
+        <td>
+          <strong style="font-size:13px;color:#0f172a;display:block;">📱 ${m.mobile || '—'}</strong>
+          ${m.guardianContact ? `<span style="font-size:11px;color:#64748b;display:block;">Guardian: ${m.guardianContact}</span>` : ''}
+          ${m.email ? `<span style="font-size:11px;color:#64748b;display:block;">${m.email}</span>` : ''}
+        </td>
+        <td>
+          <span class="pill" style="font-size:11.5px;padding:3px 9px;margin-bottom:3px;display:inline-block;">${m.shift}</span>
+          <span style="font-size:11.5px;color:#2563eb;font-weight:700;display:block;">💺 ${m.seat || 'Front Desk'}</span>
+        </td>
+        <td>
+          <div style="font-size:13px;font-weight:800;color:#047857;">₹${m.paid || 0} Paid</div>
+          ${m.pending > 0 ? `<div style="font-size:11px;font-weight:800;color:#dc2626;">₹${m.pending} Pending</div>` : `<span style="font-size:10.5px;color:#059669;font-weight:700;">✓ Cleared</span>`}
+        </td>
+        <td>
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            ${aadharBadge}
+            ${photoBadge}
+          </div>
+        </td>
+        <td>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button type="button" class="btn ghost" style="padding:4px 8px;font-size:11.5px;font-weight:750;" onclick="openStudent360('${m.regNo}')">
+              👁️ Profile
+            </button>
+            <button type="button" class="btn" style="background:#25d366;color:#ffffff;padding:4px 8px;font-size:11.5px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;" onclick="resendStudentReceipt('${m.regNo}')" title="Resend WhatsApp Receipt & Login Link">
+              <span>📲 Receipt</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('') : '<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:24px;">No matching members found.</td></tr>';
 }
 
 function filterAdminMembers() {
@@ -591,28 +767,75 @@ function filterAdminMembers() {
 
 function deskQuickAdmit(e) {
   e.preventDefault();
-  const name = document.getElementById('deskName').value;
-  const mobile = document.getElementById('deskMobile').value;
-  const examPref = document.getElementById('deskExam').value || 'Govt Examinations';
-  const shift = document.getElementById('deskShift').value;
-  const paid = Number(document.getElementById('deskPaid').value || 0);
-  const pending = Number(document.getElementById('deskPending').value || 0);
+
+  const fromDate = document.getElementById('deskFromDate')?.value || new Date().toISOString().slice(0, 10);
+  const toDate = document.getElementById('deskToDate')?.value || '';
+  const admDate = document.getElementById('deskAdmDate')?.value || new Date().toISOString().slice(0, 10);
+  const name = document.getElementById('deskName').value.trim();
+  const gender = document.getElementById('deskGender')?.value || 'Male';
+  const mobile = document.getElementById('deskMobile').value.trim();
+  const email = document.getElementById('deskEmail')?.value.trim() || '';
+  const dob = document.getElementById('deskDob')?.value || '';
+  const fatherName = document.getElementById('deskFather')?.value.trim() || '';
+  const motherName = document.getElementById('deskMother')?.value.trim() || '';
+  const qualification = document.getElementById('deskQualif')?.value.trim() || '';
+  const studyPurpose = document.getElementById('deskExam')?.value.trim() || 'Govt Examinations';
+  const guardianContact = document.getElementById('deskGuardian')?.value.trim() || '';
+
+  const address = document.getElementById('deskAddress')?.value.trim() || '';
+  const district = document.getElementById('deskDistrict')?.value.trim() || 'Khordha';
+  const state = document.getElementById('deskState')?.value || 'Odisha';
+  const pincode = document.getElementById('deskPincode')?.value.trim() || '';
+
+  const shift = document.getElementById('deskShift')?.value || 'Full Day';
+  const seatStatus = document.getElementById('deskSeatStatus')?.value || 'Fixed Seat';
+  const seat = document.getElementById('deskSeat')?.value.trim() || 'Physical Allocation at Front Desk';
+
+  const shiftFees = Number(document.getElementById('deskShiftFees')?.value || 1000);
+  const lockerFees = Number(document.getElementById('deskLockerFees')?.value || 0);
+  const total = Number(document.getElementById('deskTotalFees')?.value || (shiftFees + lockerFees + 200));
+  const discount = Number(document.getElementById('deskDiscount')?.value || 0);
+  const paid = Number(document.getElementById('deskPaid')?.value || 0);
+  const pending = Number(document.getElementById('deskPending')?.value || 0);
+  const mode = document.getElementById('deskPayMode')?.value || 'UPI / QR';
 
   const members = store.get('c2s_lib_members', []);
-  const regNo = 'C2SLIB-' + String(members.length + 1).padStart(5, '0');
+  const regNo = document.getElementById('deskRegNo')?.value || ('C2SLIB-' + String(members.length + 1).padStart(5, '0'));
 
   const newMember = {
     regNo,
     name,
+    gender,
     mobile,
-    examPref,
+    email,
+    dob,
+    fatherName,
+    motherName,
+    qualification,
+    studyPurpose,
+    examPref: studyPurpose,
+    guardianContact,
+    photo: currentDeskPhotoData || '',
+    aadharCard: currentDeskAadharData || '',
+    aadharFileName: currentDeskAadharFileName || '',
+    address,
+    district,
+    state,
+    pincode,
+    fromDate,
+    toDate,
+    admDate,
     shift,
-    seat: 'Physical Allocation at Front Desk',
+    seatStatus,
+    seat,
+    shiftFees,
+    lockerFees,
+    discount,
+    total,
     paid,
     pending,
-    total: paid + pending,
-    mode: 'Cash / Desk UPI',
-    date: new Date().toISOString().slice(0, 10)
+    mode,
+    date: admDate
   };
 
   members.unshift(newMember);
@@ -632,8 +855,9 @@ function deskQuickAdmit(e) {
     window.dispatchAdmissionReceipt(newMember);
   }
 
-  e.target.reset();
-  alert(`🎉 Admission registered successfully!\nRegistration ID: ${regNo}\nStudent: ${name}\nShift: ${shift}\n\nAutomated receipt & student portal login credentials dispatched to WhatsApp & Email!`);
+  alert(`🎉 Admission registered successfully!\n\nRegistration ID: ${regNo}\nCandidate: ${name}\nShift: ${shift}\nSeat: ${seat}\nPaid: ₹${paid} | Pending: ₹${pending}\n\nAutomated receipt & biometric login credentials dispatched!`);
+  
+  resetDeskAdmissionForm();
   renderFrontDesk();
   renderSuperAdmin();
   renderShiftAttendance();
@@ -714,12 +938,55 @@ window.openStudent360 = function(regNo) {
   currentModalStudent = m;
   document.getElementById('modalStudentRegNo').textContent = m.regNo;
   document.getElementById('modalStudentName').textContent = m.name;
-  document.getElementById('modalStudentSub').textContent = (m.examPref || 'Govt Aspirant') + ' • Admitted on ' + (m.date || 'Recent');
+  document.getElementById('modalStudentSub').textContent = (m.studyPurpose || m.examPref || 'Govt Aspirant') + ' • Admitted on ' + (m.admDate || m.date || 'Recent');
   document.getElementById('modalStudentMobile').textContent = m.mobile || 'N/A';
-  document.getElementById('modalStudentSeat').textContent = m.seat || 'Physical Walk-in';
+  document.getElementById('modalStudentSeat').textContent = (m.seat || 'Physical Walk-in') + (m.seatStatus ? ` (${m.seatStatus})` : '');
   document.getElementById('modalStudentShift').textContent = m.shift || 'Full Day';
   document.getElementById('modalStudentPayment').textContent = '₹' + (m.paid || 0) + ' Paid (' + (m.mode || 'UPI') + ')';
-  
+
+  // Photo in Modal
+  const photoImg = document.getElementById('modalStudentPhoto');
+  if (photoImg) {
+    if (m.photo) {
+      photoImg.src = m.photo;
+      photoImg.style.display = 'block';
+    } else {
+      photoImg.style.display = 'none';
+    }
+  }
+
+  // Personal details
+  const genderEl = document.getElementById('modalStudentGender');
+  if (genderEl) genderEl.textContent = m.gender || '—';
+  const dobEl = document.getElementById('modalStudentDob');
+  if (dobEl) dobEl.textContent = m.dob || '—';
+  const fatherEl = document.getElementById('modalStudentFather');
+  if (fatherEl) fatherEl.textContent = m.fatherName || '—';
+  const motherEl = document.getElementById('modalStudentMother');
+  if (motherEl) motherEl.textContent = m.motherName || '—';
+  const qualEl = document.getElementById('modalStudentQual');
+  if (qualEl) qualEl.textContent = m.qualification || '—';
+  const guardEl = document.getElementById('modalStudentGuardian');
+  if (guardEl) guardEl.textContent = m.guardianContact || '—';
+
+  // Address
+  const addrEl = document.getElementById('modalStudentAddress');
+  if (addrEl) addrEl.textContent = [m.address, m.district, m.state, m.pincode].filter(Boolean).join(', ') || 'NH-16 Patrapada Area';
+
+  // Dates
+  const datesEl = document.getElementById('modalStudentDates');
+  if (datesEl) datesEl.textContent = (m.fromDate || m.date || '—') + ' to ' + (m.toDate || '30 days');
+
+  // Aadhaar
+  const aadharEl = document.getElementById('modalStudentAadhar');
+  if (aadharEl) {
+    if (m.aadharCard) {
+      aadharEl.innerHTML = `<a href="${m.aadharCard}" target="_blank" download="${m.aadharFileName || 'Aadhaar_Card'}" style="color:#2563eb;font-weight:750;text-decoration:none;">📄 View / Download Aadhaar (${m.aadharFileName || 'Document'})</a>`;
+    } else {
+      aadharEl.innerHTML = `<span style="color:#94a3b8;">Pending / Not Uploaded</span>`;
+    }
+  }
+
   const notes = store.get('c2s_student_notes', {});
   document.getElementById('modalStudentNotes').value = notes[m.regNo] || '';
 
