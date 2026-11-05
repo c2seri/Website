@@ -348,8 +348,17 @@ a:hover {
 
 .brand-title {
   display: flex;
-  align-items: baseline;
-  gap: 6px;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-c2s-logo-img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .brand-blue {
