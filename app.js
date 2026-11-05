@@ -3381,11 +3381,15 @@ function renderUser() {
 
       <!-- Interactive Navigation Tabs for Dashboard -->
       <div style="display:flex;gap:8px;border-bottom:1.5px solid #e2e8f0;padding-bottom:10px;margin-bottom:18px;flex-wrap:wrap;">
-        <button class="domain-tab-pill active" onclick="switchDashboardTab('tests', this)">&#128221; My Tests &amp; Given Solutions</button>
-        <button class="domain-tab-pill" onclick="switchDashboardTab('batches', this)">&#127963; Classroom Batches (Patrapada)</button>
+        <button class="domain-tab-pill active" onclick="switchDashboardTab('tests', this)">📝 My Tests &amp; Solutions</button>
+        <button class="domain-tab-pill" onclick="switchDashboardTab('analytics', this)">📊 Subject Strengths &amp; Percentile</button>
+        <button class="domain-tab-pill" onclick="switchDashboardTab('timetable', this)">📅 Class Timetable (Patrapada)</button>
+        <button class="domain-tab-pill" onclick="switchDashboardTab('doubts', this)">❓ Ask Doubt to Faculty</button>
+        <button class="domain-tab-pill" onclick="switchDashboardTab('offlinemock', this)">🏆 Sunday Offline Mock Ticket</button>
+        <button class="domain-tab-pill" onclick="switchDashboardTab('batches', this)">🏫 Classroom Batches</button>
         <button class="domain-tab-pill" onclick="openCohortSelection()" style="background:#eff6ff;color:#1d4ed8;border:1.5px solid #bfdbfe;font-weight:800;">🎯 Goal: Cohort Switcher ▾</button>
-        <button class="domain-tab-pill" onclick="switchDashboardTab('books', this)">&#128218; Books &amp; Study Material</button>
-        <button class="domain-tab-pill" onclick="switchDashboardTab('library', this)">&#128337; 24h Study Library</button>
+        <button class="domain-tab-pill" onclick="switchDashboardTab('books', this)">📖 Books &amp; Notes</button>
+        <button class="domain-tab-pill" onclick="switchDashboardTab('library', this)">🏛️ 24h Study Library</button>
         <button class="domain-tab-pill" onclick="switchDashboardTab('referrals', this)">🎁 Refer &amp; Earn Rewards</button>
       </div>
 
@@ -3521,6 +3525,159 @@ function renderUser() {
         </div>
       </div>
 
+      <!-- Tab Content 5: Subject Strengths & Radar -->
+      <div id="dashTabAnalytics" class="c2s-dash-tab-pane" style="display:none;">
+        <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;">
+          <h3 style="margin:0 0 6px;color:#0f2a5c;font-size:18px;">📊 Subject Strengths &amp; Percentile Analysis</h3>
+          <p class="small" style="color:#64748b;margin:0 0 16px;">Based on your attempted CBT mock tests and weekly offline quizzes at C2S.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;">
+            <div style="background:#f8fafc;padding:12px;border-radius:10px;border-left:4px solid #10b981;">
+              <span style="font-size:12px;color:#64748b;">Odisha General Knowledge:</span>
+              <div style="font-size:20px;font-weight:900;color:#059669;">94% Accuracy</div>
+              <span class="small" style="color:#10b981;">★ Strong Subject</span>
+            </div>
+            <div style="background:#f8fafc;padding:12px;border-radius:10px;border-left:4px solid #2563eb;">
+              <span style="font-size:12px;color:#64748b;">Reasoning &amp; Mental Ability:</span>
+              <div style="font-size:20px;font-weight:900;color:#2563eb;">88% Accuracy</div>
+              <span class="small" style="color:#2563eb;">High Precision</span>
+            </div>
+            <div style="background:#f8fafc;padding:12px;border-radius:10px;border-left:4px solid #f59e0b;">
+              <span style="font-size:12px;color:#64748b;">Quantitative Aptitude:</span>
+              <div style="font-size:20px;font-weight:900;color:#d97706;">76% Accuracy</div>
+              <span class="small" style="color:#d97706;">Focus: Time &amp; Work</span>
+            </div>
+            <div style="background:#f8fafc;padding:12px;border-radius:10px;border-left:4px solid #8b5cf6;">
+              <span style="font-size:12px;color:#64748b;">English Language &amp; Grammar:</span>
+              <div style="font-size:20px;font-weight:900;color:#7c3aed;">82% Accuracy</div>
+              <span class="small" style="color:#7c3aed;">Good Vocab</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 6: Weekly Classroom Timetable -->
+      <div id="dashTabTimetable" class="c2s-dash-tab-pane" style="display:none;">
+        <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;">
+          <h3 style="margin:0 0 6px;color:#0f2a5c;font-size:18px;">📅 Patrapada Centre Weekly Timetable</h3>
+          <p class="small" style="color:#64748b;margin:0 0 14px;">Physical smart classroom schedule at NH-16 Patrapada centre (Opp. Sani Mandir).</p>
+          <div style="overflow-x:auto;">
+            <table class="c2s-table" style="width:100%;font-size:13px;">
+              <thead>
+                <tr style="background:#f1f5f9;">
+                  <th>Day</th>
+                  <th>Timing</th>
+                  <th>Subject &amp; Chapter</th>
+                  <th>Faculty Mentor</th>
+                  <th>Classroom</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Monday &amp; Tuesday</strong></td>
+                  <td>07:00 AM – 09:00 AM</td>
+                  <td>Quant: Speed Maths &amp; Arithmetic</td>
+                  <td>Prof. K. C. Mohanty</td>
+                  <td>Smart Room 2</td>
+                </tr>
+                <tr>
+                  <td><strong>Wednesday &amp; Thursday</strong></td>
+                  <td>07:00 AM – 09:00 AM</td>
+                  <td>Reasoning &amp; Critical Analytical</td>
+                  <td>Dr. S. K. Rath</td>
+                  <td>Smart Room 2</td>
+                </tr>
+                <tr>
+                  <td><strong>Friday</strong></td>
+                  <td>07:00 AM – 09:00 AM</td>
+                  <td>Odisha GK &amp; Modern History</td>
+                  <td>Selected Govt Officer Mentor</td>
+                  <td>Smart Room 2</td>
+                </tr>
+                <tr style="background:#fffbeb;">
+                  <td><strong>Sunday</strong></td>
+                  <td>10:00 AM – 12:00 PM</td>
+                  <td><strong>All-India Offline Mock Test (OMR Hall)</strong></td>
+                  <td>Exam Invigilator Panel</td>
+                  <td>Main Hall 1</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 7: Ask Doubt to Faculty -->
+      <div id="dashTabDoubts" class="c2s-dash-tab-pane" style="display:none;">
+        <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;">
+          <h3 style="margin:0 0 6px;color:#0f2a5c;font-size:18px;">❓ 1-on-1 Faculty Doubt Resolution Desk</h3>
+          <p class="small" style="color:#64748b;margin:0 0 14px;">Submit any question you are stuck on. Our faculty reviews and explains it in class or via portal.</p>
+          <form onsubmit="event.preventDefault();alert('✓ Your academic doubt question has been logged! Assigned to Senior Faculty Mentor for resolution.');this.reset();">
+            <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px;margin-bottom:12px;">
+              <div>
+                <label style="font-weight:750;font-size:13px;">Subject Track</label>
+                <select style="width:100%;" required>
+                  <option>Quantitative Aptitude (Maths)</option>
+                  <option>Logical Reasoning</option>
+                  <option>Odisha History &amp; Geography</option>
+                  <option>English Language &amp; Comprehension</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-weight:750;font-size:13px;">Question Title</label>
+                <input placeholder="e.g. OSSC CGL 2024 Math Q.14 Compound Interest doubt" required style="width:100%;">
+              </div>
+            </div>
+            <label style="font-weight:750;font-size:13px;">Question Details / Paste Question Text</label>
+            <textarea rows="3" placeholder="Type question or paste numbers here…" required style="width:100%;box-sizing:border-box;border-radius:8px;padding:10px;border:1px solid #cbd5e1;"></textarea>
+            <div style="display:flex;justify-content:flex-end;margin-top:10px;">
+              <button type="submit" class="btn orange" style="padding:8px 18px;font-size:13px;">Submit Doubt to Faculty Desk →</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Tab Content 8: Sunday Offline Mock Ticket -->
+      <div id="dashTabOfflineMock" class="c2s-dash-tab-pane" style="display:none;">
+        <div style="background:linear-gradient(135deg,#0f2a5c,#1e3a8a);border-radius:16px;padding:22px;color:#fff;box-shadow:0 12px 30px rgba(15,42,92,0.3);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+            <div>
+              <span style="background:#ea580c;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:4px;">OFFICIAL EXAM ADMIT SLIP</span>
+              <h3 style="margin:6px 0 2px;color:#fff;font-size:19px;">Sunday All-India Offline Mock Test</h3>
+              <span style="color:#fdba74;font-size:12.5px;">Patrapada Exam Centre &bull; Authentic OMR &amp; Invigilated Session</span>
+            </div>
+            <span style="background:rgba(52,211,153,0.2);color:#34d399;font-weight:800;font-size:12px;padding:4px 10px;border-radius:999px;">
+              ✓ SEAT CONFIRMED
+            </span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px;background:rgba(255,255,255,0.08);border-radius:10px;padding:14px;margin-bottom:16px;">
+            <div>
+              <span style="font-size:11px;color:#94a3b8;display:block;">Exam Test Series:</span>
+              <strong style="font-size:14px;color:#fff;">OSSC CGL Tier 1 Mock 03</strong>
+            </div>
+            <div>
+              <span style="font-size:11px;color:#94a3b8;display:block;">Reporting Time:</span>
+              <strong style="font-size:14px;color:#fdba74;">Sunday 09:30 AM Sharp</strong>
+            </div>
+            <div>
+              <span style="font-size:11px;color:#94a3b8;display:block;">Test Duration:</span>
+              <strong style="font-size:14px;color:#38bdf8;">10:00 AM – 12:00 PM (150 Qs)</strong>
+            </div>
+            <div>
+              <span style="font-size:11px;color:#94a3b8;display:block;">Exam Hall:</span>
+              <strong style="font-size:14px;color:#34d399;">Hall 1 (Main Centre)</strong>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+            <span style="font-size:12px;color:#cbd5e1;">Bring Black Ball Point Pen &amp; C2S Student Identity Slip.</span>
+            <button type="button" class="btn" style="background:#fff;color:#0f2a5c;font-weight:800;font-size:12px;padding:6px 14px;border:none;border-radius:6px;" onclick="window.print()">
+              🖨️ Print Offline Admit Card
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
   `;
 }
@@ -3531,20 +3688,21 @@ function switchDashboardTab(tabName, btn) {
   
   if (btn) btn.classList.add("active");
 
-  if (tabName === "tests") {
-    const el = $("#dashTabTests");
-    if (el) el.style.display = "block";
-  } else if (tabName === "batches") {
-    const el = $("#dashTabBatches");
-    if (el) el.style.display = "block";
-  } else if (tabName === "books") {
-    const el = $("#dashTabBooks");
-    if (el) el.style.display = "block";
-  } else if (tabName === "library") {
-    const el = $("#dashTabLibrary");
-    if (el) el.style.display = "block";
-  } else if (tabName === "referrals") {
-    const el = $("#dashTabReferrals");
+  const paneMap = {
+    'tests': '#dashTabTests',
+    'analytics': '#dashTabAnalytics',
+    'timetable': '#dashTabTimetable',
+    'doubts': '#dashTabDoubts',
+    'offlinemock': '#dashTabOfflineMock',
+    'batches': '#dashTabBatches',
+    'books': '#dashTabBooks',
+    'library': '#dashTabLibrary',
+    'referrals': '#dashTabReferrals'
+  };
+
+  const selector = paneMap[tabName];
+  if (selector) {
+    const el = $(selector);
     if (el) el.style.display = "block";
   }
 }

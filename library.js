@@ -651,6 +651,38 @@ window.copyLibraryReferralLink = function() {
   });
 };
 
+/* Pomodoro Focus Timer for Library Members */
+let pomodoroTimer = null;
+let pomodoroSeconds = 50 * 60;
+
+window.startPomodoro = function() {
+  if (pomodoroTimer) return;
+  const display = document.getElementById("pomodoroDisplay");
+  pomodoroTimer = setInterval(() => {
+    if (pomodoroSeconds > 0) {
+      pomodoroSeconds--;
+      const m = String(Math.floor(pomodoroSeconds / 60)).padStart(2, '0');
+      const s = String(pomodoroSeconds % 60).padStart(2, '0');
+      if (display) display.textContent = `${m}:${s}`;
+    } else {
+      clearInterval(pomodoroTimer);
+      pomodoroTimer = null;
+      alert("🔔 Deep Focus Session Complete! Time for a 10-minute relaxing break.");
+      pomodoroSeconds = 50 * 60;
+    }
+  }, 1000);
+};
+
+window.resetPomodoro = function() {
+  if (pomodoroTimer) {
+    clearInterval(pomodoroTimer);
+    pomodoroTimer = null;
+  }
+  pomodoroSeconds = 50 * 60;
+  const display = document.getElementById("pomodoroDisplay");
+  if (display) display.textContent = "50:00";
+};
+
 /* ==========================================================================
    AUTOMATED NOTIFICATION DISPATCH ENGINE (WhatsApp & Email to Student + Owner)
    ========================================================================== */
