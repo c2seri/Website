@@ -753,6 +753,7 @@ function libAdmit(e) {
     termsAccepted: true,
     applicantSignature: signature,
     declarationDate: $("#declarationDate")?.value || new Date().toISOString().slice(0, 10),
+    admDate: new Date().toISOString().slice(0, 10),
     date: new Date().toISOString().slice(0, 10)
   };
 
