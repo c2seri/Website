@@ -257,19 +257,21 @@
         <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:28px 0 14px;color:var(--c2s-navy-900);">
           6. Payment Details &amp; Summary
         </h3>
+        <!-- 6. Payment Details & Summary -->
+        <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:28px 0 14px;color:var(--c2s-navy-900);">
+          6. Payment Details &amp; Summary
+        </h3>
         <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px;margin-bottom:14px;">
           <strong style="color:var(--c2s-orange-600);">Registration Fee: ₹200 (One-Time Non-refundable)</strong> • <strong style="color:var(--c2s-navy-900);">Official Verified Shift Fees</strong>.
-          <br><span class="small" style="color:var(--c2s-slate-700);">First month total includes ₹200 registration fee. Morning / Afternoon: <strong>₹1,000</strong> (₹800 + ₹200) • Full Day: <strong>₹1,400</strong> (₹1,200 + ₹200) • Night: <strong>₹1,200</strong> (₹1,000 + ₹200). Amount Paid auto-populates as per shift.</span>
+          <br><span class="small" style="color:var(--c2s-slate-700);">First month total includes ₹200 registration fee. Morning / Afternoon: <strong>₹1,000</strong> (₹800 + ₹200) • Full Day: <strong>₹1,400</strong> (₹1,200 + ₹200) • Night: <strong>₹1,200</strong> (₹1,000 + ₹200).</span>
         </div>
 
         <div class="grid2">
-          <div><label>Shift Fees (₹ Automatic as per shift)</label><input id="shiftFees" readonly></div>
+          <div><label>Shift Fees (₹ Automatic as per shift)</label><input id="shiftFees" readonly style="background:#f8fafc;font-weight:750;color:#0f2a5c;"></div>
           <div><label>Registration Fee (₹ One-Time)</label><input value="200" readonly style="background:#f1f5f9;font-weight:700;color:#0a192f;"></div>
-          <div><label>Discount Amount (₹ if given)</label><input type="number" id="discAmt" value="0" oninput="calcFees()"></div>
-          <div><label>Discount Percent (%)</label><input type="number" id="discPct" value="0" oninput="calcFees()"></div>
-          <div><label>Total Fees (₹)</label><input id="totalFees" readonly style="font-weight:800;color:var(--c2s-navy-900);"></div>
-          <div><label>Amount Paid (₹ Auto-filled as per shift)</label><input type="number" id="paidFees" value="1400" oninput="calcFees()"></div>
-          <div><label>Pending Fees (₹)</label><input id="pendingFees" readonly style="color:#dc2626;font-weight:800;"></div>
+          <div><label>Total Fees Payable (₹)</label><input id="totalFees" readonly style="font-weight:800;color:var(--c2s-navy-900);background:#eff6ff;"></div>
+          <div><label>Amount Paid (₹ Auto-calculated)</label><input id="paidFees" readonly value="1400" style="font-weight:800;color:#047857;background:#ecfdf5;"></div>
+          <div><label>Pending Fees (₹)</label><input id="pendingFees" readonly value="0" style="color:#64748b;font-weight:800;background:#f8fafc;"></div>
           <div><label>Payment Mode</label>
             <select id="payMode">
               <option>UPI / GPay / PhonePe</option>
@@ -280,121 +282,44 @@
           </div>
         </div>
 
-        <!-- Referral Code Entry (₹100 Instant Discount & 7-Day Free Extension for Friend) -->
-        <div style="background:#f0fdf4;border:1.5px dashed #86efac;border-radius:12px;padding:14px 18px;margin:16px 0;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-            <span style="font-size:20px;">🎁</span>
-            <div>
-              <strong style="color:#166534;font-size:14px;">Have a Friend's Referral Code?</strong>
-              <span style="display:block;font-size:12px;color:#15803d;">Enter code to get instant ₹100 discount &amp; grant your friend +7 days free library extension!</span>
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-            <input id="referralCodeIn" placeholder="e.g. C2S-REF-00104" style="flex:1;min-width:180px;text-transform:uppercase;font-weight:800;letter-spacing:1px;padding:10px 14px;margin:0;">
-            <button type="button" class="btn" style="background:#16a34a;color:#fff;padding:10px 18px;font-weight:800;border:none;border-radius:8px;white-space:nowrap;" onclick="applyReferralDiscount()">Apply ₹100 Off</button>
-          </div>
-          <div id="referralDiscountStatus" style="font-size:12px;margin-top:6px;"></div>
+        <div style="font-size:12px;color:#475569;margin-top:10px;background:#f8fafc;padding:10px 14px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:flex-start;gap:8px;">
+          <span style="font-size:16px;">ℹ️</span>
+          <span><strong>Branch Concession Policy:</strong> Online admission follows standard official shift pricing. Any fee discount or scholarship concession is strictly authorized and processed in-person at the Patrapada branch by designated C2S staff.</span>
         </div>
 
-        <!-- Collapsible Staff Price Configuration (Admin Only) -->
-        <details style="background:#f8fafc;padding:10px 14px;border-radius:10px;margin:16px 0;border:1px solid #e2e8f0;font-size:12px;color:#64748b;">
-          <summary style="cursor:pointer;font-weight:700;">⚙️ Staff Price Configuration (Optional Admin Overrides)</summary>
-          <div class="grid2" style="margin-top:8px;">
-            <div><label>Morning monthly price (₹)</label><input type="number" id="priceMorning" value="800" oninput="calcFees()"></div>
-            <div><label>Afternoon monthly price (₹)</label><input type="number" id="priceAfternoon" value="800" oninput="calcFees()"></div>
-            <div><label>Full Day monthly price (₹)</label><input type="number" id="priceFullDay" value="1200" oninput="calcFees()"></div>
-            <div><label>Night monthly price (₹)</label><input type="number" id="priceNight" value="1000" oninput="calcFees()"></div>
-          </div>
-        </details>
-
-        <!-- 7. LIBRARY USE RULES, INSTRUCTIONS & APPLICANT DECLARATION (OFFICIAL C2S T&C) -->
+        <!-- 7. LIBRARY USE RULES & APPLICANT DECLARATION AGREEMENT (T&C) -->
         <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:32px 0 14px;color:var(--c2s-navy-900);">
-          7. Library Use Rules, Instructions &amp; Applicant Declaration
+          7. Library Use Rules &amp; Applicant Declaration
         </h3>
 
-        <div style="background:#ffffff;border:1.5px solid #cbd5e1;border-radius:16px;padding:24px;box-shadow:0 6px 20px -3px rgba(15, 23, 42, 0.06);margin-bottom:24px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px;border-bottom:1.5px solid #e2e8f0;padding-bottom:12px;">
+        <div style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:14px;padding:20px;box-shadow:0 4px 14px -2px rgba(15, 23, 42, 0.05);margin-bottom:22px;">
+          <!-- Clean Clickable Checkbox Row -->
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <input type="checkbox" id="acceptLibraryTerms" required style="width:20px;height:20px;margin-top:2px;cursor:pointer;accent-color:#ea580c;">
             <div>
-              <span class="pill orange" style="font-size:10.5px;padding:3px 10px;margin-bottom:4px;display:inline-block;">MANDATORY CODE OF CONDUCT</span>
-              <h4 style="margin:2px 0 0;font-size:18px;color:#0f2a5c;letter-spacing:0.3px;">LIBRARY USE RULES &amp; INSTRUCTIONS</h4>
-              <span style="font-size:12px;color:#64748b;">C2S Library &bull; "Your Selection, Our Mission" &bull; NH-16 Patrapada Centre</span>
-            </div>
-            <button type="button" class="btn ghost" style="padding:7px 16px;font-size:12.5px;font-weight:750;border-color:#cbd5e1;display:flex;align-items:center;gap:6px;" onclick="printLibraryRulesSheet()">
-              <span>🖨️</span> Print Rules &amp; Declaration Slip
-            </button>
-          </div>
-
-          <p class="small" style="color:#64748b;margin:0 0 12px;line-height:1.5;">
-            All members must strictly follow the 24 library rules below to maintain discipline, safety, and a focused study environment for everyone.
-          </p>
-
-          <div style="max-height:280px;overflow-y:auto;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px 20px;margin-bottom:18px;font-size:13px;line-height:1.65;color:#334155;box-shadow:inset 0 2px 4px rgba(0,0,0,0.03);">
-            <ol style="margin:0;padding-left:20px;">
-              <li style="margin-bottom:6px;"><strong>Maintain complete silence</strong> inside the library. Avoid loud conversations and unnecessary phone calls.</li>
-              <li style="margin-bottom:6px;"><strong>ID proof and Photo</strong> are mandatory to avail all facilities from the library.</li>
-              <li style="margin-bottom:6px;">Mobile phones must be kept on <strong>silent mode</strong>; no other mode is allowed.</li>
-              <li style="margin-bottom:6px;"><strong>No phone calls</strong> are allowed inside the reading area.</li>
-              <li style="margin-bottom:6px;">Keep your seat and surroundings clean. Keep the premises clean. Use dustbins for waste disposal.</li>
-              <li style="margin-bottom:6px;">Eating, smoking, and chewing tobacco are <strong>strictly prohibited</strong> inside library.</li>
-              <li style="margin-bottom:6px;"><strong>Smoking, vaping, and the use of tobacco products are strictly prohibited</strong> anywhere inside the building. Any violation may lead to immediate cancellation of library membership.</li>
-              <li style="margin-bottom:6px;">Drinking water is allowed only in designated areas.</li>
-              <li style="margin-bottom:6px;">Use library furniture and books carefully.</li>
-              <li style="margin-bottom:6px;">Do not damage, write on, or tear books or furniture.</li>
-              <li style="margin-bottom:6px;">Maintain your allotted seat only.</li>
-              <li style="margin-bottom:6px;">Follow your registered shift timing.</li>
-              <li style="margin-bottom:6px;">Entry is allowed only after attendance/registration.</li>
-              <li style="margin-bottom:6px;">Visitors are not allowed without permission.</li>
-              <li style="margin-bottom:6px;">Do not disturb other students.</li>
-              <li style="margin-bottom:6px;">Switch off lights and fans if instructed while leaving.</li>
-              <li style="margin-bottom:6px;">Bags should be kept in the designated area, if applicable.</li>
-              <li style="margin-bottom:6px;">The entire building including library is under <strong>24&times;7 CCTV surveillance</strong> for the safety and security of all students and staff.</li>
-              <li style="margin-bottom:6px;">Management reserves the right to cancel membership for misconduct.</li>
-              <li style="margin-bottom:6px;">Follow all instructions given by the library staff.</li>
-              <li style="margin-bottom:6px;">Keep your ID card with you and produce it when asked.</li>
-              <li style="margin-bottom:6px;"><strong>Any misconduct, indiscipline, or nuisance will result in immediate termination of library membership without refund.</strong></li>
-              <li style="margin-bottom:6px;">Management reserves the right to refuse or cancel admission in case of violation of library rules.</li>
-              <li style="margin-bottom:6px;">Help maintain a peaceful and disciplined study environment.</li>
-            </ol>
-          </div>
-
-          <!-- Official Declaration Box -->
-          <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:18px;margin-bottom:18px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-              <span style="font-size:18px;">📜</span>
-              <strong style="color:#1e40af;font-size:14.5px;letter-spacing:0.5px;text-transform:uppercase;">DECLARATION</strong>
-            </div>
-            <p style="font-size:12.5px;color:#1e3a8a;line-height:1.6;margin:0 0 8px;">
-              I hereby declare that I have carefully read and fully understood all the rules, regulations, terms, and conditions of the library before taking admission.
-            </p>
-            <p style="font-size:12.5px;color:#1e3a8a;line-height:1.6;margin:0 0 8px;">
-              I agree to follow all library rules, maintain discipline, respect the study environment, and comply with the instructions issued by the library management from time to time.
-            </p>
-            <p style="font-size:12.5px;color:#1e3a8a;line-height:1.6;margin:0 0 8px;">
-              I understand that any violation of the library rules may result in appropriate action, including suspension or cancellation of my library membership, as per the library&rsquo;s policy.
-            </p>
-            <p style="font-size:12.5px;color:#1e3a8a;line-height:1.6;margin:0;">
-              I confirm that I have taken admission voluntarily and only after understanding and accepting all the above rules and conditions.
-            </p>
-          </div>
-
-          <!-- Mandatory Acceptance Checkbox & Signature Fields -->
-          <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:14px 16px;margin-bottom:16px;">
-            <div style="display:flex;align-items:flex-start;gap:12px;">
-              <input type="checkbox" id="acceptLibraryTerms" required style="width:20px;height:20px;margin-top:2px;cursor:pointer;accent-color:#16a34a;">
-              <label for="acceptLibraryTerms" style="font-size:13.5px;font-weight:750;color:#14532d;cursor:pointer;line-height:1.5;">
-                I have carefully read, understood, and accept all 24 Library Use Rules &amp; Instructions, and agree to the Declaration. <span style="color:#dc2626;">*</span>
+              <label for="acceptLibraryTerms" style="font-size:14px;font-weight:750;color:#0f2a5c;cursor:pointer;line-height:1.5;display:block;">
+                I have read, understood, and agree to all 24 Library Use Rules &amp; Instructions and accept the Declaration. <span style="color:#dc2626;">*</span>
               </label>
+              <div style="margin-top:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                <button type="button" onclick="openLibraryRulesModal()" style="background:#eff6ff;color:#1d4ed8;border:1.5px solid #93c5fd;padding:6px 14px;border-radius:8px;font-size:12.5px;font-weight:750;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all 0.15s ease;">
+                  <span>📖 Click to Read all 24 Library Rules &amp; Declaration</span>
+                </button>
+                <button type="button" onclick="printLibraryRulesSheet()" style="background:transparent;color:#64748b;border:none;text-decoration:underline;font-size:12px;cursor:pointer;">
+                  🖨️ Print A4 Physical Slip
+                </button>
+              </div>
             </div>
           </div>
 
-          <div class="grid2">
+          <!-- Digital Signature & Date -->
+          <div class="grid2" style="margin-top:18px;padding-top:14px;border-top:1px solid #e2e8f0;">
             <div>
-              <label style="font-weight:750;color:var(--c2s-navy-900);">Full Signature Of the Applicant <span style="color:#dc2626;">*</span></label>
-              <input id="applicantSignature" required placeholder="Type your Full Name as signature confirmation" style="font-weight:750;border-color:#cbd5e1;">
+              <label style="font-weight:750;font-size:13px;color:var(--c2s-navy-900);">Full Signature Of the Applicant (Digital Consent) <span style="color:#dc2626;">*</span></label>
+              <input id="applicantSignature" required placeholder="Type your Full Name as signature" style="font-weight:750;border-color:#cbd5e1;">
               <span class="small" style="color:#64748b;font-size:11px;margin-top:3px;display:block;">Digital verification matching applicant identity.</span>
             </div>
             <div>
-              <label style="font-weight:750;color:var(--c2s-navy-900);">Date of Declaration</label>
+              <label style="font-weight:750;font-size:13px;color:var(--c2s-navy-900);">Date of Declaration</label>
               <input id="declarationDate" readonly style="background:#f1f5f9;font-weight:750;color:#0f2a5c;">
               <span class="small" style="color:#64748b;font-size:11px;margin-top:3px;display:block;">Auto-stamped on current date.</span>
             </div>
@@ -554,16 +479,6 @@
         }
       }
 
-      // Check referral param in URL (e.g. ?ref=C2S-REF-00104)
-      const ref = urlParams.get('ref');
-      if (ref) {
-        const refInput = document.getElementById('referralCodeIn');
-        if (refInput) {
-          refInput.value = ref.toUpperCase();
-          applyReferralDiscount();
-        }
-      }
-
       // Set default dates
       const today = new Date().toISOString().slice(0, 10);
       const oneMonth = new Date(Date.now() + 30*24*60*60*1000).toISOString().slice(0, 10);
@@ -574,7 +489,93 @@
         document.getElementById('declarationDate').value = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
       }
     });
+
+    window.openLibraryRulesModal = function() {
+      const modal = document.getElementById('libraryRulesModal');
+      if (modal) modal.style.display = 'flex';
+    };
+
+    window.closeLibraryRulesModal = function() {
+      const modal = document.getElementById('libraryRulesModal');
+      if (modal) modal.style.display = 'none';
+    };
+
+    window.agreeAndCloseRulesModal = function() {
+      const cb = document.getElementById('acceptLibraryTerms');
+      if (cb) cb.checked = true;
+      closeLibraryRulesModal();
+    };
   </script>
+
+  <!-- MODAL: Full 24 Library Use Rules & Instructions & Declaration -->
+  <div id="libraryRulesModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.75);z-index:99999;backdrop-filter:blur(4px);padding:16px;overflow-y:auto;align-items:center;justify-content:center;">
+    <div style="background:#ffffff;border-radius:18px;max-width:760px;width:100%;margin:auto;box-shadow:0 24px 60px rgba(0,0,0,0.35);border:1px solid #cbd5e1;overflow:hidden;display:flex;flex-direction:column;max-height:90vh;">
+      <div style="background:#0f2a5c;color:#fff;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <span style="font-size:11px;color:#fdba74;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;">OFFICIAL C2S CODE OF CONDUCT</span>
+          <h3 style="margin:2px 0 0;font-size:18px;color:#fff;letter-spacing:0.3px;">LIBRARY USE RULES &amp; INSTRUCTIONS</h3>
+        </div>
+        <button type="button" onclick="closeLibraryRulesModal()" style="background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:22px;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">&times;</button>
+      </div>
+
+      <div style="overflow-y:auto;padding:24px;font-size:13.5px;line-height:1.65;color:#334155;flex:1;">
+        <p style="margin:0 0 14px;color:#64748b;font-size:13px;">
+          NH-16 Patrapada Centre, Bhubaneswar &bull; <em>"Your Selection, Our Mission"</em>
+        </p>
+
+        <ol style="margin:0 0 20px;padding-left:22px;">
+          <li style="margin-bottom:6px;"><strong>Maintain complete silence</strong> inside the library. Avoid loud conversations and unnecessary phone calls.</li>
+          <li style="margin-bottom:6px;"><strong>ID proof and Photo</strong> are mandatory to avail all facilities from the library.</li>
+          <li style="margin-bottom:6px;">Mobile phones must be kept on <strong>silent mode</strong>; no other mode is allowed.</li>
+          <li style="margin-bottom:6px;"><strong>No phone calls</strong> are allowed inside the reading area.</li>
+          <li style="margin-bottom:6px;">Keep your seat and surroundings clean. Keep the premises clean. Use dustbins for waste disposal.</li>
+          <li style="margin-bottom:6px;">Eating, smoking, and chewing tobacco are <strong>strictly prohibited</strong> inside library.</li>
+          <li style="margin-bottom:6px;"><strong>Smoking, vaping, and the use of tobacco products are strictly prohibited</strong> anywhere inside the building. Any violation may lead to immediate cancellation of library membership.</li>
+          <li style="margin-bottom:6px;">Drinking water is allowed only in designated areas.</li>
+          <li style="margin-bottom:6px;">Use library furniture and books carefully.</li>
+          <li style="margin-bottom:6px;">Do not damage, write on, or tear books or furniture.</li>
+          <li style="margin-bottom:6px;">Maintain your allotted seat only.</li>
+          <li style="margin-bottom:6px;">Follow your registered shift timing.</li>
+          <li style="margin-bottom:6px;">Entry is allowed only after attendance/registration.</li>
+          <li style="margin-bottom:6px;">Visitors are not allowed without permission.</li>
+          <li style="margin-bottom:6px;">Do not disturb other students.</li>
+          <li style="margin-bottom:6px;">Switch off lights and fans if instructed while leaving.</li>
+          <li style="margin-bottom:6px;">Bags should be kept in the designated area, if applicable.</li>
+          <li style="margin-bottom:6px;">The entire building including library is under <strong>24&times;7 CCTV surveillance</strong> for the safety and security of all students and staff.</li>
+          <li style="margin-bottom:6px;">Management reserves the right to cancel membership for misconduct.</li>
+          <li style="margin-bottom:6px;">Follow all instructions given by the library staff.</li>
+          <li style="margin-bottom:6px;">Keep your ID card with you and produce it when asked.</li>
+          <li style="margin-bottom:6px;"><strong>Any misconduct, indiscipline, or nuisance will result in immediate termination of library membership without refund.</strong></li>
+          <li style="margin-bottom:6px;">Management reserves the right to refuse or cancel admission in case of violation of library rules.</li>
+          <li style="margin-bottom:6px;">Help maintain a peaceful and disciplined study environment.</li>
+        </ol>
+
+        <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span style="font-size:18px;">📜</span>
+            <strong style="color:#1e40af;font-size:13.5px;letter-spacing:0.5px;">DECLARATION</strong>
+          </div>
+          <p style="font-size:12.5px;color:#1e3a8a;line-height:1.6;margin:0 0 6px;">
+            I hereby declare that I have carefully read and fully understood all the rules, regulations, terms, and conditions of the library before taking admission.
+          </p>
+          <p style="font-size:12.5px;color:#1e3a8a;line-height:1.6;margin:0 0 6px;">
+            I agree to follow all library rules, maintain discipline, respect the study environment, and comply with the instructions issued by the library management from time to time.
+          </p>
+          <p style="font-size:12.5px;color:#1e3a8a;line-height:1.6;margin:0 0 6px;">
+            I understand that any violation of the library rules may result in appropriate action, including suspension or cancellation of my library membership, as per the library’s policy.
+          </p>
+          <p style="font-size:12.5px;color:#1e3a8a;line-height:1.6;margin:0;">
+            I confirm that I have taken admission voluntarily and only after understanding and accepting all the above rules and conditions.
+          </p>
+        </div>
+      </div>
+
+      <div style="background:#f8fafc;padding:14px 22px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <button type="button" class="btn ghost" onclick="printLibraryRulesSheet()" style="font-size:12.5px;padding:8px 16px;">🖨️ Print A4 Physical Copy</button>
+        <button type="button" class="btn orange" onclick="agreeAndCloseRulesModal()" style="font-size:13px;padding:10px 24px;font-weight:800;">✓ I Have Read &amp; Agree to Rules</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Ultra-Premium Floating WhatsApp Desk (Patrapada Centre) -->
   <div class="c2s-wa-fab-wrap" id="c2sWaFabWrap">

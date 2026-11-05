@@ -98,7 +98,7 @@ function calcFees(autoPaid = false) {
 
   if ($("#totalFees")) $("#totalFees").value = total;
 
-  if (autoPaid && $("#paidFees")) {
+  if ((autoPaid || $("#paidFees")?.readOnly) && $("#paidFees")) {
     $("#paidFees").value = total;
   }
 
