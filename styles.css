@@ -2816,7 +2816,7 @@ th {
   margin-bottom: 12px;
 }
 
-.libnav{display:flex;gap:4px;flex-wrap:wrap}.libnav a{color:#fff;text-decoration:none;font-weight:700;padding:9px 12px;border-radius:9px}.libnav a:hover{background:rgba(255,255,255,.18)}
+.topbar .libnav{display:flex;gap:4px;flex-wrap:wrap}.topbar .libnav a{color:#fff;text-decoration:none;font-weight:700;padding:9px 12px;border-radius:9px}.topbar .libnav a:hover{background:rgba(255,255,255,.18)}
 
 
 /* ==========================================================================
@@ -4062,19 +4062,22 @@ h1, h2, h3, h4, .brand-title {
 
 /* Libnav links */
 .libnav-link {
-  padding: 8px 14px;
+  padding: 7px 12px;
   border-radius: 8px;
-  color: #475569;
+  color: #334155 !important;
   font-size: 13.5px;
   font-weight: 650;
   text-decoration: none;
   transition: all 0.15s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
 }
 
 .libnav-link:hover,
 .libnav-link.active {
-  color: #1d4ed8;
-  background: #eff6ff;
+  color: #1d4ed8 !important;
+  background: #eff6ff !important;
 }
 
 
