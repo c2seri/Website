@@ -591,14 +591,20 @@ function initDeskAdmissionForm() {
 }
 
 window.autoUpdateToDate = function(fromVal) {
-  if (!fromVal) return;
+  const fromEl = document.getElementById('deskFromDate');
+  const val = fromVal || fromEl?.value;
+  if (!val) return;
   const toDateEl = document.getElementById('deskToDate');
+  const durEl = document.getElementById('deskDuration');
+  const months = Number(durEl?.value || 1);
   if (!toDateEl) return;
   try {
-    const d = new Date(fromVal);
-    d.setDate(d.getDate() + 30);
+    const d = new Date(val);
+    d.setMonth(d.getMonth() + months);
     toDateEl.value = d.toISOString().slice(0, 10);
   } catch (e) {}
+
+  calcDeskFees(true);
 };
 
 window.setDeskShift = function(shiftName, fee, timing, btn) {
@@ -606,8 +612,6 @@ window.setDeskShift = function(shiftName, fee, timing, btn) {
   if (shiftInput) shiftInput.value = shiftName;
   const timingInput = document.getElementById('deskShiftTiming');
   if (timingInput) timingInput.value = timing || '';
-  const shiftFeesInput = document.getElementById('deskShiftFees');
-  if (shiftFeesInput) shiftFeesInput.value = fee;
 
   // Highlight button
   document.querySelectorAll('.desk-shift-chip').forEach(b => {
@@ -623,13 +627,22 @@ window.setDeskShift = function(shiftName, fee, timing, btn) {
     btn.style.color = '#1d4ed8';
   }
 
-  calcDeskFees(true); // Automatic as per shift!
+  calcDeskFees(true); // Automatic as per shift & duration!
 };
 
 window.calcDeskFees = function(autoPaid = false) {
-  const shiftFee = Number(document.getElementById('deskShiftFees')?.value || 1200);
+  const shiftInput = document.getElementById('deskShift');
+  const shiftName = shiftInput?.value || 'Full Day';
+  const baseMonthlyFees = { Morning: 800, Afternoon: 800, 'Full Day': 1200, Night: 1000 };
+  const monthly = baseMonthlyFees[shiftName] || 1200;
+  const duration = Number(document.getElementById('deskDuration')?.value || 1);
+  const shiftTotal = monthly * duration;
+
+  const shiftFeeEl = document.getElementById('deskShiftFees');
+  if (shiftFeeEl) shiftFeeEl.value = shiftTotal;
+
   const regFee = 200; // One-time admission registration fee
-  const total = shiftFee + regFee;
+  const total = shiftTotal + regFee;
 
   const totalEl = document.getElementById('deskTotalFees');
   if (totalEl) totalEl.value = total;
@@ -643,10 +656,8 @@ window.calcDeskFees = function(autoPaid = false) {
   }
 
   const paid = Number(paidEl?.value || 0);
-  const pending = Math.max(0, netPayable - paid);
-
   const pendingEl = document.getElementById('deskPending');
-  if (pendingEl) pendingEl.value = pending;
+  if (pendingEl) pendingEl.value = Math.max(0, netPayable - paid);
 };
 
 window.previewDeskPhoto = function(input) {

@@ -620,18 +620,30 @@
           <div style="background:#091e42;color:#ffffff;font-size:12px;font-weight:800;letter-spacing:0.8px;padding:9px 16px;border-radius:6px;text-transform:uppercase;margin-bottom:14px;">
             ACCESS VALIDATION
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:16px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;">
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
                 From Date <span style="color:#dc2626;">*</span>
               </label>
-              <input type="date" id="deskFromDate" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;" onchange="autoUpdateToDate(this.value)">
+              <input type="date" id="deskFromDate" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;" onchange="autoUpdateToDate()">
             </div>
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                To Date <span style="color:#dc2626;">*</span>
+                Duration (Term) <span style="color:#dc2626;">*</span>
               </label>
-              <input type="date" id="deskToDate" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;">
+              <select id="deskDuration" onchange="autoUpdateToDate()" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;font-weight:700;">
+                <option value="1" selected>1 Month</option>
+                <option value="2">2 Months</option>
+                <option value="3">3 Months</option>
+                <option value="6">6 Months</option>
+                <option value="12">12 Months (1 Year)</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+                To Date <span style="color:#dc2626;">*</span> (Auto-calculated)
+              </label>
+              <input type="date" id="deskToDate" readonly required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f2a5c;background:#f8fafc;font-weight:750;">
             </div>
           </div>
         </div>
@@ -669,7 +681,6 @@
               <select id="deskGender" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;">
                 <option value="Male" selected>Male</option>
                 <option value="Female">Female</option>
-                <option value="Other">Other</option>
               </select>
             </div>
           </div>

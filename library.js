@@ -85,15 +85,18 @@ function renderShifts() {
 function calcFees(autoPaid = false) {
   if (!$("#shiftFees")) return;
   const priceInput = document.getElementById(SHIFTS[selShift]?.priceKey);
-  const price = priceInput ? Number(priceInput.value || 0) : (SHIFTS[selShift]?.defaultPrice || 1200);
-  $("#shiftFees").value = price;
+  const monthlyPrice = priceInput ? Number(priceInput.value || 0) : (SHIFTS[selShift]?.defaultPrice || 1200);
+
+  const duration = Number(document.getElementById("membershipDuration")?.value || 1);
+  const shiftTotal = monthlyPrice * duration;
+  $("#shiftFees").value = shiftTotal;
 
   const locker = Number($("#lockerFees")?.value || 0);
   const discAmt = Number($("#discAmt")?.value || 0);
   const discPct = Number($("#discPct")?.value || 0);
 
-  // ₹200 non-refundable registration fee
-  const gross = 200 + price + locker;
+  // ₹200 one-time non-refundable registration fee
+  const gross = 200 + shiftTotal + locker;
   const total = Math.max(0, gross - discAmt - Math.round(gross * discPct / 100));
 
   if ($("#totalFees")) $("#totalFees").value = total;
@@ -105,6 +108,46 @@ function calcFees(autoPaid = false) {
   const paid = Number($("#paidFees")?.value || 0);
   if ($("#pendingFees")) $("#pendingFees").value = Math.max(0, total - paid);
 }
+
+window.updateAccessDates = function() {
+  const fromInput = document.getElementById('fromDate');
+  const durationSelect = document.getElementById('membershipDuration');
+  const toInput = document.getElementById('toDate');
+  if (!fromInput || !toInput) return;
+
+  const fromVal = fromInput.value;
+  if (!fromVal) return;
+
+  const months = Number(durationSelect ? durationSelect.value : 1);
+  const d = new Date(fromVal);
+  d.setMonth(d.getMonth() + months);
+
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  toInput.value = `${yyyy}-${mm}-${dd}`;
+
+  calcFees(true);
+};
+
+window.handleExamPrefChange = function(val) {
+  const wrap = document.getElementById('otherExamFieldWrap');
+  const inp = document.getElementById('otherExamText');
+  if (!wrap) return;
+  if (val === 'Other') {
+    wrap.style.display = 'block';
+    if (inp) {
+      inp.required = true;
+      inp.focus();
+    }
+  } else {
+    wrap.style.display = 'none';
+    if (inp) {
+      inp.required = false;
+      inp.value = '';
+    }
+  }
+};
 
 /* 2. 3D Movie-Theatre & Isometric Seat Sanctuary Engine */
 let currentSeatViewMode = "isometric"; // "isometric", "cinema", "2d"
@@ -418,6 +461,56 @@ function libAdmit(e) {
     return;
   }
 
+  // Mandatory Gender check
+  const gender = $("#gender")?.value || "";
+  if (!gender) {
+    alert("Please select Gender (Compulsory).");
+    $("#gender")?.focus();
+    return;
+  }
+
+  // Mandatory Target Exam check
+  let examTarget = $("#examPref")?.value || "";
+  if (!examTarget) {
+    alert("Please select Target Competitive Exam (Compulsory).");
+    $("#examPref")?.focus();
+    return;
+  }
+  if (examTarget === "Other") {
+    examTarget = ($("#otherExamText")?.value || "").trim();
+    if (!examTarget) {
+      alert("Please specify your Target Exam.");
+      $("#otherExamText")?.focus();
+      return;
+    }
+  }
+
+  // Mandatory Photo and Aadhaar Check
+  if (!publicPhotoData) {
+    alert("Please upload candidate Passport Size Photo (Compulsory).");
+    document.getElementById("studPhoto")?.focus();
+    return;
+  }
+  if (!publicAadharData) {
+    alert("Please upload candidate Aadhaar Card / ID Proof (Compulsory).");
+    document.getElementById("studAadhar")?.focus();
+    return;
+  }
+
+  // Mandatory Address check
+  const plot = ($("#plotNo")?.value || "").trim();
+  const lane = ($("#lane")?.value || "").trim();
+  const district = ($("#district")?.value || "").trim();
+  const state = ($("#state")?.value || "").trim();
+  const pin = ($("#pin")?.value || "").trim();
+  if (!plot || !lane || !district || !state || !pin) {
+    alert("Please complete all Address fields (Plot No, Lane/Area, District, State, and PIN Code are compulsory).");
+    if (!plot) $("#plotNo")?.focus();
+    else if (!lane) $("#lane")?.focus();
+    else if (!pin) $("#pin")?.focus();
+    return;
+  }
+
   const members = store.get("c2s_lib_members", []);
   const regNo = "C2S-LIB-2026-" + String(members.length + 101).padStart(4, "0");
 
@@ -429,6 +522,7 @@ function libAdmit(e) {
   const sName = ($("#candSurname")?.value || "").trim();
   const candName = [fName, mName, sName].filter(Boolean).join(" ") || $("#candName")?.value || "Student";
   const signature = ($("#applicantSignature")?.value || candName).trim();
+  const durationMonths = Number(document.getElementById("membershipDuration")?.value || 1);
 
   const m = {
     regNo,
@@ -436,7 +530,7 @@ function libAdmit(e) {
     middleName: mName,
     surname: sName,
     name: candName,
-    gender: $("#gender")?.value || "Male",
+    gender,
     mobile: $("#studMobile").value,
     email: $("#studEmail")?.value || "",
     dob: $("#dob")?.value || "",
@@ -444,21 +538,22 @@ function libAdmit(e) {
     motherName: $("#motherName")?.value || "",
     guardianContact: $("#guardianContact")?.value || "",
     qualification: $("#qualif")?.value || "",
-    studyPurpose: $("#examPref")?.value || "OSSC CGL / Competitive Exams",
-    examPref: $("#examPref")?.value || "OSSC CGL / Competitive Exams",
+    studyPurpose: examTarget,
+    examPref: examTarget,
     photo: publicPhotoData || "",
     aadharCard: publicAadharData || "",
     aadharFileName: publicAadharFileName || "",
-    address: [$("#plotNo")?.value, $("#lane")?.value].filter(Boolean).join(", "),
-    district: $("#district")?.value || "Khordha",
-    state: $("#state")?.value || "Odisha",
-    pincode: $("#pin")?.value || "",
+    address: [plot, lane].filter(Boolean).join(", "),
+    district,
+    state,
+    pincode: pin,
     shift: selShift || "Full Day (07:00 AM – 09:00 PM)",
+    durationMonths,
     seat: seatVal,
     seatMode: isPhysical ? "physical" : "online",
     from: $("#fromDate")?.value || new Date().toISOString().slice(0, 10),
-    to: $("#toDate")?.value || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-    shiftFees: Number($("#shiftFees")?.value || (SHIFTS[selShift]?.defaultPrice || 1200)),
+    to: $("#toDate")?.value || new Date(Date.now() + durationMonths * 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+    shiftFees: Number($("#shiftFees")?.value || (SHIFTS[selShift]?.defaultPrice || 1200) * durationMonths),
     regFee: 200,
     total: Number($("#totalFees")?.value || 1400),
     paid: Number($("#paidFees")?.value || 1400),
