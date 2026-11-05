@@ -794,3 +794,4 @@ const C2S_BLOGS_DATABASE = [
 if (typeof window !== 'undefined') {
   window.C2S_BLOGS_DATABASE = C2S_BLOGS_DATABASE;
 }
+

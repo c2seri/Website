@@ -155,24 +155,35 @@ a:hover {
    Header & HDFC-Style Mega-Menu Navigation
    ========================================================================== */
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  background: #ffffff;
-  box-shadow: 0 4px 20px -2px rgba(15, 42, 92, 0.08);
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 999 !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 42, 92, 0.08) !important;
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: auto !important;
 }
 
 .header-tier-1 {
-  background: #ffffff;
-  padding: 8px 0;
-  border-bottom: 1px solid #f1f5f9;
+  display: block !important;
+  width: 100% !important;
+  background: #ffffff !important;
+  padding: 8px 0 !important;
+  border-bottom: 1px solid #f1f5f9 !important;
 }
 
 .header-tier-1-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  width: 100% !important;
+  max-width: 1260px !important;
+  margin: 0 auto !important;
+  padding: 0 20px !important;
+  box-sizing: border-box !important;
 }
 
 .c2s-cohort-pill-btn {
@@ -189,6 +200,8 @@ a:hover {
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   transition: all 0.2s ease;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 .c2s-cohort-pill-btn:hover {
   background: #1e293b;
@@ -201,6 +214,7 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 .header-admin-btn {
@@ -215,6 +229,8 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
   box-shadow: 0 2px 6px rgba(30, 58, 138, 0.2);
   transition: all 0.15s ease;
 }
@@ -235,6 +251,8 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
   box-shadow: 0 2px 6px rgba(6, 95, 70, 0.2);
   transition: all 0.15s ease;
 }
@@ -255,6 +273,8 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
   box-shadow: 0 2px 6px rgba(234, 88, 12, 0.25);
   transition: all 0.15s ease;
   font-family: inherit;
@@ -264,17 +284,23 @@ a:hover {
   transform: translateY(-1px);
 }
 
-/* Tier 2: Category Navigation Strip */
+/* Tier 2: Category Navigation Strip (Full Container Width) */
 .header-tier-2 {
   background: #ffffff;
   border-bottom: 1.5px solid #e2e8f0;
   position: relative;
+  width: 100%;
 }
 
 .header-tier-2-inner {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 /* Brand Identity (Clickable Link to Home) */
@@ -4130,15 +4156,14 @@ h1, h2, h3, h4, .brand-title {
    ENTERPRISE HEADER ALIGNMENT & VIEW STABILITY FIX
    ========================================================================== */
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  background: #ffffff;
-  border-bottom: 1.5px solid #e2e8f0;
-  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05);
-  height: 72px;
-  display: flex;
-  align-items: center;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 999 !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 42, 92, 0.08) !important;
+  display: block !important;
+  height: auto !important;
+  min-height: auto !important;
 }
 
 .header-inner {
@@ -5728,11 +5753,11 @@ section[data-view] {
    ========================================================================== */
 
 .site-header {
-  min-height: 72px;
   height: auto !important;
+  min-height: auto !important;
   background: #ffffff !important;
-  border-bottom: 1.5px solid #e2e8f0 !important;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 42, 92, 0.08) !important;
+  display: block !important;
 }
 
 .header-inner {
@@ -6569,15 +6594,17 @@ section[data-view] {
   }
 }
 
-/* Line 2: Sticky Site Header (Pure Logo on Left + 5 Navigation Links on Right) */
+/* Line 2: Sticky Site Header (2-Tier Header Container) */
 .site-header {
   position: sticky !important;
   top: 0 !important;
   z-index: 999 !important;
   background: #ffffff !important;
-  border-bottom: 1.5px solid #e2e8f0 !important;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
-  min-height: 68px !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 42, 92, 0.08) !important;
+  display: block !important;
+  height: auto !important;
+  min-height: auto !important;
+  border-bottom: none !important;
 }
 
 .header-inner {
