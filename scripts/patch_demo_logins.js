@@ -42,7 +42,7 @@ window.quickDemoMemberLogin = function() {
     seat: "A-14",
     zone: "Zone A (Silent Cubicles)",
     validTill: "30 Nov 2026",
-    wifiPassword: "C2S@Study#2026",
+    wifiPassword: "Mama@123",
     status: "Active Allocated",
     paid: 1800,
     pending: 0

@@ -1423,6 +1423,15 @@ window.openStudent360 = function(regNo) {
   document.getElementById('modalStudentShift').textContent = m.shift || 'Full Day';
   document.getElementById('modalStudentPayment').textContent = '₹' + (m.paid || 0) + ' Paid (' + (m.lastPaymentMode || m.mode || 'UPI / QR') + ')' + (m.pending > 0 ? ` • Pending: ₹${m.pending}` : '');
 
+  // Wi-Fi in Modal
+  const wifiEl = document.getElementById('modalStudentWifi');
+  if (wifiEl) {
+    const wifi = (typeof window.getLibraryWifiCredentials === 'function') 
+      ? window.getLibraryWifiCredentials(m.seat) 
+      : { floor: '1st Floor', primarySsid: 'C2S -1 / C2S-2', password: 'Mama@123' };
+    wifiEl.innerHTML = `<span style="font-family:monospace;font-size:12px;color:#0f2a5c;">${wifi.primarySsid}</span> &bull; <strong style="color:#059669;font-family:monospace;font-size:13px;">${wifi.password}</strong> <button type="button" class="btn ghost" style="padding:1px 6px;font-size:10px;margin-left:4px;" onclick="navigator.clipboard.writeText('${wifi.password}');alert('✓ Wi-Fi Password copied!');">Copy</button>`;
+  }
+
   // Photo in Modal
   const photoImg = document.getElementById('modalStudentPhoto');
   if (photoImg) {
@@ -1914,6 +1923,34 @@ window.resendStudentReceipt = function(regNo) {
   }
   alert(`✓ Official receipt, shift details and student portal login link resent to ${m.name} (${m.mobile})!`);
 };
+
+/* Front Desk 1-Click Wi-Fi Credentials WhatsApp Dispatcher */
+window.shareLibraryWifiViaWhatsApp = function(targetMobile) {
+  const phone = targetMobile || prompt("Enter Student 10-Digit Mobile Number to send official Wi-Fi credentials via WhatsApp:", "");
+  if (!phone) return;
+  const clean = phone.replace(/\D/g, '');
+  if (clean.length < 10) {
+    alert("Please enter a valid 10-digit mobile number.");
+    return;
+  }
+  const text = `📶 *C2S 24-HOUR STUDY LIBRARY — OFFICIAL WI-FI CREDENTIALS*\n\nNamaste! Here are the official high-speed optical fiber Wi-Fi login credentials for C2S Patrapada Centre:\n\n🏢 *1ST FLOOR (Seat No. 25 to 149)*\n• Wi-Fi 1 (SSID): *C2S -1*\n• Wi-Fi 2 (SSID): *C2S-2*\n• Password: *Mama@123*\n\n🏢 *2ND FLOOR (Seat No. 01 to 24)*\n• Wi-Fi (SSID): *C2S_Wifi_5G*\n• Frequency: *5 GHz Ultra-Band*\n• Password: *Mama@123*\n\n📍 *Centre Address:* NH-16, Opposite Sani Mandir, Patrapada, Bhubaneswar (751019)\n📞 *Helpline:* 9777481909 / 9658177712\n\n_Happy Studying at C2S Sanctuary!_`;
+  window.open(`https://wa.me/91${clean.slice(-10)}?text=${encodeURIComponent(text)}`, '_blank');
+};
+
+if (typeof window.getLibraryWifiCredentials !== 'function') {
+  window.getLibraryWifiCredentials = function(seatStr) {
+    let seatNum = null;
+    if (seatStr) {
+      const m = String(seatStr).match(/\d+/);
+      if (m) seatNum = parseInt(m[0], 10);
+    }
+    if (seatNum !== null && seatNum >= 1 && seatNum <= 24) {
+      return { floor: "2nd Floor", seatRange: "Desks 01 to 24", ssids: ["C2S_Wifi_5G"], primarySsid: "C2S_Wifi_5G", password: "Mama@123" };
+    } else {
+      return { floor: "1st Floor", seatRange: "Desks 25 to 149", ssids: ["C2S -1", "C2S-2"], primarySsid: "C2S -1 / C2S-2", password: "Mama@123" };
+    }
+  };
+}
 
 /* ==========================================================================
    FEATURE: BULK ANNOUNCEMENT & BROADCAST STUDIO

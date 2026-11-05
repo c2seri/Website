@@ -53,6 +53,47 @@ const store = {
   set(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
 };
 
+/* Official Campus Wi-Fi Credentials Resolver (Seat & Floor Mapped) */
+window.getLibraryWifiCredentials = function(seatStr) {
+  let seatNum = null;
+  if (seatStr) {
+    const m = String(seatStr).match(/\d+/);
+    if (m) seatNum = parseInt(m[0], 10);
+  }
+
+  if (seatNum !== null && seatNum >= 1 && seatNum <= 24) {
+    return {
+      floor: "2nd Floor",
+      seatRange: "Desks 01 to 24",
+      ssids: ["C2S_Wifi_5G"],
+      primarySsid: "C2S_Wifi_5G",
+      password: "Mama@123",
+      frequency: "5 GHz High-Throughput",
+      badge: "2nd Floor 5G Wi-Fi"
+    };
+  } else if (seatNum !== null && seatNum >= 25 && seatNum <= 149) {
+    return {
+      floor: "1st Floor",
+      seatRange: "Desks 25 to 149",
+      ssids: ["C2S -1", "C2S-2"],
+      primarySsid: "C2S -1 / C2S-2",
+      password: "Mama@123",
+      frequency: "Dual Router 300 Mbps",
+      badge: "1st Floor High-Speed Wi-Fi"
+    };
+  } else {
+    return {
+      floor: "1st & 2nd Floor",
+      seatRange: "All Desks (01 to 149)",
+      ssids: ["C2S -1", "C2S-2", "C2S_Wifi_5G"],
+      primarySsid: "C2S -1 / C2S-2 (1st Fl) • C2S_Wifi_5G (2nd Fl)",
+      password: "Mama@123",
+      frequency: "Dual Optical Fiber 300 Mbps",
+      badge: "All Floors Wi-Fi Access"
+    };
+  }
+};
+
 const SHIFTS = {
   Morning: { label: "1. Morning Shift — ₹800 (No Locker)", time: "07:00 AM – 02:00 PM (7 Hours)", priceKey: "priceMorning", defaultPrice: 800, lockerAvailable: false },
   Afternoon: { label: "2. Afternoon Shift — ₹800 (No Locker)", time: "02:30 PM – 09:00 PM (6.5 Hours)", priceKey: "priceAfternoon", defaultPrice: 800, lockerAvailable: false },
@@ -760,6 +801,7 @@ function libAdmit(e) {
 
   const studentWaUrl = dispatchResult ? `https://wa.me/91${m.mobile.replace(/\D/g,'')}?text=${encodeURIComponent(dispatchResult.studentText)}` : `https://wa.me/91${m.mobile}`;
   const ownerWaUrl = dispatchResult ? `https://wa.me/919777481909?text=${encodeURIComponent(dispatchResult.ownerText)}` : 'https://wa.me/919777481909';
+  const admitWifi = window.getLibraryWifiCredentials ? window.getLibraryWifiCredentials(m.seat) : { floor: "1st Floor", primarySsid: "C2S -1 / C2S-2", password: "Mama@123" };
 
   const msg = $("#admitMsg");
   if (msg) {
@@ -792,6 +834,22 @@ function libAdmit(e) {
           <div>
             <span style="font-size:11.5px;color:#94a3b8;display:block;">Target Goal:</span>
             <strong style="font-size:13.5px;color:#fff;">🎯 ${m.examPref}</strong>
+          </div>
+        </div>
+
+        <!-- Official Campus Wi-Fi Credentials Card for New Student -->
+        <div style="background:rgba(56,189,248,0.1);border:1px dashed rgba(56,189,248,0.35);border-radius:12px;padding:14px 18px;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="font-size:26px;">📶</span>
+              <div>
+                <strong style="color:#38bdf8;font-size:14px;display:block;">${admitWifi.floor} Study Wi-Fi: <span style="font-family:monospace;color:#ffffff;">${admitWifi.primarySsid}</span></strong>
+                <span style="font-size:12px;color:#cbd5e1;">Wi-Fi Password: <code style="background:rgba(0,0,0,0.35);padding:2px 7px;border-radius:4px;color:#34d399;font-weight:800;font-family:monospace;font-size:13px;">${admitWifi.password}</code> &bull; Unlimited High-Speed Fiber</span>
+              </div>
+            </div>
+            <button type="button" class="btn ghost" style="padding:6px 14px;font-size:12px;font-weight:800;color:#38bdf8;border-color:rgba(56,189,248,0.4);" onclick="navigator.clipboard.writeText('${admitWifi.password}');alert('✓ Wi-Fi Password copied to clipboard:\n${admitWifi.password}');">
+              📋 Copy Wi-Fi Password
+            </button>
           </div>
         </div>
 
@@ -864,6 +922,7 @@ function renderDigitalID() {
     const expDate = typeof getMemberExpiryDate === "function" ? getMemberExpiryDate(u) : (u.toDate || u.validTill);
     const todayStr = new Date().toISOString().slice(0, 10);
     const isExpired = expDate ? (todayStr > expDate) : (u.status === 'Inactive' || u.status === 'Expired');
+    const uWifi = window.getLibraryWifiCredentials ? window.getLibraryWifiCredentials(u.seat) : { floor: "1st Floor", primarySsid: "C2S -1 / C2S-2", password: "Mama@123", seatRange: "Desks 25 to 149" };
 
     const statusBadge = isExpired ?
       `<span class="pill" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:11px;padding:4px 12px;font-weight:800;">⚠️ EXPIRED (Desk Released)</span>` :
@@ -904,6 +963,28 @@ function renderDigitalID() {
           </div>
         </div>
 
+        <!-- Official Campus Wi-Fi Access Card inside Pass -->
+        <div style="margin-top:18px;background:rgba(56,189,248,0.08);border:1px dashed rgba(56,189,248,0.35);border-radius:12px;padding:12px 16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:22px;">📶</span>
+              <div>
+                <span style="font-size:11px;color:#94a3b8;display:block;">${uWifi.floor} Campus Wi-Fi (${uWifi.seatRange}):</span>
+                <strong style="font-size:13.5px;color:#38bdf8;font-family:monospace;">${uWifi.ssids.join(' / ')}</strong>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div>
+                <span style="font-size:11px;color:#94a3b8;display:block;">Password:</span>
+                <strong style="font-size:14.5px;color:#34d399;font-family:monospace;letter-spacing:0.5px;">${uWifi.password}</strong>
+              </div>
+              <button type="button" class="btn ghost" style="padding:4px 10px;font-size:11.5px;font-weight:800;color:#38bdf8;border-color:rgba(56,189,248,0.4);" onclick="navigator.clipboard.writeText('${uWifi.password}');alert('✓ Wi-Fi Password copied to clipboard:\n${uWifi.password}');">
+                📋 Copy
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div style="margin-top:20px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.15);font-size:12px;color:#cbd5e1;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
           <span>📍 NH-16 Patrapada Centre, Bhubaneswar (751019)</span>
           <div style="display:flex;align-items:center;gap:8px;">
@@ -915,6 +996,23 @@ function renderDigitalID() {
         </div>
       </div>
     `;
+
+    // Also synchronize top dashboard pass card values if present
+    const deskDisplay = document.getElementById("dashDeskDisplay");
+    if (deskDisplay) deskDisplay.textContent = u.seat || "Desk #14";
+    const shiftDisplay = document.getElementById("dashShiftDisplay");
+    if (shiftDisplay) shiftDisplay.textContent = u.shift || "Full Day (07:00 AM – 09:00 PM)";
+    const wifiDisplay = document.getElementById("dashWifiDisplay");
+    if (wifiDisplay) wifiDisplay.textContent = `${uWifi.primarySsid} (${uWifi.floor})`;
+    const wifiPwdDisplay = document.getElementById("dashWifiPwdDisplay");
+    if (wifiPwdDisplay) wifiPwdDisplay.textContent = uWifi.password;
+    const lockerDisplay = document.getElementById("dashLockerDisplay");
+    if (lockerDisplay) {
+      const isFull = u.shift && (u.shift.includes("Full Day") || u.shift.includes("24 Hours"));
+      const seatM = (u.seat || "").match(/\d+/);
+      const lockerNum = seatM ? seatM[0] : "14";
+      lockerDisplay.textContent = isFull ? `Locker #${lockerNum} (Desk = Locker)` : "No Locker (Partial Shift)";
+    }
   } else {
     container.innerHTML = "";
   }
@@ -1466,10 +1564,10 @@ window.quickDemoMemberLogin = function() {
     mobile: "9777481909",
     email: "prakash.member@gmail.com",
     shift: "Full Day (07:00 AM – 09:00 PM)",
-    seat: "A-14",
-    zone: "Zone A (Silent Cubicles)",
+    seat: "Desk #14",
+    zone: "Zone A (Executive 2nd Floor)",
     validTill: "30 Nov 2026",
-    wifiPassword: "C2S@Study#2026",
+    wifiPassword: "Mama@123",
     status: "Active Allocated",
     paid: 1800,
     pending: 0
@@ -1558,8 +1656,11 @@ window.resetPomodoro = function() {
 window.dispatchAdmissionReceipt = function(m) {
   const ownerMobile = '919777481909';
   const ownerEmail = 'info.c2seri@gmail.com';
+  const wifiInfo = (typeof window.getLibraryWifiCredentials === 'function') 
+    ? window.getLibraryWifiCredentials(m.seat) 
+    : { floor: '1st Floor', primarySsid: 'C2S -1 / C2S-2', password: 'Mama@123' };
 
-  // 1. Student WhatsApp Message with Login Details
+  // 1. Student WhatsApp Message with Login & Wi-Fi Details
   const studentText = `🎉 *WELCOME TO C2S 24H STUDY LIBRARY SANCTUARY!*
 Namaste *${m.name}*, your library admission and seat reservation has been confirmed at C2S Patrapada Centre!
 
@@ -1569,6 +1670,12 @@ Namaste *${m.name}*, your library admission and seat reservation has been confir
 💰 *Fees Paid:* ₹${m.paid} (${m.mode})
 📅 *Admission Date:* ${m.date || new Date().toISOString().slice(0, 10)}
 🎯 *Target Exam Goal:* ${m.examPref || 'Govt Examinations'}
+
+📶 *OFFICIAL CAMPUS WI-FI CREDENTIALS:*
+• Allocated Floor: *${wifiInfo.floor}*
+• Wi-Fi Network (SSID): *${wifiInfo.primarySsid}*
+• Wi-Fi Password: *${wifiInfo.password}*
+• _(1st Floor Seats 25-149: SSIDs *C2S -1* & *C2S-2* | 2nd Floor Seats 01-24: SSID *C2S_Wifi_5G* | Password: *Mama@123*)_
 
 🔑 *STUDENT PORTAL LOGIN CREDENTIALS:*
 👉 *Portal Link:* https://c2seri.com/library/login.html

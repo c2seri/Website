@@ -177,15 +177,15 @@
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;background:rgba(255,255,255,0.06);border-radius:12px;padding:16px;margin-bottom:18px;">
           <div>
             <span style="font-size:11.5px;color:#94a3b8;display:block;">Assigned Desk No:</span>
-            <strong style="font-size:20px;color:#38bdf8;">Desk #14</strong>
+            <strong id="dashDeskDisplay" style="font-size:20px;color:#38bdf8;">Desk #14</strong>
           </div>
           <div>
             <span style="font-size:11.5px;color:#94a3b8;display:block;">Enrolled Shift:</span>
-            <strong style="font-size:16px;color:#fff;">Full Day (07:00 AM – 09:00 PM)</strong>
+            <strong id="dashShiftDisplay" style="font-size:16px;color:#fff;">Full Day (07:00 AM – 09:00 PM)</strong>
           </div>
           <div>
             <span style="font-size:11.5px;color:#94a3b8;display:block;">High-Speed Wi-Fi:</span>
-            <strong style="font-size:16px;color:#34d399;">C2S_5G_LIBRARY</strong>
+            <strong id="dashWifiDisplay" style="font-size:16px;color:#34d399;">C2S_Wifi_5G (2nd Floor)</strong>
           </div>
         </div>
 
@@ -195,8 +195,8 @@
             <span style="font-size:22px;">📶</span>
             <div>
               <span style="font-size:11px;color:#94a3b8;display:block;">Wi-Fi Password (Tap to Copy):</span>
-              <strong style="font-size:13.5px;color:#38bdf8;cursor:pointer;" onclick="navigator.clipboard.writeText('C2S@Study#2026');alert('✓ Wi-Fi password copied to clipboard:\nC2S@Study#2026');" title="Click to copy">
-                C2S@Study#2026 📋
+              <strong id="dashWifiPwdDisplay" style="font-size:13.5px;color:#38bdf8;cursor:pointer;font-family:monospace;" onclick="navigator.clipboard.writeText(this.textContent.trim().replace(' 📋',''));alert('✓ Wi-Fi password copied to clipboard:\n' + this.textContent.trim().replace(' 📋',''));" title="Click to copy">
+                Mama@123 📋
               </strong>
             </div>
           </div>
@@ -204,7 +204,7 @@
             <span style="font-size:22px;">🔒</span>
             <div>
               <span style="font-size:11px;color:#94a3b8;display:block;">Assigned Locker:</span>
-              <strong style="font-size:13.5px;color:#fdba74;">Locker #22 (Zone A • Key Handed)</strong>
+              <strong id="dashLockerDisplay" style="font-size:13.5px;color:#fdba74;">Locker #14 (Desk = Locker)</strong>
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:10px;">
@@ -227,6 +227,94 @@
 
       <!-- Digital ID Card Container -->
       <div id="digitalIdContainer"></div>
+
+      <!-- Campus Optical Fiber Wi-Fi Networks Directory -->
+      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:22px;margin-top:24px;box-shadow:0 8px 24px rgba(0,0,0,0.25);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:26px;">📶</span>
+            <div>
+              <h3 style="margin:0;color:#fff;font-size:17px;font-family:'Outfit',sans-serif;">Campus Optical Fiber Wi-Fi Networks</h3>
+              <p style="margin:2px 0 0;font-size:12px;color:#94a3b8;">High-speed 300 Mbps unlimited connectivity for CBT mock tests, video lectures, and live classes.</p>
+            </div>
+          </div>
+          <span style="background:rgba(16,185,129,0.18);color:#34d399;font-size:11.5px;font-weight:800;padding:3px 12px;border-radius:999px;border:1px solid rgba(52,211,153,0.3);">
+            ⚡ 100% Free &bull; Active Round-the-Clock
+          </span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;">
+          <!-- 1st Floor Card -->
+          <div style="background:rgba(15,23,42,0.65);border:1.5px solid rgba(56,189,248,0.3);border-radius:14px;padding:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <div>
+                <strong style="color:#38bdf8;font-size:14px;display:block;">🏢 1st Floor Sanctuary</strong>
+                <span style="font-size:11px;color:#94a3b8;">Seat No. 25 to 149 (125 Desks)</span>
+              </div>
+              <span style="background:rgba(56,189,248,0.15);color:#38bdf8;font-size:11px;font-weight:750;padding:3px 8px;border-radius:6px;">Dual Access Point</span>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12.5px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                <span style="color:#94a3b8;">User Id (SSID 1):</span>
+                <strong style="color:#ffffff;font-family:monospace;font-size:13px;">C2S -1</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="color:#94a3b8;">User Id (SSID 2):</span>
+                <strong style="color:#ffffff;font-family:monospace;font-size:13px;">C2S-2</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;border-top:1px dashed rgba(255,255,255,0.15);padding-top:6px;">
+                <span style="color:#94a3b8;">Password:</span>
+                <strong style="color:#34d399;font-family:monospace;font-size:14px;letter-spacing:0.5px;">Mama@123</strong>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:8px;">
+              <button type="button" class="btn ghost" style="flex:1;padding:6px 10px;font-size:12px;font-weight:750;color:#38bdf8;border-color:rgba(56,189,248,0.4);" onclick="navigator.clipboard.writeText('Mama@123');alert('✓ 1st Floor Wi-Fi Password copied:\nMama@123');">
+                📋 Copy Password
+              </button>
+              <button type="button" class="btn ghost" style="padding:6px 10px;font-size:12px;font-weight:750;color:#cbd5e1;border-color:rgba(255,255,255,0.2);" onclick="navigator.clipboard.writeText('Wi-Fi: C2S -1 / C2S-2\nPassword: Mama@123\nFloor: 1st Floor (Desks 25 to 149)');alert('✓ 1st Floor Wi-Fi details copied to clipboard!');">
+                📋 All
+              </button>
+            </div>
+          </div>
+
+          <!-- 2nd Floor Card -->
+          <div style="background:rgba(15,23,42,0.65);border:1.5px solid rgba(168,85,247,0.3);border-radius:14px;padding:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <div>
+                <strong style="color:#c084fc;font-size:14px;display:block;">🏢 2nd Floor Executive Zone</strong>
+                <span style="font-size:11px;color:#94a3b8;">Seat No. 01 to 24 (24 Desks)</span>
+              </div>
+              <span style="background:rgba(168,85,247,0.15);color:#c084fc;font-size:11px;font-weight:750;padding:3px 8px;border-radius:6px;">5 GHz High-Throughput</span>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12.5px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                <span style="color:#94a3b8;">User Id (SSID):</span>
+                <strong style="color:#ffffff;font-family:monospace;font-size:13px;">C2S_Wifi_5G</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="color:#94a3b8;">Frequency Band:</span>
+                <strong style="color:#c084fc;font-size:12px;">5 GHz Dedicated Stream</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;border-top:1px dashed rgba(255,255,255,0.15);padding-top:6px;">
+                <span style="color:#94a3b8;">Password:</span>
+                <strong style="color:#34d399;font-family:monospace;font-size:14px;letter-spacing:0.5px;">Mama@123</strong>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:8px;">
+              <button type="button" class="btn ghost" style="flex:1;padding:6px 10px;font-size:12px;font-weight:750;color:#c084fc;border-color:rgba(168,85,247,0.4);" onclick="navigator.clipboard.writeText('Mama@123');alert('✓ 2nd Floor Wi-Fi Password copied:\nMama@123');">
+                📋 Copy Password
+              </button>
+              <button type="button" class="btn ghost" style="padding:6px 10px;font-size:12px;font-weight:750;color:#cbd5e1;border-color:rgba(255,255,255,0.2);" onclick="navigator.clipboard.writeText('Wi-Fi: C2S_Wifi_5G\nPassword: Mama@123\nFloor: 2nd Floor (Desks 01 to 24)');alert('✓ 2nd Floor Wi-Fi details copied to clipboard!');">
+                📋 All
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- ADVANCED MEMBER TOOLS: STUDY STREAK, POMODORO TIMER, SHANTI DESK -->
       <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:16px;margin-top:24px;">
