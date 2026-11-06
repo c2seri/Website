@@ -904,19 +904,19 @@ function libAdmit(e) {
           </div>
         </div>
 
-        <!-- Official Campus Wi-Fi Credentials Card for New Student -->
+        <!-- Official Campus Wi-Fi Security Notice for New Student -->
         <div style="background:rgba(56,189,248,0.1);border:1px dashed rgba(56,189,248,0.35);border-radius:12px;padding:14px 18px;margin-bottom:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
             <div style="display:flex;align-items:center;gap:12px;">
               <span style="font-size:26px;">📶</span>
               <div>
                 <strong style="color:#38bdf8;font-size:14px;display:block;">${admitWifi.floor} Study Wi-Fi: <span style="font-family:monospace;color:#ffffff;">${admitWifi.primarySsid}</span></strong>
-                <span style="font-size:12px;color:#cbd5e1;">Wi-Fi Password: <code style="background:rgba(0,0,0,0.35);padding:2px 7px;border-radius:4px;color:#34d399;font-weight:800;font-family:monospace;font-size:13px;">${admitWifi.password}</code> &bull; Unlimited High-Speed Fiber</span>
+                <span style="font-size:12px;color:#cbd5e1;">🔒 Wi-Fi Password Protected &bull; Visible inside your <a href="login.html" style="color:#38bdf8;font-weight:750;text-decoration:underline;">Student Member Portal</a> after login</span>
               </div>
             </div>
-            <button type="button" class="btn ghost" style="padding:6px 14px;font-size:12px;font-weight:800;color:#38bdf8;border-color:rgba(56,189,248,0.4);" onclick="navigator.clipboard.writeText('${admitWifi.password}');alert('✓ Wi-Fi Password copied to clipboard:\n${admitWifi.password}');">
-              📋 Copy Wi-Fi Password
-            </button>
+            <a href="login.html" class="btn ghost" style="padding:6px 14px;font-size:12px;font-weight:800;color:#38bdf8;border-color:rgba(56,189,248,0.4);text-decoration:none;">
+              🔐 Open Student Portal &rarr;
+            </a>
           </div>
         </div>
 
@@ -1072,7 +1072,11 @@ function renderDigitalID() {
     const wifiDisplay = document.getElementById("dashWifiDisplay");
     if (wifiDisplay) wifiDisplay.textContent = `${uWifi.primarySsid} (${uWifi.floor})`;
     const wifiPwdDisplay = document.getElementById("dashWifiPwdDisplay");
-    if (wifiPwdDisplay) wifiPwdDisplay.textContent = uWifi.password;
+    if (wifiPwdDisplay) wifiPwdDisplay.textContent = `${uWifi.password} 📋`;
+    const f1Pwd = document.getElementById("dashWifiFloor1Pwd");
+    if (f1Pwd) f1Pwd.textContent = "Mama@123";
+    const f2Pwd = document.getElementById("dashWifiFloor2Pwd");
+    if (f2Pwd) f2Pwd.textContent = "Mama@123";
     const lockerDisplay = document.getElementById("dashLockerDisplay");
     if (lockerDisplay) {
       const isFull = u.shift && (u.shift.includes("Full Day") || u.shift.includes("24 Hours"));
@@ -1082,13 +1086,59 @@ function renderDigitalID() {
     }
   } else {
     container.innerHTML = "";
+    const wifiPwdDisplay = document.getElementById("dashWifiPwdDisplay");
+    if (wifiPwdDisplay) wifiPwdDisplay.textContent = "•••••••• 📋";
+    const f1Pwd = document.getElementById("dashWifiFloor1Pwd");
+    if (f1Pwd) f1Pwd.textContent = "••••••••";
+    const f2Pwd = document.getElementById("dashWifiFloor2Pwd");
+    if (f2Pwd) f2Pwd.textContent = "••••••••";
   }
 }
 
 function logoutLib() {
   store.set("c2s_lib_user", null);
+  const wifiPwdDisplay = document.getElementById("dashWifiPwdDisplay");
+  if (wifiPwdDisplay) wifiPwdDisplay.textContent = "•••••••• 📋";
+  const f1Pwd = document.getElementById("dashWifiFloor1Pwd");
+  if (f1Pwd) f1Pwd.textContent = "••••••••";
+  const f2Pwd = document.getElementById("dashWifiFloor2Pwd");
+  if (f2Pwd) f2Pwd.textContent = "••••••••";
   renderDigitalID();
 }
+
+window.copyDashWifiPwd = function(el) {
+  const u = store.get("c2s_lib_user");
+  if (!u) {
+    alert("🔒 Wi-Fi Password is protected.\nPlease log in with your registered mobile number to view and copy credentials.");
+    return;
+  }
+  const uWifi = window.getLibraryWifiCredentials ? window.getLibraryWifiCredentials(u.seat) : { password: "Mama@123" };
+  navigator.clipboard.writeText(uWifi.password);
+  alert("✓ Wi-Fi password copied to clipboard:\n" + uWifi.password);
+};
+
+window.copyFloorWifiPwd = function(floor) {
+  const u = store.get("c2s_lib_user");
+  if (!u) {
+    alert("🔒 Wi-Fi Password is protected.\nPlease log in with your registered mobile number to view and copy credentials.");
+    return;
+  }
+  navigator.clipboard.writeText("Mama@123");
+  alert(`✓ ${floor === 1 ? '1st Floor' : '2nd Floor'} Wi-Fi Password copied:\nMama@123`);
+};
+
+window.copyFloorWifiAll = function(floor) {
+  const u = store.get("c2s_lib_user");
+  if (!u) {
+    alert("🔒 Wi-Fi Details are protected.\nPlease log in with your registered mobile number to view and copy credentials.");
+    return;
+  }
+  const text = floor === 1 
+    ? "Wi-Fi: C2S -1 / C2S-2\nPassword: Mama@123\nFloor: 1st Floor (Seats 25 to 149)"
+    : "Wi-Fi: C2S_Wifi_5G\nPassword: Mama@123\nFloor: 2nd Floor (Seats 01 to 24)";
+  navigator.clipboard.writeText(text);
+  alert(`✓ ${floor === 1 ? '1st Floor' : '2nd Floor'} Wi-Fi details copied to clipboard!`);
+};
 
 /* 5. Library OTP Login */
 async function requestLibOtp() {

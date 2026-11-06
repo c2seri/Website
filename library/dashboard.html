@@ -198,8 +198,8 @@
             <span style="font-size:22px;">📶</span>
             <div>
               <span style="font-size:11px;color:#94a3b8;display:block;">Wi-Fi Password (Tap to Copy):</span>
-              <strong id="dashWifiPwdDisplay" style="font-size:13.5px;color:#38bdf8;cursor:pointer;font-family:monospace;" onclick="navigator.clipboard.writeText(this.textContent.trim().replace(' 📋',''));alert('✓ Wi-Fi password copied to clipboard:\n' + this.textContent.trim().replace(' 📋',''));" title="Click to copy">
-                Mama@123 📋
+              <strong id="dashWifiPwdDisplay" style="font-size:13.5px;color:#38bdf8;cursor:pointer;font-family:monospace;" onclick="copyDashWifiPwd(this)" title="Click to copy">
+                •••••••• 📋
               </strong>
             </div>
           </div>
@@ -268,15 +268,15 @@
               </div>
               <div style="display:flex;justify-content:space-between;border-top:1px dashed rgba(255,255,255,0.15);padding-top:6px;">
                 <span style="color:#94a3b8;">Password:</span>
-                <strong style="color:#34d399;font-family:monospace;font-size:14px;letter-spacing:0.5px;">Mama@123</strong>
+                <strong id="dashWifiFloor1Pwd" style="color:#34d399;font-family:monospace;font-size:14px;letter-spacing:0.5px;">••••••••</strong>
               </div>
             </div>
 
             <div style="display:flex;gap:8px;">
-              <button type="button" class="btn ghost" style="flex:1;padding:6px 10px;font-size:12px;font-weight:750;color:#38bdf8;border-color:rgba(56,189,248,0.4);" onclick="navigator.clipboard.writeText('Mama@123');alert('✓ 1st Floor Wi-Fi Password copied:\nMama@123');">
+              <button type="button" class="btn ghost" style="flex:1;padding:6px 10px;font-size:12px;font-weight:750;color:#38bdf8;border-color:rgba(56,189,248,0.4);" onclick="copyFloorWifiPwd(1);">
                 📋 Copy Password
               </button>
-              <button type="button" class="btn ghost" style="padding:6px 10px;font-size:12px;font-weight:750;color:#cbd5e1;border-color:rgba(255,255,255,0.2);" onclick="navigator.clipboard.writeText('Wi-Fi: C2S -1 / C2S-2\nPassword: Mama@123\nFloor: 1st Floor (Seats 25 to 149)');alert('✓ 1st Floor Wi-Fi details copied to clipboard!');">
+              <button type="button" class="btn ghost" style="padding:6px 10px;font-size:12px;font-weight:750;color:#cbd5e1;border-color:rgba(255,255,255,0.2);" onclick="copyFloorWifiAll(1);">
                 📋 All
               </button>
             </div>
@@ -303,15 +303,15 @@
               </div>
               <div style="display:flex;justify-content:space-between;border-top:1px dashed rgba(255,255,255,0.15);padding-top:6px;">
                 <span style="color:#94a3b8;">Password:</span>
-                <strong style="color:#34d399;font-family:monospace;font-size:14px;letter-spacing:0.5px;">Mama@123</strong>
+                <strong id="dashWifiFloor2Pwd" style="color:#34d399;font-family:monospace;font-size:14px;letter-spacing:0.5px;">••••••••</strong>
               </div>
             </div>
 
             <div style="display:flex;gap:8px;">
-              <button type="button" class="btn ghost" style="flex:1;padding:6px 10px;font-size:12px;font-weight:750;color:#c084fc;border-color:rgba(168,85,247,0.4);" onclick="navigator.clipboard.writeText('Mama@123');alert('✓ 2nd Floor Wi-Fi Password copied:\nMama@123');">
+              <button type="button" class="btn ghost" style="flex:1;padding:6px 10px;font-size:12px;font-weight:750;color:#c084fc;border-color:rgba(168,85,247,0.4);" onclick="copyFloorWifiPwd(2);">
                 📋 Copy Password
               </button>
-              <button type="button" class="btn ghost" style="padding:6px 10px;font-size:12px;font-weight:750;color:#cbd5e1;border-color:rgba(255,255,255,0.2);" onclick="navigator.clipboard.writeText('Wi-Fi: C2S_Wifi_5G\nPassword: Mama@123\nFloor: 2nd Floor (Seats 01 to 24)');alert('✓ 2nd Floor Wi-Fi details copied to clipboard!');">
+              <button type="button" class="btn ghost" style="padding:6px 10px;font-size:12px;font-weight:750;color:#cbd5e1;border-color:rgba(255,255,255,0.2);" onclick="copyFloorWifiAll(2);">
                 📋 All
               </button>
             </div>
