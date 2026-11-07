@@ -549,3 +549,4 @@ with open('index.html', 'w', encoding='utf-8') as f:
     f.write(updated_html)
 
 print('Successfully integrated Testbook Solutions and Analysis into index.html!')
+

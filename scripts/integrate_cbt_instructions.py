@@ -771,3 +771,4 @@ with open('app.js', 'w', encoding='utf-8') as f:
     f.write(updated_text)
 
 print('Successfully integrated CBT instructions and multi-language engine into app.js!')
+

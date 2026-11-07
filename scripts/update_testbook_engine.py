@@ -854,3 +854,4 @@ with open('app.js', 'w', encoding='utf-8') as f:
     f.write(updated_text)
 
 print('Successfully updated app.js with Testbook-exact exam engine!')
+
