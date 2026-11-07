@@ -35,6 +35,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script src="data/library_students_register.js" defer></script>
   <script src="admin.js" defer></script>
 </head>
 <body style="background:#f1f5f9;">
@@ -679,11 +680,17 @@
       <div style="padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
           <h3 style="margin:0;font-size:16px;color:var(--c2s-navy-900);">👥 Registered Members &amp; Admission Records</h3>
+          <button type="button" class="btn blue" style="padding:6px 14px;font-size:12.5px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 6px rgba(2,132,199,0.25);" onclick="loadOfficialStudentRegister(true)" title="Synchronize all 198 physical register and spreadsheet records">
+            <span>📋 Sync Master Register (198 Students)</span>
+          </button>
+          <button type="button" class="btn green" style="padding:6px 14px;font-size:12.5px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 6px rgba(5,150,105,0.25);" onclick="exportOfficialStudentRegisterCSV()" title="Download master roster with monthly payments as CSV/Excel">
+            <span>📥 Export Register (CSV)</span>
+          </button>
           <button type="button" class="btn orange" style="padding:6px 14px;font-size:12.5px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;" onclick="openRenewalModal('')">
             <span>🔄 Renew Any Member</span>
           </button>
           <button type="button" class="btn ghost" style="padding:6px 14px;font-size:12.5px;font-weight:750;color:#dc2626;border-color:#fca5a5;background:#fff5f5;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;" onclick="clearAllDemoMembers()" title="Completely clear all dummy demo records for clean real admission entry">
-            <span>🧹 Reset / Fresh Slate (Clear Demo Data)</span>
+            <span>🧹 Reset to 198 Real Records</span>
           </button>
         </div>
         <input id="memberSearch" placeholder="Search by name, reg no or mobile…" style="max-width:280px;" oninput="filterAdminMembers()">
