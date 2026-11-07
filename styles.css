@@ -7863,9 +7863,20 @@ section[data-view] {
 
 @media (max-width: 640px) {
 
-  .header-admin-btn,
-  .header-library-btn {
+  .header-admin-btn {
     display: none !important;
+  }
+
+  .header-library-btn {
+    display: inline-flex !important;
+    padding: 6px 10px !important;
+    font-size: 11.5px !important;
+    border-radius: 8px !important;
+    gap: 4px !important;
+  }
+
+  .header-library-btn span:not(.live-dot-green) {
+    display: inline-block !important;
   }
 
   .c2s-cohort-pill-btn .cohort-text {
@@ -9234,13 +9245,7 @@ body {
   }
 
   #c2sFloatingBar {
-    width: 92%;
-    padding: 8px 12px;
-    justify-content: space-between;
-  }
-
-  .floating-career-btn {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -10937,4 +10942,133 @@ img {
 .c2s-float-badge {
   animation: c2sFloatSubtle 3s ease-in-out infinite;
 }
+
+/* ==========================================================================
+   APP-STYLE MOBILE STICKY BOTTOM NAVIGATION BAR (MAX-WIDTH: 768px)
+   Provides 1-tap thumb navigation to Home, Library, Test Series, Current Affairs, Login
+   ========================================================================== */
+.c2s-mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 74px !important; /* Prevent content getting cut off under bottom nav */
+  }
+
+  .c2s-mobile-bottom-nav {
+    display: flex !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 64px !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-top: 1px solid rgba(226, 232, 240, 0.95) !important;
+    z-index: 999998 !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    padding: 0 6px !important;
+    box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08) !important;
+  }
+
+  .c2s-mob-nav-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    background: transparent !important;
+    border: none !important;
+    color: #64748b !important;
+    font-size: 10px !important;
+    font-weight: 750 !important;
+    padding: 6px 8px !important;
+    border-radius: 10px !important;
+    transition: all 0.15s ease !important;
+    cursor: pointer !important;
+    flex: 1 !important;
+    max-width: 76px !important;
+    line-height: 1.2 !important;
+  }
+
+  .c2s-mob-nav-item .mob-icon {
+    font-size: 19px !important;
+    margin-bottom: 2px !important;
+    transition: transform 0.15s ease !important;
+  }
+
+  .c2s-mob-nav-item:active .mob-icon,
+  .c2s-mob-nav-item.active .mob-icon {
+    transform: scale(1.15) !important;
+  }
+
+  .c2s-mob-nav-item.active {
+    color: #0284c7 !important;
+  }
+
+  .c2s-mob-nav-item.highlight {
+    color: #059669 !important;
+    position: relative !important;
+  }
+
+  .c2s-mob-nav-item.highlight .mob-dot {
+    position: absolute !important;
+    top: 6px !important;
+    right: 18px !important;
+    width: 6px !important;
+    height: 6px !important;
+    background: #10b981 !important;
+    border-radius: 50% !important;
+  }
+
+  /* Prevent 3D canvas trapping scroll gestures on mobile screens */
+  #c2s360Container {
+    height: 400px !important;
+    touch-action: pan-y !important;
+  }
+}
+
+/* ==========================================================================
+   ENHANCED TEST SERIES & MOBILE CARD STYLES
+   ========================================================================== */
+.c2s-test-series-card {
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, border-color 0.18s ease !important;
+  will-change: transform, box-shadow;
+}
+
+.c2s-test-series-card:hover {
+  transform: translateY(-3px) !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 12px 28px -4px rgba(15, 42, 92, 0.14) !important;
+}
+
+.c2s-test-series-card:active {
+  transform: translateY(0) scale(0.99) !important;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 74px !important;
+  }
+
+  #testSeriesGridArea {
+    padding: 14px 10px !important;
+  }
+
+  #testSeriesCatalogGrid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  #libraryShowcaseSection > div {
+    padding: 24px 18px !important;
+  }
+}
+
+
 

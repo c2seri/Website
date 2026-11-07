@@ -728,14 +728,55 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "POPULAR",
     col1: [ "10 Full Length Tests", "26 Sectional Tests", "Live Exam Hall Simulation" ],
     col2: [ "Reasoning & Computer Aptitude", "General Financial Awareness", "Quantitative Aptitude Drills" ],
     col3: [ "Bilingual Step Solutions", "Detailed Cutoff Tracker", "+ 20 More Tests" ],
     bullets: [ "Ace Your SBI Apprentice 2026. Scheduled for next release cohort.", "Conducted in Hindi & English.", "Total Tests - 36 (Full Length + Sectional)", "Launching Shortly" ],
     suggestedTest: { id: "BANK-MOCK-1", title: "SBI Apprentice 2026 Full Length Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "BANK-MOCK-1", title: "SBI Apprentice 2026 Full Length Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "SBI APPRENTICE" } ]
+    availableTests: [
+  {
+    "id": "SBI-APP-MOCK-1",
+    "title": "SBI Apprentice 2026: Full Length Mock Test 1 (All-India Live)",
+    "duration": "60 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "SBI APPRENTICE"
+  },
+  {
+    "id": "SBI-APP-MOCK-2",
+    "title": "SBI Apprentice 2026: Full Length Mock Test 2 (Financial Awareness)",
+    "duration": "60 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "SBI APPRENTICE"
+  },
+  {
+    "id": "SBI-APP-PYQ-1",
+    "title": "SBI Apprentice Official Solved PYP (Previous Cycle)",
+    "duration": "60 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": false,
+    "tag": "SOLVED PYQ",
+    "exam": "SBI APPRENTICE"
+  },
+  {
+    "id": "SBI-APP-SEC-1",
+    "title": "SBI Apprentice Speed Drill: Quantitative & Computer Aptitude",
+    "duration": "25 Mins",
+    "questions": 35,
+    "marks": 35,
+    "isFree": false,
+    "tag": "SECTIONAL DRILL",
+    "exam": "SBI APPRENTICE"
+  }
+]
   },
   {
     id: "TS-RBI-ASSISTANT-2026",
@@ -752,14 +793,55 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "TOP RATED",
     col1: [ "15 Prelims Full Mocks", "10 Mains High-Level Mocks", "English Language Drills" ],
     col2: [ "Numerical Ability Boosters", "Reasoning & Puzzle Bank", "Banking & RBI Special" ],
     col3: [ "TCS Interface Simulation", "All-India Percentile Rank", "+ 15 More Tests" ],
     bullets: [ "Ace Your RBI Assistant 2026 Exam. Scheduled for next release cohort.", "Conducted in Hindi & English.", "Total Tests - 28 (Full Length Tests + Sectional)", "Launching Shortly" ],
     suggestedTest: { id: "BANK-MOCK-1", title: "RBI Assistant Prelims Full Length Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "BANK-MOCK-1", title: "RBI Assistant Prelims Full Length Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "RBI ASSISTANT" } ]
+    availableTests: [
+  {
+    "id": "RBI-ASST-MOCK-1",
+    "title": "RBI Assistant 2026: Prelims All-India Mock Test 1",
+    "duration": "60 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "RBI ASSISTANT"
+  },
+  {
+    "id": "RBI-ASST-MOCK-2",
+    "title": "RBI Assistant 2026: Prelims Speed & Accuracy Mock 2",
+    "duration": "60 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "RBI ASSISTANT"
+  },
+  {
+    "id": "RBI-ASST-MAINS-1",
+    "title": "RBI Assistant Mains 2026: Full Length Mock 1 (Banking & RBI Special)",
+    "duration": "135 Mins",
+    "questions": 200,
+    "marks": 200,
+    "isFree": false,
+    "tag": "MAINS TEST",
+    "exam": "RBI ASSISTANT"
+  },
+  {
+    "id": "RBI-ASST-SEC-1",
+    "title": "RBI Assistant Sectional: English Language & Verbal Ability",
+    "duration": "20 Mins",
+    "questions": 30,
+    "marks": 30,
+    "isFree": false,
+    "tag": "SECTIONAL TEST",
+    "exam": "RBI ASSISTANT"
+  }
+]
   },
   {
     id: "TS-SBI-PO-2026",
@@ -776,14 +858,55 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "FLAGSHIP",
     col1: [ "25 Full Length Tests", "81 Chapter Tests", "35 Sectional Tests" ],
     col2: [ "High-Level Puzzles & Seating", "Advanced Data Interpretation", "Descriptive Paper Test Module" ],
     col3: [ "Step-by-Step Explanations", "Sectional Cutoff Analytics", "+ 80 More Tests" ],
     bullets: [ "Prepare with high-level SBI PO Pre & Mains mock tests. Scheduled for next cohort.", "Conducted in Hindi & English.", "Total Tests - 141 (Full Length + Chapter Tests)", "Launching Shortly" ],
     suggestedTest: { id: "BANK-MOCK-1", title: "SBI PO Prelims All-India Live Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "BANK-MOCK-1", title: "SBI PO Prelims All-India Live Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "SBI PO" } ]
+    availableTests: [
+  {
+    "id": "SBI-PO-MOCK-1",
+    "title": "SBI PO 2026: Prelims All-India Live National Mock 1",
+    "duration": "60 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "SBI PO"
+  },
+  {
+    "id": "SBI-PO-MOCK-2",
+    "title": "SBI PO 2026: Prelims High-Difficulty Mock 2 (Tricky Quant)",
+    "duration": "60 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "SBI PO"
+  },
+  {
+    "id": "SBI-PO-MAINS-1",
+    "title": "SBI PO Mains 2026: Advanced Data Interpretation & High Puzzles",
+    "duration": "180 Mins",
+    "questions": 155,
+    "marks": 200,
+    "isFree": false,
+    "tag": "MAINS SPECIAL",
+    "exam": "SBI PO"
+  },
+  {
+    "id": "SBI-PO-PYQ-1",
+    "title": "SBI PO Prelims Solved Previous Year Paper (2024 Exam)",
+    "duration": "60 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": false,
+    "tag": "SOLVED PYQ",
+    "exam": "SBI PO"
+  }
+]
   },
   {
     id: "TS-CA-2026",
@@ -800,14 +923,55 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "ESSENTIAL",
     col1: [ "32 All India Revision LT", "17 Half-Yearly Revision: Jan to June", "24 Monthly Compendiums" ],
     col2: [ "17 Quarterly Revision: Jan-Feb-Mar", "50 Weekly Speed Quizzes", "30 Odisha GK Specials" ],
     col3: [ "29 Union Budget & Eco Survey", "45 Government Schemes", "+ 306 More Tests" ],
     bullets: [ "32 All India Revision LT", "17 Half-Yearly Revision: Jan to June", "17 Quarterly Revision: Jan-Feb-Mar", "Launching Shortly" ],
     suggestedTest: { id: "BANK-MOCK-1", title: "Monthly Current Affairs & Banking Awareness Mock 1", duration: "20 Mins", questions: 25, marks: 50, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "BANK-MOCK-1", title: "Monthly Current Affairs & Banking Awareness Mock 1", duration: "20 Mins", questions: 25, marks: 50, isFree: true, tag: "FREE DEMO MOCK", exam: "CURRENT AFFAIRS" } ]
+    availableTests: [
+  {
+    "id": "CA-MOCK-SEP-1",
+    "title": "Current Affairs Monthly Mock: September 2026 (Part 1 - 80 MCQs)",
+    "duration": "45 Mins",
+    "questions": 80,
+    "marks": 80,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "CURRENT AFFAIRS"
+  },
+  {
+    "id": "CA-MOCK-SEP-2",
+    "title": "Current Affairs Monthly Mock: September 2026 (Part 2 - 79 MCQs)",
+    "duration": "45 Mins",
+    "questions": 79,
+    "marks": 79,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "CURRENT AFFAIRS"
+  },
+  {
+    "id": "CA-MOCK-AUG-1",
+    "title": "Current Affairs Monthly Revision: August 2026 Full Edition",
+    "duration": "60 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": false,
+    "tag": "MONTHLY PACK",
+    "exam": "CURRENT AFFAIRS"
+  },
+  {
+    "id": "CA-MOCK-ODISHA-1",
+    "title": "Odisha State Special GK & Current Affairs Speed Drill 2026",
+    "duration": "30 Mins",
+    "questions": 50,
+    "marks": 50,
+    "isFree": false,
+    "tag": "STATE SPECIAL",
+    "exam": "CURRENT AFFAIRS"
+  }
+]
   },
   {
     id: "TS-SSC-CGL-2026",
@@ -824,14 +988,55 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "BESTSELLER",
     col1: [ "2 Live Tests", "22 Sectional Tests (Tier II)", "210 PYST 2024-25" ],
     col2: [ "198 Chapter Tests (Tier I)", "65 Full Tests (New Pattern)", "250 PYP (Tier I & II)" ],
     col3: [ "40 Quantitative Boosters", "60 English Vocab Drills", "+ 1789 More Tests" ],
     bullets: [ "2 Live Tests", "198 Chapter Tests (Tier I)", "22 Sectional Tests (Tier II)", "Launching Shortly" ],
     suggestedTest: { id: "SSC-MOCK-1", title: "SSC CGL 2026: Tier-1 Full Length TCS Mock Test 1", duration: "60 Mins", questions: 100, marks: 200, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "SSC-MOCK-1", title: "SSC CGL 2026: Tier-1 Full Length TCS Mock Test 1", duration: "60 Mins", questions: 100, marks: 200, isFree: true, tag: "FREE DEMO MOCK", exam: "SSC CGL" } ]
+    availableTests: [
+  {
+    "id": "SSC-CGL-MOCK-1",
+    "title": "SSC CGL 2026: Tier-1 Full Length TCS National Mock 1",
+    "duration": "60 Mins",
+    "questions": 100,
+    "marks": 200,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "SSC CGL"
+  },
+  {
+    "id": "SSC-CGL-MOCK-2",
+    "title": "SSC CGL 2026: Tier-1 Mock 2 (Advanced Math & Reasoning)",
+    "duration": "60 Mins",
+    "questions": 100,
+    "marks": 200,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "SSC CGL"
+  },
+  {
+    "id": "SSC-CGL-TIER2-1",
+    "title": "SSC CGL Tier-2 2026: Paper-1 Full Mock (Maths, English, GS, Computer)",
+    "duration": "135 Mins",
+    "questions": 150,
+    "marks": 390,
+    "isFree": false,
+    "tag": "TIER-2 MOCK",
+    "exam": "SSC CGL"
+  },
+  {
+    "id": "SSC-CGL-PYQ-2024",
+    "title": "SSC CGL Tier-1 Official Solved Paper (2024 Shift-1)",
+    "duration": "60 Mins",
+    "questions": 100,
+    "marks": 200,
+    "isFree": false,
+    "tag": "SOLVED PYQ",
+    "exam": "SSC CGL"
+  }
+]
   },
   {
     id: "TS-RAILWAY-NTPC",
@@ -848,14 +1053,55 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "HIGH DEMAND",
     col1: [ "2 Live Test", "30 Sectional Test (CBT 1)", "141 PYST 2024-25" ],
     col2: [ "255 Chapter Test (CBT 1)", "20 Full Test (CBT 1)", "212 PYP (CBT 1)" ],
     col3: [ "29 Current Affairs Express", "72 PYST 2025-26", "+ 19 More Tests" ],
     bullets: [ "2 Live Tests", "30 Sectional Tests (CBT 1)", "255 Chapter Tests (CBT 1)", "Launching Shortly" ],
     suggestedTest: { id: "RAILWAY-MOCK-1", title: "RRB NTPC CBT-1 Full Length All-India Mock Test 1", duration: "90 Mins", questions: 100, marks: 100, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "RAILWAY-MOCK-1", title: "RRB NTPC CBT-1 Full Length All-India Mock Test 1", duration: "90 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "RRB NTPC" } ]
+    availableTests: [
+  {
+    "id": "RRB-NTPC-MOCK-1",
+    "title": "RRB NTPC 2026: CBT-1 Full Length All-India Mock 1",
+    "duration": "90 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "RRB NTPC"
+  },
+  {
+    "id": "RRB-NTPC-MOCK-2",
+    "title": "RRB NTPC 2026: CBT-1 Full Length Mock 2 (General Science Booster)",
+    "duration": "90 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "RRB NTPC"
+  },
+  {
+    "id": "RRB-NTPC-CBT2-1",
+    "title": "RRB NTPC CBT-2 High-Difficulty Simulation Mock 1",
+    "duration": "90 Mins",
+    "questions": 120,
+    "marks": 120,
+    "isFree": false,
+    "tag": "CBT-2 MOCK",
+    "exam": "RRB NTPC"
+  },
+  {
+    "id": "RRB-NTPC-PYQ-1",
+    "title": "RRB NTPC CBT-1 Official Solved Paper with Video Solutions",
+    "duration": "90 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": false,
+    "tag": "SOLVED PYQ",
+    "exam": "RRB NTPC"
+  }
+]
   },
   {
     id: "TS-OSSC-CGL-2026",
@@ -872,14 +1118,55 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "ODISHA #1",
     col1: [ "15 Full Length Prelims Mocks", "10 Mains Odia & English Papers", "Special Odisha Economy Drills" ],
     col2: [ "Maths & Reasoning Boosters", "Odisha History & Geography Sets", "Odisha Static GK Pack" ],
     col3: [ "Bilingual Interface (Odia/English)", "Instant Score & Negative Marking", "+ 130 More Tests" ],
     bullets: [ "15 Full Length Prelims Mocks", "10 Mains Odia & English Papers", "Special Odisha Economy Drills", "Launching Shortly" ],
     suggestedTest: { id: "OSSC-MOCK-1", title: "OSSC CGL Prelims Full Length Mock Test 1", duration: "90 Mins", questions: 100, marks: 100, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "OSSC-MOCK-1", title: "OSSC CGL Prelims Full Length Mock Test 1", duration: "90 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "OSSC" } ]
+    availableTests: [
+  {
+    "id": "OSSC-CGL-MOCK-1",
+    "title": "OSSC CGL 2026: Prelims Full Length Mock 1 (Odia/English)",
+    "duration": "90 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "OSSC CGL"
+  },
+  {
+    "id": "OSSC-CGL-MOCK-2",
+    "title": "OSSC CGL 2026: Prelims Full Length Mock 2 (Maths & Data Interp)",
+    "duration": "90 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "OSSC CGL"
+  },
+  {
+    "id": "OSSC-CGL-MAINS-1",
+    "title": "OSSC CGL Mains 2026: Odia & English Language Paper Mock",
+    "duration": "120 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": false,
+    "tag": "MAINS TEST",
+    "exam": "OSSC CGL"
+  },
+  {
+    "id": "OSSC-CGL-PYQ-1",
+    "title": "OSSC CGL Official Solved Prelims Paper (Previous Exam)",
+    "duration": "90 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": false,
+    "tag": "SOLVED PYQ",
+    "exam": "OSSC CGL"
+  }
+]
   },
   {
     id: "TS-BANKING-FOUNDATION",
@@ -896,14 +1183,45 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "COMPREHENSIVE",
     col1: [ "SBI, IBPS, RRB Pre & Mains", "50 Sectional Quant Drills", "50 Reasoning Puzzles Bank" ],
     col2: [ "Daily Speed Quizzes", "Banking & Economic Awareness", "Descriptive English Evaluator" ],
     col3: [ "All-India Rank Percentile", "Performance Analytics", "+ 1500 More Tests" ],
     bullets: [ "SBI, IBPS, RRB Pre & Mains", "50 Sectional Quant Drills", "50 Reasoning Puzzles Bank", "Launching Shortly" ],
     suggestedTest: { id: "BANK-MOCK-1", title: "Banking Foundation Diagnostic Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "BANK-MOCK-1", title: "Banking Foundation Diagnostic Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "BANK" } ]
+    availableTests: [
+  {
+    "id": "BANK-FOUND-MOCK-1",
+    "title": "Banking Foundation Diagnostic Mock 1 (SBI / IBPS / RRB)",
+    "duration": "60 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "BANK"
+  },
+  {
+    "id": "BANK-FOUND-MOCK-2",
+    "title": "Banking Speed Drill: 50 Simplification & Number Series Drills",
+    "duration": "30 Mins",
+    "questions": 50,
+    "marks": 50,
+    "isFree": false,
+    "tag": "SPEED DRILL",
+    "exam": "BANK"
+  },
+  {
+    "id": "BANK-FOUND-MOCK-3",
+    "title": "Banking Reasoning: Circular & Linear Seating Arrangement Master",
+    "duration": "35 Mins",
+    "questions": 35,
+    "marks": 35,
+    "isFree": false,
+    "tag": "PUZZLE SPECIAL",
+    "exam": "BANK"
+  }
+]
   },
   {
     id: "TS-TEACHING-CTET",
@@ -920,14 +1238,45 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "RECOMMENDED",
     col1: [ "CTET Paper 1 & 2 Mocks", "Child Pedagogy Specialists", "Social Studies / Science" ],
     col2: [ "Odia Language Papers", "Maths Pedagogy Drills", "Previous 10-Year Solved Papers" ],
     col3: [ "Real Exam Timer & Marking", "Instant Performance Score", "+ 280 More Tests" ],
     bullets: [ "CTET Paper 1 & 2 Mocks", "Child Pedagogy Specialists", "Social Studies / Science", "Launching Shortly" ],
     suggestedTest: { id: "OSSC-MOCK-1", title: "CTET & State TET Child Development & Pedagogy Mock", duration: "30 Mins", questions: 30, marks: 30, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "OSSC-MOCK-1", title: "CTET & State TET Child Development & Pedagogy Mock", duration: "30 Mins", questions: 30, marks: 30, isFree: true, tag: "FREE DEMO MOCK", exam: "TET" } ]
+    availableTests: [
+  {
+    "id": "TET-MOCK-1",
+    "title": "CTET & State TET Child Development & Pedagogy Mock 1",
+    "duration": "30 Mins",
+    "questions": 30,
+    "marks": 30,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "TEACHING"
+  },
+  {
+    "id": "TET-MOCK-2",
+    "title": "CTET Paper-1 Full Length Mock Test (150 Questions)",
+    "duration": "150 Mins",
+    "questions": 150,
+    "marks": 150,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "TEACHING"
+  },
+  {
+    "id": "TET-OTET-1",
+    "title": "Odisha OTET Paper-2 Social Studies & Language Special Mock",
+    "duration": "150 Mins",
+    "questions": 150,
+    "marks": 150,
+    "isFree": false,
+    "tag": "ODISHA TET",
+    "exam": "TEACHING"
+  }
+]
   },
   {
     id: "TS-DEFENCE-ALL",
@@ -944,14 +1293,45 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "POPULAR",
     col1: [ "NDA Mathematics & GAT", "CDS Elementary Maths & GK", "AFCAT Online Mock Papers" ],
     col2: [ "Agniveer Army/Navy/Airforce", "Physics & Chemistry Boosters", "SSB Interview Orientation" ],
     col3: [ "UPSC Standard Negative Marking", "All-India Cutoff Analysis", "+ 350 More Tests" ],
     bullets: [ "NDA Mathematics & GAT", "CDS Elementary Maths & GK", "AFCAT Online Mock Papers", "Launching Shortly" ],
     suggestedTest: { id: "SSC-MOCK-1", title: "Defence Services General Ability & Science Mock 1", duration: "60 Mins", questions: 50, marks: 100, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "SSC-MOCK-1", title: "Defence Services General Ability & Science Mock 1", duration: "60 Mins", questions: 50, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "DEFENCE" } ]
+    availableTests: [
+  {
+    "id": "DEF-MOCK-1",
+    "title": "Defence Services: NDA & CDS General Ability & Science Mock 1",
+    "duration": "60 Mins",
+    "questions": 50,
+    "marks": 100,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "DEFENCE"
+  },
+  {
+    "id": "DEF-MOCK-2",
+    "title": "AFCAT 2026: Numerical Ability & Verbal Reasoning Mock 2",
+    "duration": "120 Mins",
+    "questions": 100,
+    "marks": 300,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "DEFENCE"
+  },
+  {
+    "id": "DEF-AGNIVEER-1",
+    "title": "Indian Army / Navy Agniveer General Duty (GD) Full Mock",
+    "duration": "60 Mins",
+    "questions": 50,
+    "marks": 100,
+    "isFree": false,
+    "tag": "AGNIVEER SPECIAL",
+    "exam": "DEFENCE"
+  }
+]
   },
   {
     id: "TS-AE-JE-ENGG",
@@ -968,14 +1348,45 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "TECHNICAL",
     col1: [ "Technical Core Disciplines", "General Engineering Mocks", "SSC JE Paper 1 & 2 CBT" ],
     col2: [ "State PSC AE Specialized Papers", "Engineering Mechanics & SOM", "Electrical Circuits & Machines" ],
     col3: [ "Formula Memory Drills", "Detailed Step Calculations", "+ 250 More Tests" ],
     bullets: [ "Technical Core Disciplines", "General Engineering Mocks", "SSC JE Paper 1 & 2 CBT", "Launching Shortly" ],
     suggestedTest: { id: "RAILWAY-MOCK-1", title: "SSC JE General Intelligence & Reasoning Full Mock", duration: "60 Mins", questions: 50, marks: 50, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "RAILWAY-MOCK-1", title: "SSC JE General Intelligence & Reasoning Full Mock", duration: "60 Mins", questions: 50, marks: 50, isFree: true, tag: "FREE DEMO MOCK", exam: "AE/JE" } ]
+    availableTests: [
+  {
+    "id": "ENGG-MOCK-1",
+    "title": "SSC JE 2026: General Intelligence & Reasoning Full Mock",
+    "duration": "60 Mins",
+    "questions": 50,
+    "marks": 50,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "AE/JE"
+  },
+  {
+    "id": "ENGG-MOCK-2",
+    "title": "Civil Engineering Core Paper: SOM, Concrete & Surveying Mock",
+    "duration": "120 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "AE/JE"
+  },
+  {
+    "id": "ENGG-MOCK-3",
+    "title": "Electrical Engineering Core: Machines & Power Systems Mock",
+    "duration": "120 Mins",
+    "questions": 100,
+    "marks": 100,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "AE/JE"
+  }
+]
   },
   {
     id: "TS-PG-ENTRANCE",
@@ -992,14 +1403,35 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "ACADEMIC",
     col1: [ "CUET PG General & Domain", "MBA CAT / MAT / CMAT Foundation", "General Aptitude & Data Interp" ],
     col2: [ "Higher English Comprehension", "Logical & Analytical Reasoning", "Current Affairs for PG" ],
     col3: [ "NTA Pattern CBT Timer", "Subject Wise Percentile", "+ 140 More Tests" ],
     bullets: [ "CUET PG General & Domain", "MBA CAT / MAT / CMAT Foundation", "General Aptitude & Data Interp", "Launching Shortly" ],
     suggestedTest: { id: "BANK-MOCK-1", title: "CUET PG Section 1: General Comprehension & Verbal Ability", duration: "45 Mins", questions: 25, marks: 100, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "BANK-MOCK-1", title: "CUET PG Section 1: General Comprehension & Verbal Ability", duration: "45 Mins", questions: 25, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "PG" } ]
+    availableTests: [
+  {
+    "id": "PG-MOCK-1",
+    "title": "CUET PG Section 1: General Comprehension & Verbal Ability",
+    "duration": "45 Mins",
+    "questions": 25,
+    "marks": 100,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "PG"
+  },
+  {
+    "id": "PG-MOCK-2",
+    "title": "CUET PG / MBA Entrance: Analytical Reasoning & Data Interpretation",
+    "duration": "60 Mins",
+    "questions": 50,
+    "marks": 200,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "PG"
+  }
+]
   },
   {
     id: "TS-FITTER-TRADE",
@@ -1016,14 +1448,35 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "SKILL TRADES",
     col1: [ "NIMI Pattern Fitter Theory", "Railway ALP Technician Part-B", "Measuring & Marking Tools" ],
     col2: [ "Lathe & Shaper Operations", "Heat Treatment & Metallurgy", "Welding & Safety Precaution" ],
     col3: [ "Trade Practical MCQs", "Bilingual Explanations", "+ 120 More Tests" ],
     bullets: [ "NIMI Pattern Fitter Theory", "Railway ALP Technician Part-B", "Measuring & Marking Tools", "Launching Shortly" ],
     suggestedTest: { id: "RAILWAY-MOCK-1", title: "ITI Fitter Trade Theory Diagnostic Mock 1", duration: "45 Mins", questions: 35, marks: 35, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "RAILWAY-MOCK-1", title: "ITI Fitter Trade Theory Diagnostic Mock 1", duration: "45 Mins", questions: 35, marks: 35, isFree: true, tag: "FREE DEMO MOCK", exam: "FITTER" } ]
+    availableTests: [
+  {
+    "id": "FITTER-MOCK-1",
+    "title": "ITI Fitter Trade Theory Diagnostic Mock 1 (NIMI Pattern)",
+    "duration": "45 Mins",
+    "questions": 35,
+    "marks": 35,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "FITTER"
+  },
+  {
+    "id": "FITTER-MOCK-2",
+    "title": "Railway ALP Technician Part-B Fitter Trade Qualifying Mock",
+    "duration": "60 Mins",
+    "questions": 75,
+    "marks": 75,
+    "isFree": false,
+    "tag": "ALP SPECIAL",
+    "exam": "FITTER"
+  }
+]
   },
   {
     id: "TS-ELECTRICIAN-TRADE",
@@ -1040,14 +1493,35 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "SKILL TRADES",
     col1: [ "NIMI Electrical Theory", "Transformers & AC/DC Motors", "Electrical Wiring & Earthing" ],
     col2: [ "Basic Electronics & Digital", "Transmission & Distribution", "OPTCL, DISCOM & State Power" ],
     col3: [ "Circuit Diagrams & Formulae", "Safety & Indian Electricity Rules", "+ 130 More Tests" ],
     bullets: [ "NIMI Electrical Theory", "Transformers & AC/DC Motors", "Electrical Wiring & Earthing", "Launching Shortly" ],
     suggestedTest: { id: "RAILWAY-MOCK-1", title: "ITI Electrician Trade Theory Comprehensive Mock 1", duration: "45 Mins", questions: 35, marks: 35, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "RAILWAY-MOCK-1", title: "ITI Electrician Trade Theory Comprehensive Mock 1", duration: "45 Mins", questions: 35, marks: 35, isFree: true, tag: "FREE DEMO MOCK", exam: "ELECTRICIAN" } ]
+    availableTests: [
+  {
+    "id": "ELEC-MOCK-1",
+    "title": "ITI Electrician Trade Theory Comprehensive Mock 1",
+    "duration": "45 Mins",
+    "questions": 35,
+    "marks": 35,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "ELECTRICIAN"
+  },
+  {
+    "id": "ELEC-MOCK-2",
+    "title": "State DISCOM / OPTCL Lineman & Wireman Technical Mock",
+    "duration": "60 Mins",
+    "questions": 75,
+    "marks": 75,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "ELECTRICIAN"
+  }
+]
   },
   {
     id: "TS-JUDICIARY-LAW",
@@ -1064,14 +1538,35 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "LAW SPECIAL",
     col1: [ "Constitutional Law & CrPC", "Civil Procedure Code & Evidence Act", "Indian Penal Code & Contract Act" ],
     col2: [ "State Specific Local Laws", "Landmark Supreme Court Judgments", "Law Officer Bank Recruitment" ],
     col3: [ "Case Law Analytical Questions", "Detailed Legal Rationale", "+ 110 More Tests" ],
     bullets: [ "Constitutional Law & CrPC", "Civil Procedure Code & Evidence Act", "Indian Penal Code & Contract Act", "Launching Shortly" ],
     suggestedTest: { id: "JAIIB-PPB-1", title: "Judicial Services & Law Officer Core Civil Law Mock 1", duration: "60 Mins", questions: 50, marks: 100, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "JAIIB-PPB-1", title: "Judicial Services & Law Officer Core Civil Law Mock 1", duration: "60 Mins", questions: 50, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "LAW" } ]
+    availableTests: [
+  {
+    "id": "LAW-MOCK-1",
+    "title": "Judicial Services & Law Officer Core Civil Law Mock 1",
+    "duration": "60 Mins",
+    "questions": 50,
+    "marks": 100,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "JUDICIARY"
+  },
+  {
+    "id": "LAW-MOCK-2",
+    "title": "Constitutional Law & CrPC Landmark Cases Practice Mock",
+    "duration": "60 Mins",
+    "questions": 50,
+    "marks": 100,
+    "isFree": false,
+    "tag": "PRO TEST",
+    "exam": "JUDICIARY"
+  }
+]
   },
   {
     id: "TS-CIVIL-SERVICES",
@@ -1088,14 +1583,45 @@ const TEST_SERIES_CATALOG = [
     lastUpdated: "Nov 6, 2026",
     price: 399,
     mrp: 999,
-    isLive: false,
-    badge: "OPENING SOON",
+    isLive: true,
+    badge: "PREMIER",
     col1: [ "General Studies Paper 1 (UPSC/OPSC)", "CSAT Aptitude & Comprehension", "Modern History & Indian Polity" ],
     col2: [ "Geography & Environment Special", "Odisha Special GS Paper (OAS)", "Economy & Current Affairs Booster" ],
     col3: [ "Negative Marking Calculation", "All-India IAS/OAS Percentile", "+ 180 More Tests" ],
     bullets: [ "General Studies Paper 1 (UPSC/OPSC)", "CSAT Aptitude & Comprehension", "Modern History & Indian Polity", "Launching Shortly" ],
     suggestedTest: { id: "OSSC-MOCK-1", title: "UPSC / OPSC General Studies Prelims Mock 1", duration: "120 Mins", questions: 100, marks: 200, isFree: true, tag: "LIVE TEST" },
-    availableTests: [ { id: "OSSC-MOCK-1", title: "UPSC / OPSC General Studies Prelims Mock 1", duration: "120 Mins", questions: 100, marks: 200, isFree: true, tag: "FREE DEMO MOCK", exam: "CIVIL SERVICES" } ]
+    availableTests: [
+  {
+    "id": "IAS-MOCK-1",
+    "title": "UPSC / OPSC General Studies Prelims Mock 1 (Full 100 Qs)",
+    "duration": "120 Mins",
+    "questions": 100,
+    "marks": 200,
+    "isFree": true,
+    "tag": "FREE DEMO MOCK",
+    "exam": "CIVIL SERVICES"
+  },
+  {
+    "id": "IAS-MOCK-2",
+    "title": "OPSC OAS Special: Odisha Geography, History & Polity Prelims Mock",
+    "duration": "120 Mins",
+    "questions": 100,
+    "marks": 200,
+    "isFree": false,
+    "tag": "OAS SPECIAL",
+    "exam": "CIVIL SERVICES"
+  },
+  {
+    "id": "IAS-CSAT-1",
+    "title": "Civil Services CSAT Aptitude & Logical Reasoning Paper 2 Mock",
+    "duration": "120 Mins",
+    "questions": 80,
+    "marks": 200,
+    "isFree": false,
+    "tag": "CSAT TEST",
+    "exam": "CIVIL SERVICES"
+  }
+]
   }
 ];
 
@@ -1264,7 +1790,7 @@ function renderTestSeriesCatalogCards() {
     const discountPct = Math.round(((mrp - price) / mrp) * 100);
 
     return `
-      <div style="background:#ffffff;border:1.5px solid ${isLive ? '#cbd5e1' : '#e2e8f0'};border-radius:14px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 4px 14px rgba(15,23,42,${isLive ? '0.07' : '0.03'});transition:transform 0.15s,box-shadow 0.15s;position:relative;">
+      <div onclick="openAvailableSeriesModal('${s.id}')" class="c2s-test-series-card" style="cursor:pointer;background:#ffffff;border:1.5px solid #cbd5e1;border-radius:14px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 4px 14px rgba(15,23,42,0.06);transition:all 0.18s ease;position:relative;">
         <div>
           <!-- Top Row: Title on Left, Status Badge, WhatsApp Share on Right -->
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
@@ -1275,7 +1801,7 @@ function renderTestSeriesCatalogCards() {
               ? `<span style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-size:9.5px;font-weight:900;padding:2px 7px;border-radius:4px;flex-shrink:0;">🌟 LAUNCHED</span>`
               : `<span style="background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1;font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:4px;flex-shrink:0;">🚀 OPENING SOON</span>`
             }
-            <button type="button" onclick="shareParticularSeries('${s.id}')" title="Share on WhatsApp"
+            <button type="button" onclick="event.stopPropagation();shareParticularSeries('${s.id}')" title="Share on WhatsApp"
               style="background:none;border:none;cursor:pointer;font-size:18px;color:#22c55e;padding:0 2px;line-height:1;margin-left:2px;">
               💬
             </button>
@@ -5054,37 +5580,232 @@ function renderCurrentAffairs() {
   `).join('');
 }
 
-function downloadCaPdf(caId) {
-  const ca = CURRENT_AFFAIRS.find(x => x.id === caId || x.title === caId) || CURRENT_AFFAIRS[0];
-  if (ca.pdfDownloadUrl) {
-    const a = document.createElement("a");
-    a.href = ca.pdfDownloadUrl;
-    a.download = ca.pdfFileName || "C2S-Current-Affairs-September-2026.pdf";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+
+window.openCaMagazineCheckoutModal = function(monthCode) {
+  const modalId = "caMagazineCheckoutModal";
+  let modal = document.getElementById(modalId);
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = modalId;
+    modal.className = "modal-overlay";
+    document.body.appendChild(modal);
+  }
+
+  const user = (typeof store !== "undefined" && store.getUser) ? store.getUser() : null;
+  const prefillName = user ? (user.name || "") : "";
+  const prefillPhone = user ? (user.phone || "") : "";
+
+  modal.innerHTML = `
+    <div class="modal-box" style="max-width:540px;background:#ffffff;border-radius:18px;overflow:hidden;box-shadow:0 20px 50px rgba(15,23,42,0.3);border:1px solid #e2e8f0;padding:0;">
+      <!-- Header Banner -->
+      <div style="background:linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);color:#ffffff;padding:22px 24px;position:relative;">
+        <button type="button" onclick="closeCaMagazineModal()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.15);border:none;color:#ffffff;font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;">&times;</button>
+        <span style="background:rgba(234,88,12,0.25);border:1px solid #fb923c;color:#fdba74;font-size:10.5px;font-weight:900;padding:3px 9px;border-radius:999px;letter-spacing:0.5px;text-transform:uppercase;">
+          🔒 PAID PUBLICATION • 87 PAGES
+        </span>
+        <h3 style="margin:10px 0 4px;font-size:20px;font-weight:900;color:#ffffff;line-height:1.3;">
+          Unlock Notes of Current events — September 2026 Edition
+        </h3>
+        <p style="margin:0;font-size:12.5px;color:#cbd5e1;line-height:1.5;">
+          Official monthly magazine with Appointments, Sports, Awards, Defence, Global Indexes & 159 Practice MCQs with verified answers.
+        </p>
+      </div>
+
+      <!-- Body / Form -->
+      <div style="padding:22px 24px;">
+        <!-- Price Highlight Card -->
+        <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+          <div>
+            <span style="font-size:11px;font-weight:800;color:#1e40af;text-transform:uppercase;">Official Magazine Price</span>
+            <div style="font-size:22px;font-weight:900;color:#0f2a5c;">
+              ₹15 <span style="font-size:13px;color:#64748b;font-weight:600;text-decoration:line-through;">₹50</span>
+              <span style="font-size:11px;background:#10b981;color:#ffffff;font-weight:800;padding:2px 7px;border-radius:4px;margin-left:6px;">70% OFF</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:11.5px;font-weight:800;color:#059669;display:block;">✓ High-Res Printable PDF</span>
+            <span style="font-size:11px;color:#64748b;">Instant Download Access</span>
+          </div>
+        </div>
+
+        <form id="caMagazineUnlockForm" onsubmit="handleCaMagazinePayment(event, '${monthCode}');">
+          <div style="margin-bottom:12px;">
+            <label style="display:block;font-size:12px;font-weight:800;color:#334155;margin-bottom:4px;">Full Name *</label>
+            <input type="text" id="caBuyerName" required placeholder="Enter candidate full name" value="${escapeHtml(prefillName)}"
+              style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;box-sizing:border-box;">
+          </div>
+
+          <div style="margin-bottom:12px;">
+            <label style="display:block;font-size:12px;font-weight:800;color:#334155;margin-bottom:4px;">WhatsApp Mobile Number (For PDF delivery & receipt) *</label>
+            <input type="tel" id="caBuyerPhone" required pattern="[0-9]{10}" placeholder="10-digit mobile number (e.g. 9777481909)" value="${escapeHtml(prefillPhone)}"
+              style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;box-sizing:border-box;">
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <label style="display:block;font-size:12px;font-weight:800;color:#334155;margin-bottom:4px;">Target Exam</label>
+            <select id="caBuyerExam" style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;box-sizing:border-box;background:#ffffff;">
+              <option value="UPSC / OPSC">UPSC CSE / OPSC OAS</option>
+              <option value="Banking (SBI / IBPS)">Banking (SBI / IBPS PO / Clerk)</option>
+              <option value="SSC (CGL / CHSL)">SSC (CGL / CHSL / MTS)</option>
+              <option value="OSSC / OSSSC">Odisha State (OSSC CGL / Police SI)</option>
+              <option value="Railway NTPC">Railway NTPC / Group D</option>
+              <option value="Other">Other Competitive Examinations</option>
+            </select>
+          </div>
+
+          <!-- Payment Options Preview -->
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-bottom:18px;">
+            <div style="font-size:11.5px;font-weight:800;color:#475569;margin-bottom:6px;">PAYMENT METHOD (SECURE UPI / QR / CARD)</div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:12px;color:#0f2a5c;font-weight:700;">
+              <span>📱 GooglePay</span> &bull; <span>⚡ PhonePe</span> &bull; <span>🟢 Paytm UPI</span> &bull; <span>💳 Cards / NetBanking</span>
+            </div>
+          </div>
+
+          <button type="submit" id="btnSubmitCaPayment" class="btn orange"
+            style="width:100%;padding:13px;font-size:14.5px;font-weight:900;border-radius:10px;background:#ea580c;color:#ffffff;border:none;cursor:pointer;box-shadow:0 4px 14px rgba(234,88,12,0.35);transition:all 0.15s ease;">
+            Pay ₹15 &amp; Unlock 87-Page PDF Instantly →
+          </button>
+        </form>
+
+        <div id="caPaymentProcessingNotice" style="display:none;text-align:center;padding:24px 10px;">
+          <div style="font-size:36px;margin-bottom:10px;" class="c2s-spinner-rot">⏳</div>
+          <h4 style="margin:0 0 4px;font-size:16px;color:#0f2a5c;">Processing Payment with C2S Gateway...</h4>
+          <p style="margin:0;font-size:12.5px;color:#64748b;">Please wait while we verify your transaction and prepare your downloadable PDF.</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add("open");
+};
+
+window.closeCaMagazineModal = function() {
+  const modal = document.getElementById("caMagazineCheckoutModal");
+  if (modal) modal.classList.remove("open");
+};
+
+window.handleCaMagazinePayment = function(e, monthCode) {
+  e.preventDefault();
+  const name = document.getElementById("caBuyerName").value.trim();
+  const phone = document.getElementById("caBuyerPhone").value.trim();
+  const exam = document.getElementById("caBuyerExam").value;
+
+  if (!name || phone.length < 10) {
+    alert("Please enter a valid candidate full name and 10-digit mobile number.");
     return;
   }
-  let textContent = "%PDF-1.4\n% C2S College to Service — Weekly Current Affairs Digest\n";
-  textContent += "Title: " + ca.title + "\nEdition: " + ca.edition + "\nCentre: NH-16 Patrapada, Bhubaneswar\n\n";
-  
-  ca.categories.forEach(cat => {
-    textContent += "\n[" + cat.name + "]\n";
-    cat.items.forEach((item, idx) => {
-      textContent += (idx+1) + ". " + item + "\n";
-    });
-  });
 
-  const blob = new Blob([textContent], { type: "application/pdf" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = ca.pdfFileName || "c2s-current-affairs.pdf";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  const form = document.getElementById("caMagazineUnlockForm");
+  const notice = document.getElementById("caPaymentProcessingNotice");
+  if (form) form.style.display = "none";
+  if (notice) notice.style.display = "block";
+
+  setTimeout(() => {
+    // 1. Mark as unlocked in localStorage
+    if (typeof store !== "undefined" && store.set) {
+      store.set("c2s_ca_unlocked_sep_2026", true);
+      store.set("c2s_ca_unlocked_" + monthCode, true);
+    } else {
+      localStorage.setItem("c2s_ca_unlocked_sep_2026", "true");
+    }
+
+    // 2. Save candidate purchase record
+    const purchaseReceipt = {
+      orderId: "C2S-CA-" + Math.floor(100000 + Math.random() * 900000),
+      item: "Notes of Current events — September 2026 Edition (87 Pages)",
+      buyerName: name,
+      phone: phone,
+      targetExam: exam,
+      amount: "₹15",
+      date: new Date().toISOString(),
+      status: "SUCCESS"
+    };
+    try {
+      const existing = JSON.parse(localStorage.getItem("c2s_ca_purchases") || "[]");
+      existing.unshift(purchaseReceipt);
+      localStorage.setItem("c2s_ca_purchases", JSON.stringify(existing));
+    } catch(err){}
+
+    // 3. Render success in modal
+    const modal = document.getElementById("caMagazineCheckoutModal");
+    if (modal) {
+      const box = modal.querySelector(".modal-box");
+      if (box) {
+        box.innerHTML = `
+          <div style="padding:32px 24px;text-align:center;">
+            <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+            <span style="background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;font-size:11px;font-weight:900;padding:4px 12px;border-radius:999px;">
+              PAYMENT VERIFIED • ORDER ID: ${purchaseReceipt.orderId}
+            </span>
+            <h3 style="margin:14px 0 6px;font-size:22px;font-weight:900;color:#0f2a5c;">
+              Thank You, ${escapeHtml(name)}!
+            </h3>
+            <p style="margin:0 0 20px;font-size:13.5px;color:#475569;line-height:1.5;">
+              Your payment of <strong>₹15</strong> has been verified. You now have permanent access to the official 87-page printable PDF.
+            </p>
+
+            <a href="materials/C2S-Current-Affairs-September-2026.pdf" download="C2S-Current-Affairs-September-2026.pdf"
+              class="btn orange" style="display:inline-flex;align-items:center;gap:8px;padding:12px 26px;font-size:15px;font-weight:900;text-decoration:none;border-radius:10px;box-shadow:0 4px 16px rgba(234,88,12,0.4);margin-bottom:14px;"
+              onclick="setTimeout(closeCaMagazineModal, 2000);">
+              <span>📥 Download Official 87-Page PDF Now</span>
+            </a>
+
+            <div>
+              <button type="button" class="btn ghost" onclick="closeCaMagazineModal()" style="font-size:12.5px;color:#64748b;">
+                Close Window
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Trigger instant download
+    const dlLink = document.createElement("a");
+    dlLink.href = "materials/C2S-Current-Affairs-September-2026.pdf";
+    dlLink.download = "C2S-Current-Affairs-September-2026.pdf";
+    document.body.appendChild(dlLink);
+    dlLink.click();
+    document.body.removeChild(dlLink);
+
+    // Refresh Current Affairs view if active
+    if (typeof renderCurrentAffairs === "function") {
+      renderCurrentAffairs(monthCode);
+    }
+  }, 1200);
+};
+
+window.isCaMagazineUnlocked = function(monthCode) {
+  if (typeof store !== "undefined" && store.get) {
+    if (store.get("c2s_all_access_pass")) return true;
+    if (store.get("c2s_ca_unlocked_sep_2026")) return true;
+    if (monthCode && store.get("c2s_ca_unlocked_" + monthCode)) return true;
+  }
+  return localStorage.getItem("c2s_ca_unlocked_sep_2026") === "true";
+};
+
+function downloadCaPdf(caId) {
+  const isUnlocked = isCaMagazineUnlocked(caId);
+  if (!isUnlocked) {
+    openCaMagazineCheckoutModal(caId || 'sep-2026');
+    return;
+  }
+
+  // Already unlocked -> trigger instant file download
+  const dlLink = document.createElement("a");
+  dlLink.href = "materials/C2S-Current-Affairs-September-2026.pdf";
+  dlLink.download = "C2S-Current-Affairs-September-2026.pdf";
+  document.body.appendChild(dlLink);
+  dlLink.click();
+  document.body.removeChild(dlLink);
+
+  if (typeof showToast === "function") {
+    showToast("✓ Official 87-Page PDF Download Started. Thank you!");
+  } else {
+    alert("✓ Official 87-Page PDF Download Started. Thank you!");
+  }
 }
+
 
 
 /* ==========================================================================
@@ -5396,13 +6117,14 @@ renderCurrentAffairs = function(filterMonth) {
   const homeContainer = document.getElementById("homeCaGrid");
 
   const activeMonth = filterMonth || "sep-2026";
+  const isUnlocked = typeof isCaMagazineUnlocked === "function" && isCaMagazineUnlocked("sep-2026");
 
   const renderContent = (isHome) => {
     return `
       <!-- Monthwise Filter Bar -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:14px 18px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:14px 18px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;box-shadow:0 2px 8px rgba(15,23,42,0.03);">
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <span style="font-size:13px;font-weight:800;color:#0f172a;">📅 Select Month:</span>
+          <span style="font-size:13px;font-weight:800;color:#0f172a;">📅 Select Publication:</span>
           <button class="btn ${activeMonth === 'sep-2026' ? 'blue' : 'ghost'}" style="padding:6px 14px;font-size:12.5px;font-weight:800;" onclick="renderCurrentAffairs('sep-2026')">
             September 2026 (Full 87 Pgs)
           </button>
@@ -5413,91 +6135,191 @@ renderCurrentAffairs = function(filterMonth) {
             Weekly Digests
           </button>
         </div>
-        <a href="current-affairs-reader.html" class="btn orange" style="padding:7px 16px;font-size:13px;font-weight:800;text-decoration:none;">
-          📖 Open Full-Screen Digital Reader →
-        </a>
+        <div style="display:flex;gap:8px;align-items:center;">
+          ${isUnlocked 
+            ? `<span style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-size:11px;font-weight:900;padding:4px 10px;border-radius:6px;">✓ UNLOCKED &amp; VERIFIED</span>`
+            : `<span style="background:#fef3c7;color:#b45309;border:1px solid #fde68a;font-size:11px;font-weight:800;padding:4px 10px;border-radius:6px;">🔒 OFFICIAL PAID EDITION (₹15)</span>`
+          }
+          <a href="current-affairs-reader.html" class="btn blue" style="padding:7px 16px;font-size:12.5px;font-weight:800;text-decoration:none;">
+            📖 Full-Screen Reader →
+          </a>
+        </div>
       </div>
 
-      <!-- September 2026 Spotlight Hero -->
+      <!-- September 2026 Visual PDF Magazine Showcase (Cover + Page 1 Preview) -->
       ${activeMonth === 'sep-2026' ? `
-        <div class="card" style="background:linear-gradient(135deg, #0f172a, #1e3a8a);color:#ffffff;border-radius:18px;padding:28px 24px;margin-bottom:28px;box-shadow:0 12px 30px rgba(15,23,42,0.18);position:relative;overflow:hidden;">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="pill orange" style="font-size:11px;font-weight:800;">🔥 SEPTEMBER 2026 FULL EDITION</span>
-              <span class="pill" style="background:rgba(255,255,255,0.15);color:#93c5fd;font-size:11px;font-weight:800;">87 PAGES COMPLETE</span>
-              <span class="pill" style="background:rgba(255,255,255,0.15);color:#86efac;font-size:11px;font-weight:800;">159 PRACTICE MCQS</span>
+        <div style="background:linear-gradient(135deg, #091e42 0%, #0f2a5c 50%, #1e3a8a 100%);border-radius:20px;padding:32px 28px;color:#ffffff;box-shadow:0 16px 40px -10px rgba(15,42,92,0.3);position:relative;overflow:hidden;border:1.5px solid rgba(255,255,255,0.12);margin-bottom:32px;">
+          
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:16px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <span style="background:#ea580c;color:#ffffff;font-size:11px;font-weight:900;padding:4px 12px;border-radius:999px;letter-spacing:0.5px;">
+                🔥 SEPTEMBER 2026 OFFICIAL PUBLICATION
+              </span>
+              <span style="background:rgba(255,255,255,0.15);color:#93c5fd;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;">
+                📄 87 PAGES COMPLETE
+              </span>
+              <span style="background:rgba(255,255,255,0.15);color:#86efac;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;">
+                🎯 159 PRACTICE MCQS
+              </span>
             </div>
-            <a href="materials/C2S-Current-Affairs-September-2026.pdf" download="C2S-Current-Affairs-September-2026.pdf" class="btn orange" style="padding:8px 18px;font-size:13px;font-weight:800;text-decoration:none;box-shadow:0 4px 12px rgba(234,88,12,0.35);">
-              📥 Download Printable PDF (87 Pages)
-            </a>
+
+            <button type="button" class="btn orange" onclick="downloadCaPdf('sep-2026')"
+              style="padding:10px 22px;font-size:13.5px;font-weight:900;box-shadow:0 4px 14px rgba(234,88,12,0.4);border-radius:8px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <span>📥 Download Official 87-Page PDF ${isUnlocked ? '(Unlocked)' : '(₹15)'}</span>
+            </button>
           </div>
 
-          <h3 style="font-size:clamp(22px, 3vw, 28px);font-weight:900;color:#ffffff;margin:0 0 8px;">
-            Notes of Current events — September 2026 Edition
-          </h3>
-          <p style="color:#cbd5e1;font-size:14.5px;margin:0 0 20px;line-height:1.6;max-width:850px;">
-            Complete editorial publication containing Newly Appointments, Sports, Awards & Honours, Military Exercises, National & International Events, Global Indexes, and 159 Exam-Standard Practice MCQs with 100% verified answers. Optimized for reading on mobile, tablet, laptop, and desktop.
-          </p>
+          <!-- Split Showcase: 3D Magazine Cover on Left, First Page High-Res Layout Preview on Right -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:28px;align-items:stretch;">
+            
+            <!-- Left: 3D Glossy Magazine Cover Card -->
+            <div style="background:linear-gradient(145deg, #1e293b, #0f172a);border:2px solid #f97316;border-radius:16px;padding:26px 22px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 12px 30px rgba(0,0,0,0.35);position:relative;">
+              <div style="position:absolute;top:14px;right:14px;background:#f97316;color:#ffffff;font-size:10.5px;font-weight:900;padding:3px 10px;border-radius:6px;letter-spacing:0.5px;">
+                PRICE: ₹15
+              </div>
+              
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                  <span style="font-size:24px;">🏛️</span>
+                  <div>
+                    <strong style="display:block;font-size:13px;color:#f8fafc;letter-spacing:0.5px;">C2S COLLEGE TO SERVICE</strong>
+                    <span style="font-size:10.5px;color:#94a3b8;">Patrapada, Bhubaneswar &bull; Govt Exams Portal</span>
+                  </div>
+                </div>
 
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px;">
-            <a href="current-affairs-reader.html" class="btn" style="background:#ffffff;color:#0f172a;padding:10px 22px;font-size:14px;font-weight:850;text-decoration:none;border-radius:10px;">
-              📖 Read Online (Mobile / Lap / Desktop)
-            </a>
-            <a href="current-affairs-reader.html#sec-appointments" class="btn" style="background:rgba(255,255,255,0.2);color:#ffffff;border:1px solid rgba(255,255,255,0.3);padding:10px 18px;font-size:14px;font-weight:800;text-decoration:none;border-radius:10px;">
-              🎯 Practice 159 MCQs Online
-            </a>
-            <a href="materials/C2S-Current-Affairs-September-2026.pdf" download="C2S-Current-Affairs-September-2026.pdf" class="btn ghost" style="color:#fdba74;border:1px solid rgba(253,186,116,0.5);padding:10px 18px;font-size:14px;font-weight:800;text-decoration:none;border-radius:10px;">
-              📥 Instant PDF Download ↓
-            </a>
+                <div style="border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;margin-top:6px;">
+                  <span style="font-size:11px;font-weight:800;color:#fdba74;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px;">
+                    EDITORIAL COMPENDIUM
+                  </span>
+                  <h3 style="font-size:24px;font-weight:900;color:#ffffff;line-height:1.25;margin:0 0 10px;">
+                    Notes of Current events
+                  </h3>
+                  <p style="font-size:13px;color:#cbd5e1;line-height:1.55;margin:0 0 16px;">
+                    Comprehensive exam-focused current affairs covering National &amp; International Affairs, Appointments, Defence, Sports Records, Awards, and State Schemes tailored for UPSC, OPSC, Banking, SSC &amp; Railways.
+                  </p>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;">
+                  <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:8px 10px;border-radius:8px;">
+                    <div style="font-size:10.5px;color:#94a3b8;">Total Pages</div>
+                    <div style="font-size:15px;font-weight:900;color:#ffffff;">87 Pages</div>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:8px 10px;border-radius:8px;">
+                    <div style="font-size:10.5px;color:#94a3b8;">Practice MCQs</div>
+                    <div style="font-size:15px;font-weight:900;color:#ffffff;">159 Questions</div>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:8px 10px;border-radius:8px;">
+                    <div style="font-size:10.5px;color:#94a3b8;">Format</div>
+                    <div style="font-size:15px;font-weight:900;color:#ffffff;">Printable PDF</div>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:8px 10px;border-radius:8px;">
+                    <div style="font-size:10.5px;color:#94a3b8;">Answers</div>
+                    <div style="font-size:15px;font-weight:900;color:#10b981;">100% Verified</div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <button type="button" class="btn orange" onclick="downloadCaPdf('sep-2026')"
+                  style="width:100%;padding:12px;font-size:14px;font-weight:900;border-radius:8px;box-shadow:0 4px 14px rgba(234,88,12,0.4);display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
+                  <span>📥 Download Printable PDF ${isUnlocked ? '(Instant)' : '(Pay ₹15)'}</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Right: Page 1 First-Page High-Res Layout Preview -->
+            <div style="background:#ffffff;color:#0f172a;border-radius:16px;padding:24px 22px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 12px 30px rgba(0,0,0,0.25);border:1px solid #cbd5e1;position:relative;">
+              <!-- Stamp Preview Badge -->
+              <div style="position:absolute;top:16px;right:16px;background:#fef2f2;border:1px solid #fca5a5;color:#b91c1c;font-size:9.5px;font-weight:900;padding:2px 8px;border-radius:4px;letter-spacing:0.5px;">
+                FIRST PAGE PREVIEW
+              </div>
+
+              <div>
+                <!-- Simulated Top Page Header -->
+                <div style="border-bottom:2px solid #0f2a5c;padding-bottom:8px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:baseline;">
+                  <span style="font-size:11px;font-weight:900;color:#0f2a5c;letter-spacing:0.5px;">C2S MONTHLY EDITORIAL COMPENDIUM</span>
+                  <span style="font-size:11px;font-weight:800;color:#64748b;">SEPTEMBER 2026 • PAGE 1</span>
+                </div>
+
+                <div style="display:inline-block;background:#e0f2fe;color:#0369a1;font-size:10px;font-weight:900;padding:2px 8px;border-radius:4px;margin-bottom:8px;text-transform:uppercase;">
+                  SECTION 1: NEWLY APPOINTMENTS &amp; EXECUTIVES
+                </div>
+
+                <!-- Page 1 Highlight News Items -->
+                <div style="display:flex;flex-direction:column;gap:12px;font-size:12.5px;line-height:1.5;color:#334155;">
+                  <div style="background:#f8fafc;border-left:3px solid #0284c7;padding:8px 12px;border-radius:0 6px 6px 0;">
+                    <strong style="color:#0f2a5c;font-size:13px;display:block;">1. RBI Appoints Suman Ray as Executive Director (ED)</strong>
+                    <span>Assumed charge on 1 Sept 2026 over DICGC &amp; Premises Dept. Prior role: Regional Director Maharashtra. Central Bank established under RBI Act 1934.</span>
+                  </div>
+
+                  <div style="background:#f8fafc;border-left:3px solid #0284c7;padding:8px 12px;border-radius:0 6px 6px 0;">
+                    <strong style="color:#0f2a5c;font-size:13px;display:block;">2. Air Marshal Sandeep Thareja Appointed as DGAFMS</strong>
+                    <span>Succeeded Surgeon Vice Admiral Arti Sarin (1st woman head). Highest medical authority directing Army, Navy &amp; Air Force healthcare.</span>
+                  </div>
+
+                  <div style="background:#f8fafc;border-left:3px solid #0284c7;padding:8px 12px;border-radius:0 6px 6px 0;">
+                    <strong style="color:#0f2a5c;font-size:13px;display:block;">3. Crown Prince Haakon VIII Becomes King of Norway</strong>
+                    <span>Succeeded King Harald V on 28 Aug 2026. Constitutional monarchy, Storting parliament, capital Oslo. Royal motto: "All for Norway".</span>
+                  </div>
+
+                  <div style="background:#f8fafc;border-left:3px solid #0284c7;padding:8px 12px;border-radius:0 6px 6px 0;">
+                    <strong style="color:#0f2a5c;font-size:13px;display:block;">4. Anil Chakravarthy Named President &amp; CEO of Adobe Inc.</strong>
+                    <span>Effective 1 Dec 2026 succeeding Shantanu Narayen (moved to Exec Chair). Founded Dec 1982 by John Warnock &amp; Charles Geschke.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Page 1 Bottom Fade Bar -->
+              <div style="margin-top:14px;padding-top:10px;border-top:1.5px dashed #cbd5e1;display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:11.5px;color:#64748b;font-weight:750;">
+                  🔒 <strong>86 More Pages</strong> with Sports, Defence, Indexes &amp; 159 MCQs
+                </span>
+                <a href="current-affairs-reader.html" style="font-size:12px;font-weight:800;color:#0284c7;text-decoration:none;">
+                  Read Online &rarr;
+                </a>
+              </div>
+            </div>
+
           </div>
 
-          <!-- Quick Topic Pills -->
-          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:10px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.15);">
-            <a href="current-affairs-reader.html#sec-appointments" style="background:rgba(255,255,255,0.08);padding:10px 12px;border-radius:8px;text-decoration:none;color:#fff;">
-              <div style="font-weight:800;font-size:13px;color:#93c5fd;">👔 Appointments</div>
-              <div style="font-size:11.5px;color:#cbd5e1;">Pages 1–14 • 29 MCQs</div>
-            </a>
-            <a href="current-affairs-reader.html#sec-sports" style="background:rgba(255,255,255,0.08);padding:10px 12px;border-radius:8px;text-decoration:none;color:#fff;">
-              <div style="font-weight:800;font-size:13px;color:#93c5fd;">🏆 Sports Records</div>
-              <div style="font-size:11.5px;color:#cbd5e1;">Pages 15–36 • 40 MCQs</div>
-            </a>
-            <a href="current-affairs-reader.html#sec-awards" style="background:rgba(255,255,255,0.08);padding:10px 12px;border-radius:8px;text-decoration:none;color:#fff;">
-              <div style="font-weight:800;font-size:13px;color:#93c5fd;">🎖️ Awards & Honours</div>
-              <div style="font-size:11.5px;color:#cbd5e1;">Pages 37–47 • 25 MCQs</div>
-            </a>
-            <a href="current-affairs-reader.html#sec-military-exercises" style="background:rgba(255,255,255,0.08);padding:10px 12px;border-radius:8px;text-decoration:none;color:#fff;">
-              <div style="font-weight:800;font-size:13px;color:#93c5fd;">⚔️ Defence Exercises</div>
-              <div style="font-size:11.5px;color:#cbd5e1;">Pages 48–56 • 15 MCQs</div>
-            </a>
-            <a href="current-affairs-reader.html#sec-national-international" style="background:rgba(255,255,255,0.08);padding:10px 12px;border-radius:8px;text-decoration:none;color:#fff;">
-              <div style="font-weight:800;font-size:13px;color:#93c5fd;">🌍 National & Intl</div>
-              <div style="font-size:11.5px;color:#cbd5e1;">Pages 57–82 • 40 MCQs</div>
-            </a>
-            <a href="current-affairs-reader.html#sec-indexes" style="background:rgba(255,255,255,0.08);padding:10px 12px;border-radius:8px;text-decoration:none;color:#fff;">
-              <div style="font-weight:800;font-size:13px;color:#93c5fd;">📊 Global Indexes</div>
-              <div style="font-size:11.5px;color:#cbd5e1;">Pages 83–87 • 10 MCQs</div>
-            </a>
+          <!-- Bottom Action Bar -->
+          <div style="margin-top:24px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.15);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+              <button type="button" class="btn orange" onclick="downloadCaPdf('sep-2026')"
+                style="padding:10px 22px;font-size:14px;font-weight:900;border-radius:8px;box-shadow:0 4px 12px rgba(234,88,12,0.4);display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+                <span>📥 Download Official 87-Page PDF ${isUnlocked ? '(Unlocked)' : '(Pay ₹15)'}</span>
+              </button>
+              <a href="current-affairs-reader.html" class="btn" style="background:#ffffff;color:#0f172a;padding:10px 20px;font-size:13.5px;font-weight:850;text-decoration:none;border-radius:8px;">
+                📖 Interactive Online Reader (All Devices)
+              </a>
+              <a href="current-affairs-reader.html#sec-appointments" class="btn" style="background:rgba(255,255,255,0.15);color:#ffffff;border:1px solid rgba(255,255,255,0.25);padding:10px 18px;font-size:13px;font-weight:800;text-decoration:none;border-radius:8px;">
+                🎯 Solve 159 MCQs Online
+              </a>
+            </div>
+            
+            <span style="font-size:12px;color:#cbd5e1;">
+              ⚡ Registration &amp; Instant Download Access Active
+            </span>
           </div>
+
         </div>
       ` : ''}
 
-      <!-- Detailed Categories List -->
-      <div style="display:flex;flex-direction:column;gap:22px;">
+      <!-- Detailed Categories Breakdown -->
+      <div style="display:flex;flex-direction:column;gap:20px;">
         ${(activeMonth === 'sep-2026' ? [CURRENT_AFFAIRS[0]] : (activeMonth === 'aug-2026' ? CURRENT_AFFAIRS.slice(1, 2) : CURRENT_AFFAIRS.slice(1))).map(ca => `
-          <div class="card" style="border:1.5px solid #e2e8f0;border-left:5px solid #1d4ed8;border-radius:16px;padding:24px;box-shadow:0 4px 16px -2px rgba(15,23,42,0.05);">
+          <div class="card" style="border:1.5px solid #e2e8f0;border-left:5px solid #1d4ed8;border-radius:16px;padding:22px;box-shadow:0 4px 16px -2px rgba(15,23,42,0.04);background:#ffffff;">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
               <div>
                 <span class="pill blue" style="font-weight:800;font-size:11.5px;">${ca.badge || ca.edition}</span>
-                <h3 style="font-size:20px;font-weight:900;color:#0a192f;margin:8px 0 2px;">${ca.title}</h3>
-                <span style="font-size:12px;color:#64748b;">Editorial Period: ${ca.period || ca.dateRange} • Bhubaneswar Desk</span>
+                <h3 style="font-size:19px;font-weight:900;color:#0a192f;margin:8px 0 2px;">${ca.title}</h3>
+                <span style="font-size:12px;color:#64748b;">Editorial Period: ${ca.period || ca.dateRange} &bull; Bhubaneswar Desk</span>
               </div>
               <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                ${ca.readerUrl ? `
-                  <a href="${ca.readerUrl}" class="btn blue" style="padding:8px 14px;font-size:12.5px;font-weight:800;text-decoration:none;">
-                    📖 Open Reader
-                  </a>
-                ` : ''}
-                <button class="btn orange" style="padding:8px 16px;font-size:12.5px;font-weight:800;" onclick="downloadCaPdf('${ca.id || ca.title}')">
+                <a href="current-affairs-reader.html" class="btn blue" style="padding:8px 14px;font-size:12.5px;font-weight:800;text-decoration:none;">
+                  📖 Open Reader
+                </a>
+                <button class="btn orange" style="padding:8px 16px;font-size:12.5px;font-weight:800;cursor:pointer;" onclick="downloadCaPdf('${ca.id || 'sep-2026'}')">
                   📥 Download Printable PDF
                 </button>
               </div>
@@ -5521,8 +6343,8 @@ renderCurrentAffairs = function(filterMonth) {
                 <span style="font-size:13px;font-weight:750;color:#1d4ed8;">
                   📝 Includes ${ca.quiz.length} Practice MCQs with In-Depth Solutions
                 </span>
-                <a href="${ca.readerUrl || 'current-affairs-reader.html'}" class="btn" style="background:#1d4ed8;color:#fff;padding:6px 14px;font-size:12px;font-weight:800;text-decoration:none;">
-                  Practice All Questions Online →
+                <a href="current-affairs-reader.html#sec-appointments" class="btn" style="background:#1d4ed8;color:#fff;padding:6px 14px;font-size:12px;font-weight:800;text-decoration:none;">
+                  Practice All Questions Online &rarr;
                 </a>
               </div>
             ` : ''}
