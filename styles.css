@@ -10561,6 +10561,15 @@ body {
   display: none !important;
 }
 
+#examLock.testbook-mode #instruct:not(.hidden) {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100vh !important;
+  width: 100vw !important;
+  background: #ffffff !important;
+  overflow: hidden !important;
+}
+
 #examLock.testbook-mode #testArea:not(.hidden) {
   display: flex !important;
   flex-direction: column !important;
