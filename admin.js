@@ -705,35 +705,135 @@ window.syncExpiredSeatsAndMembers = function() {
 };
 
 let currentAdminSeatFloor = 1;
+let currentAdminSeatShiftFilter = 'all'; // 'all', 'live', 'morning', 'afternoon', 'night', 'fullday', '24hours'
+let currentInspectorSeatNum = null;
 
 window.setAdminSeatFloor = function(f) {
   currentAdminSeatFloor = Number(f);
   renderSeatController();
 };
 
-window.getAvailableSeats = function(currentSeatToIgnore = null) {
-  const taken = store.get('c2s_lib_taken', {});
+window.setAdminSeatShiftFilter = function(filterName) {
+  currentAdminSeatShiftFilter = filterName;
+  renderSeatController();
+};
+
+window.getCurrentLiveShift = function() {
+  const now = new Date();
+  const totalMins = now.getHours() * 60 + now.getMinutes();
+  // Morning: 07:00 AM (420m) to 14:00 (840m)
+  // Afternoon: 14:30 (870m) to 21:00 (1260m)
+  // Night: 21:30 (1290m) to 06:30 (390m)
+  if (totalMins >= 420 && totalMins < 870) return 'morning';
+  if (totalMins >= 870 && totalMins < 1290) return 'afternoon';
+  return 'night';
+};
+
+window.getSeatShiftSchedule = function(seatNum) {
+  const num = parseInt(seatNum);
+  const sCode = `S-${num}`;
+  const sPad = `S-${String(num).padStart(2, '0')}`;
+  const dCode = `Desk-${String(num).padStart(3, '0')}`;
+
+  const members = store.get('c2s_lib_members', []);
+  const manualTaken = store.get('c2s_lib_taken', {});
+
+  let morning = null;
+  let afternoon = null;
+  let night = null;
+  let isFullDay = false;
+  let is24h = false;
+
+  members.forEach(m => {
+    if (m.status === 'Cancelled' || m.status === 'Left') return;
+    const mNumMatch = String(m.seat || '').match(/\d+/);
+    if (!mNumMatch || parseInt(mNumMatch[0]) !== num) return;
+
+    const s = String(m.shift || '').toLowerCase();
+    if (s.includes('24') || s.includes('round')) {
+      is24h = true;
+      morning = m;
+      afternoon = m;
+      night = m;
+    } else if (s.includes('full')) {
+      isFullDay = true;
+      morning = m;
+      afternoon = m;
+    } else if (s.includes('morning')) {
+      morning = m;
+    } else if (s.includes('afternoon')) {
+      afternoon = m;
+    } else if (s.includes('night')) {
+      night = m;
+    }
+  });
+
+  // Check manual hold from taken
+  const hold = manualTaken[sCode] || manualTaken[sPad] || manualTaken[dCode] || manualTaken[String(num)];
+  if (hold === true) {
+    if (!morning && !afternoon && !night) {
+      is24h = true;
+      morning = { name: 'Admin Hold (Full Desk)', isManualHold: true, shift: 'Manual Hold' };
+      afternoon = { name: 'Admin Hold (Full Desk)', isManualHold: true, shift: 'Manual Hold' };
+      night = { name: 'Admin Hold (Full Desk)', isManualHold: true, shift: 'Manual Hold' };
+    }
+  } else if (hold && typeof hold === 'object') {
+    if (hold.morning) morning = hold.morning;
+    if (hold.afternoon) afternoon = hold.afternoon;
+    if (hold.night) night = hold.night;
+    if (hold.isFullDay) isFullDay = true;
+    if (hold.is24h) is24h = true;
+  }
+
+  return {
+    num,
+    seatCode: sCode,
+    floor: num <= 24 ? 2 : 1,
+    zone: num <= 24 ? 'Zone A (2nd Fl)' : (num <= 67 ? 'Zone B (1st Fl)' : (num <= 109 ? 'Zone C (1st Fl)' : 'Zone D (1st Fl)')),
+    morning,
+    afternoon,
+    night,
+    isFullDay,
+    is24h
+  };
+};
+
+window.getAvailableSeats = function(currentSeatToIgnore = null, targetShift = null) {
   const ignoreNorm = currentSeatToIgnore ? normalizeSeatCode(currentSeatToIgnore) : null;
   const list = [];
-  // 149 Total Seats across 2 Floors:
-  // Upper Floor (Floor 2): S-1 to S-24 (24 Seats in Zone A)
-  // Lower Floor (Floor 1): S-25 to S-149 (125 Seats in Zones B, C, D)
+  const shiftNorm = targetShift ? String(targetShift).toLowerCase() : null;
+
   for (let i = 1; i <= 149; i++) {
     const sCode = `S-${i}`;
     const sPad = `S-${String(i).padStart(2, '0')}`;
     const dCode = `Desk-${String(i).padStart(3, '0')}`;
-    const label = `Seat S-${i}`;
-    const isTaken = Boolean(
-      taken[sCode] || taken[sPad] || taken[dCode] ||
-      taken[`Seat S-${i}`] || taken[`Seat #${i}`] || taken[`Desk ${i}`] || taken[String(i)]
-    );
-    if (!isTaken || (ignoreNorm && (ignoreNorm === sCode || ignoreNorm === sPad || ignoreNorm === dCode))) {
+    const sched = getSeatShiftSchedule(i);
+    let isVacant = true;
+
+    if (!shiftNorm || shiftNorm === 'all') {
+      isVacant = !sched.morning || !sched.afternoon || !sched.night;
+    } else if (shiftNorm.includes('morning')) {
+      isVacant = !sched.morning;
+    } else if (shiftNorm.includes('afternoon')) {
+      isVacant = !sched.afternoon;
+    } else if (shiftNorm.includes('night')) {
+      isVacant = !sched.night;
+    } else if (shiftNorm.includes('full')) {
+      isVacant = !sched.morning && !sched.afternoon;
+    } else if (shiftNorm.includes('24')) {
+      isVacant = !sched.morning && !sched.afternoon && !sched.night;
+    }
+
+    if (isVacant || (ignoreNorm && (ignoreNorm === sCode || ignoreNorm === sPad || ignoreNorm === dCode))) {
       list.push({
         num: i,
         code: sCode,
-        label: label,
+        label: `Seat S-${i}`,
         floor: i <= 24 ? 2 : 1,
-        zone: i <= 24 ? 'Zone A (2nd Fl)' : (i <= 67 ? 'Zone B (1st Fl)' : (i <= 109 ? 'Zone C (1st Fl)' : 'Zone D (1st Fl)'))
+        zone: sched.zone,
+        morningVacant: !sched.morning,
+        afternoonVacant: !sched.afternoon,
+        nightVacant: !sched.night
       });
     }
   }
@@ -748,74 +848,195 @@ function renderFrontDesk() {
 }
 
 function renderSeatController() {
-  const taken = store.get('c2s_lib_taken', {});
   const container = document.getElementById('adminSeatController');
   if (!container) return;
 
-  // Floor 2 (Upper Floor): S-1 to S-24 (24 seats)
-  let takenF2 = 0;
-  for (let i = 1; i <= 24; i++) {
-    const sCode = `S-${i}`;
-    const sPad = `S-${String(i).padStart(2, '0')}`;
-    const dCode = `Desk-${String(i).padStart(3, '0')}`;
-    if (taken[sCode] || taken[sPad] || taken[dCode] || taken[`Seat S-${i}`] || taken[`Desk ${i}`] || taken[String(i)]) takenF2++;
-  }
+  const liveShift = getCurrentLiveShift();
+  const liveShiftLabel = liveShift === 'morning' ? 'Morning (07:00 AM – 02:00 PM)' : (liveShift === 'afternoon' ? 'Afternoon (02:30 PM – 09:00 PM)' : 'Night (09:30 PM – 06:30 AM)');
 
+  const effectiveFilter = currentAdminSeatShiftFilter === 'live' ? liveShift : currentAdminSeatShiftFilter;
+
+  // Compute exact shift counts across both floors
+  // Floor 2 (Upper Floor): S-1 to S-24 (24 seats)
   // Floor 1 (Lower Floor): S-25 to S-149 (125 seats)
-  let takenF1 = 0;
-  for (let i = 25; i <= 149; i++) {
-    const sCode = `S-${i}`;
-    const sPad = `S-${String(i).padStart(2, '0')}`;
-    const dCode = `Desk-${String(i).padStart(3, '0')}`;
-    if (taken[sCode] || taken[sPad] || taken[dCode] || taken[`Seat S-${i}`] || taken[`Desk ${i}`] || taken[String(i)]) takenF1++;
+  let vacantF1 = 0;
+  let vacantF2 = 0;
+  let totalSlotsF1 = 0;
+  let totalSlotsF2 = 0;
+
+  for (let i = 1; i <= 149; i++) {
+    const sched = getSeatShiftSchedule(i);
+    const isF1 = i >= 25;
+    
+    if (sched.morning === null) isF1 ? totalSlotsF1++ : totalSlotsF2++;
+    if (sched.afternoon === null) isF1 ? totalSlotsF1++ : totalSlotsF2++;
+    if (sched.night === null) isF1 ? totalSlotsF1++ : totalSlotsF2++;
+
+    let isShiftVacant = true;
+    if (effectiveFilter === 'morning') {
+      isShiftVacant = !sched.morning;
+    } else if (effectiveFilter === 'afternoon') {
+      isShiftVacant = !sched.afternoon;
+    } else if (effectiveFilter === 'night') {
+      isShiftVacant = !sched.night;
+    } else if (effectiveFilter === 'fullday') {
+      isShiftVacant = !sched.morning && !sched.afternoon;
+    } else if (effectiveFilter === '24hours') {
+      isShiftVacant = !sched.morning && !sched.afternoon && !sched.night;
+    } else {
+      // 'all' matrix mode
+      isShiftVacant = !sched.morning || !sched.afternoon || !sched.night;
+    }
+
+    if (isShiftVacant) {
+      if (isF1) vacantF1++;
+      else vacantF2++;
+    }
   }
 
   let html = `
     <div style="background:#ffffff;border:1.5px solid #cbd5e1;border-radius:14px;padding:18px;margin-bottom:16px;">
+      
+      <!-- Shift Filter Bar -->
+      <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:12px 14px;margin-bottom:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+          <span style="font-size:12px;font-weight:900;color:#0f2a5c;text-transform:uppercase;letter-spacing:0.5px;">
+            ⏰ FILTER BY SHIFT SCHEDULE:
+          </span>
+          <span style="font-size:11.5px;color:#64748b;font-weight:600;">
+            Click any shift to view vacancy for that specific slot &bull; Click any seat for full 3-shift timetable
+          </span>
+        </div>
+        
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+          <button type="button" class="btn ${currentAdminSeatShiftFilter === 'all' ? 'active' : 'ghost'}" onclick="setAdminSeatShiftFilter('all')"
+            style="padding:6px 14px;font-size:12px;font-weight:800;border-radius:8px;cursor:pointer;background:${currentAdminSeatShiftFilter === 'all' ? '#1e3a8a' : '#ffffff'};color:${currentAdminSeatShiftFilter === 'all' ? '#ffffff' : '#0f2a5c'};border:1.5px solid ${currentAdminSeatShiftFilter === 'all' ? '#1e3a8a' : '#cbd5e1'};">
+            🌐 All Shifts Matrix (M • A • N)
+          </button>
+          <button type="button" class="btn ${currentAdminSeatShiftFilter === 'live' ? 'active' : 'ghost'}" onclick="setAdminSeatShiftFilter('live')"
+            style="padding:6px 14px;font-size:12px;font-weight:800;border-radius:8px;cursor:pointer;background:${currentAdminSeatShiftFilter === 'live' ? '#dc2626' : '#ffffff'};color:${currentAdminSeatShiftFilter === 'live' ? '#ffffff' : '#dc2626'};border:1.5px solid ${currentAdminSeatShiftFilter === 'live' ? '#dc2626' : '#fca5a5'};">
+            🔴 Live Right Now (${liveShift.toUpperCase()})
+          </button>
+          <button type="button" class="btn ${currentAdminSeatShiftFilter === 'morning' ? 'active' : 'ghost'}" onclick="setAdminSeatShiftFilter('morning')"
+            style="padding:6px 14px;font-size:12px;font-weight:800;border-radius:8px;cursor:pointer;background:${currentAdminSeatShiftFilter === 'morning' ? '#059669' : '#ffffff'};color:${currentAdminSeatShiftFilter === 'morning' ? '#ffffff' : '#059669'};border:1.5px solid ${currentAdminSeatShiftFilter === 'morning' ? '#059669' : '#a7f3d0'};">
+            🌅 Morning (7am–2pm)
+          </button>
+          <button type="button" class="btn ${currentAdminSeatShiftFilter === 'afternoon' ? 'active' : 'ghost'}" onclick="setAdminSeatShiftFilter('afternoon')"
+            style="padding:6px 14px;font-size:12px;font-weight:800;border-radius:8px;cursor:pointer;background:${currentAdminSeatShiftFilter === 'afternoon' ? '#ea580c' : '#ffffff'};color:${currentAdminSeatShiftFilter === 'afternoon' ? '#ffffff' : '#ea580c'};border:1.5px solid ${currentAdminSeatShiftFilter === 'afternoon' ? '#ea580c' : '#fed7aa'};">
+            🌇 Afternoon (2:30pm–9pm)
+          </button>
+          <button type="button" class="btn ${currentAdminSeatShiftFilter === 'night' ? 'active' : 'ghost'}" onclick="setAdminSeatShiftFilter('night')"
+            style="padding:6px 14px;font-size:12px;font-weight:800;border-radius:8px;cursor:pointer;background:${currentAdminSeatShiftFilter === 'night' ? '#0f172a' : '#ffffff'};color:${currentAdminSeatShiftFilter === 'night' ? '#ffffff' : '#0f172a'};border:1.5px solid ${currentAdminSeatShiftFilter === 'night' ? '#0f172a' : '#cbd5e1'};">
+            🌙 Night (9:30pm–6:30am)
+          </button>
+          <button type="button" class="btn ${currentAdminSeatShiftFilter === 'fullday' ? 'active' : 'ghost'}" onclick="setAdminSeatShiftFilter('fullday')"
+            style="padding:6px 14px;font-size:12px;font-weight:800;border-radius:8px;cursor:pointer;background:${currentAdminSeatShiftFilter === 'fullday' ? '#2563eb' : '#ffffff'};color:${currentAdminSeatShiftFilter === 'fullday' ? '#ffffff' : '#2563eb'};border:1.5px solid ${currentAdminSeatShiftFilter === 'fullday' ? '#2563eb' : '#bfdbfe'};">
+            ⚡ Full Day (14h)
+          </button>
+          <button type="button" class="btn ${currentAdminSeatShiftFilter === '24hours' ? 'active' : 'ghost'}" onclick="setAdminSeatShiftFilter('24hours')"
+            style="padding:6px 14px;font-size:12px;font-weight:800;border-radius:8px;cursor:pointer;background:${currentAdminSeatShiftFilter === '24hours' ? '#7c3aed' : '#ffffff'};color:${currentAdminSeatShiftFilter === '24hours' ? '#ffffff' : '#7c3aed'};border:1.5px solid ${currentAdminSeatShiftFilter === '24hours' ? '#7c3aed' : '#ddd6fe'};">
+            🌟 24 Hours
+          </button>
+        </div>
+      </div>
+
+      <!-- Floor Selection & Summary Row -->
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px;border-bottom:1px solid #f1f5f9;padding-bottom:12px;">
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <span style="font-weight:900;color:#0f2a5c;font-size:13px;">🏢 SELECT FLOOR VIEW (149 SEATS):</span>
+          <span style="font-weight:900;color:#0f2a5c;font-size:13px;">🏢 SELECT FLOOR VIEW:</span>
           <button type="button" class="btn" onclick="setAdminSeatFloor(1)"
-            style="padding:6px 16px;font-size:12.5px;font-weight:800;border-radius:8px;background:${currentAdminSeatFloor === 1 ? '#1d4ed8' : '#f8fafc'};color:${currentAdminSeatFloor === 1 ? '#fff' : '#0f2a5c'};border:1px solid ${currentAdminSeatFloor === 1 ? '#1d4ed8' : '#cbd5e1'};cursor:pointer;">
-            🏢 Lower Floor (1st Fl) • 125 Seats (${125 - takenF1} / 125 Vacant)
+            style="padding:7px 18px;font-size:12.5px;font-weight:800;border-radius:8px;background:${currentAdminSeatFloor === 1 ? '#1d4ed8' : '#f8fafc'};color:${currentAdminSeatFloor === 1 ? '#fff' : '#0f2a5c'};border:1.5px solid ${currentAdminSeatFloor === 1 ? '#1d4ed8' : '#cbd5e1'};cursor:pointer;">
+            🏢 1st Floor (Lower Floor) • 125 Seats (${vacantF1} / 125 Vacant)
           </button>
           <button type="button" class="btn" onclick="setAdminSeatFloor(2)"
-            style="padding:6px 16px;font-size:12.5px;font-weight:800;border-radius:8px;background:${currentAdminSeatFloor === 2 ? '#1d4ed8' : '#f8fafc'};color:${currentAdminSeatFloor === 2 ? '#fff' : '#0f2a5c'};border:1px solid ${currentAdminSeatFloor === 2 ? '#1d4ed8' : '#cbd5e1'};cursor:pointer;">
-            🏢 Upper Floor (2nd Fl) • 24 Seats (${24 - takenF2} / 24 Vacant)
+            style="padding:7px 18px;font-size:12.5px;font-weight:800;border-radius:8px;background:${currentAdminSeatFloor === 2 ? '#1d4ed8' : '#f8fafc'};color:${currentAdminSeatFloor === 2 ? '#fff' : '#0f2a5c'};border:1.5px solid ${currentAdminSeatFloor === 2 ? '#1d4ed8' : '#cbd5e1'};cursor:pointer;">
+            🏢 2nd Floor (Upper Floor) • 24 Seats (${vacantF2} / 24 Vacant)
           </button>
         </div>
+        
         <div style="display:flex;align-items:center;gap:12px;font-size:12px;flex-wrap:wrap;">
-          <span>🟢 Vacant</span>
-          <span>🔴 Occupied</span>
-          <strong style="color:#0f2a5c;background:#eff6ff;padding:3px 10px;border-radius:999px;">Total Vacant: ${149 - (takenF1 + takenF2)} / 149</strong>
+          ${currentAdminSeatShiftFilter === 'all' ? `
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span class="admin-shift-dot dot-green" style="font-size:9px;">M</span><span>= Morning Free</span>
+              <span class="admin-shift-dot dot-red" style="font-size:9px;margin-left:4px;">M</span><span>= Morning Occupied</span>
+            </div>
+          ` : `
+            <span>🟢 Vacant in this shift</span>
+            <span>🔴 Occupied in this shift</span>
+          `}
+          <strong style="color:#0f2a5c;background:#eff6ff;padding:4px 12px;border-radius:999px;border:1px solid #bfdbfe;">
+            ${currentAdminSeatShiftFilter === 'all' ? `Available Shift Slots: ${totalSlotsF1 + totalSlotsF2} / 447` : `Available Seats: ${vacantF1 + vacantF2} / 149`}
+          </strong>
         </div>
       </div>
 
-      <div style="font-size:11.5px;font-weight:800;color:#64748b;margin-bottom:10px;text-transform:uppercase;">
+      <div style="font-size:12px;font-weight:800;color:#64748b;margin-bottom:12px;text-transform:uppercase;">
         ${currentAdminSeatFloor === 1 ? 'Showing 1st Floor (Lower Floor): Seats S-25 to S-149 across Zones B, C, D (125 Seats)' : 'Showing 2nd Floor (Upper Floor): Seats S-1 to S-24 in Zone A (24 Seats)'}
+        &bull; Active Filter: <span style="color:#1d4ed8;">${currentAdminSeatShiftFilter === 'all' ? 'All Shifts Matrix' : (currentAdminSeatShiftFilter === 'live' ? 'Live ' + liveShiftLabel : currentAdminSeatShiftFilter.toUpperCase() + ' Shift')}</span>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(78px, 1fr));gap:8px;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(${currentAdminSeatShiftFilter === 'all' ? '86px' : '78px'}, 1fr));gap:8px;">
   `;
 
   const start = currentAdminSeatFloor === 1 ? 25 : 1;
   const end = currentAdminSeatFloor === 1 ? 149 : 24;
 
   for (let i = start; i <= end; i++) {
-    const sCode = `S-${i}`;
-    const sPad = `S-${String(i).padStart(2, '0')}`;
-    const dCode = `Desk-${String(i).padStart(3, '0')}`;
-    const isTaken = Boolean(taken[sCode] || taken[sPad] || taken[dCode] || taken[`Seat S-${i}`] || taken[`Desk ${i}`] || taken[String(i)]);
-    const zoneName = i <= 24 ? 'Zone A' : (i <= 67 ? 'Zone B' : (i <= 109 ? 'Zone C' : 'Zone D'));
-    html += `
-      <button type="button" class="btn ${isTaken ? 'orange' : 'ghost'}"
-        style="padding:6px 2px;font-size:11px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;"
-        title="Seat S-${i} (${zoneName}) • ${isTaken ? 'Occupied (Click to Release)' : 'Vacant (Click to Hold)'}"
-        onclick="toggleAdminSeat('S-${i}')">
-        <span>${isTaken ? '🔴' : '🟢'}</span>
-        <span>S-${i}</span>
-      </button>
-    `;
+    const sched = getSeatShiftSchedule(i);
+
+    if (currentAdminSeatShiftFilter === 'all') {
+      const hasOccupant = Boolean(sched.morning || sched.afternoon || sched.night);
+      const mTaken = Boolean(sched.morning);
+      const aTaken = Boolean(sched.afternoon);
+      const nTaken = Boolean(sched.night);
+      const mText = sched.morning ? (sched.morning.name || 'Occupied') : 'Vacant';
+      const aText = sched.afternoon ? (sched.afternoon.name || 'Occupied') : 'Vacant';
+      const nText = sched.night ? (sched.night.name || 'Occupied') : 'Vacant';
+
+      html += `
+        <button type="button" class="btn admin-seat-card-btn"
+          style="padding:6px 3px;border-radius:8px;border:1.5px solid ${hasOccupant ? '#cbd5e1' : '#a7f3d0'};background:${hasOccupant ? '#ffffff' : '#f0fdf4'};display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.04);"
+          title="Seat S-${i} (${sched.zone}) • Click to inspect shift timetable\nMorning: ${mText}\nAfternoon: ${aText}\nNight: ${nText}"
+          onclick="openSeatShiftInspectorModal(${i})">
+          <div style="font-weight:900;font-size:12px;color:#0f2a5c;">S-${i}</div>
+          <div style="display:flex;gap:3px;align-items:center;">
+            <span class="admin-shift-dot ${mTaken ? 'dot-red' : 'dot-green'}" title="Morning: ${mText}">M</span>
+            <span class="admin-shift-dot ${aTaken ? 'dot-red' : 'dot-green'}" title="Afternoon: ${aText}">A</span>
+            <span class="admin-shift-dot ${nTaken ? 'dot-red' : 'dot-green'}" title="Night: ${nText}">N</span>
+          </div>
+        </button>
+      `;
+    } else {
+      let isTaken = false;
+      let occupant = null;
+      if (effectiveFilter === 'morning') {
+        isTaken = Boolean(sched.morning);
+        occupant = sched.morning;
+      } else if (effectiveFilter === 'afternoon') {
+        isTaken = Boolean(sched.afternoon);
+        occupant = sched.afternoon;
+      } else if (effectiveFilter === 'night') {
+        isTaken = Boolean(sched.night);
+        occupant = sched.night;
+      } else if (effectiveFilter === 'fullday') {
+        isTaken = Boolean(sched.morning || sched.afternoon);
+        occupant = sched.morning || sched.afternoon;
+      } else if (effectiveFilter === '24hours') {
+        isTaken = Boolean(sched.morning || sched.afternoon || sched.night);
+        occupant = sched.morning || sched.afternoon || sched.night;
+      }
+
+      html += `
+        <button type="button" class="btn admin-seat-card-btn ${isTaken ? 'orange' : 'ghost'}"
+          style="padding:6px 2px;font-size:11px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border-color:${isTaken ? '#fca5a5' : '#a7f3d0'};background:${isTaken ? '#fff5f5' : '#ffffff'};"
+          title="Seat S-${i} (${sched.zone}) • ${isTaken ? 'Occupied by ' + (occupant?.name || 'Student') + ' (Click to Inspect)' : 'Vacant in this shift (Click to Inspect/Admit)'}"
+          onclick="openSeatShiftInspectorModal(${i})">
+          <span>${isTaken ? '🔴' : '🟢'}</span>
+          <span style="color:#0f2a5c;">S-${i}</span>
+          <span style="font-size:9px;color:${isTaken ? '#dc2626' : '#059669'};font-weight:750;">${isTaken ? 'Filled' : 'Free'}</span>
+        </button>
+      `;
+    }
   }
 
   html += '</div></div>';
@@ -823,28 +1044,231 @@ function renderSeatController() {
 }
 
 function toggleAdminSeat(id) {
-  const code = normalizeSeatCode(id);
-  const taken = store.get('c2s_lib_taken', {});
-  const numMatch = id.match(/\d+/);
-  const num = numMatch ? parseInt(numMatch[0]) : null;
-  const sCode = num ? `S-${num}` : code;
-  const sPad = num ? `S-${String(num).padStart(2, '0')}` : code;
-  const dCode = num ? `Desk-${String(num).padStart(3, '0')}` : code;
+  const numMatch = String(id).match(/\d+/);
+  const num = numMatch ? parseInt(numMatch[0]) : 25;
+  openSeatShiftInspectorModal(num);
+}
 
-  const isCurrentlyTaken = Boolean(taken[sCode] || taken[sPad] || taken[dCode] || taken[code]);
-  if (isCurrentlyTaken) {
+window.openSeatShiftInspectorModal = function(seatNum) {
+  const num = parseInt(seatNum);
+  currentInspectorSeatNum = num;
+  const modal = document.getElementById('seatShiftInspectorModal');
+  if (!modal) return;
+
+  const sched = getSeatShiftSchedule(num);
+  const sCode = `S-${num}`;
+
+  const titleEl = document.getElementById('inspectorSeatTitle');
+  if (titleEl) titleEl.textContent = `Seat ${sCode}`;
+  const badgeEl = document.getElementById('inspectorSeatFloorBadge');
+  if (badgeEl) badgeEl.textContent = `${sched.floor === 1 ? '1st Floor' : '2nd Floor'} • ${sched.zone}`;
+  const specsEl = document.getElementById('inspectorSeatSpecs');
+  if (specsEl) specsEl.innerHTML = `🔒 Attached Locker #${num} • ⚡ Dedicated 230V Socket • 💡 Personal Warm LED Reading Lamp`;
+
+  // Status pills
+  const pillsEl = document.getElementById('inspectorShiftStatusPills');
+  if (pillsEl) {
+    pillsEl.innerHTML = `
+      <span class="pill ${sched.morning ? 'red' : 'green'}" style="font-size:11px;padding:3px 9px;">
+        🌅 Morning: ${sched.morning ? '🔴 Filled' : '🟢 Vacant'}
+      </span>
+      <span class="pill ${sched.afternoon ? 'red' : 'green'}" style="font-size:11px;padding:3px 9px;">
+        🌇 Afternoon: ${sched.afternoon ? '🔴 Filled' : '🟢 Vacant'}
+      </span>
+      <span class="pill ${sched.night ? 'red' : 'green'}" style="font-size:11px;padding:3px 9px;">
+        🌙 Night: ${sched.night ? '🔴 Filled' : '🟢 Vacant'}
+      </span>
+    `;
+  }
+
+  // Shift cards
+  const container = document.getElementById('inspectorShiftCardsContainer');
+  if (container) {
+    container.innerHTML = `
+      <!-- 1. MORNING SHIFT -->
+      <div style="background:#ffffff;border:1.5px solid ${sched.morning ? '#fca5a5' : '#a7f3d0'};border-radius:12px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:18px;">🌅</span>
+            <strong style="color:#0f2a5c;font-size:14px;">1. Morning Shift (07:00 AM – 02:00 PM)</strong>
+            <span style="font-size:12px;color:#059669;font-weight:800;">₹800/mo</span>
+          </div>
+          <span style="background:${sched.morning ? '#fef2f2' : '#ecfdf5'};color:${sched.morning ? '#dc2626' : '#047857'};border:1px solid ${sched.morning ? '#fecaca' : '#a7f3d0'};font-size:11.5px;font-weight:850;padding:2px 10px;border-radius:999px;">
+            ${sched.morning ? '🔴 OCCUPIED' : '🟢 VACANT & AVAILABLE'}
+          </span>
+        </div>
+        ${sched.morning ? `
+          <div style="background:#f8fafc;padding:10px 12px;border-radius:8px;border:1px solid #e2e8f0;font-size:12.5px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+            <div>
+              <strong style="color:#0f172a;display:block;">${sched.morning.name || 'Student Member'}</strong>
+              <span style="color:#64748b;">Reg: ${sched.morning.regNo || '—'} &bull; Mobile: ${sched.morning.mobile || '—'} &bull; Shift: ${sched.morning.shift || 'Morning'}</span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              ${sched.morning.mobile ? `<a href="https://wa.me/91${String(sched.morning.mobile).replace(/\\D/g, '')}" target="_blank" class="btn ghost" style="padding:4px 8px;font-size:11px;color:#059669;border-color:#a7f3d0;">📱 WhatsApp</a>` : ''}
+              ${sched.morning.regNo ? `<button type="button" class="btn ghost" onclick="openStudent360Modal('${sched.morning.regNo}');closeSeatShiftInspectorModal();" style="padding:4px 8px;font-size:11px;color:#2563eb;border-color:#bfdbfe;">👁️ 360° Profile</button>` : ''}
+              ${!sched.morning.isManualHold && sched.morning.regNo ? `<button type="button" class="btn ghost" onclick="openCancelModal('${sched.morning.regNo}');closeSeatShiftInspectorModal();" style="padding:4px 8px;font-size:11px;color:#dc2626;border-color:#fecaca;">❌ Cancel</button>` : ''}
+            </div>
+          </div>
+        ` : `
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:12.5px;">
+            <span style="color:#047857;font-weight:650;">✓ Seat S-${num} is open for morning booking (7 hours daily focus).</span>
+            <button type="button" class="btn orange" onclick="quickAdmitFromSeatInspector('S-${num}', 'Morning')" style="padding:5px 14px;font-size:12px;font-weight:800;border:none;border-radius:6px;cursor:pointer;">
+              ➕ Admit Walk-in for Morning (₹800) →
+            </button>
+          </div>
+        `}
+      </div>
+
+      <!-- 2. AFTERNOON SHIFT -->
+      <div style="background:#ffffff;border:1.5px solid ${sched.afternoon ? '#fca5a5' : '#a7f3d0'};border-radius:12px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:18px;">🌇</span>
+            <strong style="color:#0f2a5c;font-size:14px;">2. Afternoon Shift (02:30 PM – 09:00 PM)</strong>
+            <span style="font-size:12px;color:#059669;font-weight:800;">₹800/mo</span>
+          </div>
+          <span style="background:${sched.afternoon ? '#fef2f2' : '#ecfdf5'};color:${sched.afternoon ? '#dc2626' : '#047857'};border:1px solid ${sched.afternoon ? '#fecaca' : '#a7f3d0'};font-size:11.5px;font-weight:850;padding:2px 10px;border-radius:999px;">
+            ${sched.afternoon ? '🔴 OCCUPIED' : '🟢 VACANT & AVAILABLE'}
+          </span>
+        </div>
+        ${sched.afternoon ? `
+          <div style="background:#f8fafc;padding:10px 12px;border-radius:8px;border:1px solid #e2e8f0;font-size:12.5px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+            <div>
+              <strong style="color:#0f2a5c;display:block;">${sched.afternoon.name || 'Student Member'}</strong>
+              <span style="color:#64748b;">Reg: ${sched.afternoon.regNo || '—'} &bull; Mobile: ${sched.afternoon.mobile || '—'} &bull; Shift: ${sched.afternoon.shift || 'Afternoon'}</span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              ${sched.afternoon.mobile ? `<a href="https://wa.me/91${String(sched.afternoon.mobile).replace(/\\D/g, '')}" target="_blank" class="btn ghost" style="padding:4px 8px;font-size:11px;color:#059669;border-color:#a7f3d0;">📱 WhatsApp</a>` : ''}
+              ${sched.afternoon.regNo ? `<button type="button" class="btn ghost" onclick="openStudent360Modal('${sched.afternoon.regNo}');closeSeatShiftInspectorModal();" style="padding:4px 8px;font-size:11px;color:#2563eb;border-color:#bfdbfe;">👁️ 360° Profile</button>` : ''}
+              ${!sched.afternoon.isManualHold && sched.afternoon.regNo ? `<button type="button" class="btn ghost" onclick="openCancelModal('${sched.afternoon.regNo}');closeSeatShiftInspectorModal();" style="padding:4px 8px;font-size:11px;color:#dc2626;border-color:#fecaca;">❌ Cancel</button>` : ''}
+            </div>
+          </div>
+        ` : `
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:12.5px;">
+            <span style="color:#047857;font-weight:650;">✓ Seat S-${num} is open for afternoon booking (6.5 hours prime evening).</span>
+            <button type="button" class="btn orange" onclick="quickAdmitFromSeatInspector('S-${num}', 'Afternoon')" style="padding:5px 14px;font-size:12px;font-weight:800;border:none;border-radius:6px;cursor:pointer;">
+              ➕ Admit Walk-in for Afternoon (₹800) →
+            </button>
+          </div>
+        `}
+      </div>
+
+      <!-- 3. NIGHT SHIFT -->
+      <div style="background:#ffffff;border:1.5px solid ${sched.night ? '#fca5a5' : '#a7f3d0'};border-radius:12px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:18px;">🌙</span>
+            <strong style="color:#0f2a5c;font-size:14px;">3. Night Shift (09:30 PM – 06:30 AM)</strong>
+            <span style="font-size:12px;color:#059669;font-weight:800;">₹1,000/mo</span>
+          </div>
+          <span style="background:${sched.night ? '#fef2f2' : '#ecfdf5'};color:${sched.night ? '#dc2626' : '#047857'};border:1px solid ${sched.night ? '#fecaca' : '#a7f3d0'};font-size:11.5px;font-weight:850;padding:2px 10px;border-radius:999px;">
+            ${sched.night ? '🔴 OCCUPIED' : '🟢 VACANT & AVAILABLE'}
+          </span>
+        </div>
+        ${sched.night ? `
+          <div style="background:#f8fafc;padding:10px 12px;border-radius:8px;border:1px solid #e2e8f0;font-size:12.5px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+            <div>
+              <strong style="color:#0f2a5c;display:block;">${sched.night.name || 'Student Member'}</strong>
+              <span style="color:#64748b;">Reg: ${sched.night.regNo || '—'} &bull; Mobile: ${sched.night.mobile || '—'} &bull; Shift: ${sched.night.shift || 'Night'}</span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              ${sched.night.mobile ? `<a href="https://wa.me/91${String(sched.night.mobile).replace(/\\D/g, '')}" target="_blank" class="btn ghost" style="padding:4px 8px;font-size:11px;color:#059669;border-color:#a7f3d0;">📱 WhatsApp</a>` : ''}
+              ${sched.night.regNo ? `<button type="button" class="btn ghost" onclick="openStudent360Modal('${sched.night.regNo}');closeSeatShiftInspectorModal();" style="padding:4px 8px;font-size:11px;color:#2563eb;border-color:#bfdbfe;">👁️ 360° Profile</button>` : ''}
+              ${!sched.night.isManualHold && sched.night.regNo ? `<button type="button" class="btn ghost" onclick="openCancelModal('${sched.night.regNo}');closeSeatShiftInspectorModal();" style="padding:4px 8px;font-size:11px;color:#dc2626;border-color:#fecaca;">❌ Cancel</button>` : ''}
+            </div>
+          </div>
+        ` : `
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:12.5px;">
+            <span style="color:#047857;font-weight:650;">✓ Seat S-${num} is open for night booking (9 hours overnight silence).</span>
+            <button type="button" class="btn orange" onclick="quickAdmitFromSeatInspector('S-${num}', 'Night')" style="padding:5px 14px;font-size:12px;font-weight:800;border:none;border-radius:6px;cursor:pointer;">
+              ➕ Admit Walk-in for Night (₹1000) →
+            </button>
+          </div>
+        `}
+      </div>
+    `;
+  }
+
+  // Multi-Shift notice
+  const noticeEl = document.getElementById('inspectorMultiShiftNotice');
+  if (noticeEl) {
+    const isFullDayPossible = !sched.morning && !sched.afternoon;
+    const is24hPossible = !sched.morning && !sched.afternoon && !sched.night;
+    noticeEl.innerHTML = `
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <strong>⚡ Full Day (14 Hours) &amp; 🌟 24 Hours Availability:</strong>
+      </div>
+      <div>
+        • <strong>Full Day (07:00 AM – 09:00 PM • ₹1,200 with Locker):</strong> 
+        ${isFullDayPossible ? '<span style="color:#047857;font-weight:800;">✓ AVAILABLE to book!</span> <button type="button" class="btn orange" style="padding:2px 8px;font-size:11px;margin-left:6px;" onclick="quickAdmitFromSeatInspector(\'S-' + num + '\', \'Full Day\')">Book Full Day →</button>' : '<span style="color:#b45309;font-weight:750;">❌ Cannot book Full Day (' + (sched.morning ? 'Morning occupied' : '') + (sched.morning && sched.afternoon ? ' & ' : '') + (sched.afternoon ? 'Afternoon occupied' : '') + ')</span>'}
+      </div>
+      <div style="margin-top:3px;">
+        • <strong>24 Hours (Round-the-Clock • ₹2,000 with Locker):</strong> 
+        ${is24hPossible ? '<span style="color:#047857;font-weight:800;">✓ AVAILABLE to book!</span> <button type="button" class="btn orange" style="padding:2px 8px;font-size:11px;margin-left:6px;" onclick="quickAdmitFromSeatInspector(\'S-' + num + '\', \'24 Hours\')">Book 24 Hours →</button>' : '<span style="color:#b45309;font-weight:750;">❌ Cannot book 24h (Has active shift bookings)</span>'}
+      </div>
+    `;
+  }
+
+  modal.style.display = 'flex';
+};
+
+window.closeSeatShiftInspectorModal = function() {
+  const modal = document.getElementById('seatShiftInspectorModal');
+  if (modal) modal.style.display = 'none';
+};
+
+window.quickAdmitFromSeatInspector = function(seatCode, shiftName) {
+  closeSeatShiftInspectorModal();
+  const seatInput = document.getElementById('deskSeat');
+  if (seatInput) seatInput.value = seatCode;
+
+  const timing = (shiftName === 'Morning') ? '07:00 AM to 02:00 PM' :
+                 (shiftName === 'Afternoon') ? '02:30 PM to 09:00 PM' :
+                 (shiftName === 'Night') ? '09:30 PM to 06:30 AM' :
+                 (shiftName === '24 Hours') ? 'Round-the-Clock (24 Hours 24x7)' : '07:00 AM to 09:00 PM';
+  const fee = (shiftName === 'Morning' || shiftName === 'Afternoon') ? 800 :
+              (shiftName === 'Night') ? 1000 :
+              (shiftName === '24 Hours') ? 2000 : 1200;
+
+  const chipBtn = document.querySelector(`.desk-shift-chip[onclick*="${shiftName}"]`);
+  setDeskShift(shiftName, fee, timing, chipBtn);
+
+  const formCard = document.getElementById('adminDeskAdmissionForm') || document.querySelector('form[onsubmit="libAdmitDesk(event)"]');
+  if (formCard) {
+    formCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    formCard.style.outline = '3px solid #2563eb';
+    formCard.style.boxShadow = '0 0 0 6px rgba(37,99,235,0.2)';
+    setTimeout(() => {
+      formCard.style.outline = '';
+      formCard.style.boxShadow = '';
+    }, 2500);
+  }
+};
+
+window.toggleSeatHoldFromInspector = function() {
+  if (!currentInspectorSeatNum) return;
+  const num = currentInspectorSeatNum;
+  const sCode = `S-${num}`;
+  const sPad = `S-${String(num).padStart(2, '0')}`;
+  const dCode = `Desk-${String(num).padStart(3, '0')}`;
+  const taken = store.get('c2s_lib_taken', {});
+
+  const isHeld = Boolean(taken[sCode] || taken[sPad] || taken[dCode] || taken[String(num)]);
+  if (isHeld) {
     delete taken[sCode];
     delete taken[sPad];
     delete taken[dCode];
-    delete taken[code];
+    delete taken[String(num)];
+    alert(`✓ Seat S-${num} admin hold released!`);
   } else {
     taken[sCode] = true;
     taken[sPad] = true;
+    alert(`🔒 Seat S-${num} marked as Admin Hold (All Shifts Reserved)!`);
   }
   store.set('c2s_lib_taken', taken);
+  openSeatShiftInspectorModal(num);
   renderSeatController();
-  renderSuperAdmin();
-}
+};
 
 let currentDeskPhotoData = '';
 let currentDeskAadharData = '';
@@ -934,6 +1358,7 @@ window.updateDeskLockerSync = function() {
   const seatInput = document.getElementById('deskSeat');
   const lockerInput = document.getElementById('deskLocker');
   const lockerNote = document.getElementById('deskLockerNote');
+  const seatFeedbackEl = document.getElementById('deskSeatFeedback');
   const seatVal = seatInput ? seatInput.value.trim() : '';
 
   const isLockerAllowed = (shiftName === 'Full Day' || shiftName === '24 Hours');
@@ -959,6 +1384,59 @@ window.updateDeskLockerSync = function() {
       lockerNote.innerHTML = `<span style="font-size:11.5px;color:#059669;font-weight:750;">✓ Attached Locker #${seatNum || 'Assigned'} Included (Desk No. = Locker No.)</span>`;
     } else {
       lockerNote.innerHTML = `<span style="font-size:11.5px;color:#b45309;font-weight:650;">ℹ️ Locker not available for partial shift (Lockers are attached directly to each seat; Full Day &amp; 24h only).</span>`;
+    }
+  }
+
+  // Instant Shift Vacancy & Occupancy Validation
+  if (seatFeedbackEl) {
+    if (!seatNum) {
+      seatFeedbackEl.innerHTML = '';
+    } else {
+      const sched = typeof getSeatShiftSchedule === 'function' ? getSeatShiftSchedule(seatNum) : null;
+      if (!sched) return;
+      const shiftLow = shiftName.toLowerCase();
+      let isShiftOccupied = false;
+      let occupant = null;
+
+      if (shiftLow.includes('morning')) {
+        isShiftOccupied = Boolean(sched.morning);
+        occupant = sched.morning;
+      } else if (shiftLow.includes('afternoon')) {
+        isShiftOccupied = Boolean(sched.afternoon);
+        occupant = sched.afternoon;
+      } else if (shiftLow.includes('night')) {
+        isShiftOccupied = Boolean(sched.night);
+        occupant = sched.night;
+      } else if (shiftLow.includes('full')) {
+        isShiftOccupied = Boolean(sched.morning || sched.afternoon);
+        occupant = sched.morning || sched.afternoon;
+      } else if (shiftLow.includes('24')) {
+        isShiftOccupied = Boolean(sched.morning || sched.afternoon || sched.night);
+        occupant = sched.morning || sched.afternoon || sched.night;
+      }
+
+      if (isShiftOccupied) {
+        seatFeedbackEl.innerHTML = `
+          <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:6px 10px;font-size:12px;color:#dc2626;font-weight:750;">
+            ⚠️ Seat S-${seatNum} is already OCCUPIED by ${occupant?.name || 'another student'} in ${shiftName} Shift!
+          </div>
+        `;
+      } else {
+        const otherNotes = [];
+        if (sched.morning) otherNotes.push(`Morning: ${sched.morning.name || 'Occupied'}`);
+        if (sched.afternoon) otherNotes.push(`Afternoon: ${sched.afternoon.name || 'Occupied'}`);
+        if (sched.night) otherNotes.push(`Night: ${sched.night.name || 'Occupied'}`);
+
+        const otherStr = otherNotes.length > 0 ? 
+          `<span style="color:#64748b;font-weight:600;font-size:11px;display:block;margin-top:2px;">(Active on other shifts: ${otherNotes.join(' &bull; ')})</span>` : '';
+
+        seatFeedbackEl.innerHTML = `
+          <div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:6px;padding:6px 10px;font-size:12px;color:#047857;font-weight:750;">
+            ✓ Seat S-${seatNum} is VACANT &amp; Available for ${shiftName} Shift!
+            ${otherStr}
+          </div>
+        `;
+      }
     }
   }
 };

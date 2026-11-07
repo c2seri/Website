@@ -662,8 +662,15 @@
 
     <!-- Live 3D Seat Allocation Controller -->
     <div class="card" style="margin-bottom:20px;">
-      <h3 style="margin:0 0 12px;color:var(--c2s-navy-900);">💺 Live 3D Seat Map Controller (Click to Toggle Status)</h3>
-      <p class="small" style="margin-bottom:16px;">Green = Available, Red/Grey = Occupied, Orange = Reserved. Click a seat to mark occupied or release it.</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:8px;">
+        <h3 style="margin:0;color:var(--c2s-navy-900);font-size:18px;">💺 Front Desk Live Shift &amp; Seat Controller (149 Seats Across 2 Floors)</h3>
+        <span style="font-size:11.5px;color:#0284c7;background:#e0f2fe;border:1px solid #bae6fd;padding:3px 10px;border-radius:999px;font-weight:800;">
+          ⚡ Multi-Shift Allocation Engine
+        </span>
+      </div>
+      <p class="small" style="margin-bottom:14px;color:#64748b;line-height:1.5;">
+        Filter by shift (Morning, Afternoon, Night, Full Day, 24h) or view the full 3-shift dot matrix. Click any seat to inspect student details, check vacant shifts, or 1-click admit walk-ins.
+      </p>
       <div id="adminSeatController"></div>
     </div>
 
@@ -948,17 +955,18 @@
 
             <div>
               <label style="display:block;font-size:13px;font-weight:750;color:#0f172a;margin-bottom:5px;">
-                Desk / Seat No.
+                Desk / Seat No. (e.g. S-116 or S-05)
               </label>
-              <input id="deskSeat" placeholder="e.g. Desk #108 or Front Desk" value="Desk #04" oninput="updateDeskLockerSync()" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;font-weight:700;">
+              <input id="deskSeat" placeholder="e.g. S-116 or click seat above" value="" oninput="updateDeskLockerSync()" style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;font-weight:750;">
+              <div id="deskSeatFeedback" style="margin-top:5px;min-height:18px;"></div>
 
-              <div style="margin-top:10px;">
+              <div style="margin-top:8px;">
                 <label style="display:block;font-size:12px;font-weight:750;color:#0f172a;margin-bottom:4px;">
                   🔒 Attached Locker No. (Seat = Locker)
                 </label>
-                <input id="deskLocker" readonly value="Locker #04" style="width:100%;padding:8px 12px;border:1.5px solid #a7f3d0;background:#ecfdf5;color:#047857;border-radius:8px;font-size:12.5px;font-weight:800;">
+                <input id="deskLocker" readonly value="Not Assigned" style="width:100%;padding:8px 12px;border:1.5px solid #cbd5e1;background:#f8fafc;color:#64748b;border-radius:8px;font-size:12.5px;font-weight:800;">
                 <div id="deskLockerNote" style="margin-top:4px;">
-                  <span style="font-size:11px;color:#059669;font-weight:750;">✓ Attached Locker #04 Included (Full Day)</span>
+                  <span style="font-size:11px;color:#64748b;font-weight:600;">Enter seat number or click seat above to assign locker.</span>
                 </div>
               </div>
             </div>
@@ -2030,6 +2038,55 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- MODAL 5: SEAT SHIFT TIMETABLE & OCCUPANCY INSPECTOR (FRONT DESK) -->
+<div id="seatShiftInspectorModal" class="c2s-admin-modal-backdrop">
+  <div class="c2s-admin-modal-card" style="max-width:680px;max-height:92vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;border-bottom:1px solid #f1f5f9;padding-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:46px;height:46px;background:linear-gradient(135deg, #1d4ed8, #0f2a5c);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;box-shadow:0 4px 12px rgba(29,78,216,0.3);">
+          💺
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <h3 style="margin:0;font-size:20px;font-weight:900;color:#0f2a5c;" id="inspectorSeatTitle">Seat S-116</h3>
+            <span id="inspectorSeatFloorBadge" style="background:#eff6ff;color:#1e40af;font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;border:1px solid #bfdbfe;">1st Floor • Zone D</span>
+          </div>
+          <span style="font-size:12px;color:#64748b;" id="inspectorSeatSpecs">Locker #116 • 230V Socket • Warm LED Reading Lamp</span>
+        </div>
+      </div>
+      <button type="button" class="btn ghost" onclick="closeSeatShiftInspectorModal()" style="padding:4px 10px;font-size:16px;line-height:1;border-radius:6px;">✕</button>
+    </div>
+
+    <!-- Quick Shift Overview Strip -->
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+      <span style="font-size:12.5px;font-weight:800;color:#0f2a5c;">Shift Vacancy Breakdown:</span>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;" id="inspectorShiftStatusPills">
+        <!-- populated dynamically -->
+      </div>
+    </div>
+
+    <!-- 3 Core Shifts Interactive Cards -->
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:18px;" id="inspectorShiftCardsContainer">
+      <!-- populated dynamically -->
+    </div>
+
+    <!-- Full Day / 24h Feasibility Notice -->
+    <div id="inspectorMultiShiftNotice" style="background:#fffbeb;border:1px solid #fef3c7;border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12.5px;color:#92400e;line-height:1.5;">
+      <!-- populated dynamically -->
+    </div>
+
+    <!-- Modal Footer Actions -->
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-top:1px solid #f1f5f9;padding-top:14px;">
+      <button type="button" class="btn ghost" onclick="toggleSeatHoldFromInspector()" id="inspectorToggleHoldBtn" style="font-size:12px;padding:7px 14px;font-weight:750;color:#c2410c;border-color:#fed7aa;background:#fff7ed;">
+        🔒 Toggle Admin Hold (All Shifts)
+      </button>
+      <button type="button" class="btn ghost" onclick="closeSeatShiftInspectorModal()" style="font-size:12.5px;padding:7px 18px;font-weight:750;">
+        Close Window
+      </button>
+    </div>
   </div>
 </div>
 
