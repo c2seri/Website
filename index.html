@@ -2530,31 +2530,223 @@
       <div id="givenTests" style="margin-bottom:40px;"></div>
     </section>
 
-    <!-- Modal 1: Available Test Series on that Exam (Opens on Top) -->
-    <div id="availableSeriesModal" class="c2s-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.65);z-index:9999;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px);">
-      <div style="background:#ffffff;border-radius:18px;max-width:760px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,0.25);border:1.5px solid #cbd5e1;position:relative;">
-        <!-- Modal Header -->
-        <div style="padding:20px 24px;border-bottom:1.5px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border-top-left-radius:18px;border-top-right-radius:18px;">
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div id="availModalExamIcon" style="width:42px;height:42px;border-radius:50%;background:#eff6ff;display:flex;align-items:center;justify-content:center;font-size:20px;border:1.5px solid #bfdbfe;">📋</div>
-            <div>
-              <h3 id="availModalTitle" style="margin:0;font-size:18px;font-weight:900;color:#0f2a5c;">SSC CHSL Mock Test Series 2026</h3>
-              <span id="availModalSubtitle" style="font-size:12px;color:#0284c7;font-weight:800;">2083 Total Tests Available &bull; 5 Free Tests Included</span>
-            </div>
+    <!-- Modal 1: Test Series Full Detail & Inclusions View (Exact Match to Testbook Interface) -->
+    <div id="availableSeriesModal" class="c2s-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.7);z-index:9999;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);">
+      <div style="background:#ffffff;border-radius:18px;max-width:960px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 25px 50px rgba(0,0,0,0.3);border:1.5px solid #cbd5e1;position:relative;display:flex;flex-direction:column;">
+        
+        <!-- Top Bar: Breadcrumb on Left, Close on Right -->
+        <div style="padding:14px 24px;border-bottom:1.5px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border-top-left-radius:18px;border-top-right-radius:18px;">
+          <!-- Breadcrumbs matching screenshot -->
+          <div style="font-size:12.5px;color:#64748b;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-weight:600;">
+            <span onclick="closeAvailableSeriesModal();show('tests');" style="cursor:pointer;color:#0284c7;">Home</span>
+            <span>&rsaquo;</span>
+            <span id="availModalBreadcrumbExam" onclick="closeAvailableSeriesModal();show('tests');" style="color:#0284c7;cursor:pointer;">RRB NTPC</span>
+            <span>&rsaquo;</span>
+            <span id="availModalBreadcrumbTitle" style="color:#0f172a;font-weight:750;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">RRB NTPC Graduate 2026-27 (CBT 1 + CBT 2) Mock Test Series</span>
           </div>
-          <button type="button" onclick="closeAvailableSeriesModal()" style="background:none;border:none;font-size:24px;color:#64748b;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;">✕</button>
+
+          <button type="button" onclick="closeAvailableSeriesModal()" style="background:none;border:none;font-size:22px;color:#64748b;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;" title="Close Modal">✕</button>
         </div>
 
-        <!-- Modal Body -->
-        <div style="padding:22px 24px;">
-          <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px;margin-bottom:18px;display:flex;align-items:center;gap:8px;">
-            <span style="font-size:16px;">💡</span>
-            <span style="font-size:12.5px;color:#1e40af;font-weight:700;">Click any test to start. If you are a new student, quick mobile OTP verification will save your scorecard on your personal dashboard.</span>
+        <!-- Modal Body Content -->
+        <div style="padding:22px 28px;">
+          <!-- Title Row: Emblem + Title + Level Selector (Exact Match) -->
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:14px;flex:1;min-width:300px;">
+              <div id="availModalExamIcon" style="width:48px;height:48px;border-radius:50%;background:#fee2e2;color:#dc2626;display:flex;align-items:center;justify-content:center;font-size:24px;border:2px solid #fecaca;flex-shrink:0;">
+                🚂
+              </div>
+              <div>
+                <h2 id="availModalTitle" style="margin:0;font-size:21px;font-weight:900;color:#0f2a5c;line-height:1.25;">
+                  RRB NTPC Graduate 2026-27 (CBT 1 + CBT 2) Mock Test Series
+                </h2>
+              </div>
+            </div>
+
+            <!-- Level Selector Dropdown (Exact Match to Screenshot) -->
+            <div style="position:relative;">
+              <select id="availModalLevelSelect" onchange="filterAvailableSeriesByLevel(this.value)"
+                style="appearance:none;-webkit-appearance:none;padding:8px 34px 8px 14px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;font-weight:750;color:#334155;background:#ffffff url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23475569\' stroke-width=\'2.5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><polyline points=\'6 9 12 15 18 9\'></polyline></svg>') no-repeat right 12px center;outline:none;cursor:pointer;box-shadow:0 1px 3px rgba(15,23,42,0.05);">
+                <option value="cbt1">Level: CBT - 1</option>
+                <option value="cbt2">Level: CBT - 2</option>
+                <option value="all">Level: All Stages</option>
+              </select>
+            </div>
           </div>
 
-          <div id="availModalTestsList" style="display:flex;flex-direction:column;gap:12px;">
-            <!-- Dynamically populated by app.js -->
+          <!-- Meta Row: Last updated, total tests, free tests pill, users, languages -->
+          <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#475569;flex-wrap:wrap;margin-bottom:16px;">
+            <span style="display:inline-flex;align-items:center;gap:4px;">
+              <span>🕒</span>
+              <span id="availModalLastUpdated">Last updated on Nov 6, 2026</span>
+            </span>
+            <span style="color:#cbd5e1;">&bull;</span>
+            <strong id="availModalTotalTestsCount" style="color:#0f172a;font-weight:800;">806 Total Tests</strong>
+            <span id="availModalFreePill" class="pill green" style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-size:11px;font-weight:850;padding:2px 8px;border-radius:4px;letter-spacing:0.5px;">
+              4 FREE TESTS
+            </span>
+            <span style="color:#cbd5e1;">&bull;</span>
+            <span style="display:inline-flex;align-items:center;gap:4px;">
+              <span>⚡</span>
+              <span id="availModalUsers" style="font-weight:750;color:#0f2a5c;">422.2k Users</span>
+            </span>
+            <span style="color:#cbd5e1;">&bull;</span>
+            <span style="display:inline-flex;align-items:center;gap:4px;">
+              <span>🌐</span>
+              <span id="availModalLanguages">English, Hindi + 6 More</span>
+            </span>
           </div>
+
+          <!-- 3-Column Breakdown of Inclusions (Exact Match to Screenshot) -->
+          <div id="availModalInclusionsBox" style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:16px 20px;margin-bottom:18px;display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:16px;">
+            <div id="availModalCol1">
+              <ul style="margin:0;padding-left:16px;font-size:13px;color:#334155;line-height:1.7;">
+                <li>2 Live Test</li>
+                <li>30 Sectional Test (CBT 1)</li>
+                <li>141 PYST 2024-25</li>
+              </ul>
+            </div>
+            <div id="availModalCol2">
+              <ul style="margin:0;padding-left:16px;font-size:13px;color:#334155;line-height:1.7;">
+                <li>255 Chapter Test (CBT 1)</li>
+                <li>20 Full Test (CBT 1)</li>
+                <li>212 PYP (CBT 1)</li>
+              </ul>
+            </div>
+            <div id="availModalCol3">
+              <ul style="margin:0;padding-left:16px;font-size:13px;color:#334155;line-height:1.7;">
+                <li>29 Current Affairs Express</li>
+                <li>72 PYST 2025-26</li>
+                <li>+ 19 More Tests</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Action Buttons Bar: Add to Dashboard, Buy Pass, Share -->
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:24px;border-bottom:1.5px solid #e2e8f0;padding-bottom:18px;">
+            <!-- Button 1: Cyan Add This Test Series (Exact match to Testbook) -->
+            <button id="btnAddSeriesToDash" type="button" class="btn" onclick="toggleSeriesDashboardEnrollment()"
+              style="background:#06b6d4;color:#ffffff;font-size:14px;font-weight:850;padding:10px 24px;border-radius:6px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 3px 10px rgba(6,182,212,0.3);transition:all 0.15s ease;">
+              <span id="btnAddSeriesIcon">➕</span>
+              <span id="btnAddSeriesLabel">Add This Test Series</span>
+            </button>
+
+            <!-- Button 2: Buy Series Pass Button -->
+            <button id="btnBuySeriesPass" type="button" class="btn" onclick="openCurrentSeriesBuyModal()"
+              style="background:linear-gradient(135deg, #ea580c 0%, #f97316 100%);color:#ffffff;font-size:14px;font-weight:850;padding:10px 22px;border-radius:6px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 3px 10px rgba(234,88,12,0.35);transition:all 0.15s ease;">
+              <span>⚡</span>
+              <span id="btnBuySeriesLabel">Buy Series Pass (₹199)</span>
+            </button>
+
+            <!-- Button 3: Share Button -->
+            <button id="btnShareSeries" type="button" class="btn ghost" onclick="shareCurrentSeries()"
+              style="padding:10px 18px;font-size:13px;font-weight:750;border-radius:6px;border:1.5px solid #cbd5e1;background:#ffffff;color:#475569;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <span>🔗 Share</span>
+            </button>
+
+            <a id="availModalDashLink" href="#login" onclick="closeAvailableSeriesModal();show('login');" 
+              style="display:none;font-size:13px;color:#0284c7;font-weight:800;text-decoration:none;margin-left:auto;">
+              View on Personal Dashboard &rarr;
+            </a>
+          </div>
+
+          <!-- Suggested Next Test (Matching Screenshot) -->
+          <div id="availModalSuggestedSection" style="margin-bottom:24px;">
+            <div style="font-size:14.5px;font-weight:900;color:#0f2a5c;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+              <span>🎯</span>
+              <span>Suggested Next Test</span>
+            </div>
+            
+            <div id="availModalSuggestedCard" style="background:#ffffff;border:1.5px solid #cbd5e1;border-radius:12px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;box-shadow:0 3px 10px rgba(15,23,42,0.04);">
+              <!-- Dynamically populated by app.js -->
+            </div>
+          </div>
+
+          <!-- Available Tests in this Series (Full Test List) -->
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+              <div style="font-size:14.5px;font-weight:900;color:#0f2a5c;display:flex;align-items:center;gap:8px;">
+                <span>📚</span>
+                <span id="availModalTestsHeading">Available Tests in this Series</span>
+              </div>
+              <span style="font-size:12px;color:#64748b;font-weight:700;">Click any test to attempt on your dashboard</span>
+            </div>
+
+            <div id="availModalTestsList" style="display:flex;flex-direction:column;gap:12px;">
+              <!-- Dynamically populated by app.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 1.5: Instant Test Series Purchase & UPI Modal -->
+    <div id="seriesBuyModal" class="c2s-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.75);z-index:10001;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);">
+      <div style="background:#ffffff;border-radius:18px;max-width:540px;width:100%;box-shadow:0 25px 50px rgba(0,0,0,0.35);border:1.5px solid #cbd5e1;overflow:hidden;position:relative;">
+        <!-- Header -->
+        <div style="background:linear-gradient(135deg, #09132b 0%, #1e3a8a 100%);color:#ffffff;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:11px;font-weight:850;color:#38bdf8;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">C2S EXAM STORE &bull; INSTANT PASS</div>
+            <h3 id="buyModalTitle" style="margin:0;font-size:18px;font-weight:900;color:#ffffff;line-height:1.3;">Unlock Full Test Series Pass</h3>
+          </div>
+          <button type="button" onclick="closeSeriesBuyModal()" style="background:rgba(255,255,255,0.15);border:none;color:#ffffff;font-size:18px;border-radius:50%;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+        </div>
+
+        <!-- Body -->
+        <div style="padding:22px 24px;max-height:80vh;overflow-y:auto;">
+          <!-- Pricing Tag -->
+          <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div>
+              <span style="font-size:12px;color:#1e40af;font-weight:750;display:block;">Aspirant Special Discount (1-Year Pass)</span>
+              <div style="display:flex;align-items:baseline;gap:8px;margin-top:2px;">
+                <span id="buyModalPrice" style="font-size:26px;font-weight:900;color:#0f2a5c;">₹199</span>
+                <span id="buyModalMrp" style="font-size:14px;color:#94a3b8;text-decoration:line-through;">₹999</span>
+                <span style="font-size:11.5px;font-weight:800;color:#16a34a;background:#dcfce7;padding:2px 6px;border-radius:4px;">80% OFF</span>
+              </div>
+            </div>
+            <span style="font-size:12px;font-weight:800;color:#2563eb;background:#ffffff;border:1px solid #bfdbfe;padding:6px 10px;border-radius:6px;text-align:right;">
+              ⚡ Instant Pass
+            </span>
+          </div>
+
+          <!-- Inclusions List -->
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px 16px;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:800;color:#334155;text-transform:uppercase;margin-bottom:6px;">Included in this Series Pass:</div>
+            <ul style="margin:0;padding-left:18px;font-size:12.5px;color:#475569;line-height:1.6;">
+              <li>Full Access to all 800+ Live, Chapter, Sectional &amp; Full Mocks</li>
+              <li>Official Previous Year Solved Papers (PYP &amp; PYST)</li>
+              <li>All-India Rank, Percentile Benchmarking &amp; Solutions Key</li>
+              <li>Unlimited Re-attempts with On-Screen Scratch Pad</li>
+            </ul>
+          </div>
+
+          <!-- Student Contact Verification -->
+          <div style="margin-bottom:14px;">
+            <label style="display:block;font-size:12px;font-weight:750;color:#334155;margin-bottom:4px;">Mobile Number (Linked to your Dashboard) *</label>
+            <input id="buyModalMobile" type="tel" maxlength="10" placeholder="10-digit mobile number" 
+              style="width:100%;padding:10px 12px;font-size:13.5px;border:1.5px solid #cbd5e1;border-radius:8px;outline:none;box-sizing:border-box;">
+          </div>
+
+          <!-- UPI QR Code & Instructions -->
+          <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:14px;text-align:center;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:800;color:#0f2a5c;margin-bottom:8px;">SCAN WITH ANY UPI APP (GPAY / PHONEPE / PAYTM)</div>
+            <div style="display:inline-block;padding:8px;background:#ffffff;border-radius:8px;border:1px solid #cbd5e1;box-shadow:0 2px 6px rgba(0,0,0,0.06);margin-bottom:8px;">
+              <img id="buyModalQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3Dc2seri%40okaxis%26pn%3DC2S%2520Education%26am%3D199%26cu%3DINR" 
+                alt="UPI QR Code" style="width:140px;height:140px;display:block;">
+            </div>
+            <div style="font-size:12.5px;color:#334155;font-weight:700;">
+              UPI ID: <span style="background:#eff6ff;color:#1d4ed8;padding:2px 8px;border-radius:4px;font-family:monospace;font-size:13px;border:1px solid #bfdbfe;">c2seri@okaxis</span>
+              <button type="button" onclick="navigator.clipboard.writeText('c2seri@okaxis');alert('UPI ID copied to clipboard: c2seri@okaxis');" 
+                style="background:none;border:none;color:#0284c7;font-size:11px;font-weight:800;cursor:pointer;margin-left:4px;text-decoration:underline;">Copy</button>
+            </div>
+            <span style="font-size:11px;color:#64748b;display:block;margin-top:4px;">Scan &amp; pay, or click below to simulate instant student activation</span>
+          </div>
+
+          <!-- Confirm Activation Button -->
+          <button type="button" class="btn green" onclick="confirmSeriesPurchase()"
+            style="width:100%;padding:12px;font-size:14.5px;font-weight:850;border-radius:8px;cursor:pointer;box-shadow:0 4px 12px rgba(22,163,74,0.3);">
+            ✓ Complete Payment &amp; Unlock Test Series Pass →
+          </button>
         </div>
       </div>
     </div>
