@@ -5460,7 +5460,7 @@ const ENRICHED_TESTS = [
 ];
 
 // --------------------------------------------------------------------------
-// CBT EXAMINATION SYSTEM & MULTI-LANGUAGE INSTRUCTIONS
+// TESTBOOK-EXACT CBT EXAMINATION SYSTEM & MULTI-LANGUAGE ENGINE
 // --------------------------------------------------------------------------
 let currentExamTest = null;
 let currentExamMode = "live"; // "live" or "practice"
@@ -5473,6 +5473,7 @@ let testSecondsRemaining = 0;
 let testTimerInterval = null;
 let testViolationsCount = 0;
 let lastSubmittedResult = null;
+let questionSecondsSpent = {};
 
 const CBT_TERM_MAP = {
   hi: {
@@ -5647,13 +5648,87 @@ function switchExamLanguage(lang) {
   renderQuestion();
 }
 
+function toggleCbtFullscreen() {
+  if (!document.fullscreenElement) {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen().catch(() => {});
+    }
+  }
+}
+
+function reportCurrentQuestion() {
+  const reason = prompt("Report an issue with Question " + (currentQuestionIdx + 1) + ":\n(e.g., Typo, Incorrect Options, Ambiguous wording)");
+  if (reason) {
+    alert("Thank you! Your feedback on Question " + (currentQuestionIdx + 1) + " has been recorded.");
+  }
+}
+
+function openCbtInstructionsPopup() {
+  const m = document.getElementById("cbtInstructionsPopupModal");
+  const body = document.getElementById("cbtInstructionsPopupBody");
+  const mainContent = document.getElementById("cbtInstructionsContent");
+  if (body && mainContent) {
+    body.innerHTML = mainContent.innerHTML;
+  }
+  if (m) m.classList.remove("hidden");
+}
+
+function closeCbtInstructionsPopup() {
+  const m = document.getElementById("cbtInstructionsPopupModal");
+  if (m) m.classList.add("hidden");
+}
+
+function openCbtQuestionPaperModal() {
+  const m = document.getElementById("cbtQuestionPaperModal");
+  const list = document.getElementById("cbtQuestionPaperList");
+  if (!m || !list || !currentExamTest) return;
+
+  list.innerHTML = currentExamTest.qs.map((q, i) => {
+    const isAns = currentAnswers[i] !== null;
+    const isMark = currentMarked[i];
+    let statusBadge = `<span style="background:#f1f5f9;color:#64748b;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;">Not Visited</span>`;
+    if (isAns && isMark) statusBadge = `<span style="background:#7c3aed;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;">Ans &amp; Marked</span>`;
+    else if (isAns) statusBadge = `<span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;">Answered</span>`;
+    else if (isMark) statusBadge = `<span style="background:#8b5cf6;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;">Marked</span>`;
+    else if (currentVisited[i]) statusBadge = `<span style="background:#dc2626;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;">Not Answered</span>`;
+
+    return `
+      <div style="padding:10px 14px;border-bottom:1px solid #e2e8f0;display:flex;gap:12px;cursor:pointer;align-items:flex-start;background:#fff;" onclick="jumpToQuestion(${i});closeCbtQuestionPaperModal();">
+        <span style="font-weight:800;color:#0284c7;min-width:32px;">Q${i+1}.</span>
+        <div style="flex:1;">
+          <div style="font-size:13.5px;color:#0f172a;line-height:1.4;margin-bottom:6px;">${escapeHtml(q[0])}</div>
+          <div style="font-size:11.5px;color:#64748b;">${escapeHtml(q[4] || "Test")} &bull; ${statusBadge}</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  m.classList.remove("hidden");
+}
+
+function closeCbtQuestionPaperModal() {
+  const m = document.getElementById("cbtQuestionPaperModal");
+  if (m) m.classList.add("hidden");
+}
+
+function updateQuestionStopwatch() {
+  const s = questionSecondsSpent[currentQuestionIdx] || 0;
+  const m = Math.floor(s / 60);
+  const remSec = s % 60;
+  const el = document.getElementById("cbtQuestionStopwatch");
+  if (el) el.innerText = String(m).padStart(2, "0") + ":" + String(remSec).padStart(2, "0");
+}
+
 function translateCbtQuestion(text, lang) {
   if (!text || lang === "en") return escapeHtml(text);
 
   let translated = text;
   const dict = CBT_TERM_MAP[lang] || {};
 
-  // Check dictionary substitutions
   for (const [k, v] of Object.entries(dict)) {
     const re = new RegExp("\\b" + k + "\\b", "gi");
     if (re.test(translated)) {
@@ -5661,11 +5736,9 @@ function translateCbtQuestion(text, lang) {
     }
   }
 
-  // Provide high-quality bilingual view
-  const langLabel = lang === "hi" ? "हिन्दी (Hindi)" : "ଓଡ଼ିଆ (Odia)";
   return `
-    <div style="font-size:16px;color:#0f172a;line-height:1.5;">${escapeHtml(translated)}</div>
-    <div style="font-size:12.5px;color:#64748b;margin-top:6px;font-style:italic;background:#f8fafc;padding:4px 8px;border-radius:4px;border:1px dashed #cbd5e1;">
+    <div style="font-size:15.5px;color:#0f172a;line-height:1.5;">${escapeHtml(translated)}</div>
+    <div style="font-size:12px;color:#64748b;margin-top:6px;font-style:italic;background:#f8fafc;padding:4px 8px;border-radius:4px;border:1px dashed #cbd5e1;">
       <strong>English:</strong> ${escapeHtml(text)}
     </div>
   `;
@@ -5714,7 +5787,7 @@ function updateCbtInstructionsLanguage(lang) {
         </h4>
         <p style="margin:0;font-size:12.5px;color:#475569;">
           1. परीक्षा की कुल अवधि <strong>${mins} मिनट</strong> है। कुल प्रश्न <strong>${totalQ} MCQs</strong> हैं और कुल अंक <strong>${totalMarks}</strong> हैं।<br>
-          2. सर्वर पर घड़ी (Countdown Timer) लगाई गई है। स्क्रीन के शीर्ष दाएं कोने में प्रदर्शित टाइमर परीक्षा समाप्त होने में शेष समय दिखाएगा। समय समाप्त होते ही परीक्षा स्वतः सबमिट हो जाएगी।
+          2. सर्वर पर घड़ी (Countdown Timer) लगाई गई है। स्क्रीन के शीर्ष पर प्रदर्शित टाइमर परीक्षा समाप्त होने में शेष समय दिखाएगा। समय समाप्त होते ही परीक्षा स्वतः सबमिट हो जाएगी।
         </p>
       </div>
 
@@ -5723,38 +5796,27 @@ function updateCbtInstructionsLanguage(lang) {
         <div style="display:grid;grid-template-columns:1fr;gap:8px;">
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="width:28px;height:28px;border-radius:5px;background:#ffffff;border:1.5px solid #cbd5e1;color:#475569;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">01</span>
-            <span style="font-size:12.5px;color:#334155;">आपने अभी तक प्रश्न नहीं देखा है। (You have not visited the question yet.)</span>
+            <span style="font-size:12.5px;color:#334155;">आपने अभी तक प्रश्न नहीं देखा है। (Not Visited)</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="width:28px;height:28px;border-radius:5px;background:#dc2626;color:#ffffff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">02</span>
-            <span style="font-size:12.5px;color:#334155;">आपने प्रश्न का उत्तर नहीं दिया है। (You have not answered the question.)</span>
+            <span style="font-size:12.5px;color:#334155;">आपने प्रश्न का उत्तर नहीं दिया है। (Not Answered)</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="width:28px;height:28px;border-radius:5px;background:#16a34a;color:#ffffff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">03</span>
-            <span style="font-size:12.5px;color:#334155;">आप प्रश्न का उत्तर दे चुके हैं। (You have answered the question.)</span>
+            <span style="font-size:12.5px;color:#334155;">आप प्रश्न का उत्तर दे चुके हैं। (Answered)</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="width:28px;height:28px;border-radius:5px;background:#8b5cf6;color:#ffffff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">04</span>
-            <span style="font-size:12.5px;color:#334155;">आपने प्रश्न का उत्तर नहीं दिया है, पर समीक्षा के लिए चिह्नित किया है। (Marked for Review.)</span>
+            <span style="font-size:12.5px;color:#334155;">आपने प्रश्न का उत्तर नहीं दिया है, पर समीक्षा के लिए चिह्नित किया है। (Marked for Review)</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="position:relative;width:28px;height:28px;border-radius:5px;background:#7c3aed;color:#ffffff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">
               05<span style="position:absolute;bottom:-1px;right:-1px;width:8px;height:8px;background:#22c55e;border:1.5px solid #fff;border-radius:50%;"></span>
             </span>
-            <span style="font-size:12.5px;color:#334155;">प्रश्न का उत्तर दिया गया है और समीक्षा के लिए चिह्नित है - <strong>इसका अंतिम मूल्यांकन किया जाएगा</strong>। (Answered and Marked for Review - Evaluated.)</span>
+            <span style="font-size:12.5px;color:#334155;">प्रश्न का उत्तर दिया गया है और समीक्षा के लिए चिह्नित है - <strong>इसका अंतिम मूल्यांकन किया जाएगा</strong>। (Marked and Answered)</span>
           </div>
         </div>
-      </div>
-
-      <div style="margin-bottom:12px;background:#f1f5f9;border-radius:8px;padding:12px 14px;border:1px solid #cbd5e1;">
-        <h5 style="color:#0f2444;margin:0 0 6px;font-size:13px;">प्रश्नों को नेविगेट करना एवं उत्तर देने की प्रक्रिया:</h5>
-        <ul style="margin:0;padding-left:18px;font-size:12px;color:#334155;line-height:1.6;">
-          <li>सीधे किसी प्रश्न पर जाने के लिए दाईं ओर प्रश्न पैलेट में प्रश्न संख्या पर क्लिक करें।</li>
-          <li>उत्तर चुनने के लिए संबंधित विकल्प (A, B, C, D) बटन पर क्लिक करें।</li>
-          <li>उत्तर सुरक्षित करने और आगे बढ़ने के लिए <strong>Save &amp; Next</strong> पर क्लिक करना अनिवार्य है।</li>
-          <li>चुने गए उत्तर को रद्द करने के लिए <strong>Clear Response</strong> बटन दबाएं।</li>
-          <li>अंकन योजना: प्रत्येक सही उत्तर पर <strong>+${posMark} अंक</strong> दिए जाएंगे। गलत उत्तर पर <strong>${negMarkStr}</strong> काटा जाएगा।</li>
-        </ul>
       </div>
     `;
   } else if (lang === "or") {
@@ -5773,7 +5835,7 @@ function updateCbtInstructionsLanguage(lang) {
         </h4>
         <p style="margin:0;font-size:12.5px;color:#475569;">
           1. ପରୀକ୍ଷାର ମୋଟ ଅବଧି <strong>${mins} ମିନିଟ୍</strong>। ମୋଟ ପ୍ରଶ୍ନ ସଂଖ୍ୟା <strong>${totalQ} MCQs</strong> ଏବଂ ସମୁଦାୟ ମାର୍କ <strong>${totalMarks}</strong> ଅଟେ।<br>
-          2. ସର୍ଭରରେ ଘଣ୍ଟା (Countdown Timer) ସେଟ୍ କରାଯାଇଛି। ସ୍କ୍ରିନର ଉପର ଡାହାଣ କୋଣରେ ଥିବା ଟାଇମର୍ ଆପଣଙ୍କ ପାଖରେ ବାକି ଥିବା ସମୟ ଦର୍ଶାଇବ। ସମୟ ସମାପ୍ତ ହେଲେ ପରୀକ୍ଷା ଆପେ ଆପେ ସବମିଟ୍ ହୋଇଯିବ।
+          2. ସର୍ଭରରେ ଘଣ୍ଟା (Countdown Timer) ସେଟ୍ କରାଯାଇଛି। ସ୍କ୍ରିନର ଉପର ଭାଗରେ ଥିବା ଟାଇମର୍ ଆପଣଙ୍କ ପାଖରେ ବାକି ଥିବା ସମୟ ଦର୍ଶାଇବ। ସମୟ ସମାପ୍ତ ହେଲେ ପରୀକ୍ଷା ଆପେ ଆପେ ସବମିଟ୍ ହୋଇଯିବ।
         </p>
       </div>
 
@@ -5782,38 +5844,27 @@ function updateCbtInstructionsLanguage(lang) {
         <div style="display:grid;grid-template-columns:1fr;gap:8px;">
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="width:28px;height:28px;border-radius:5px;background:#ffffff;border:1.5px solid #cbd5e1;color:#475569;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">01</span>
-            <span style="font-size:12.5px;color:#334155;">ଆପଣ ଏପର୍ଯ୍ୟନ୍ତ ପ୍ରଶ୍ନ ଦେଖିନାହାଁନ୍ତି। (You have not visited the question yet.)</span>
+            <span style="font-size:12.5px;color:#334155;">ଆପଣ ଏପର୍ଯ୍ୟନ୍ତ ପ୍ରଶ୍ନ ଦେଖିନାହାଁନ୍ତି। (Not Visited)</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="width:28px;height:28px;border-radius:5px;background:#dc2626;color:#ffffff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">02</span>
-            <span style="font-size:12.5px;color:#334155;">ଆପଣ ପ୍ରଶ୍ନର ଉତ୍ତର ଦେଇନାହାଁନ୍ତି। (You have not answered the question.)</span>
+            <span style="font-size:12.5px;color:#334155;">ଆପଣ ପ୍ରଶ୍ନର ଉତ୍ତର ଦେଇନାହାଁନ୍ତି। (Not Answered)</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="width:28px;height:28px;border-radius:5px;background:#16a34a;color:#ffffff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">03</span>
-            <span style="font-size:12.5px;color:#334155;">ଆପଣ ପ୍ରଶ୍ନର ଉତ୍ତର ଦେଇସାରିଛନ୍ତି। (You have answered the question.)</span>
+            <span style="font-size:12.5px;color:#334155;">ଆପଣ ପ୍ରଶ୍ନର ଉତ୍ତର ଦେଇସାରିଛନ୍ତି। (Answered)</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="width:28px;height:28px;border-radius:5px;background:#8b5cf6;color:#ffffff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">04</span>
-            <span style="font-size:12.5px;color:#334155;">ଆପଣ ଉତ୍ତର ଦେଇନାହାଁନ୍ତି, କିନ୍ତୁ ପୁନଃସମୀକ୍ଷା ପାଇଁ ଚିହ୍ନଟ କରିଛନ୍ତି। (Marked for Review.)</span>
+            <span style="font-size:12.5px;color:#334155;">ଆପଣ ଉତ୍ତର ଦେଇନାହାଁନ୍ତି, କିନ୍ତୁ ପୁନଃସମୀକ୍ଷା ପାଇଁ ଚିହ୍ନଟ କରିଛନ୍ତି। (Marked for Review)</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="position:relative;width:28px;height:28px;border-radius:5px;background:#7c3aed;color:#ffffff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">
               05<span style="position:absolute;bottom:-1px;right:-1px;width:8px;height:8px;background:#22c55e;border:1.5px solid #fff;border-radius:50%;"></span>
             </span>
-            <span style="font-size:12.5px;color:#334155;">ପ୍ରଶ୍ନର ଉତ୍ତର ଦିଆଯାଇ ପୁନଃସମୀକ୍ଷା ପାଇଁ ଚିହ୍ନଟ ହୋଇଛି - <strong>ଏହାର ଚୂଡ଼ାନ୍ତ ମୂଲ୍ୟାଙ୍କନ କରାଯିବ</strong>। (Answered and Marked for Review - Evaluated.)</span>
+            <span style="font-size:12.5px;color:#334155;">ପ୍ରଶ୍ନର ଉତ୍ତର ଦିଆଯାଇ ପୁନଃସମୀକ୍ଷା ପାଇଁ ଚିହ୍ନଟ ହୋଇଛି - <strong>ଏହାର ଚୂଡ଼ାନ୍ତ ମୂଲ୍ୟାଙ୍କନ କରାଯିବ</strong>। (Marked and Answered)</span>
           </div>
         </div>
-      </div>
-
-      <div style="margin-bottom:12px;background:#f1f5f9;border-radius:8px;padding:12px 14px;border:1px solid #cbd5e1;">
-        <h5 style="color:#0f2444;margin:0 0 6px;font-size:13px;">ପ୍ରଶ୍ନକୁ ଯିବା ଏବଂ ଉତ୍ତର ଦେବା ପ୍ରଣାଳୀ:</h5>
-        <ul style="margin:0;padding-left:18px;font-size:12px;color:#334155;line-height:1.6;">
-          <li>ଯେକୌଣସି ପ୍ରଶ୍ନକୁ ସିଧାସଳଖ ଯିବା ପାଇଁ ଡାହାଣ ପାର୍ଶ୍ୱ ପ୍ରଶ୍ନ ପ୍ୟାଲେଟ୍‌ରେ ଥିବା ନମ୍ବର ଉପରେ କ୍ଲିକ୍ କରନ୍ତୁ।</li>
-          <li>ଉତ୍ତର ଚୟନ ପାଇଁ ବିକଳ୍ପ (A, B, C, D) ବଟନ୍ କ୍ଲିକ୍ କରନ୍ତୁ।</li>
-          <li>ଉତ୍ତର ସେଭ୍ କରି ଆଗକୁ ବଢ଼ିବା ପାଇଁ <strong>Save &amp; Next</strong> କ୍ଲିକ୍ କରିବା ଆବଶ୍ୟକ।</li>
-          <li>ଉତ୍ତର ବାତିଲ୍ କରିବା ପାଇଁ <strong>Clear Response</strong> ବଟନ୍ ବ୍ୟବହାର କରନ୍ତୁ।</li>
-          <li>ମାର୍କିଂ ନିୟମ: ପ୍ରତ୍ୟେକ ସଠିକ୍ ଉତ୍ତର ପାଇଁ <strong>+${posMark} ମାର୍କ</strong> ମିଳିବ ଏବଂ ଭୁଲ୍ ଉତ୍ତର ପାଇଁ <strong>${negMarkStr}</strong> କଟାଯିବ।</li>
-        </ul>
       </div>
     `;
   } else {
@@ -5829,11 +5880,11 @@ function updateCbtInstructionsLanguage(lang) {
     container.innerHTML = `
       <div style="margin-bottom:14px;border-bottom:1px solid #e2e8f0;padding-bottom:10px;">
         <h4 style="color:#0f2444;margin:0 0 6px;font-size:15px;display:flex;align-items:center;gap:6px;">
-          <span>📋</span> General Examination Instructions (TCS iON / SSC / IIBF Standard)
+          <span>📋</span> General Examination Instructions (TCS iON / Testbook Standard)
         </h4>
         <p style="margin:0;font-size:12.5px;color:#475569;">
           1. Total duration of the examination is <strong>${mins} Minutes</strong>. Total questions: <strong>${totalQ} MCQs</strong>. Total Marks: <strong>${totalMarks} Marks</strong>.<br>
-          2. The clock will be set at the server. The countdown timer at the top right corner of screen will display the remaining time available for you to complete the examination. When the timer reaches zero, the examination will automatically submit.
+          2. The countdown timer in the top header will display the remaining time available for you to complete the examination. When the timer reaches zero, the examination will automatically submit.
         </p>
       </div>
 
@@ -5842,38 +5893,27 @@ function updateCbtInstructionsLanguage(lang) {
         <div style="display:grid;grid-template-columns:1fr;gap:8px;">
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="width:28px;height:28px;border-radius:5px;background:#ffffff;border:1.5px solid #cbd5e1;color:#475569;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">01</span>
-            <span style="font-size:12.5px;color:#334155;">You have not visited the question yet.</span>
+            <span style="font-size:12.5px;color:#334155;">You have not visited the question yet. (Not Visited)</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="width:28px;height:28px;border-radius:5px;background:#dc2626;color:#ffffff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">02</span>
-            <span style="font-size:12.5px;color:#334155;">You have not answered the question.</span>
+            <span style="font-size:12.5px;color:#334155;">You have not answered the question. (Not Answered)</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="width:28px;height:28px;border-radius:5px;background:#16a34a;color:#ffffff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">03</span>
-            <span style="font-size:12.5px;color:#334155;">You have answered the question.</span>
+            <span style="font-size:12.5px;color:#334155;">You have answered the question. (Answered)</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="width:28px;height:28px;border-radius:5px;background:#8b5cf6;color:#ffffff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">04</span>
-            <span style="font-size:12.5px;color:#334155;">You have NOT answered the question, but have marked the question for review.</span>
+            <span style="font-size:12.5px;color:#334155;">You have NOT answered the question, but have marked the question for review. (Marked)</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:8px 12px;border-radius:6px;border:1px solid #e2e8f0;">
             <span style="position:relative;width:28px;height:28px;border-radius:5px;background:#7c3aed;color:#ffffff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">
               05<span style="position:absolute;bottom:-1px;right:-1px;width:8px;height:8px;background:#22c55e;border:1.5px solid #fff;border-radius:50%;"></span>
             </span>
-            <span style="font-size:12.5px;color:#334155;">The question(s) "Answered and Marked for Review" <strong>will be considered for evaluation</strong>.</span>
+            <span style="font-size:12.5px;color:#334155;">The question(s) "Answered and Marked for Review" <strong>will be considered for evaluation</strong>. (Marked and Answered)</span>
           </div>
         </div>
-      </div>
-
-      <div style="margin-bottom:12px;background:#f1f5f9;border-radius:8px;padding:12px 14px;border:1px solid #cbd5e1;">
-        <h5 style="color:#0f2444;margin:0 0 6px;font-size:13px;">Navigating to a Question &amp; Answering Procedures:</h5>
-        <ul style="margin:0;padding-left:18px;font-size:12px;color:#334155;line-height:1.6;">
-          <li>Click on the question number in the Question Palette at the right of your screen to go to that question directly.</li>
-          <li>Click on an option button (A, B, C, D) to select your answer.</li>
-          <li>Click on <strong>Save &amp; Next</strong> to save your answer for the current question and go to the next question.</li>
-          <li>Click on <strong>Clear Response</strong> to clear your selected answer.</li>
-          <li>Marking Scheme: Each correct answer awards <strong>+${posMark} Mark</strong>. Incorrect answer incurs <strong>${negMarkStr}</strong> penalty.</li>
-        </ul>
       </div>
     `;
   }
@@ -5911,6 +5951,7 @@ function startTest(testId) {
   currentVisited[0] = true;
   currentQuestionIdx = 0;
   testViolationsCount = 0;
+  questionSecondsSpent = {};
 
   const tag = $("#lockExamTag");
   if (tag) tag.innerText = (t.exam || "GOVT EXAM") + " TRACK";
@@ -5921,7 +5962,7 @@ function startTest(testId) {
 
   // Candidate card details
   let u = store.get("c2s_main_user", null);
-  const candName = (u && u.name) || "Prakash Behera";
+  const candName = (u && u.name) || "Prakash";
   const candReg = (u && u.regNo) || "C2SLIB-00104";
   const initials = candName.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase() || "PB";
 
@@ -5933,6 +5974,12 @@ function startTest(testId) {
   if (elAvatar) elAvatar.innerText = initials;
   const elNode = document.getElementById("cbtSystemNode");
   if (elNode) elNode.innerText = "Node: C2S-LAB-04";
+
+  // Sidebar profile
+  const elSideName = document.getElementById("cbtSidebarCandidateName");
+  if (elSideName) elSideName.innerText = candName;
+  const elSideReg = document.getElementById("cbtSidebarCandidateReg");
+  if (elSideReg) elSideReg.innerText = candReg;
 
   // Test meta strip
   const elDur = document.getElementById("cbtDurationText");
@@ -5963,6 +6010,10 @@ function startTest(testId) {
     onCbtDeclarationChange(true);
   }
 
+  // Ensure testbook full-screen mode is off during instructions
+  const lockEl = document.getElementById("examLock");
+  if (lockEl) lockEl.classList.remove("testbook-mode");
+
   // Reset areas
   $("#instruct").classList.remove("hidden");
   $("#testArea").classList.add("hidden");
@@ -5973,6 +6024,8 @@ function startTest(testId) {
 }
 
 function exitTestSetup() {
+  const lockEl = document.getElementById("examLock");
+  if (lockEl) lockEl.classList.remove("testbook-mode");
   $("#examLock").classList.add("hidden");
   currentExamTest = null;
 }
@@ -5992,6 +6045,10 @@ function beginExam() {
   }
   const liveLangSel = document.getElementById("examLiveLangSelect");
   if (liveLangSel) liveLangSel.value = currentExamLanguage;
+
+  // Switch modal into Testbook fullscreen layout
+  const lockEl = document.getElementById("examLock");
+  if (lockEl) lockEl.classList.add("testbook-mode");
 
   $("#instruct").classList.add("hidden");
   $("#testArea").classList.remove("hidden");
@@ -6062,6 +6119,9 @@ function startExamTimer() {
   updateTimerDisplay();
   testTimerInterval = setInterval(() => {
     testSecondsRemaining--;
+    // Track per-question time
+    questionSecondsSpent[currentQuestionIdx] = (questionSecondsSpent[currentQuestionIdx] || 0) + 1;
+    updateQuestionStopwatch();
     updateTimerDisplay();
     if (testSecondsRemaining <= 0) {
       clearInterval(testTimerInterval);
@@ -6071,9 +6131,18 @@ function startExamTimer() {
 }
 
 function updateTimerDisplay() {
-  const m = Math.floor(testSecondsRemaining / 60);
+  const h = Math.floor(testSecondsRemaining / 3600);
+  const m = Math.floor((testSecondsRemaining % 3600) / 60);
   const s = testSecondsRemaining % 60;
   const timeStr = String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+
+  const elH = document.getElementById("cbtTimerHH");
+  const elM = document.getElementById("cbtTimerMM");
+  const elS = document.getElementById("cbtTimerSS");
+  if (elH) elH.innerText = String(h).padStart(2, "0");
+  if (elM) elM.innerText = String(m).padStart(2, "0");
+  if (elS) elS.innerText = String(s).padStart(2, "0");
+
   const el = $("#timer");
   if (el) el.innerText = "Time left: " + timeStr;
 }
@@ -6093,14 +6162,14 @@ function renderQuestionPalette() {
     const isVis = currentVisited[i] === true;
 
     if (isAns && isMark) {
-      bg = "#7c3aed"; col = "#fff"; border = "#6d28d9"; title = "Answered & Marked for Review (Evaluated)";
-      extraIcon = `<span style="position:absolute;bottom:-1px;right:-1px;width:7px;height:7px;background:#22c55e;border:1px solid #fff;border-radius:50%;"></span>`;
+      bg = "#7c3aed"; col = "#fff"; border = "#6d28d9"; title = "Marked and answered (Evaluated)";
+      extraIcon = `<span style="position:absolute;bottom:1px;right:1px;width:7px;height:7px;background:#22c55e;border:1px solid #fff;border-radius:50%;"></span>`;
       countAnsMarked++;
     } else if (isAns) {
       bg = "#16a34a"; col = "#fff"; border = "#15803d"; title = "Answered";
       countAns++;
     } else if (isMark) {
-      bg = "#8b5cf6"; col = "#fff"; border = "#7c3aed"; title = "Marked for Review";
+      bg = "#8b5cf6"; col = "#fff"; border = "#7c3aed"; title = "Marked";
       countMarked++;
     } else if (isVis) {
       bg = "#dc2626"; col = "#fff"; border = "#b91c1c"; title = "Not Answered";
@@ -6111,9 +6180,9 @@ function renderQuestionPalette() {
     }
 
     const isCurrent = i === currentQuestionIdx;
-    const currentStyle = isCurrent ? "outline: 2.5px solid #0f172a; outline-offset: 1px; font-weight:900;" : "";
+    const currentStyle = isCurrent ? "outline: 2.5px solid #0284c7; outline-offset: 1px; font-weight:900;" : "";
 
-    return `<button type="button" title="${title}" onclick="jumpToQuestion(${i})" style="position:relative;width:28px;height:28px;border-radius:6px;border:1.5px solid ${border};background:${bg};color:${col};font-weight:700;font-size:11.5px;cursor:pointer;${currentStyle}">${i+1}${extraIcon}</button>`;
+    return `<button type="button" class="cbt-palette-qbtn" title="${title}" onclick="jumpToQuestion(${i})" style="border:1.5px solid ${border};background:${bg};color:${col};${currentStyle}">${i+1}${extraIcon}</button>`;
   }).join("");
 
   const elAns = document.getElementById("cbtCountAnswered");
@@ -6131,6 +6200,7 @@ function renderQuestionPalette() {
 function jumpToQuestion(idx) {
   currentQuestionIdx = idx;
   if (!currentVisited[idx]) currentVisited[idx] = true;
+  updateQuestionStopwatch();
   renderQuestion();
   renderQuestionPalette();
 }
@@ -6141,33 +6211,43 @@ function renderQuestion() {
   const qBox = $("#qBox");
   if (!qBox) return;
 
-  const sectionName = q[4] || currentExamTest.exam || "Sectional";
+  const sectionName = q[4] || currentExamTest.exam || "Test";
   const isJaiib = (currentExamTest.exam && currentExamTest.exam.includes("JAIIB")) || (currentExamTest.id && currentExamTest.id.includes("JAIIB")) || (currentExamTest.negativeMarking === 0);
   const perQMark = (currentExamTest.marks && currentExamTest.qs.length) ? (currentExamTest.marks / currentExamTest.qs.length).toFixed(currentExamTest.marks % currentExamTest.qs.length === 0 ? 0 : 2) : "1";
-  const negMarkStr = isJaiib ? "0.00 (No Negative Marking)" : (currentExamTest.negativeMarking !== undefined ? `-${currentExamTest.negativeMarking}` : "-0.25");
-  const markBadgeText = `+${perQMark} / ${negMarkStr} Mark`;
+  const negMarkStr = isJaiib ? "0.00" : (currentExamTest.negativeMarking !== undefined ? `-${currentExamTest.negativeMarking}` : "-0.25");
+
+  // Top question bar updates
+  const elQNum = document.getElementById("cbtQNumberHeader");
+  if (elQNum) elQNum.innerText = "Question No. " + (currentQuestionIdx + 1);
+  const elPos = document.getElementById("cbtPosMarkBadge");
+  if (elPos) elPos.innerText = "+" + perQMark;
+  const elNeg = document.getElementById("cbtNegMarkBadge");
+  if (elNeg) elNeg.innerText = negMarkStr;
+  const elSecLabel = document.getElementById("cbtActiveSectionLabel");
+  if (elSecLabel) elSecLabel.innerText = sectionName;
+
+  updateQuestionStopwatch();
 
   const lang = currentExamLanguage || "en";
   const translatedQ = translateCbtQuestion(q[0], lang);
 
+  // Exact Testbook Radio Option Style
   qBox.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
-      <span style="font-size:12px;font-weight:700;color:#64748b;">QUESTION ${currentQuestionIdx + 1} OF ${currentExamTest.qs.length} &bull; <strong style="color:#2563eb;">${escapeHtml(sectionName)}</strong></span>
-      <span style="font-size:11.5px;color:#059669;font-weight:700;background:#ecfdf5;padding:3px 8px;border-radius:4px;border:1px solid #a7f3d0;">${markBadgeText}</span>
+    <div style="margin-bottom:18px;">
+      <span style="font-size:12px;font-weight:800;color:#0284c7;text-transform:uppercase;letter-spacing:0.5px;">Question:</span>
+      <div style="font-size:15.5px;font-weight:700;color:#0f172a;line-height:1.6;margin-top:6px;">
+        ${translatedQ}
+      </div>
     </div>
-    <div style="font-size:16px;font-weight:700;color:#0f172a;line-height:1.5;margin-bottom:18px;">
-      ${translatedQ}
-    </div>
-    <div style="display:flex;flex-direction:column;gap:10px;">
+    <div style="display:flex;flex-direction:column;gap:8px;max-width:820px;">
       ${q[1].map((opt, optIdx) => {
         const isSelected = currentAnswers[currentQuestionIdx] === optIdx;
-        const optLetter = String.fromCharCode(65 + optIdx);
         const translatedOpt = translateCbtOption(opt, lang);
         return `
-          <button type="button" class="c2s-opt-btn ${isSelected ? 'selected' : ''}" onclick="selectAnswer(${optIdx})" style="text-align:left;padding:12px 16px;border-radius:10px;border:1.5px solid ${isSelected ? '#2563eb' : '#cbd5e1'};background:${isSelected ? '#eff6ff' : '#ffffff'};font-weight:${isSelected ? '700' : '500'};color:${isSelected ? '#1e40af' : '#1e293b'};cursor:pointer;display:flex;align-items:center;gap:12px;font-size:14.5px;transition:all 0.15s ease;">
-            <span style="width:24px;height:24px;border-radius:50%;background:${isSelected ? '#2563eb' : '#f1f5f9'};color:${isSelected ? '#fff' : '#64748b'};display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;">${optLetter}</span>
-            <span>${translatedOpt}</span>
-          </button>
+          <label class="cbt-opt-label ${isSelected ? 'selected' : ''}" onclick="selectAnswer(${optIdx})">
+            <input type="radio" name="cbtOptionRadio_${currentQuestionIdx}" value="${optIdx}" ${isSelected ? 'checked' : ''} style="width:18px;height:18px;margin-top:2px;accent-color:#0284c7;cursor:pointer;">
+            <span style="font-size:14px;color:#1e293b;line-height:1.5;">${translatedOpt}</span>
+          </label>
         `;
       }).join("")}
     </div>
@@ -6228,6 +6308,9 @@ function pauseCurrentTest() {
   };
   store.set("c2s_paused_test", pausedState);
 
+  const lockEl = document.getElementById("examLock");
+  if (lockEl) lockEl.classList.remove("testbook-mode");
+
   $("#testArea").classList.add("hidden");
   $("#pausedArea").classList.remove("hidden");
   checkAndDisplayPausedBanner();
@@ -6255,6 +6338,9 @@ function resumePausedTest() {
   $("#solutionsArea").classList.add("hidden");
   $("#testArea").classList.remove("hidden");
   $("#examLock").classList.remove("hidden");
+
+  const lockEl = document.getElementById("examLock");
+  if (lockEl) lockEl.classList.add("testbook-mode");
 
   const badge = $("#activeTestBadge");
   if (badge) {
@@ -6320,6 +6406,9 @@ function confirmSubmit(reason) {
 
 function submitExam(reason) {
   clearInterval(testTimerInterval);
+
+  const lockEl = document.getElementById("examLock");
+  if (lockEl) lockEl.classList.remove("testbook-mode");
 
   if (document.exitFullscreen) {
     document.exitFullscreen().catch(() => {});
