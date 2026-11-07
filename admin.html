@@ -121,7 +121,7 @@
       <div class="kpi-card">
         <span class="kpi-title">Seat Occupancy (Live)</span>
         <div class="kpi-value" id="kpiSeatOccupancy" style="color:var(--c2s-emerald-600);">0%</div>
-        <span class="kpi-sub" id="kpiSeatCount">0 / 48 Desks Occupied</span>
+        <span class="kpi-sub" id="kpiSeatCount">0 / 149 Seats Occupied</span>
       </div>
       <div class="kpi-card">
         <span class="kpi-title">Total Collected Revenue</span>
@@ -343,27 +343,27 @@
       <!-- 1. SHIFT CAPACITY & WAITLIST CONTROLLER -->
       <div class="card" style="border:1.5px solid #bfdbfe;">
         <span class="pill blue">CAPACITY PLANNING</span>
-        <h3 style="margin:8px 0 4px;font-size:17px;color:#0f2a5c;">1. Shift Capacity &amp; Live Waitlist</h3>
-        <p class="small" style="color:#64748b;margin:0 0 12px;">Configure maximum seating threshold per shift with automated waitlist.</p>
+        <h3 style="margin:8px 0 4px;font-size:17px;color:#0f2a5c;">1. Shift Capacity &amp; Live Occupancy</h3>
+        <p class="small" style="color:#64748b;margin:0 0 12px;">Patrapada Sanctuary Total: <strong>149 Seats</strong> (Lower Fl: 125, Upper Fl: 24).</p>
         <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;">
           <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#f8fafc;border-radius:6px;">
             <span>🌅 Morning Shift:</span>
-            <strong>32 / 48 Seats <span style="color:#10b981;">(16 Vacant)</span></strong>
+            <strong>32 / 149 Seats <span style="color:#10b981;">(117 Vacant)</span></strong>
           </div>
           <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#f8fafc;border-radius:6px;">
             <span>☀️ Afternoon Shift:</span>
-            <strong>28 / 48 Seats <span style="color:#10b981;">(20 Vacant)</span></strong>
+            <strong>28 / 149 Seats <span style="color:#10b981;">(121 Vacant)</span></strong>
           </div>
           <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#f8fafc;border-radius:6px;">
             <span>⭐ Full Day (7 AM - 9 PM):</span>
-            <strong>44 / 48 Seats <span style="color:#ea580c;">(4 Vacant &bull; Near Full)</span></strong>
+            <strong>68 / 149 Seats <span style="color:#10b981;">(81 Vacant)</span></strong>
           </div>
           <div style="display:flex;justify-content:space-between;padding:6px 10px;background:#f8fafc;border-radius:6px;">
-            <span>🌙 Night Shift:</span>
-            <strong>18 / 48 Seats <span style="color:#10b981;">(30 Vacant)</span></strong>
+            <span>🌙 24 Hours / Night Shift:</span>
+            <strong>42 / 149 Seats <span style="color:#10b981;">(107 Vacant)</span></strong>
           </div>
         </div>
-        <button type="button" class="btn ghost" style="margin-top:10px;width:100%;font-size:12px;" onclick="alert('Capacity parameters verified. Waitlist auto-triggers when shift reaches 48 seats.')">⚙️ Adjust Shift Max Limits</button>
+        <button type="button" class="btn ghost" style="margin-top:10px;width:100%;font-size:12px;" onclick="alert('Capacity parameters verified. Total sanctuary capacity is 149 seats across 2 floors (125 lower floor + 24 upper floor).')">⚙️ View Floor Capacity Specs</button>
       </div>
 
       <!-- 2. DEFAULTER & OVERDUE ESCALATOR -->
@@ -677,6 +677,23 @@
           </button>
         </div>
         <input id="memberSearch" placeholder="Search by name, reg no or mobile…" style="max-width:280px;" oninput="filterAdminMembers()">
+      </div>
+
+      <!-- Member Registry Status Filter Tabs -->
+      <div style="display:flex;gap:8px;padding:0 20px 14px;border-bottom:1px solid #f1f5f9;flex-wrap:wrap;align-items:center;" id="adminMemberStatusTabs">
+        <span style="font-size:12px;font-weight:750;color:#64748b;margin-right:4px;">Filter Registry:</span>
+        <button type="button" class="btn active" id="tabStatusAll" onclick="setMemberStatusFilter('all')" style="padding:5px 12px;font-size:12px;font-weight:800;border-radius:6px;">
+          All Members (<span id="countAllMembers">0</span>)
+        </button>
+        <button type="button" class="btn ghost" id="tabStatusActive" onclick="setMemberStatusFilter('active')" style="padding:5px 12px;font-size:12px;font-weight:750;color:#059669;border-color:#a7f3d0;background:#ecfdf5;border-radius:6px;">
+          🟢 Active Allocated (<span id="countActiveMembers">0</span>)
+        </button>
+        <button type="button" class="btn ghost" id="tabStatusLeft" onclick="setMemberStatusFilter('left')" style="padding:5px 12px;font-size:12px;font-weight:750;color:#2563eb;border-color:#bfdbfe;background:#eff6ff;border-radius:6px;">
+          🎓 Left / Completed (<span id="countLeftMembers">0</span>)
+        </button>
+        <button type="button" class="btn ghost" id="tabStatusCancelled" onclick="setMemberStatusFilter('cancelled')" style="padding:5px 12px;font-size:12px;font-weight:750;color:#dc2626;border-color:#fecaca;background:#fef2f2;border-radius:6px;">
+          🚫 Cancelled (<span id="countCancelledMembers">0</span>)
+        </button>
       </div>
       <table class="admin-table">
         <thead>
@@ -1642,11 +1659,16 @@
 
     <!-- Direct Quick Actions Strip -->
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+      <button type="button" class="btn" style="background:#1d4ed8;color:#fff;font-size:12.5px;padding:8px 14px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(29,78,216,0.3);" onclick="window.printAdmissionForm(currentModalStudent ? currentModalStudent.regNo : '')">
+        <span>🖨️ Print 1-Page Form (A4 PDF)</span>
+      </button>
       <button type="button" id="modalBtnRenew" class="btn orange" style="font-size:12.5px;padding:8px 14px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;" onclick="openRenewalModal(currentModalStudent ? currentModalStudent.regNo : '')"><span>🔄 Renew Membership / Change Shift</span></button>
+      <button type="button" class="btn ghost" style="font-size:12.5px;padding:8px 14px;color:#dc2626;border-color:#fca5a5;font-weight:750;" onclick="openCancelModal(currentModalStudent ? currentModalStudent.regNo : '')">
+        <span>❌ Cancel Membership</span>
+      </button>
       <a href="#" id="modalBtnWhatsApp" target="_blank" class="btn" style="background:#25d366;color:#fff;font-size:12.5px;padding:8px 14px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">📲 Open WhatsApp</a>
       <button type="button" id="modalBtnResendReceipt" class="btn orange" style="font-size:12.5px;padding:8px 14px;">✉️ Resend Receipt &amp; Login</button>
-      <button type="button" class="btn ghost" style="font-size:12.5px;padding:8px 14px;" onclick="printLibraryRulesSheet(currentModalStudent || {})">🖨️ Print Rules &amp; Declaration Slip</button>
-      <button type="button" class="btn ghost" style="font-size:12.5px;padding:8px 14px;" onclick="window.print()">🪪 Print Student Pass</button>
+      <button type="button" class="btn ghost" style="font-size:12.5px;padding:8px 14px;" onclick="printLibraryRulesSheet(currentModalStudent || {})">🖨️ Rules Sheet</button>
     </div>
 
     <!-- Staff Remarks -->
@@ -1910,6 +1932,99 @@
       <div style="display:flex;justify-content:flex-end;gap:10px;">
         <button type="button" class="btn ghost" onclick="closeRenewalModal()" style="font-size:13px;padding:9px 18px;">Cancel</button>
         <button type="submit" class="btn orange" style="font-size:13px;padding:9px 22px;font-weight:800;">✓ Confirm &amp; Process Renewal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL 4: MEMBERSHIP CANCELLATION & SEAT RELEASE -->
+<div id="cancelMembershipModal" class="c2s-admin-modal-backdrop">
+  <div class="c2s-admin-modal-card" style="max-width:580px;max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;border-bottom:1.5px solid #fee2e2;padding-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:28px;">❌</span>
+        <div>
+          <span class="pill" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;font-size:11px;font-weight:800;">MEMBERSHIP CANCELLATION &amp; SEAT RELEASE</span>
+          <h3 style="margin:4px 0 2px;font-size:19px;color:#991b1b;">Cancel Student Membership</h3>
+          <span style="font-size:12px;color:#64748b;" id="cancelModalMemberInfo">Release seat and mark member as exited / cancelled</span>
+        </div>
+      </div>
+      <button type="button" class="btn ghost" onclick="closeCancelModal()" style="padding:4px 10px;font-size:16px;line-height:1;">✕</button>
+    </div>
+
+    <!-- Student Preview Card -->
+    <div style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:12px;padding:14px 16px;margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <strong id="cancelStudentName" style="font-size:16px;color:#0f172a;">Student Name</strong>
+        <span class="pill" id="cancelStudentRegNo" style="font-weight:800;background:#fff;color:#991b1b;border:1px solid #fca5a5;">C2SLIB-00000</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12.5px;color:#475569;">
+        <div>Shift: <strong id="cancelStudentShift" style="color:#0f172a;">Full Day</strong></div>
+        <div>Assigned Seat: <strong id="cancelStudentSeat" style="color:#dc2626;font-size:13.5px;">Seat S-25</strong></div>
+        <div>Contact: <strong id="cancelStudentMobile" style="color:#0f172a;">—</strong></div>
+        <div>Fee Paid: <strong id="cancelStudentPaid" style="color:#059669;">₹1,500</strong></div>
+      </div>
+    </div>
+
+    <form onsubmit="submitCancelMembership(event)">
+      <input type="hidden" id="cancelRegNo">
+
+      <!-- Cancellation Date -->
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:12.5px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+          📅 Effective Cancellation Date <span style="color:#dc2626;">*</span>
+        </label>
+        <input type="date" id="cancelDate" required style="width:100%;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;font-weight:700;">
+      </div>
+
+      <!-- Cancellation Reason -->
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:12.5px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+          📋 Reason for Cancellation / Departure <span style="color:#dc2626;">*</span>
+        </label>
+        <select id="cancelReason" required style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;background:#fff;font-weight:700;">
+          <option value="Course / Exam Preparation Completed">🎓 Course / Exam Preparation Completed</option>
+          <option value="Selected in Competitive Exam (SBI / OSSC / UPSC)">🏆 Selected in Competitive Exam (SBI / OSSC / UPSC)</option>
+          <option value="Relocating from Bhubaneswar">🚚 Relocating from Bhubaneswar</option>
+          <option value="Personal / Family / Health Reasons">🏡 Personal / Family / Health Reasons</option>
+          <option value="Shift Timing Conflict">⏰ Shift Timing Conflict</option>
+          <option value="Disciplinary Action / Rules Misconduct">⚠️ Disciplinary Action / Rules Misconduct</option>
+          <option value="Fee Default / Non-Payment">💳 Fee Default / Non-Payment</option>
+          <option value="Other">📝 Other (Specify in remarks)</option>
+        </select>
+      </div>
+
+      <!-- Immediate Seat Release Checkbox -->
+      <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:10px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px;">
+        <input type="checkbox" id="cancelReleaseSeat" checked style="width:18px;height:18px;margin-top:2px;accent-color:#1d4ed8;cursor:pointer;">
+        <label for="cancelReleaseSeat" style="font-size:13px;color:#1e3a8a;font-weight:750;line-height:1.4;cursor:pointer;">
+          Immediately release assigned seat back to vacant pool <br>
+          <span style="font-size:11.5px;color:#3b82f6;font-weight:600;">(Allows another walk-in or online student to book this seat right away)</span>
+        </label>
+      </div>
+
+      <!-- Refund Paid (if any) -->
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:12.5px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+          💰 Refund Amount Disbursed (₹) <span style="font-size:11px;color:#64748b;">(Enter 0 if no refund applicable)</span>
+        </label>
+        <input type="number" id="cancelRefund" value="0" min="0" style="width:100%;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;font-weight:750;">
+      </div>
+
+      <!-- Admin Remarks -->
+      <div style="margin-bottom:18px;">
+        <label style="display:block;font-size:12.5px;font-weight:750;color:#0f172a;margin-bottom:5px;">
+          📝 Admin Notes &amp; Departure Remarks
+        </label>
+        <textarea id="cancelRemarks" rows="2" style="width:100%;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:12.5px;" placeholder="e.g. Student selected as SBI PO, surrendered key and security deposit cleared..."></textarea>
+      </div>
+
+      <!-- Actions -->
+      <div style="display:flex;justify-content:flex-end;gap:10px;">
+        <button type="button" class="btn ghost" onclick="closeCancelModal()" style="font-size:13px;padding:8px 16px;">Go Back</button>
+        <button type="submit" class="btn" style="background:#dc2626;color:#ffffff;border:none;font-size:13px;padding:8px 20px;font-weight:800;border-radius:8px;cursor:pointer;box-shadow:0 2px 8px rgba(220,38,38,0.3);">
+          ❌ Confirm Cancellation &amp; Release Seat
+        </button>
       </div>
     </form>
   </div>

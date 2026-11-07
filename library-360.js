@@ -6,50 +6,61 @@
 (function() {
   'use strict';
 
-  // 4 Viewpoints in the Study Sanctuary: Zone A, Zone B, Zone C, Reception
+  // 5 Viewpoints in the Study Sanctuary: Upper Floor Zone A, Lower Floor Zones B, C, D, and Reception
   const VIEWPOINTS = {
     zone_a: {
-      name: "Zone A: Silent Study Cubicles",
-      tag: "Pinpoint Silence • Warm LED Lamps",
-      desks: ["A-01", "A-02", "A-03", "A-04", "A-05", "A-06", "A-07", "A-08", "A-09", "A-10", "A-11", "A-12", "A-13", "A-14", "A-15", "A-16"],
+      name: "Upper Floor (2nd Floor) • Zone A: Executive Sanctuary",
+      tag: "24 Seats (S-1 to S-24) • Attached Lockers L-1 to L-24 • 5G Ultra Wi-Fi",
+      desks: Array.from({length: 24}, (_, i) => "S-" + (i + 1)),
       initialYaw: 0,
       initialPitch: -4,
       navArrows: [
-        { target: "zone_b", yaw: 90, pitch: -15, label: "Walk to Zone B (Digital Hub) →" },
+        { target: "zone_b", yaw: 90, pitch: -15, label: "Take Stairs to 1st Floor (Zone B) →" },
         { target: "reception", yaw: 180, pitch: -12, label: "← Walk to Reception & Entry" }
       ]
     },
     zone_b: {
-      name: "Zone B: Digital Laptop & Power Hub",
-      tag: "Dual 230V Sockets • 300 Mbps Wi-Fi",
-      desks: ["B-01", "B-02", "B-03", "B-04", "B-05", "B-06", "B-07", "B-08", "B-09", "B-10", "B-11", "B-12", "B-13", "B-14", "B-15", "B-16"],
+      name: "Lower Floor (1st Floor) • Zone B: Left Wall Bay",
+      tag: "43 Seats (S-25 to S-67) • Split Inverter A/C • Lockers L-25 to L-67",
+      desks: Array.from({length: 43}, (_, i) => "S-" + (i + 25)),
       initialYaw: 90,
       initialPitch: -4,
       navArrows: [
-        { target: "zone_a", yaw: 270, pitch: -15, label: "← Walk to Zone A (Silent)" },
-        { target: "zone_c", yaw: 90, pitch: -15, label: "Walk to Zone C (Silent Pods) →" }
+        { target: "zone_a", yaw: 270, pitch: -15, label: "← Take Stairs to 2nd Floor (Zone A)" },
+        { target: "zone_c", yaw: 90, pitch: -15, label: "Walk to Zone C (Center Sanctuary) →" }
       ]
     },
     zone_c: {
-      name: "Zone C: Executive Acoustic Silent Pods",
-      tag: "Soundproof Glass • Lumbar Mesh Chairs",
-      desks: ["C-01", "C-02", "C-03", "C-04", "C-05", "C-06", "C-07", "C-08", "C-09", "C-10", "C-11", "C-12", "C-13", "C-14", "C-15", "C-16"],
+      name: "Lower Floor (1st Floor) • Zone C: Center Dual-Row Sanctuary",
+      tag: "42 Seats (S-68 to S-109) • Dual Corridor Aisle • Lockers L-68 to L-109",
+      desks: Array.from({length: 42}, (_, i) => "S-" + (i + 68)),
       initialYaw: 180,
       initialPitch: -4,
       navArrows: [
-        { target: "zone_b", yaw: 270, pitch: -15, label: "← Walk to Zone B (Digital Hub)" },
+        { target: "zone_b", yaw: 270, pitch: -15, label: "← Walk to Zone B (Left Bay)" },
+        { target: "zone_d", yaw: 90, pitch: -15, label: "Walk to Zone D (Right Bay) →" }
+      ]
+    },
+    zone_d: {
+      name: "Lower Floor (1st Floor) • Zone D: Right Wall Bay & Reception",
+      tag: "40 Seats (S-110 to S-149) • Proximity to Biometrics & Lockers L-110 to L-149",
+      desks: Array.from({length: 40}, (_, i) => "S-" + (i + 110)),
+      initialYaw: 270,
+      initialPitch: -4,
+      navArrows: [
+        { target: "zone_c", yaw: 270, pitch: -15, label: "← Walk to Zone C (Center)" },
         { target: "reception", yaw: 0, pitch: -12, label: "Walk to Reception & RO Water →" }
       ]
     },
     reception: {
-      name: "Main Reception & Entry Sanctuary",
-      tag: "Biometric Punch • RO Water Cooler • Help Desk",
+      name: "Main Reception & Entry Sanctuary (1st Floor)",
+      tag: "Biometric Punch • RO Hot/Cold Water • Help Desk (9777481909)",
       desks: [],
       initialYaw: 0,
       initialPitch: 0,
       navArrows: [
-        { target: "zone_a", yaw: 0, pitch: -10, label: "Enter Zone A (Cubicles) →" },
-        { target: "zone_c", yaw: 180, pitch: -10, label: "Enter Zone C (Pods) →" }
+        { target: "zone_b", yaw: 0, pitch: -10, label: "Enter Zone B & C (1st Floor) →" },
+        { target: "zone_a", yaw: 180, pitch: -10, label: "Take Stairs to 2nd Floor (Zone A) →" }
       ]
     }
   };
@@ -66,10 +77,10 @@
   let lastMouseY = 0;
   let autoRotate = true;
   let nightMode = false;
-  let selectedDesk = "B-04";
+  let selectedDesk = "S-25";
 
-  // Pre-seeded occupied desks
-  const occupiedDesks = new Set(["A-03", "A-07", "A-11", "A-14", "B-02", "B-06", "B-09", "B-12", "C-05", "C-08", "C-11", "C-15"]);
+  // Pre-seeded occupied desks matching active student enrollments
+  const occupiedDesks = new Set(["S-05", "S-14", "S-25", "S-36", "S-70", "S-85", "S-112", "S-135"]);
 
   let canvas, ctx, panoramaCache = {};
   let libraryPhoto = null;
@@ -385,7 +396,7 @@
     }
   }
 
-  // Draw Interactive Seat Pin
+  // Draw Interactive Desk Pin
   function drawDeskHotspot(x, y, deskId) {
     const isSelected = selectedDesk === deskId;
     const isOccupied = occupiedDesks.has(deskId);
@@ -416,8 +427,8 @@
     ctx.fillStyle = '#ffffff';
     ctx.fill();
 
-    // Seat Label Pill with Verified Price
-    const labelText = `Seat ${deskId}`;
+    // Desk Label Pill with Verified Price
+    const labelText = `Desk ${deskId}`;
     const priceText = isOccupied ? 'Occupied' : '₹1000/mo';
     ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
     const textW = Math.max(76, (ctx.measureText ? ctx.measureText(labelText).width : 40) + 24);
@@ -435,7 +446,7 @@
     ctx.fill();
     ctx.stroke();
 
-    // Seat Title
+    // Desk Title
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
     ctx.textAlign = 'center';
@@ -716,7 +727,7 @@
     if (tagEl) tagEl.textContent = vp.tag;
   };
 
-  // Seat Selection & Bottom HUD Update
+  // Desk Selection & Bottom HUD Update
   window.onSelect360Desk = function(deskId) {
     selectedDesk = deskId;
     const isOcc = occupiedDesks.has(deskId);
@@ -728,8 +739,16 @@
 
     if (hudDeskName) hudDeskName.textContent = `Seat ${deskId}`;
     if (hudZoneName) {
-      const zoneLetter = deskId.charAt(0);
-      hudZoneName.textContent = zoneLetter === 'A' ? 'Zone A • Silent Cubicle' : (zoneLetter === 'B' ? 'Zone B • Digital Power Hub' : 'Zone C • Silent Pod');
+      const num = parseInt(deskId.replace(/\D/g, ''), 10) || 1;
+      if (num >= 1 && num <= 24) {
+        hudZoneName.textContent = 'Upper Floor (2nd Fl) • Zone A (Executive Sanctuary)';
+      } else if (num >= 25 && num <= 67) {
+        hudZoneName.textContent = 'Lower Floor (1st Fl) • Zone B (Left Wall Bay)';
+      } else if (num >= 68 && num <= 109) {
+        hudZoneName.textContent = 'Lower Floor (1st Fl) • Zone C (Center Dual-Row)';
+      } else {
+        hudZoneName.textContent = 'Lower Floor (1st Fl) • Zone D (Right Wall Bay & Reception)';
+      }
     }
 
     if (hudStatus) {

@@ -136,7 +136,7 @@
 
         <nav class="libnav" style="display:flex;gap:6px;align-items:center;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:4px 0;">
           <a href="index.html" class="libnav-link active">Overview</a>
-          <a href="#floorPlanSection" class="libnav-link">Seat Selection</a>
+          <a href="#floorPlanSection" class="libnav-link">Seat &amp; Desk Selection</a>
           <a href="shifts.html" class="libnav-link">Shifts &amp; Pricing</a>
           <a href="facilities.html" class="libnav-link">Facilities &amp; 360° Tour</a>
           <a href="branches.html" class="libnav-link">Branches &amp; Local Admission</a>
@@ -341,7 +341,7 @@
       </div>
     </div>
 
-    <!-- Clean Realistic Floor Plan & Seat Selection -->
+    <!-- Clean Realistic Floor Plan & Seat & Desk Selection -->
     <!-- GOOGLE MAPS 360° STREET VIEW STUDY SANCTUARY TOUR -->
     <div id="floorPlanSection"
       style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:24px;padding:28px 24px;margin-bottom:36px;box-shadow:0 15px 40px -10px rgba(15, 23, 42, 0.08);position:relative;">
@@ -566,22 +566,27 @@
         <button type="button" class="btn c2s-360-vp-btn active" data-vp="zone_a" onclick="switch360Viewpoint('zone_a')"
           style="padding:8px 16px;font-size:13px;font-weight:750;border-radius:10px;border:1.5px solid #cbd5e1;background:#ffffff;color:#0f2a5c;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;">
           <span style="width:8px;height:8px;background:#10b981;border-radius:50%;"></span>
-          <span>Zone A: Silent Cubicles (A-01 to A-16)</span>
+          <span>🏢 Upper Floor (2nd Fl) • Zone A (Seats S-1 to S-24)</span>
         </button>
         <button type="button" class="btn c2s-360-vp-btn" data-vp="zone_b" onclick="switch360Viewpoint('zone_b')"
           style="padding:8px 16px;font-size:13px;font-weight:750;border-radius:10px;border:1.5px solid #cbd5e1;background:#ffffff;color:#0f2a5c;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;">
           <span style="width:8px;height:8px;background:#3b82f6;border-radius:50%;"></span>
-          <span>Zone B: Digital Laptop Hub (B-01 to B-16)</span>
+          <span>🏢 Lower Floor (1st Fl) • Zone B (Seats S-25 to S-67)</span>
         </button>
         <button type="button" class="btn c2s-360-vp-btn" data-vp="zone_c" onclick="switch360Viewpoint('zone_c')"
           style="padding:8px 16px;font-size:13px;font-weight:750;border-radius:10px;border:1.5px solid #cbd5e1;background:#ffffff;color:#0f2a5c;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;">
           <span style="width:8px;height:8px;background:#a855f7;border-radius:50%;"></span>
-          <span>Zone C: Silent Pods (C-01 to C-16)</span>
+          <span>🏢 Lower Floor (1st Fl) • Zone C (Seats S-68 to S-109)</span>
+        </button>
+        <button type="button" class="btn c2s-360-vp-btn" data-vp="zone_d" onclick="switch360Viewpoint('zone_d')"
+          style="padding:8px 16px;font-size:13px;font-weight:750;border-radius:10px;border:1.5px solid #cbd5e1;background:#ffffff;color:#0f2a5c;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;">
+          <span style="width:8px;height:8px;background:#fb923c;border-radius:50%;"></span>
+          <span>🏢 Lower Floor (1st Fl) • Zone D (Seats S-110 to S-149)</span>
         </button>
         <button type="button" class="btn c2s-360-vp-btn" data-vp="reception" onclick="switch360Viewpoint('reception')"
           style="padding:8px 16px;font-size:13px;font-weight:750;border-radius:10px;border:1.5px solid #cbd5e1;background:#ffffff;color:#0f2a5c;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;">
           <span style="width:8px;height:8px;background:#f97316;border-radius:50%;"></span>
-          <span>Reception &amp; Water Bar</span>
+          <span>🏛️ Reception &amp; Biometrics</span>
         </button>
       </div>
 
@@ -716,14 +721,13 @@
           </div>
           <div>
             <div style="font-size:11.5px;color:#93c5fd;font-weight:750;text-transform:uppercase;letter-spacing:1px;"
-              id="hudZoneName">Zone B • Digital Power Hub</div>
-            <div id="hudDeskName" style="font-size:22px;font-weight:900;color:#ffffff;line-height:1.2;">Seat B-04</div>
+              id="hudZoneName">Lower Floor (1st Fl) • Zone B (Left Wall Bay)</div>
+            <div id="hudDeskName" style="font-size:22px;font-weight:900;color:#ffffff;line-height:1.2;">Seat S-25</div>
             <div id="hudDeskStatus" style="font-size:12px;margin-top:3px;">
               <span style="color:#10b981;font-weight:800;">🟢 Vacant &amp; Available (₹1000/mo)</span>
             </div>
             <div style="font-size:11px;color:#cbd5e1;margin-top:4px;">
-              💡 Personal Light (For Everyone) • ⚡ Charging Socket • 📶 Free Wi-Fi • 💺 Ergonomic Chair • 🔒 Locker
-              Available • 🚻 Clean Washroom
+              💡 Personal Warm Light &bull; ⚡ Dedicated 230V Socket &bull; 📶 300 Mbps Fiber Wi-Fi &bull; 💺 Ergonomic High-Back Chair &bull; 🔒 Attached Locker (Seat = Locker) &bull; 🚻 Clean Washroom
             </div>
           </div>
         </div>
@@ -735,9 +739,9 @@
                 style="font-size:12px;color:#94a3b8;font-weight:500;">(Monthly)</span></div>
           </div>
           <button type="button" id="hudBookCta" class="btn"
-            onclick="window.location.href='admission.html?seat=B-04&shift=Afternoon'"
+            onclick="window.location.href='admission.html?seat=S-25&shift=FullDay'"
             style="background:#ea580c;color:#ffffff;padding:12px 24px;font-size:15px;font-weight:800;border-radius:10px;box-shadow:0 4px 14px rgba(234,88,12,0.4);border:none;cursor:pointer;">
-            Reserve Seat B-04 Online &rarr;
+            Reserve Seat S-25 Online &rarr;
           </button>
         </div>
       </div>

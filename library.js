@@ -693,6 +693,401 @@ window.printLibraryRulesSheet = function(student = {}) {
   win.document.close();
 };
 
+/* ==========================================================================
+   OFFICIAL 1-PAGE ADMISSION FORM (A4 PRINT / PDF ENGINE)
+   ========================================================================== */
+window.printAdmissionForm = function(studentOrRegNo) {
+  let m = studentOrRegNo;
+  if (!m || typeof m === 'string') {
+    const reg = (typeof studentOrRegNo === 'string' && studentOrRegNo) ? studentOrRegNo : (window.__lastAdmittedMember ? window.__lastAdmittedMember.regNo : null);
+    const members = store.get('c2s_lib_members', []);
+    m = members.find(item => item.regNo === reg) || window.__lastAdmittedMember || members[0] || {};
+  }
+
+  const name = m.name || "Student Applicant";
+  const regNo = m.regNo || "C2SLIB-PENDING";
+  const mobile = m.mobile || "—";
+  const guardianContact = m.guardianContact || m.fatherMobile || "—";
+  const fatherName = m.fatherName || m.guardianName || "—";
+  const gender = m.gender || "—";
+  const dob = m.dob || "—";
+  const address = m.address || "Patrapada, Bhubaneswar, Odisha";
+  const email = m.email || "—";
+  const targetExam = m.studyPurpose || m.examPref || "Competitive Exams";
+  const shift = m.shift || "Full Day (07:00 AM – 09:00 PM)";
+  const seat = m.seat || "Assigned on Visit";
+  const numMatch = seat.match(/\d+/);
+  const seatNum = numMatch ? parseInt(numMatch[0]) : null;
+  const floor = m.floor || (seatNum && seatNum <= 24 ? "2nd Floor (Zone A • 24 Seats)" : "1st Floor (Zones B, C, D • 125 Seats)");
+  const locker = m.locker || ((shift.includes("Full Day") || shift.includes("24 Hours")) ? (seatNum ? "Locker #" + seatNum : "Locker Allocated") : "Not Applicable");
+  const paid = Number(m.paid) || 0;
+  const pending = Number(m.pending) || 0;
+  const total = paid + pending;
+  const payMode = m.lastPaymentMode || m.mode || "UPI / QR";
+  const admDate = m.admDate || m.date || new Date().toLocaleDateString('en-IN');
+  const fromDate = m.fromDate || admDate;
+  const toDate = m.toDate || m.validTill || "30 Days from Admission";
+  const branch = m.branch ? m.branch.replace(/^[^\w]+/, '').trim() : "Patrapada Flagship Centre (NH-16, Opposite Sani Mandir, BBSR)";
+  const photo = m.photo || "";
+
+  const win = window.open('', '_blank');
+  if (!win) {
+    alert("Please allow popups to open and print the 1-Page Official Admission Form.");
+    return;
+  }
+
+  win.document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>C2S Admission Form — ${regNo} (${name})</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 8mm 10mm;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 9pt;
+      line-height: 1.32;
+      color: #0f172a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    .print-sheet {
+      border: 2px solid #0f2a5c;
+      padding: 10px 14px;
+      max-width: 100%;
+    }
+    .sheet-header {
+      text-align: center;
+      border-bottom: 2px solid #0f2a5c;
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+    }
+    .brand-title {
+      font-size: 15pt;
+      font-weight: 900;
+      color: #0f2a5c;
+      letter-spacing: 0.5px;
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .brand-sub {
+      font-size: 8.5pt;
+      color: #ea580c;
+      font-weight: 800;
+      margin: 2px 0;
+    }
+    .brand-address {
+      font-size: 7.8pt;
+      color: #475569;
+      margin: 1px 0 4px;
+    }
+    .form-heading-pill {
+      display: inline-block;
+      background: #0f2a5c;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 9pt;
+      padding: 2px 14px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .top-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 100px;
+      gap: 10px;
+      margin-bottom: 6px;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 6px;
+    }
+    .meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.2pt;
+    }
+    .meta-table td {
+      padding: 3px 6px;
+      border: 1px solid #e2e8f0;
+    }
+    .meta-label {
+      background: #f8fafc;
+      font-weight: 750;
+      color: #334155;
+      width: 25%;
+    }
+    .meta-val {
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .photo-box {
+      border: 1.5px dashed #64748b;
+      background: #f8fafc;
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .photo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .sec-title {
+      background: #f1f5f9;
+      border-left: 3px solid #ea580c;
+      padding: 2px 8px;
+      font-size: 8.2pt;
+      font-weight: 850;
+      color: #0f2a5c;
+      margin: 5px 0 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.2pt;
+      margin-bottom: 4px;
+    }
+    .data-table td, .data-table th {
+      border: 1px solid #cbd5e1;
+      padding: 3px 6px;
+    }
+    .data-table .label-cell {
+      background: #f8fafc;
+      font-weight: 700;
+      color: #334155;
+      width: 20%;
+    }
+    .data-table .val-cell {
+      font-weight: 600;
+      color: #0f172a;
+      width: 30%;
+    }
+    .undertaking-box {
+      background: #fafafa;
+      border: 1px solid #e2e8f0;
+      padding: 4px 8px;
+      font-size: 7.4pt;
+      line-height: 1.32;
+      color: #334155;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .undertaking-box ol {
+      margin: 2px 0 0 14px;
+      padding: 0;
+    }
+    .undertaking-box li {
+      margin-bottom: 1.5px;
+    }
+    .sig-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 6px;
+      padding-top: 4px;
+      border-top: 1.5px solid #0f2a5c;
+    }
+    .sig-col {
+      text-align: center;
+      font-size: 7.8pt;
+    }
+    .sig-space {
+      height: 32px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      margin-bottom: 2px;
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
+      color: #1e3a8a;
+    }
+    .sig-line {
+      border-top: 1px solid #475569;
+      padding-top: 2px;
+      font-weight: 800;
+      color: #0f2a5c;
+    }
+    .no-print {
+      margin-bottom: 10px;
+      background: #0f2a5c;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { padding: 0; }
+      .print-sheet { border: 2px solid #000; }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print">
+    <div>
+      <strong style="font-size:14px;">🖨️ Official 1-Page Admission Form (A4 PDF)</strong>
+      <div style="font-size:11px;opacity:0.85;">Strict 1-Page Layout • Ready for Printing or Saving as PDF</div>
+    </div>
+    <button onclick="window.print()" style="padding:7px 20px;background:#ea580c;color:#fff;border:none;border-radius:6px;font-weight:800;font-size:13px;cursor:pointer;">
+      🖨️ Print Form / Save as PDF
+    </button>
+  </div>
+
+  <div class="print-sheet">
+    <div class="sheet-header">
+      <div class="brand-title">C2S Premium 24-Hour Study Sanctuary</div>
+      <div class="brand-sub">AN EXCLUSIVE AIR-CONDITIONED STUDY &amp; DIGITAL EXAM SANCTUARY • BHUBANESWAR</div>
+      <div class="brand-address">NH-16 Highway, Opposite Sani Mandir, Patrapada, Bhubaneswar – 751019 | Helplines: 9777481909 / 9658177712 | Web: c2seri.com/library</div>
+      <div class="form-heading-pill">Official Student Admission &amp; Seat Allocation Form</div>
+    </div>
+
+    <div class="top-meta-grid">
+      <table class="meta-table">
+        <tr>
+          <td class="meta-label">Registration ID:</td>
+          <td class="meta-val" style="color:#0f2a5c;font-size:9.5pt;">${regNo}</td>
+          <td class="meta-label">Admission Date:</td>
+          <td class="meta-val">${admDate}</td>
+        </tr>
+        <tr>
+          <td class="meta-label">Tenure Validity:</td>
+          <td class="meta-val">${fromDate} to ${toDate}</td>
+          <td class="meta-label">Branch Centre:</td>
+          <td class="meta-val">${branch}</td>
+        </tr>
+        <tr>
+          <td class="meta-label">Allotted Seat:</td>
+          <td class="meta-val" style="color:#ea580c;font-size:9pt;">Seat ${seat}</td>
+          <td class="meta-label">Sanctuary Floor:</td>
+          <td class="meta-val">${floor}</td>
+        </tr>
+      </table>
+
+      <div class="photo-box">
+        ${photo ? `<img src="${photo}" alt="Student Photo">` : `<div style="font-size:7.5pt;color:#64748b;">AFFIX RECENT<br>PASSPORT PHOTO /<br>LIVE SELFIE</div>`}
+      </div>
+    </div>
+
+    <div class="sec-title">1. Candidate Particulars &amp; Identity</div>
+    <table class="data-table">
+      <tr>
+        <td class="label-cell">Candidate Name:</td>
+        <td class="val-cell" style="font-weight:800;color:#0f2a5c;">${name}</td>
+        <td class="label-cell">Father's Name:</td>
+        <td class="val-cell">${fatherName}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Candidate Mobile:</td>
+        <td class="val-cell" style="font-weight:750;">+91 ${mobile}</td>
+        <td class="label-cell">Guardian Mobile:</td>
+        <td class="val-cell">${guardianContact}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Gender / DOB:</td>
+        <td class="val-cell">${gender} / ${dob}</td>
+        <td class="label-cell">Target Exam / Goal:</td>
+        <td class="val-cell" style="font-weight:750;color:#1e3a8a;">${targetExam}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Email Address:</td>
+        <td class="val-cell">${email}</td>
+        <td class="label-cell">Permanent Address:</td>
+        <td class="val-cell">${address}</td>
+      </tr>
+    </table>
+
+    <div class="sec-title">2. Shift Allocation &amp; Study Sanctuary Amenities</div>
+    <table class="data-table">
+      <tr>
+        <td class="label-cell">Allotted Shift:</td>
+        <td class="val-cell" style="font-weight:800;color:#0f2a5c;">${shift}</td>
+        <td class="label-cell">Dedicated Desk:</td>
+        <td class="val-cell" style="font-weight:800;color:#ea580c;">Seat ${seat}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Locker Facility:</td>
+        <td class="val-cell">${locker}</td>
+        <td class="label-cell">Desk Features:</td>
+        <td class="val-cell">Warm LED Reading Lamp, 230V Socket, Partition Cubicle</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Inclusive Facilities:</td>
+        <td class="val-cell" colspan="3">300 Mbps Wi-Fi, 100% DG Silent Power Backup, RO Water, Underground Parking, Lunch/Tea Facility, CBT Online Tests.</td>
+      </tr>
+    </table>
+
+    <div class="sec-title">3. Fee Payment &amp; Billing Ledger Details</div>
+    <table class="data-table">
+      <tr>
+        <td class="label-cell">Plan / Monthly Fee:</td>
+        <td class="val-cell" style="font-weight:750;">₹${total}</td>
+        <td class="label-cell">Payment Mode:</td>
+        <td class="val-cell">${payMode}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Amount Received:</td>
+        <td class="val-cell" style="font-weight:800;color:#047857;">₹${paid} (Cleared)</td>
+        <td class="label-cell">Pending Dues:</td>
+        <td class="val-cell" style="font-weight:750;color:${pending > 0 ? '#dc2626' : '#047857'};">₹${pending}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Receipt Reference:</td>
+        <td class="val-cell" colspan="3">C2S-REC-${regNo} • Auto-generated official billing receipt</td>
+      </tr>
+    </table>
+
+    <div class="sec-title">4. Applicant Undertaking &amp; Sanctuary Discipline Rules</div>
+    <div class="undertaking-box">
+      <ol>
+        <li>I agree to strictly maintain pin-drop silence in the sanctuary. Mobile phones must remain on silent mode at all times.</li>
+        <li>I will use only my assigned seat (Seat ${seat}) and will not shift or swap desks without prior written permission.</li>
+        <li>Library property, lamps, switches, and lockable cabinets will be handled with utmost care. Damages will be chargeable.</li>
+        <li>Digital membership pass and keys are strictly non-transferable. Sharing credentials will lead to immediate cancellation without refund.</li>
+        <li>The library management reserves full right to terminate membership in case of indiscipline, misconduct, or rule violation.</li>
+      </ol>
+    </div>
+
+    <div class="sig-grid">
+      <div class="sig-col">
+        <div class="sig-space">${name}</div>
+        <div class="sig-line">Applicant Digital Consent / Sign</div>
+        <div style="font-size:7pt;color:#64748b;margin-top:2px;">Consent verified via mobile timestamp</div>
+      </div>
+      <div class="sig-col">
+        <div class="sig-space" style="font-size:7.5pt;color:#059669;font-weight:800;">VERIFIED &amp; DESK ALLOCATED</div>
+        <div class="sig-line">Front Desk / Shift In-Charge</div>
+        <div style="font-size:7pt;color:#64748b;margin-top:2px;">Biometric &amp; Locker Access Activated</div>
+      </div>
+      <div class="sig-col">
+        <div class="sig-space" style="font-size:7.5pt;color:#0f2a5c;font-weight:800;">C2S PATRAPADA SEAL</div>
+        <div class="sig-line">Centre Superintendent &amp; Seal</div>
+        <div style="font-size:7pt;color:#64748b;margin-top:2px;">College to Service • Bhubaneswar</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`);
+  win.document.close();
+};
+
 /* 3. Admission Form Submission */
 function libAdmit(e) {
   e.preventDefault();
@@ -817,6 +1212,7 @@ function libAdmit(e) {
     date: new Date().toISOString().slice(0, 10)
   };
 
+  window.__lastAdmittedMember = m;
   members.unshift(m);
   store.set("c2s_lib_members", members);
   store.set("c2s_lib_user", m);
@@ -949,12 +1345,12 @@ function libAdmit(e) {
         `}
 
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-          <a href="login.html" class="btn orange" style="padding:10px 20px;font-size:13.5px;font-weight:800;text-decoration:none;">
-            🔑 Open Member Portal &amp; View Digital Pass &rarr;
-          </a>
-          <button type="button" class="btn ghost" style="padding:10px 18px;font-size:13px;color:#fff;border-color:rgba(255,255,255,0.3);" onclick="window.print()">
-            🖨️ Print Admission Slip
+          <button type="button" class="btn" style="background:#1d4ed8;color:#ffffff;padding:11px 22px;font-size:14px;font-weight:800;border:none;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(29,78,216,0.35);" onclick="window.printAdmissionForm(window.__lastAdmittedMember)">
+            <span>🖨️ Print 1-Page Official Admission Form (A4 PDF) &rarr;</span>
           </button>
+          <a href="login.html" class="btn orange" style="padding:11px 20px;font-size:14px;font-weight:800;text-decoration:none;">
+            🔑 Open Member Portal &rarr;
+          </a>
         </div>
       </div>
     `;

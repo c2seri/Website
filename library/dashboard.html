@@ -221,8 +221,9 @@
 
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#cbd5e1;">
           <span>📞 Library Front Desk: <strong>9777481909</strong> / <strong>9658177712</strong></span>
-          <div style="display:flex;gap:10px;align-items:center;">
-            <button type="button" class="btn ghost" style="color:#fff;border-color:rgba(255,255,255,0.25);font-size:12px;padding:5px 12px;" onclick="window.print()">🖨️ Print Membership Slip</button>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <button type="button" class="btn" style="background:#1d4ed8;color:#fff;font-size:12px;padding:6px 14px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(29,78,216,0.4);" onclick="window.printAdmissionForm(store.get('c2s_lib_user'))"><span>🖨️ Print 1-Page Form (A4 PDF)</span></button>
+            <button type="button" class="btn ghost" style="color:#fff;border-color:rgba(255,255,255,0.25);font-size:12px;padding:5px 12px;" onclick="window.print()">🖨️ Print Pass Slip</button>
             <a href="admission.html?renew=1" class="btn orange" style="padding:6px 14px;font-size:12px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:4px;"><span>🔄 Renew / Change Shift &rarr;</span></a>
           </div>
         </div>

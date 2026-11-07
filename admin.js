@@ -256,7 +256,7 @@ function renderSuperAdmin() {
   const passRevenue = transactions.filter(t => t.desc && t.desc.includes("Test Pass")).reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
 
   const totalOccupied = Object.keys(taken).length;
-  const occupancyPct = Math.round((totalOccupied / 48) * 100);
+  const occupancyPct = Math.min(100, Math.round((totalOccupied / 149) * 100));
 
   const totalRevenue = filteredLedger.filter(l => l.amt > 0).reduce((sum, l) => sum + l.amt, 0) + (currentAdminDateFilter === 'all_time' ? passRevenue : 0);
   const totalPending = filteredMembers.reduce((sum, m) => sum + (Number(m.pending) || 0), 0);
@@ -274,7 +274,7 @@ function renderSuperAdmin() {
   document.getElementById('kpiMainStudents').textContent = users.length;
   document.getElementById('kpiLibMembers').textContent = allMembers.length;
   document.getElementById('kpiSeatOccupancy').textContent = occupancyPct + '%';
-  document.getElementById('kpiSeatCount').textContent = totalOccupied + ' / 48 Desks Occupied';
+  document.getElementById('kpiSeatCount').textContent = totalOccupied + ' / 149 Seats Occupied';
   document.getElementById('kpiRevenue').textContent = '₹' + (periodRevenue || totalRevenue);
   document.getElementById('kpiPending').textContent = '₹' + totalPending;
   document.getElementById('kpiTestsTaken').textContent = given.length;
@@ -715,13 +715,26 @@ window.getAvailableSeats = function(currentSeatToIgnore = null) {
   const taken = store.get('c2s_lib_taken', {});
   const ignoreNorm = currentSeatToIgnore ? normalizeSeatCode(currentSeatToIgnore) : null;
   const list = [];
-  // 149 Total Desks across 2 Floors
+  // 149 Total Seats across 2 Floors:
+  // Upper Floor (Floor 2): S-1 to S-24 (24 Seats in Zone A)
+  // Lower Floor (Floor 1): S-25 to S-149 (125 Seats in Zones B, C, D)
   for (let i = 1; i <= 149; i++) {
-    const code = `Desk-${String(i).padStart(3, '0')}`;
-    const label = `Desk #${i}`;
-    const isTaken = Boolean(taken[code] || taken[`Desk ${i}`] || taken[label] || taken[String(i)]);
-    if (!isTaken || (ignoreNorm && ignoreNorm === code)) {
-      list.push({ num: i, code: code, label: label, floor: i <= 75 ? 1 : 2 });
+    const sCode = `S-${i}`;
+    const sPad = `S-${String(i).padStart(2, '0')}`;
+    const dCode = `Desk-${String(i).padStart(3, '0')}`;
+    const label = `Seat S-${i}`;
+    const isTaken = Boolean(
+      taken[sCode] || taken[sPad] || taken[dCode] ||
+      taken[`Seat S-${i}`] || taken[`Seat #${i}`] || taken[`Desk ${i}`] || taken[String(i)]
+    );
+    if (!isTaken || (ignoreNorm && (ignoreNorm === sCode || ignoreNorm === sPad || ignoreNorm === dCode))) {
+      list.push({
+        num: i,
+        code: sCode,
+        label: label,
+        floor: i <= 24 ? 2 : 1,
+        zone: i <= 24 ? 'Zone A (2nd Fl)' : (i <= 67 ? 'Zone B (1st Fl)' : (i <= 109 ? 'Zone C (1st Fl)' : 'Zone D (1st Fl)'))
+      });
     }
   }
   return list;
@@ -739,15 +752,22 @@ function renderSeatController() {
   const container = document.getElementById('adminSeatController');
   if (!container) return;
 
-  let takenF1 = 0;
-  for (let i = 1; i <= 75; i++) {
-    const code = `Desk-${String(i).padStart(3, '0')}`;
-    if (taken[code] || taken[`Desk ${i}`] || taken[`Desk #${i}`] || taken[String(i)]) takenF1++;
-  }
+  // Floor 2 (Upper Floor): S-1 to S-24 (24 seats)
   let takenF2 = 0;
-  for (let i = 76; i <= 149; i++) {
-    const code = `Desk-${String(i).padStart(3, '0')}`;
-    if (taken[code] || taken[`Desk ${i}`] || taken[`Desk #${i}`] || taken[String(i)]) takenF2++;
+  for (let i = 1; i <= 24; i++) {
+    const sCode = `S-${i}`;
+    const sPad = `S-${String(i).padStart(2, '0')}`;
+    const dCode = `Desk-${String(i).padStart(3, '0')}`;
+    if (taken[sCode] || taken[sPad] || taken[dCode] || taken[`Seat S-${i}`] || taken[`Desk ${i}`] || taken[String(i)]) takenF2++;
+  }
+
+  // Floor 1 (Lower Floor): S-25 to S-149 (125 seats)
+  let takenF1 = 0;
+  for (let i = 25; i <= 149; i++) {
+    const sCode = `S-${i}`;
+    const sPad = `S-${String(i).padStart(2, '0')}`;
+    const dCode = `Desk-${String(i).padStart(3, '0')}`;
+    if (taken[sCode] || taken[sPad] || taken[dCode] || taken[`Seat S-${i}`] || taken[`Desk ${i}`] || taken[String(i)]) takenF1++;
   }
 
   let html = `
@@ -757,11 +777,11 @@ function renderSeatController() {
           <span style="font-weight:900;color:#0f2a5c;font-size:13px;">🏢 SELECT FLOOR VIEW (149 SEATS):</span>
           <button type="button" class="btn" onclick="setAdminSeatFloor(1)"
             style="padding:6px 16px;font-size:12.5px;font-weight:800;border-radius:8px;background:${currentAdminSeatFloor === 1 ? '#1d4ed8' : '#f8fafc'};color:${currentAdminSeatFloor === 1 ? '#fff' : '#0f2a5c'};border:1px solid ${currentAdminSeatFloor === 1 ? '#1d4ed8' : '#cbd5e1'};cursor:pointer;">
-            🏢 Floor 1 (${75 - takenF1} / 75 Vacant)
+            🏢 Lower Floor (1st Fl) • 125 Seats (${125 - takenF1} / 125 Vacant)
           </button>
           <button type="button" class="btn" onclick="setAdminSeatFloor(2)"
             style="padding:6px 16px;font-size:12.5px;font-weight:800;border-radius:8px;background:${currentAdminSeatFloor === 2 ? '#1d4ed8' : '#f8fafc'};color:${currentAdminSeatFloor === 2 ? '#fff' : '#0f2a5c'};border:1px solid ${currentAdminSeatFloor === 2 ? '#1d4ed8' : '#cbd5e1'};cursor:pointer;">
-            🏢 Floor 2 (${74 - takenF2} / 74 Vacant)
+            🏢 Upper Floor (2nd Fl) • 24 Seats (${24 - takenF2} / 24 Vacant)
           </button>
         </div>
         <div style="display:flex;align-items:center;gap:12px;font-size:12px;flex-wrap:wrap;">
@@ -771,22 +791,29 @@ function renderSeatController() {
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(82px, 1fr));gap:8px;">
+      <div style="font-size:11.5px;font-weight:800;color:#64748b;margin-bottom:10px;text-transform:uppercase;">
+        ${currentAdminSeatFloor === 1 ? 'Showing 1st Floor (Lower Floor): Seats S-25 to S-149 across Zones B, C, D (125 Seats)' : 'Showing 2nd Floor (Upper Floor): Seats S-1 to S-24 in Zone A (24 Seats)'}
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(78px, 1fr));gap:8px;">
   `;
 
-  const start = currentAdminSeatFloor === 1 ? 1 : 76;
-  const end = currentAdminSeatFloor === 1 ? 75 : 149;
+  const start = currentAdminSeatFloor === 1 ? 25 : 1;
+  const end = currentAdminSeatFloor === 1 ? 149 : 24;
 
   for (let i = start; i <= end; i++) {
-    const code = `Desk-${String(i).padStart(3, '0')}`;
-    const isTaken = Boolean(taken[code] || taken[`Desk ${i}`] || taken[`Desk #${i}`] || taken[String(i)]);
+    const sCode = `S-${i}`;
+    const sPad = `S-${String(i).padStart(2, '0')}`;
+    const dCode = `Desk-${String(i).padStart(3, '0')}`;
+    const isTaken = Boolean(taken[sCode] || taken[sPad] || taken[dCode] || taken[`Seat S-${i}`] || taken[`Desk ${i}`] || taken[String(i)]);
+    const zoneName = i <= 24 ? 'Zone A' : (i <= 67 ? 'Zone B' : (i <= 109 ? 'Zone C' : 'Zone D'));
     html += `
       <button type="button" class="btn ${isTaken ? 'orange' : 'ghost'}"
-        style="padding:8px 4px;font-size:11.5px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;"
-        title="Desk #${i} • ${isTaken ? 'Occupied (Click to Release)' : 'Vacant (Click to Hold)'}"
-        onclick="toggleAdminSeat('${code}')">
+        style="padding:6px 2px;font-size:11px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;"
+        title="Seat S-${i} (${zoneName}) • ${isTaken ? 'Occupied (Click to Release)' : 'Vacant (Click to Hold)'}"
+        onclick="toggleAdminSeat('S-${i}')">
         <span>${isTaken ? '🔴' : '🟢'}</span>
-        <span>#${i}</span>
+        <span>S-${i}</span>
       </button>
     `;
   }
@@ -798,11 +825,21 @@ function renderSeatController() {
 function toggleAdminSeat(id) {
   const code = normalizeSeatCode(id);
   const taken = store.get('c2s_lib_taken', {});
-  if (taken[code] || taken['Desk ' + code]) {
+  const numMatch = id.match(/\d+/);
+  const num = numMatch ? parseInt(numMatch[0]) : null;
+  const sCode = num ? `S-${num}` : code;
+  const sPad = num ? `S-${String(num).padStart(2, '0')}` : code;
+  const dCode = num ? `Desk-${String(num).padStart(3, '0')}` : code;
+
+  const isCurrentlyTaken = Boolean(taken[sCode] || taken[sPad] || taken[dCode] || taken[code]);
+  if (isCurrentlyTaken) {
+    delete taken[sCode];
+    delete taken[sPad];
+    delete taken[dCode];
     delete taken[code];
-    delete taken['Desk ' + code];
   } else {
-    taken[code] = true;
+    taken[sCode] = true;
+    taken[sPad] = true;
   }
   store.set('c2s_lib_taken', taken);
   renderSeatController();
@@ -1064,23 +1101,85 @@ window.resetDeskAdmissionForm = function() {
   setTimeout(initDeskAdmissionForm, 50);
 };
 
+let currentMemberStatusFilter = 'all';
+
+window.setMemberStatusFilter = function(status) {
+  currentMemberStatusFilter = status;
+  ['all', 'active', 'left', 'cancelled'].forEach(s => {
+    const btn = document.getElementById('tabStatus' + s.charAt(0).toUpperCase() + s.slice(1));
+    if (btn) {
+      if (s === status) {
+        btn.classList.add('active');
+        btn.classList.remove('ghost');
+      } else {
+        btn.classList.remove('active');
+        btn.classList.add('ghost');
+      }
+    }
+  });
+  const q = document.getElementById('memberSearch')?.value || '';
+  renderMemberList(q);
+};
+
 function renderMemberList(filterQuery = '') {
   const members = store.get('c2s_lib_members', []);
   const tbody = document.getElementById('adminMemberBody');
   if (!tbody) return;
 
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  // Calculate Status Counts
+  let countAll = members.length;
+  let countActive = 0;
+  let countLeft = 0;
+  let countCancelled = 0;
+
+  members.forEach(m => {
+    const isCancelled = m.status === 'Cancelled' || (m.status && m.status.toLowerCase().includes('cancel'));
+    const isLeft = m.status && (m.status.toLowerCase().includes('left') || m.status.toLowerCase().includes('completed') || m.status.toLowerCase().includes('selected'));
+    const expDate = getMemberExpiryDate(m);
+    const isExpired = expDate ? (todayStr > expDate) : false;
+
+    if (isCancelled) {
+      countCancelled++;
+    } else if (isLeft) {
+      countLeft++;
+    } else if (!isExpired) {
+      countActive++;
+    } else {
+      countLeft++;
+    }
+  });
+
+  const elAll = document.getElementById('countAllMembers');
+  if (elAll) elAll.textContent = countAll;
+  const elActive = document.getElementById('countActiveMembers');
+  if (elActive) elActive.textContent = countActive;
+  const elLeft = document.getElementById('countLeftMembers');
+  if (elLeft) elLeft.textContent = countLeft;
+  const elCancelled = document.getElementById('countCancelledMembers');
+  if (elCancelled) elCancelled.textContent = countCancelled;
+
   const q = filterQuery.toLowerCase().trim();
   const filtered = members.filter(m => {
+    const isCancelled = m.status === 'Cancelled' || (m.status && m.status.toLowerCase().includes('cancel'));
+    const isLeft = m.status && (m.status.toLowerCase().includes('left') || m.status.toLowerCase().includes('completed') || m.status.toLowerCase().includes('selected'));
+    const expDate = getMemberExpiryDate(m);
+    const isExpired = expDate ? (todayStr > expDate) : false;
+
+    // Filter by tab
+    if (currentMemberStatusFilter === 'active' && (isCancelled || isLeft || isExpired)) return false;
+    if (currentMemberStatusFilter === 'left' && !isLeft && !isExpired) return false;
+    if (currentMemberStatusFilter === 'cancelled' && !isCancelled) return false;
+
     const matchesQ = !q || 
       (m.name || '').toLowerCase().includes(q) || 
       (m.regNo || '').toLowerCase().includes(q) || 
       (m.mobile || '').includes(q) ||
+      (m.seat || '').toLowerCase().includes(q) ||
       (m.studyPurpose || m.examPref || '').toLowerCase().includes(q);
     
-    // When no search query is typed, filter by active date range (e.g. chosen month)
-    // When admin actively searches, search all members across history
-    const matchesDate = q ? true : isDateInFilter(m.admDate || m.date);
-    return matchesQ && matchesDate;
+    return matchesQ;
   });
 
   tbody.innerHTML = filtered.length ? filtered.map(m => {
@@ -1096,14 +1195,23 @@ function renderMemberList(filterQuery = '') {
       `<span style="display:inline-flex;align-items:center;gap:3px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:2px 7px;border-radius:999px;font-size:11px;font-weight:750;">📷 Photo</span>` : '';
 
     const expDate = getMemberExpiryDate(m);
-    const todayStr = new Date().toISOString().slice(0, 10);
-    const isExpired = expDate ? (todayStr > expDate) : (m.status === 'Inactive' || m.status === 'Expired');
-    const statusPill = isExpired ?
-      `<span class="pill" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:10px;padding:2px 6px;font-weight:800;display:inline-block;margin-top:2px;">⚠️ Inactive (${expDate || 'Expired'})</span>` :
-      `<span class="pill" style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-size:10px;padding:2px 6px;font-weight:800;display:inline-block;margin-top:2px;">🟢 Active (${expDate || 'Till ' + (m.toDate || 'Valid')})</span>`;
+    const isCancelled = m.status === 'Cancelled' || (m.status && m.status.toLowerCase().includes('cancel'));
+    const isLeft = m.status && (m.status.toLowerCase().includes('left') || m.status.toLowerCase().includes('completed') || m.status.toLowerCase().includes('selected'));
+    const isExpired = expDate ? (todayStr > expDate) : false;
+
+    let statusPill = '';
+    if (isCancelled) {
+      statusPill = `<span class="pill" style="background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;font-size:10px;padding:2px 6px;font-weight:800;display:inline-block;margin-top:2px;">🚫 Cancelled (${m.cancelledDate || 'Seat Vacated'})</span>`;
+    } else if (isLeft) {
+      statusPill = `<span class="pill" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:10px;padding:2px 6px;font-weight:800;display:inline-block;margin-top:2px;">🎓 ${m.status}</span>`;
+    } else if (isExpired) {
+      statusPill = `<span class="pill" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:10px;padding:2px 6px;font-weight:800;display:inline-block;margin-top:2px;">⚠️ Inactive (${expDate || 'Expired'})</span>`;
+    } else {
+      statusPill = `<span class="pill" style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-size:10px;padding:2px 6px;font-weight:800;display:inline-block;margin-top:2px;">🟢 Active (${expDate || 'Till ' + (m.toDate || 'Valid')})</span>`;
+    }
 
     return `
-      <tr style="${isExpired ? 'background:#fffbfb;' : ''}">
+      <tr style="${isCancelled ? 'background:#fffafa;' : (isExpired ? 'background:#fffbfb;' : '')}">
         <td>
           <div style="display:flex;align-items:center;gap:10px;">
             ${avatarHtml}
@@ -1126,7 +1234,9 @@ function renderMemberList(filterQuery = '') {
         </td>
         <td>
           <span class="pill" style="font-size:11.5px;padding:3px 9px;margin-bottom:3px;display:inline-block;">${m.shift}</span>
-          <span style="font-size:11.5px;color:${isExpired ? '#dc2626' : '#2563eb'};font-weight:700;display:block;">💺 ${m.seat || 'Front Desk'} ${isExpired ? '(Released)' : ''}</span>
+          <span style="font-size:11.5px;color:${(isCancelled || isLeft || isExpired) ? '#94a3b8' : '#2563eb'};font-weight:750;display:block;">
+            💺 ${m.seat || 'Front Desk'} ${(isCancelled || isLeft || isExpired) ? '<span style="font-size:10px;color:#dc2626;">(Released)</span>' : ''}
+          </span>
           ${(m.shift && (m.shift.includes('Full Day') || m.shift.includes('24 Hours'))) ? 
             `<span style="font-size:10.5px;color:#059669;font-weight:750;display:block;">🔒 ${m.locker || (m.seat && m.seat.match(/\d+/) ? 'Locker #' + m.seat.match(/\d+/)[0] : 'Locker Attached')}</span>` :
             `<span style="font-size:10px;color:#94a3b8;display:block;">🔒 No Locker (Partial Shift)</span>`
@@ -1136,6 +1246,7 @@ function renderMemberList(filterQuery = '') {
           <div style="font-size:13px;font-weight:800;color:#047857;">₹${m.paid || 0} Paid</div>
           <span style="font-size:11px;color:#2563eb;font-weight:750;display:block;">💳 ${m.lastPaymentMode || m.mode || 'UPI / QR'}</span>
           ${m.pending > 0 ? `<div style="font-size:11px;font-weight:800;color:#dc2626;">₹${m.pending} Pending</div>` : `<span style="font-size:10.5px;color:#059669;font-weight:700;">✓ Cleared</span>`}
+          ${m.refundPaid ? `<span style="font-size:10.5px;color:#dc2626;font-weight:750;display:block;">Refund: ₹${m.refundPaid}</span>` : ''}
         </td>
         <td>
           <div style="display:flex;flex-direction:column;gap:3px;">
@@ -1144,15 +1255,27 @@ function renderMemberList(filterQuery = '') {
           </div>
         </td>
         <td>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <button type="button" class="btn orange" style="padding:4px 8px;font-size:11.5px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:3px;" onclick="openRenewalModal('${m.regNo}')" title="Renew Membership / Change Shift">
-              <span>🔄 Renew</span>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;">
+            <button type="button" class="btn" style="background:#1d4ed8;color:#ffffff;padding:4px 8px;font-size:11.5px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:3px;" onclick="window.printAdmissionForm('${m.regNo}')" title="Print 1-Page Official Admission Form (A4 PDF)">
+              <span>🖨️ Form</span>
             </button>
+            ${(!isCancelled && !isLeft) ? `
+              <button type="button" class="btn orange" style="padding:4px 8px;font-size:11.5px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:3px;" onclick="openRenewalModal('${m.regNo}')" title="Renew Membership / Change Shift">
+                <span>🔄 Renew</span>
+              </button>
+              <button type="button" class="btn ghost" style="padding:4px 8px;font-size:11.5px;font-weight:750;color:#dc2626;border-color:#fca5a5;" onclick="openCancelModal('${m.regNo}')" title="Cancel Membership & Release Seat">
+                ❌ Cancel
+              </button>
+            ` : `
+              <button type="button" class="btn ghost" style="padding:4px 8px;font-size:11.5px;font-weight:750;color:#059669;border-color:#86efac;background:#ecfdf5;" onclick="reActivateMembership('${m.regNo}')" title="Reactivate Membership & Allocate Seat">
+                🔄 Re-Activate
+              </button>
+            `}
             <button type="button" class="btn ghost" style="padding:4px 8px;font-size:11.5px;font-weight:750;" onclick="openStudent360('${m.regNo}')">
               👁️ Profile
             </button>
-            <button type="button" class="btn" style="background:#25d366;color:#ffffff;padding:4px 8px;font-size:11.5px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;" onclick="resendStudentReceipt('${m.regNo}')" title="Resend WhatsApp Receipt & Login Link">
-              <span>📲 Receipt</span>
+            <button type="button" class="btn" style="background:#25d366;color:#ffffff;padding:4px 8px;font-size:11.5px;font-weight:800;border:none;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:3px;" onclick="resendStudentReceipt('${m.regNo}')" title="Resend WhatsApp Receipt">
+              <span>📲</span>
             </button>
           </div>
         </td>
@@ -1165,6 +1288,135 @@ function filterAdminMembers() {
   const q = document.getElementById('memberSearch').value;
   renderMemberList(q);
 }
+
+/* Membership Cancellation Handlers */
+window.openCancelModal = function(regNo) {
+  const members = store.get('c2s_lib_members', []);
+  const m = members.find(item => item.regNo === regNo);
+  if (!m) return alert('Member not found: ' + regNo);
+
+  document.getElementById('cancelRegNo').value = m.regNo;
+  document.getElementById('cancelStudentName').textContent = m.name;
+  document.getElementById('cancelStudentRegNo').textContent = m.regNo;
+  document.getElementById('cancelStudentShift').textContent = m.shift || 'Full Day';
+  document.getElementById('cancelStudentSeat').textContent = m.seat || 'No Seat Assigned';
+  document.getElementById('cancelStudentMobile').textContent = m.mobile || '—';
+  document.getElementById('cancelStudentPaid').textContent = '₹' + (m.paid || 0);
+  document.getElementById('cancelDate').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('cancelRefund').value = 0;
+  document.getElementById('cancelRemarks').value = '';
+  document.getElementById('cancelReleaseSeat').checked = true;
+
+  const modal = document.getElementById('cancelMembershipModal');
+  if (modal) modal.classList.add('active');
+};
+
+window.closeCancelModal = function() {
+  const modal = document.getElementById('cancelMembershipModal');
+  if (modal) modal.classList.remove('active');
+};
+
+window.submitCancelMembership = function(e) {
+  e.preventDefault();
+  const regNo = document.getElementById('cancelRegNo').value;
+  const members = store.get('c2s_lib_members', []);
+  const m = members.find(item => item.regNo === regNo);
+  if (!m) return alert('Member not found: ' + regNo);
+
+  const cancelDate = document.getElementById('cancelDate').value;
+  const cancelReason = document.getElementById('cancelReason').value;
+  const refundAmount = Number(document.getElementById('cancelRefund').value || 0);
+  const releaseSeat = document.getElementById('cancelReleaseSeat').checked;
+  const remarks = document.getElementById('cancelRemarks').value.trim();
+
+  const prevSeat = m.seat;
+
+  m.status = 'Cancelled';
+  m.cancelledDate = cancelDate;
+  m.cancelledReason = cancelReason;
+  m.refundPaid = refundAmount;
+  m.exitDate = cancelDate;
+  m.notes = (m.notes ? m.notes + ' | ' : '') + `Cancelled on ${cancelDate}: ${cancelReason}. Refund: ₹${refundAmount}. ${remarks}`;
+
+  if (releaseSeat && prevSeat) {
+    const numMatch = prevSeat.match(/\d+/);
+    if (numMatch) {
+      const num = parseInt(numMatch[0]);
+      const taken = store.get('c2s_lib_taken', {});
+      delete taken[`S-${num}`];
+      delete taken[`S-${String(num).padStart(2, '0')}`];
+      delete taken[`Desk-${String(num).padStart(3, '0')}`];
+      delete taken[prevSeat];
+      store.set('c2s_lib_taken', taken);
+    }
+    m.previousSeat = prevSeat;
+    m.seat = `Seat Released (Former: ${prevSeat})`;
+  }
+
+  // If refund was disbursed, record as expense in ledger
+  if (refundAmount > 0) {
+    const ledger = store.get('c2s_lib_ledger', []);
+    ledger.unshift({
+      date: cancelDate,
+      desc: `Refund on Cancellation ${m.regNo} (${m.name}, ${cancelReason})`,
+      amt: -refundAmount
+    });
+    store.set('c2s_lib_ledger', ledger);
+  }
+
+  store.set('c2s_lib_members', members);
+
+  // Sync session user
+  const curUser = store.get('c2s_lib_user', null);
+  if (curUser && curUser.regNo === m.regNo) {
+    store.set('c2s_lib_user', m);
+  }
+
+  closeCancelModal();
+  renderMemberList();
+  renderSeatController();
+  renderSuperAdmin();
+
+  alert(`✓ Membership for ${m.name} (${regNo}) has been successfully cancelled.\nSeat ${prevSeat} has been released and is now vacant.`);
+};
+
+window.reActivateMembership = function(regNo) {
+  const members = store.get('c2s_lib_members', []);
+  const m = members.find(item => item.regNo === regNo);
+  if (!m) return alert('Member not found: ' + regNo);
+
+  const confirmReactivate = confirm(`Re-activate membership for ${m.name} (${regNo})?`);
+  if (!confirmReactivate) return;
+
+  m.status = 'Active Allocated';
+  const today = new Date().toISOString().slice(0, 10);
+  m.admDate = today;
+  m.fromDate = today;
+  const d = new Date();
+  d.setDate(d.getDate() + 30);
+  m.toDate = d.toISOString().slice(0, 10);
+
+  if (m.previousSeat) {
+    const taken = store.get('c2s_lib_taken', {});
+    const numMatch = m.previousSeat.match(/\d+/);
+    const num = numMatch ? parseInt(numMatch[0]) : null;
+    const isTaken = num ? Boolean(taken[`S-${num}`] || taken[`S-${String(num).padStart(2, '0')}`]) : false;
+    if (!isTaken && num) {
+      m.seat = `S-${num}`;
+      taken[`S-${num}`] = true;
+      taken[`S-${String(num).padStart(2, '0')}`] = true;
+      store.set('c2s_lib_taken', taken);
+    } else {
+      m.seat = 'Seat Allocation Pending';
+    }
+  }
+
+  store.set('c2s_lib_members', members);
+  renderMemberList();
+  renderSeatController();
+  renderSuperAdmin();
+  alert(`✓ Membership for ${m.name} re-activated! Status is now Active.`);
+};
 
 window.LIBRARY_RULES_LIST = [
   "Maintain complete silence inside the library. Avoid loud conversations and unnecessary phone calls.",
@@ -1199,6 +1451,401 @@ window.LIBRARY_DECLARATION_TEXT = [
   "I understand that any violation of the library rules may result in appropriate action, including suspension or cancellation of my library membership, as per the library’s policy.",
   "I confirm that I have taken admission voluntarily and only after understanding and accepting all the above rules and conditions."
 ];
+
+/* ==========================================================================
+   OFFICIAL 1-PAGE ADMISSION FORM (A4 PRINT / PDF ENGINE)
+   ========================================================================== */
+window.printAdmissionForm = function(studentOrRegNo) {
+  let m = studentOrRegNo;
+  if (!m || typeof m === 'string') {
+    const reg = (typeof studentOrRegNo === 'string' && studentOrRegNo) ? studentOrRegNo : (window.__lastAdmittedMember ? window.__lastAdmittedMember.regNo : null);
+    const members = store.get('c2s_lib_members', []);
+    m = members.find(item => item.regNo === reg) || window.__lastAdmittedMember || currentModalStudent || members[0] || {};
+  }
+
+  const name = m.name || "Student Applicant";
+  const regNo = m.regNo || "C2SLIB-PENDING";
+  const mobile = m.mobile || "—";
+  const guardianContact = m.guardianContact || m.fatherMobile || "—";
+  const fatherName = m.fatherName || m.guardianName || "—";
+  const gender = m.gender || "—";
+  const dob = m.dob || "—";
+  const address = m.address || "Patrapada, Bhubaneswar, Odisha";
+  const email = m.email || "—";
+  const targetExam = m.studyPurpose || m.examPref || "Competitive Exams";
+  const shift = m.shift || "Full Day (07:00 AM – 09:00 PM)";
+  const seat = m.seat || "Assigned on Visit";
+  const numMatch = seat.match(/\d+/);
+  const seatNum = numMatch ? parseInt(numMatch[0]) : null;
+  const floor = m.floor || (seatNum && seatNum <= 24 ? "2nd Floor (Zone A • 24 Seats)" : "1st Floor (Zones B, C, D • 125 Seats)");
+  const locker = m.locker || ((shift.includes("Full Day") || shift.includes("24 Hours")) ? (seatNum ? "Locker #" + seatNum : "Locker Allocated") : "Not Applicable");
+  const paid = Number(m.paid) || 0;
+  const pending = Number(m.pending) || 0;
+  const total = paid + pending;
+  const payMode = m.lastPaymentMode || m.mode || "UPI / QR";
+  const admDate = m.admDate || m.date || new Date().toLocaleDateString('en-IN');
+  const fromDate = m.fromDate || admDate;
+  const toDate = m.toDate || m.validTill || "30 Days from Admission";
+  const branch = m.branch ? m.branch.replace(/^[^\w]+/, '').trim() : "Patrapada Flagship Centre (NH-16, Opposite Sani Mandir, BBSR)";
+  const photo = m.photo || "";
+
+  const win = window.open('', '_blank');
+  if (!win) {
+    alert("Please allow popups to open and print the 1-Page Official Admission Form.");
+    return;
+  }
+
+  win.document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>C2S Admission Form — ${regNo} (${name})</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 8mm 10mm;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 9pt;
+      line-height: 1.32;
+      color: #0f172a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    .print-sheet {
+      border: 2px solid #0f2a5c;
+      padding: 10px 14px;
+      max-width: 100%;
+    }
+    .sheet-header {
+      text-align: center;
+      border-bottom: 2px solid #0f2a5c;
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+    }
+    .brand-title {
+      font-size: 15pt;
+      font-weight: 900;
+      color: #0f2a5c;
+      letter-spacing: 0.5px;
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .brand-sub {
+      font-size: 8.5pt;
+      color: #ea580c;
+      font-weight: 800;
+      margin: 2px 0;
+    }
+    .brand-address {
+      font-size: 7.8pt;
+      color: #475569;
+      margin: 1px 0 4px;
+    }
+    .form-heading-pill {
+      display: inline-block;
+      background: #0f2a5c;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 9pt;
+      padding: 2px 14px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .top-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 100px;
+      gap: 10px;
+      margin-bottom: 6px;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 6px;
+    }
+    .meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.2pt;
+    }
+    .meta-table td {
+      padding: 3px 6px;
+      border: 1px solid #e2e8f0;
+    }
+    .meta-label {
+      background: #f8fafc;
+      font-weight: 750;
+      color: #334155;
+      width: 25%;
+    }
+    .meta-val {
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .photo-box {
+      border: 1.5px dashed #64748b;
+      background: #f8fafc;
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .photo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .sec-title {
+      background: #f1f5f9;
+      border-left: 3px solid #ea580c;
+      padding: 2px 8px;
+      font-size: 8.2pt;
+      font-weight: 850;
+      color: #0f2a5c;
+      margin: 5px 0 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.2pt;
+      margin-bottom: 4px;
+    }
+    .data-table td, .data-table th {
+      border: 1px solid #cbd5e1;
+      padding: 3px 6px;
+    }
+    .data-table .label-cell {
+      background: #f8fafc;
+      font-weight: 700;
+      color: #334155;
+      width: 20%;
+    }
+    .data-table .val-cell {
+      font-weight: 600;
+      color: #0f172a;
+      width: 30%;
+    }
+    .undertaking-box {
+      background: #fafafa;
+      border: 1px solid #e2e8f0;
+      padding: 4px 8px;
+      font-size: 7.4pt;
+      line-height: 1.32;
+      color: #334155;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .undertaking-box ol {
+      margin: 2px 0 0 14px;
+      padding: 0;
+    }
+    .undertaking-box li {
+      margin-bottom: 1.5px;
+    }
+    .sig-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 6px;
+      padding-top: 4px;
+      border-top: 1.5px solid #0f2a5c;
+    }
+    .sig-col {
+      text-align: center;
+      font-size: 7.8pt;
+    }
+    .sig-space {
+      height: 32px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      margin-bottom: 2px;
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
+      color: #1e3a8a;
+    }
+    .sig-line {
+      border-top: 1px solid #475569;
+      padding-top: 2px;
+      font-weight: 800;
+      color: #0f2a5c;
+    }
+    .no-print {
+      margin-bottom: 10px;
+      background: #0f2a5c;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { padding: 0; }
+      .print-sheet { border: 2px solid #000; }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print">
+    <div>
+      <strong style="font-size:14px;">🖨️ Official 1-Page Admission Form (A4 PDF)</strong>
+      <div style="font-size:11px;opacity:0.85;">Strict 1-Page Layout • Ready for Printing or Saving as PDF</div>
+    </div>
+    <button onclick="window.print()" style="padding:7px 20px;background:#ea580c;color:#fff;border:none;border-radius:6px;font-weight:800;font-size:13px;cursor:pointer;">
+      🖨️ Print Form / Save as PDF
+    </button>
+  </div>
+
+  <div class="print-sheet">
+    <div class="sheet-header">
+      <div class="brand-title">C2S Premium 24-Hour Study Sanctuary</div>
+      <div class="brand-sub">AN EXCLUSIVE AIR-CONDITIONED STUDY &amp; DIGITAL EXAM SANCTUARY • BHUBANESWAR</div>
+      <div class="brand-address">NH-16 Highway, Opposite Sani Mandir, Patrapada, Bhubaneswar – 751019 | Helplines: 9777481909 / 9658177712 | Web: c2seri.com/library</div>
+      <div class="form-heading-pill">Official Student Admission &amp; Seat Allocation Form</div>
+    </div>
+
+    <div class="top-meta-grid">
+      <table class="meta-table">
+        <tr>
+          <td class="meta-label">Registration ID:</td>
+          <td class="meta-val" style="color:#0f2a5c;font-size:9.5pt;">${regNo}</td>
+          <td class="meta-label">Admission Date:</td>
+          <td class="meta-val">${admDate}</td>
+        </tr>
+        <tr>
+          <td class="meta-label">Tenure Validity:</td>
+          <td class="meta-val">${fromDate} to ${toDate}</td>
+          <td class="meta-label">Branch Centre:</td>
+          <td class="meta-val">${branch}</td>
+        </tr>
+        <tr>
+          <td class="meta-label">Allotted Seat:</td>
+          <td class="meta-val" style="color:#ea580c;font-size:9pt;">Seat ${seat}</td>
+          <td class="meta-label">Sanctuary Floor:</td>
+          <td class="meta-val">${floor}</td>
+        </tr>
+      </table>
+
+      <div class="photo-box">
+        ${photo ? `<img src="${photo}" alt="Student Photo">` : `<div style="font-size:7.5pt;color:#64748b;">AFFIX RECENT<br>PASSPORT PHOTO /<br>LIVE SELFIE</div>`}
+      </div>
+    </div>
+
+    <div class="sec-title">1. Candidate Particulars &amp; Identity</div>
+    <table class="data-table">
+      <tr>
+        <td class="label-cell">Candidate Name:</td>
+        <td class="val-cell" style="font-weight:800;color:#0f2a5c;">${name}</td>
+        <td class="label-cell">Father's Name:</td>
+        <td class="val-cell">${fatherName}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Candidate Mobile:</td>
+        <td class="val-cell" style="font-weight:750;">+91 ${mobile}</td>
+        <td class="label-cell">Guardian Mobile:</td>
+        <td class="val-cell">${guardianContact}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Gender / DOB:</td>
+        <td class="val-cell">${gender} / ${dob}</td>
+        <td class="label-cell">Target Exam / Goal:</td>
+        <td class="val-cell" style="font-weight:750;color:#1e3a8a;">${targetExam}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Email Address:</td>
+        <td class="val-cell">${email}</td>
+        <td class="label-cell">Permanent Address:</td>
+        <td class="val-cell">${address}</td>
+      </tr>
+    </table>
+
+    <div class="sec-title">2. Shift Allocation &amp; Study Sanctuary Amenities</div>
+    <table class="data-table">
+      <tr>
+        <td class="label-cell">Allotted Shift:</td>
+        <td class="val-cell" style="font-weight:800;color:#0f2a5c;">${shift}</td>
+        <td class="label-cell">Dedicated Desk:</td>
+        <td class="val-cell" style="font-weight:800;color:#ea580c;">Seat ${seat}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Locker Facility:</td>
+        <td class="val-cell">${locker}</td>
+        <td class="label-cell">Desk Features:</td>
+        <td class="val-cell">Warm LED Reading Lamp, 230V Socket, Partition Cubicle</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Inclusive Facilities:</td>
+        <td class="val-cell" colspan="3">300 Mbps Wi-Fi, 100% DG Silent Power Backup, RO Water, Underground Parking, Lunch/Tea Facility, CBT Online Tests.</td>
+      </tr>
+    </table>
+
+    <div class="sec-title">3. Fee Payment &amp; Billing Ledger Details</div>
+    <table class="data-table">
+      <tr>
+        <td class="label-cell">Plan / Monthly Fee:</td>
+        <td class="val-cell" style="font-weight:750;">₹${total}</td>
+        <td class="label-cell">Payment Mode:</td>
+        <td class="val-cell">${payMode}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Amount Received:</td>
+        <td class="val-cell" style="font-weight:800;color:#047857;">₹${paid} (Cleared)</td>
+        <td class="label-cell">Pending Dues:</td>
+        <td class="val-cell" style="font-weight:750;color:${pending > 0 ? '#dc2626' : '#047857'};">₹${pending}</td>
+      </tr>
+      <tr>
+        <td class="label-cell">Receipt Reference:</td>
+        <td class="val-cell" colspan="3">C2S-REC-${regNo} • Auto-generated official billing receipt</td>
+      </tr>
+    </table>
+
+    <div class="sec-title">4. Applicant Undertaking &amp; Sanctuary Discipline Rules</div>
+    <div class="undertaking-box">
+      <ol>
+        <li>I agree to strictly maintain pin-drop silence in the sanctuary. Mobile phones must remain on silent mode at all times.</li>
+        <li>I will use only my assigned seat (Seat ${seat}) and will not shift or swap desks without prior written permission.</li>
+        <li>Library property, lamps, switches, and lockable cabinets will be handled with utmost care. Damages will be chargeable.</li>
+        <li>Digital membership pass and keys are strictly non-transferable. Sharing credentials will lead to immediate cancellation without refund.</li>
+        <li>The library management reserves full right to terminate membership in case of indiscipline, misconduct, or rule violation.</li>
+      </ol>
+    </div>
+
+    <div class="sig-grid">
+      <div class="sig-col">
+        <div class="sig-space">${name}</div>
+        <div class="sig-line">Applicant Digital Consent / Sign</div>
+        <div style="font-size:7pt;color:#64748b;margin-top:2px;">Consent verified via mobile timestamp</div>
+      </div>
+      <div class="sig-col">
+        <div class="sig-space" style="font-size:7.5pt;color:#059669;font-weight:800;">VERIFIED &amp; DESK ALLOCATED</div>
+        <div class="sig-line">Front Desk / Shift In-Charge</div>
+        <div style="font-size:7pt;color:#64748b;margin-top:2px;">Biometric &amp; Locker Access Activated</div>
+      </div>
+      <div class="sig-col">
+        <div class="sig-space" style="font-size:7.5pt;color:#0f2a5c;font-weight:800;">C2S PATRAPADA SEAL</div>
+        <div class="sig-line">Centre Superintendent &amp; Seal</div>
+        <div style="font-size:7pt;color:#64748b;margin-top:2px;">College to Service • Bhubaneswar</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`);
+  win.document.close();
+};
 
 window.printLibraryRulesSheet = function(student = {}) {
   const name = student.name || document.getElementById('deskName')?.value || "___________________________";
@@ -2147,8 +2794,428 @@ function teacherPublishPost(e) {
   renderTeacher();
 }
 
+/* ==========================================================================
+   ENSURE SEED STUDENT REGISTRY (10 Active + 4 Completed + 1 Cancelled)
+   ========================================================================== */
+function ensureSeedMembers() {
+  let members = store.get('c2s_lib_members', []);
+  if (!members || members.length < 6) {
+    const defaultRegistry = [
+      // 10 ACTIVE STUDENTS (Currently using library seats across 2 floors)
+      {
+        regNo: "C2SLIB-00101",
+        name: "Prakash Behera",
+        gender: "Male",
+        dob: "14/08/1998",
+        mobile: "9777481909",
+        guardianContact: "9437012345",
+        fatherName: "Rabindra Behera",
+        address: "Patrapada, Bhubaneswar",
+        email: "prakash.behera@gmail.com",
+        shift: "Full Day (07:00 AM – 09:00 PM)",
+        seat: "S-14",
+        floor: "2nd Floor (Zone A)",
+        zone: "Zone A (Executive Sanctuary)",
+        locker: "Locker #14",
+        status: "Active Allocated",
+        paid: 1800,
+        pending: 0,
+        mode: "UPI / PhonePe",
+        examPref: "OSSC CGL 2026",
+        studyPurpose: "OSSC CGL 2026",
+        admDate: "01/10/2026",
+        fromDate: "01/10/2026",
+        toDate: "30/11/2026",
+        date: "01/10/2026",
+        termsAccepted: true
+      },
+      {
+        regNo: "C2SLIB-00102",
+        name: "Soumya Ranjan Mohapatra",
+        gender: "Male",
+        dob: "20/05/1997",
+        mobile: "9861001234",
+        guardianContact: "9437112233",
+        fatherName: "Bichitrananda Mohapatra",
+        address: "Khandagiri, Bhubaneswar",
+        email: "soumya.c2s@gmail.com",
+        shift: "Full Day (07:00 AM – 09:00 PM)",
+        seat: "S-25",
+        floor: "1st Floor (Zone B)",
+        zone: "Zone B (Left Wall Bay)",
+        locker: "Locker #25",
+        status: "Active Allocated",
+        paid: 1500,
+        pending: 0,
+        mode: "UPI / GPay",
+        examPref: "OPSC OAS (Civil Services)",
+        studyPurpose: "OPSC OAS",
+        admDate: "05/10/2026",
+        fromDate: "05/10/2026",
+        toDate: "04/12/2026",
+        date: "05/10/2026",
+        termsAccepted: true
+      },
+      {
+        regNo: "C2SLIB-00103",
+        name: "Lipsa Tripathy",
+        gender: "Female",
+        dob: "11/12/1999",
+        mobile: "9437105678",
+        guardianContact: "9861209876",
+        fatherName: "Pradeep Tripathy",
+        address: "Patrapada Jagannath Vihar, BBSR",
+        email: "lipsa.tripathy@gmail.com",
+        shift: "Full Day (07:00 AM – 09:00 PM)",
+        seat: "S-70",
+        floor: "1st Floor (Zone C)",
+        zone: "Zone C (Center Dual-Row)",
+        locker: "Locker #70",
+        status: "Active Allocated",
+        paid: 1500,
+        pending: 0,
+        mode: "UPI / PhonePe",
+        examPref: "Banking (IBPS PO / Clerk)",
+        studyPurpose: "IBPS PO",
+        admDate: "08/10/2026",
+        fromDate: "08/10/2026",
+        toDate: "07/12/2026",
+        date: "08/10/2026",
+        termsAccepted: true
+      },
+      {
+        regNo: "C2SLIB-00104",
+        name: "Rohan Kumar Mohapatra",
+        gender: "Male",
+        dob: "03/09/1998",
+        mobile: "9337054321",
+        guardianContact: "9438012345",
+        fatherName: "Kailash Mohapatra",
+        address: "Sundarpada, Bhubaneswar",
+        email: "rohan.km@gmail.com",
+        shift: "24 Hours Sanctuary (07:00 AM – 07:00 AM)",
+        seat: "S-36",
+        floor: "1st Floor (Zone B)",
+        zone: "Zone B (Left Wall Bay)",
+        locker: "Locker #36",
+        status: "Active Allocated",
+        paid: 1800,
+        pending: 0,
+        mode: "UPI / Paytm",
+        examPref: "SSC CGL / CHSL 2026",
+        studyPurpose: "SSC CGL",
+        admDate: "10/10/2026",
+        fromDate: "10/10/2026",
+        toDate: "09/12/2026",
+        date: "10/10/2026",
+        termsAccepted: true
+      },
+      {
+        regNo: "C2SLIB-00105",
+        name: "Barsha Priyadarshini",
+        gender: "Female",
+        dob: "25/03/2000",
+        mobile: "7008123456",
+        guardianContact: "9437298765",
+        fatherName: "Saroj Senapati",
+        address: "Dumduma Housing Board, BBSR",
+        email: "barsha.senapati@gmail.com",
+        shift: "Day Shift (07:00 AM – 05:00 PM)",
+        seat: "S-85",
+        floor: "1st Floor (Zone C)",
+        zone: "Zone C (Center Dual-Row)",
+        locker: "Not Applicable",
+        status: "Active Allocated",
+        paid: 1000,
+        pending: 0,
+        mode: "Cash",
+        examPref: "Odisha Teacher (OTET / OSSTET)",
+        studyPurpose: "OTET",
+        admDate: "12/10/2026",
+        fromDate: "12/10/2026",
+        toDate: "11/11/2026",
+        date: "12/10/2026",
+        termsAccepted: true
+      },
+      {
+        regNo: "C2SLIB-00106",
+        name: "Deepak Kumar Behera",
+        gender: "Male",
+        dob: "19/07/1996",
+        mobile: "9178234567",
+        guardianContact: "9861345678",
+        fatherName: "Balaram Behera",
+        address: "Aiginia, Patrapada, Bhubaneswar",
+        email: "deepak.behera@gmail.com",
+        shift: "Evening Shift (03:00 PM – 11:00 PM)",
+        seat: "S-112",
+        floor: "1st Floor (Zone D)",
+        zone: "Zone D (Right Wall Bay)",
+        locker: "Not Applicable",
+        status: "Active Allocated",
+        paid: 800,
+        pending: 0,
+        mode: "UPI / PhonePe",
+        examPref: "Railway RRB NTPC",
+        studyPurpose: "RRB NTPC",
+        admDate: "14/10/2026",
+        fromDate: "14/10/2026",
+        toDate: "13/11/2026",
+        date: "14/10/2026",
+        termsAccepted: true
+      },
+      {
+        regNo: "C2SLIB-00107",
+        name: "Pooja Samal",
+        gender: "Female",
+        dob: "08/01/1999",
+        mobile: "9938456789",
+        guardianContact: "9437876543",
+        fatherName: "Narayan Samal",
+        address: "Pokhariput, Bhubaneswar",
+        email: "pooja.samal@gmail.com",
+        shift: "Full Day (07:00 AM – 09:00 PM)",
+        seat: "S-135",
+        floor: "1st Floor (Zone D)",
+        zone: "Zone D (Right Wall Bay)",
+        locker: "Locker #135",
+        status: "Active Allocated",
+        paid: 1500,
+        pending: 0,
+        mode: "UPI / GPay",
+        examPref: "UPSC Civil Services (Prelims)",
+        studyPurpose: "UPSC CSE",
+        admDate: "15/10/2026",
+        fromDate: "15/10/2026",
+        toDate: "14/12/2026",
+        date: "15/10/2026",
+        termsAccepted: true
+      },
+      {
+        regNo: "C2SLIB-00108",
+        name: "Amit Kumar Das",
+        gender: "Male",
+        dob: "12/04/1997",
+        mobile: "8249123456",
+        guardianContact: "9437001122",
+        fatherName: "Hemanta Das",
+        address: "Tamando, Bhubaneswar",
+        email: "amit.das99@gmail.com",
+        shift: "24 Hours Sanctuary (07:00 AM – 07:00 AM)",
+        seat: "S-05",
+        floor: "2nd Floor (Zone A)",
+        zone: "Zone A (Executive Sanctuary)",
+        locker: "Locker #05",
+        status: "Active Allocated",
+        paid: 1800,
+        pending: 0,
+        mode: "UPI / PhonePe",
+        examPref: "OSSC Combined Police Service",
+        studyPurpose: "OSSC SI",
+        admDate: "18/10/2026",
+        fromDate: "18/10/2026",
+        toDate: "17/12/2026",
+        date: "18/10/2026",
+        termsAccepted: true
+      },
+      {
+        regNo: "C2SLIB-00109",
+        name: "Sneha Snigdha Rout",
+        gender: "Female",
+        dob: "30/06/1998",
+        mobile: "7978234512",
+        guardianContact: "9861112244",
+        fatherName: "Bijay Kumar Rout",
+        address: "Patrapada NH-16, Bhubaneswar",
+        email: "sneha.rout@gmail.com",
+        shift: "Full Day (07:00 AM – 09:00 PM)",
+        seat: "S-18",
+        floor: "2nd Floor (Zone A)",
+        zone: "Zone A (Executive Sanctuary)",
+        locker: "Locker #18",
+        status: "Active Allocated",
+        paid: 1500,
+        pending: 0,
+        mode: "UPI / GPay",
+        examPref: "Odisha Judicial Services (OJS)",
+        studyPurpose: "OJS",
+        admDate: "20/10/2026",
+        fromDate: "20/10/2026",
+        toDate: "19/12/2026",
+        date: "20/10/2026",
+        termsAccepted: true
+      },
+      {
+        regNo: "C2SLIB-00110",
+        name: "Abhishek Mohanty",
+        gender: "Male",
+        dob: "14/02/1995",
+        mobile: "9853123456",
+        guardianContact: "9437998877",
+        fatherName: "Sanjay Mohanty",
+        address: "Baramunda, Bhubaneswar",
+        email: "abhishek.m@gmail.com",
+        shift: "Full Day (07:00 AM – 09:00 PM)",
+        seat: "S-52",
+        floor: "1st Floor (Zone B)",
+        zone: "Zone B (Left Wall Bay)",
+        locker: "Locker #52",
+        status: "Active Allocated",
+        paid: 1500,
+        pending: 0,
+        mode: "Cash",
+        examPref: "JAIIB / Banking Promotion",
+        studyPurpose: "JAIIB",
+        admDate: "22/10/2026",
+        fromDate: "22/10/2026",
+        toDate: "21/11/2026",
+        date: "22/10/2026",
+        termsAccepted: true
+      },
+
+      // 4 STUDENTS WHO LEFT / COMPLETED TENURE (Seats Released)
+      {
+        regNo: "C2SLIB-00045",
+        name: "Bikram Mallick",
+        gender: "Male",
+        dob: "10/05/1996",
+        mobile: "9439876543",
+        fatherName: "Purna Chandra Mallick",
+        address: "Patrapada, Bhubaneswar",
+        shift: "Full Day",
+        seat: "Seat Released (Former: S-02)",
+        floor: "2nd Floor (Zone A)",
+        status: "Left / Selected 🏆 SBI PO",
+        paid: 1500,
+        pending: 0,
+        mode: "UPI",
+        examPref: "SBI PO 2026",
+        studyPurpose: "SBI PO 2026",
+        admDate: "15/04/2026",
+        toDate: "15/10/2026",
+        exitDate: "15/10/2026",
+        notes: "Successfully cracked SBI PO 2026! Seat S-02 released back to pool.",
+        termsAccepted: true
+      },
+      {
+        regNo: "C2SLIB-00052",
+        name: "Subhashree Nayak",
+        gender: "Female",
+        dob: "22/11/1997",
+        mobile: "9658234123",
+        fatherName: "Artatrana Nayak",
+        address: "Nayapalli, Bhubaneswar",
+        shift: "Full Day",
+        seat: "Seat Released (Former: S-48)",
+        floor: "1st Floor (Zone B)",
+        status: "Left / Completed",
+        paid: 1500,
+        pending: 0,
+        mode: "UPI",
+        examPref: "OPSC OAS Prelims",
+        studyPurpose: "OPSC OAS",
+        admDate: "01/05/2026",
+        toDate: "28/09/2026",
+        exitDate: "28/09/2026",
+        notes: "Completed 6-month intensive study tenure. Relocated.",
+        termsAccepted: true
+      },
+      {
+        regNo: "C2SLIB-00068",
+        name: "Manoj Kumar Sahoo",
+        gender: "Male",
+        dob: "05/03/1998",
+        mobile: "9861987654",
+        fatherName: "Dillip Sahoo",
+        address: "Khandagiri, Bhubaneswar",
+        shift: "Day Shift",
+        seat: "Seat Released (Former: S-92)",
+        floor: "1st Floor (Zone C)",
+        status: "Left / Completed",
+        paid: 1000,
+        pending: 0,
+        mode: "Cash",
+        examPref: "UPSC CSE Mains",
+        studyPurpose: "UPSC CSE",
+        admDate: "10/06/2026",
+        toDate: "10/10/2026",
+        exitDate: "10/10/2026",
+        notes: "Tenure completed. Moving to Delhi for Mains batch.",
+        termsAccepted: true
+      },
+      {
+        regNo: "C2SLIB-00080",
+        name: "Tapas Kumar Das",
+        gender: "Male",
+        dob: "17/09/1995",
+        mobile: "8249765432",
+        fatherName: "Radha Shyam Das",
+        address: "Jatni, Khurda",
+        shift: "24 Hours Sanctuary",
+        seat: "Seat Released (Former: S-10)",
+        floor: "2nd Floor (Zone A)",
+        status: "Left / Completed",
+        paid: 1800,
+        pending: 0,
+        mode: "UPI",
+        examPref: "Odisha Judicial Service",
+        studyPurpose: "OJS",
+        admDate: "18/05/2026",
+        toDate: "18/10/2026",
+        exitDate: "18/10/2026",
+        notes: "Completed 5 months preparation tenure.",
+        termsAccepted: true
+      },
+
+      // 1 CANCELLED MEMBER (Seat Released)
+      {
+        regNo: "C2SLIB-00074",
+        name: "Ananya Rath",
+        gender: "Female",
+        dob: "18/04/2001",
+        mobile: "9338765432",
+        fatherName: "Gopal Rath",
+        address: "Saheed Nagar, Bhubaneswar",
+        shift: "Evening Shift",
+        seat: "Seat Released (Former: S-120)",
+        floor: "1st Floor (Zone D)",
+        status: "Cancelled",
+        cancelledDate: "05/10/2026",
+        cancelledReason: "Shift timing conflict with college semester exams",
+        refundPaid: 300,
+        paid: 800,
+        pending: 0,
+        mode: "UPI / PhonePe",
+        examPref: "SSC CHSL",
+        studyPurpose: "SSC CHSL",
+        admDate: "25/08/2026",
+        toDate: "05/10/2026",
+        exitDate: "05/10/2026",
+        notes: "Cancelled on applicant request. Refund ₹300 disbursed via PhonePe.",
+        termsAccepted: true
+      }
+    ];
+
+    store.set('c2s_lib_members', defaultRegistry);
+    members = defaultRegistry;
+
+    // Seed occupied seats in c2s_lib_taken
+    const taken = store.get('c2s_lib_taken', {});
+    ['S-05', 'S-14', 'S-18', 'S-25', 'S-36', 'S-52', 'S-70', 'S-85', 'S-112', 'S-135'].forEach(code => {
+      taken[code] = true;
+      const numMatch = code.match(/\d+/);
+      if (numMatch) {
+        taken[`S-${String(numMatch[0]).padStart(2, '0')}`] = true;
+        taken[`Desk-${String(numMatch[0]).padStart(3, '0')}`] = true;
+      }
+    });
+    store.set('c2s_lib_taken', taken);
+  }
+}
+
 /* Run on load */
 document.addEventListener('DOMContentLoaded', () => {
+  ensureSeedMembers();
   if (typeof populateAdminMonthDropdown === 'function') {
     populateAdminMonthDropdown();
   }

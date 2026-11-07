@@ -249,6 +249,11 @@ function show(view) {
   if (typeof window.closeMobileNav === "function") {
     window.closeMobileNav();
   }
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('open', 'open-mobile');
+    const b = item.querySelector('.nav-link, .all-exams-nav-btn');
+    if (b) b.setAttribute('aria-expanded', 'false');
+  });
 
   // Toggle active views
   let matched = false;
