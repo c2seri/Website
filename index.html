@@ -2529,15 +2529,51 @@
         </div>
       </div>
 
-      <!-- ATTEMPTED TESTS SECTION -->
-      <div id="attemptedTestsSection" class="section-header" style="margin-top:36px;">
-        <span class="section-tag">PERFORMANCE &bull; ATTEMPTED PAPERS &bull; FULL SOLUTIONS</span>
-        <h2>✅ Attempted Tests &amp; Scorecards</h2>
-        <p>Your completed tests with marks, negative marking deduction, correct answer keys, and in-depth step-by-step explanations.</p>
-        <div class="section-divider"></div>
-      </div>
+      <!-- ATTEMPTED TESTS & QUIZZES SECTION (TESTBOOK EXACT REPLICA) -->
+      <div id="attemptedTestsSection" style="margin-top:36px;background:#ffffff;border:1.5px solid #e2e8f0;border-radius:16px;padding:24px 28px;box-shadow:0 4px 16px rgba(15,23,42,0.04);margin-bottom:40px;">
+        <!-- Header: Title on Left, Filters on Right -->
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;border-bottom:1.5px solid #e2e8f0;padding-bottom:14px;margin-bottom:20px;">
+          <div>
+            <h2 style="margin:0;font-size:22px;font-weight:900;color:#0f2444;letter-spacing:-0.3px;">
+              Your Attempted Tests &amp; Quizzes
+            </h2>
+            <!-- Sub-tabs: Test vs Quiz -->
+            <div style="display:flex;gap:24px;margin-top:14px;font-size:14.5px;font-weight:700;">
+              <button type="button" id="tabAttemptedTests" onclick="switchAttemptedTab('test')" style="background:none;border:none;padding:6px 2px;color:#0284c7;border-bottom:3px solid #0284c7;cursor:pointer;font-weight:800;">
+                Test
+              </button>
+              <button type="button" id="tabAttemptedQuizzes" onclick="switchAttemptedTab('quiz')" style="background:none;border:none;padding:6px 2px;color:#64748b;border-bottom:3px solid transparent;cursor:pointer;font-weight:700;">
+                Quiz
+              </button>
+            </div>
+          </div>
 
-      <div id="givenTests" style="margin-bottom:40px;"></div>
+          <!-- Filters dropdown -->
+          <div style="display:flex;align-items:center;gap:8px;">
+            <label for="attemptFilterSelect" style="font-size:13px;font-weight:700;color:#64748b;display:flex;align-items:center;gap:4px;cursor:pointer;">
+              <span>🝖 Filters:</span>
+            </label>
+            <select id="attemptFilterSelect" onchange="filterAttemptedTests(this.value)" style="border:1.5px solid #cbd5e1;padding:6px 12px;border-radius:6px;font-size:13px;font-weight:700;color:#0f172a;background:#fff;cursor:pointer;outline:none;">
+              <option value="all">All Exams</option>
+              <option value="JAIIB">JAIIB 2026</option>
+              <option value="SSC">SSC CHSL / CGL</option>
+              <option value="BANK">Bank PO &amp; Clerk</option>
+              <option value="RAILWAY">Railway Exams</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Attempted Tests List Container (Monthly Groups & Testbook Cards) -->
+        <div id="givenTests"></div>
+
+        <!-- Journey Milestone Indicator (Matching Screenshot) -->
+        <div style="text-align:center;margin:32px 0 12px;position:relative;">
+          <div style="position:absolute;left:0;right:0;top:50%;border-top:1px dashed #cbd5e1;z-index:1;"></div>
+          <span style="position:relative;z-index:2;background:#ffffff;padding:0 16px;font-size:12.5px;color:#94a3b8;font-weight:700;">
+            🚩 You started your journey from here!
+          </span>
+        </div>
+      </div>
     </section>
 
     <!-- Modal 1: Test Series Full Detail & Inclusions View (Exact Match to Testbook Interface) -->
