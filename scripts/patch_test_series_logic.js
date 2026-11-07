@@ -187,3 +187,4 @@ if (normApp2.includes(normOldRender)) {
 
 fs.writeFileSync('app.js', app, 'utf8');
 console.log('app.js successfully saved!');
+

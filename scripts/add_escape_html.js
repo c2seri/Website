@@ -22,3 +22,4 @@ if (!app.startsWith('/* Global Safe HTML Escaper */')) {
 } else {
   console.log('Already starts with escapeHtml');
 }
+

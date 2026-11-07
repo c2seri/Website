@@ -21,3 +21,4 @@ files.forEach(f => {
     console.log(`Bumped version in ${f}`);
   }
 });
+
