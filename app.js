@@ -1,3 +1,15 @@
+/* Global Safe HTML Escaper */
+function escapeHtml(str) {
+  if (str === null || str === undefined) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+window.escapeHtml = escapeHtml;
+
 
 /* Supabase Live Cloud Integration */
 const SUPABASE_CONFIG = {
@@ -1335,7 +1347,7 @@ const TEST_SERIES_CATALOG = [
   },
   {
     id: "TS-AE-JE-ENGG",
-    category: "engineering",
+    category: "aeje",
     title: "SSC JE & State AE/JE Engineering Mock Series (Civil/Mech/Elec)",
     exam: "AE/JE ENGG",
     emblemBg: "#e0e7ff",
@@ -1648,6 +1660,17 @@ window.renderTestSeriesCategories = function() {
 
 window.selectTestSeriesCategory = function(catId, btn) {
   currentTestSeriesCategory = catId;
+  currentCategorySearchQuery = "";
+  activePwTypeFilter = "all";
+  activePwModeFilter = "all";
+
+  const searchInput = document.getElementById("catTestSeriesSearch");
+  if (searchInput) searchInput.value = "";
+  const typeEl = document.getElementById("pwFilterType");
+  if (typeEl) typeEl.value = "all";
+  const modeEl = document.getElementById("pwFilterMode");
+  if (modeEl) modeEl.value = "all";
+
   document.querySelectorAll(".test-sidebar-btn").forEach(b => b.classList.remove("active"));
   if (btn) btn.classList.add("active");
   else {
@@ -1744,39 +1767,61 @@ function renderTestSeriesCatalogCards() {
   if (!container) return;
 
   let filtered = currentTestSeriesCategory === "all" 
-    ? TEST_SERIES_CATALOG 
-    : TEST_SERIES_CATALOG.filter(s => s.category === currentTestSeriesCategory);
+    ? [...TEST_SERIES_CATALOG] 
+    : TEST_SERIES_CATALOG.filter(s => {
+        if (s.category === currentTestSeriesCategory) return true;
+        if (Array.isArray(s.category) && s.category.includes(currentTestSeriesCategory)) return true;
+        if (currentTestSeriesCategory === "regulatory" && (s.id === "TS-RBI-ASSISTANT-2026" || s.id === "TS-JAIIB-2026" || s.category === "banking")) return true;
+        if (currentTestSeriesCategory === "aeje" && (s.category === "aeje" || s.category === "engineering" || s.id === "TS-AE-JE-ENGG")) return true;
+        return false;
+      });
 
   // Search filter
   if (currentCategorySearchQuery) {
+    const q = currentCategorySearchQuery.toLowerCase().trim();
     filtered = filtered.filter(s => 
-      s.title.toLowerCase().includes(currentCategorySearchQuery) ||
-      s.exam.toLowerCase().includes(currentCategorySearchQuery) ||
-      s.languages.toLowerCase().includes(currentCategorySearchQuery) ||
-      s.bullets.some(b => b.toLowerCase().includes(currentCategorySearchQuery))
+      s.title.toLowerCase().includes(q) ||
+      s.exam.toLowerCase().includes(q) ||
+      (s.languages && s.languages.toLowerCase().includes(q)) ||
+      (s.bullets && s.bullets.some(b => b.toLowerCase().includes(q)))
     );
   }
 
   // Type filter
   if (activePwTypeFilter !== "all") {
-    filtered = filtered.filter(s => {
-      if (activePwTypeFilter === "full") return s.bullets.some(b => b.toLowerCase().includes("full"));
-      if (activePwTypeFilter === "sectional") return s.bullets.some(b => b.toLowerCase().includes("sectional"));
-      if (activePwTypeFilter === "chapter") return s.bullets.some(b => b.toLowerCase().includes("chapter"));
-      if (activePwTypeFilter === "pyp") return s.bullets.some(b => b.toLowerCase().includes("pyp") || b.toLowerCase().includes("previous"));
-      return true;
+    const typeStr = activePwTypeFilter.toLowerCase();
+    const typeMatches = filtered.filter(s => {
+      const inBullets = (s.bullets || []).some(b => b.toLowerCase().includes(typeStr));
+      const inTests = (s.availableTests || []).some(t => 
+        (t.type && t.type.toLowerCase().includes(typeStr)) || 
+        (t.title && t.title.toLowerCase().includes(typeStr))
+      );
+      return inBullets || inTests;
     });
+    if (typeMatches.length > 0) {
+      filtered = typeMatches;
+    }
   }
 
   const countEl = document.getElementById("currentCatCount");
-  if (countEl) countEl.textContent = filtered.length;
+  if (countEl) countEl.textContent = `${filtered.length} Series Available`;
 
   if (!filtered.length) {
+    const catObj = TEST_CATEGORIES.find(c => c.id === currentTestSeriesCategory);
+    const catName = catObj ? catObj.name : "Selected Category";
     container.innerHTML = `
-      <div style="grid-column:1/-1;text-align:center;padding:48px 20px;background:#ffffff;border-radius:14px;border:1.5px dashed #cbd5e1;">
-        <span style="font-size:32px;display:block;margin-bottom:8px;">🔍</span>
-        <h4 style="margin:0 0 4px;font-size:16px;color:#0f2a5c;">No Test Series Found</h4>
-        <p style="margin:0;font-size:13px;color:#64748b;">Try searching another keyword or choose another goal category above.</p>
+      <div style="grid-column:1/-1;text-align:center;padding:48px 24px;background:#ffffff;border-radius:16px;border:1.5px dashed #cbd5e1;box-shadow:0 4px 16px rgba(15,23,42,0.04);">
+        <span style="font-size:36px;display:block;margin-bottom:10px;">🔍</span>
+        <h4 style="margin:0 0 6px;font-size:17px;font-weight:800;color:#0f2a5c;">No Test Series Found for "${escapeHtml(currentCategorySearchQuery || catName)}"</h4>
+        <p style="margin:0 0 16px;font-size:13.5px;color:#64748b;max-width:480px;margin-left:auto;margin-right:auto;">
+          Try clearing your search keyword or browse all 18 full test series prepared by C2S faculty.
+        </p>
+        <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+          <button type="button" onclick="resetPwFilters(); selectTestSeriesCategory('all');" 
+            style="padding:10px 20px;background:#0284c7;color:#ffffff;border:none;border-radius:8px;font-size:13.5px;font-weight:750;cursor:pointer;">
+            🌐 View All 18 Test Series
+          </button>
+        </div>
       </div>
     `;
     return;
@@ -5967,7 +6012,7 @@ renderCourses = function() {
           <div style="margin-bottom:14px;">
             <div style="font-weight:750;font-size:13px;color:#0a192f;margin-bottom:6px;">Classroom Highlights:</div>
             <ul style="margin:0;padding-left:18px;font-size:12.5px;color:#475569;line-height:1.55;">
-              ${c.highlights.map(h => `<li>${h}</li>`).join('')}
+              ${(c.highlights || c.features || []).map(h => `<li>${h}</li>`).join('')}
             </ul>
           </div>
         </div>
