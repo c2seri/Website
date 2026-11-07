@@ -240,3 +240,4 @@ if (appJs.match(oldDownloadPattern)) {
 }
 
 fs.writeFileSync('app.js', appJs, 'utf8');
+

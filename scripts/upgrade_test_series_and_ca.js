@@ -171,3 +171,4 @@ for (const [id, data] of Object.entries(testCatalogUpdates)) {
 
 fs.writeFileSync('app.js', appJs, 'utf8');
 console.log('Successfully updated TEST_SERIES_CATALOG in app.js');
+

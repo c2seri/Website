@@ -135,3 +135,4 @@ const paidScript = `
 html = html.replace('</body>', paidScript + '\n</body>');
 fs.writeFileSync('current-affairs-reader.html', html, 'utf8');
 console.log('Successfully patched current-affairs-reader.html with paid checkout flow!');
+

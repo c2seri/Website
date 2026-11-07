@@ -258,3 +258,4 @@ if (appJs.match(renderCaPattern)) {
 }
 
 fs.writeFileSync('app.js', appJs, 'utf8');
+

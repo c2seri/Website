@@ -31,3 +31,4 @@ htmlFiles.forEach(file => {
     }
   }
 });
+

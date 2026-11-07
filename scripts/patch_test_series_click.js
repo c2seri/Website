@@ -47,3 +47,4 @@ appJs = appJs.replace(
 
 fs.writeFileSync('app.js', appJs, 'utf8');
 console.log("Successfully patched test series card clickable behavior in app.js");
+
