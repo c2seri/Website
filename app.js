@@ -49,18 +49,22 @@ const store = {
 };
 const TESTS = [
 
- {id:"JAIIB-IEIFS-1", exam:"JAIIB", title:"JAIIB: Indian Economy & Financial System (Paper 1 Full Mock)", minutes:15, calculatorAllowed:true,
-  qs:[
-    ["Which body formulates and implements Monetary Policy in India?",["Ministry of Finance","Reserve Bank of India (RBI)","SEBI","NITI Aayog"],1],
-    ["In national income accounting, what is Net Domestic Product (NDP)?",["GDP minus Depreciation","GDP plus Net Foreign Income","GNP minus Indirect Taxes","NNP plus Subsidies"],0],
-    ["The Reserve Bank of India was established on 1 April 1935 on the recommendation of which body?",["Narasimham Committee","Hilton Young Commission","Raghuram Rajan Committee","Verma Committee"],1],
-    ["What is the maximum deposit insurance coverage provided by DICGC per depositor per bank?",["₹1 Lakh","₹2 Lakhs","₹5 Lakhs","₹10 Lakhs"],2],
-    ["What is the mandatory Priority Sector Lending (PSL) target for Domestic Commercial Banks?",["25% of ANBC","40% of ANBC","50% of ANBC","32% of ANBC"],1],
-    ["What does MSF stand for in RBI's liquidity framework?",["Marginal Standing Facility","Monetary Stability Fund","Market Stabilization Framework","Mandatory Statutory Facility"],0],
-    ["Which financial market segment deals in short-term credit instruments with maturity up to 1 year?",["Capital Market","Money Market","Forex Futures","Derivatives Exchange"],1],
-    ["External Benchmark Lending Rate (EBLR) linked to Repo Rate was made mandatory by RBI in which year?",["2016","2018","2019","2021"],2]
-  ]},
- {id:"JAIIB-PPB-1", exam:"JAIIB", title:"JAIIB: Principles & Practices of Banking (Paper 2 Full Mock)", minutes:15, calculatorAllowed:true,
+   {
+    id: "JAIIB-IEIFS-1",
+    exam: "JAIIB",
+    title: "JAIIB Paper 1 (IE & IFS) Full-Length Mock Test 1 (100 MCQs)",
+    minutes: 120,
+    marks: 100,
+    negativeMarking: 0,
+    calculatorAllowed: true,
+    qs: (typeof window !== "undefined" && window.JAIIB_PAPER1_QUESTIONS && window.JAIIB_PAPER1_QUESTIONS.length === 100)
+      ? window.JAIIB_PAPER1_QUESTIONS
+      : [
+          ["Which body formulates and implements Monetary Policy in India?", ["Ministry of Finance", "Reserve Bank of India (RBI)", "SEBI", "NITI Aayog"], 1, "Under Section 45ZB of the amended RBI Act 1934, the Monetary Policy Committee (MPC) of the Reserve Bank of India is mandated to fix the benchmark policy rate required to maintain price stability with growth.", "Indian Economy & Financial System"],
+          ["In national income accounting, what is Net Domestic Product (NDP)?", ["GDP minus Depreciation", "GDP plus Net Foreign Income", "GNP minus Indirect Taxes", "NNP plus Subsidies"], 0, "Net Domestic Product (NDP) = Gross Domestic Product (GDP) minus Depreciation (Consumption of Fixed Capital).", "Indian Economy & Financial System"]
+        ]
+  },
+  {id:"JAIIB-PPB-1", exam:"JAIIB", title:"JAIIB: Principles & Practices of Banking (Paper 2 Full Mock)", minutes:15, calculatorAllowed:true,
   qs:[
     ["When a customer deposits money in a bank, what is the legal relationship between Bank and Customer?",["Trustee and Beneficiary","Debtor (Bank) and Creditor (Customer)","Agent and Principal","Bailor and Bailee"],1],
     ["Under Section 138 of the Negotiable Instruments Act 1881, dishonour of cheque is due to?",["Insufficient Funds","Technical signature defect","Post-dated presentation","Bearer alteration"],0],
@@ -529,6 +533,187 @@ const TEST_CATEGORIES = [
 
 const TEST_SERIES_CATALOG = [
   {
+    id: "TS-SSC-CHSL-2026",
+    category: "ssc",
+    title: "SSC CHSL Mock Test Series 2026 (Tier I & Tier II)",
+    exam: "SSC CHSL",
+    emblemBg: "#fee2e2",
+    emblemColor: "#dc2626",
+    emblemIcon: "📋",
+    users: "911.7k Users",
+    totalTests: 197,
+    freeTests: 5,
+    languages: "English, Hindi + 8 More",
+    lastUpdated: "Nov 7, 2026",
+    price: 399,
+    mrp: 999,
+    passType: "Yearly Pass @ ₹399",
+    isLive: true,
+    liveTests: 2,
+    fullLengthTests: 30,
+    chapterWiseTests: 100,
+    subjectWiseTests: 25,
+    previousYearTests: 40,
+    col1: [
+      "2 Live Tests",
+      "30 Full Length Tests",
+      "100 Chapter-wise Tests"
+    ],
+    col2: [
+      "25 Subject/Sectional Tests",
+      "40+ Solved PYPs",
+      "Tier 1 & Tier 2 Special"
+    ],
+    col3: [
+      "Bilingual (Hindi + English)",
+      "All-India Rank & Analytics",
+      "Valid for 1 Full Year"
+    ],
+    bullets: [
+      "2 Live All-India Tests with National Percentile",
+      "30 Full Length Tests (New Pattern Tier I & II)",
+      "100 Chapter-wise Topic Tests + 25 Sectional Boosters",
+      "Yearly Pass @ ₹399 (Regular ₹999 - 60% OFF)"
+    ],
+    suggestedTest: {
+      id: "SSC-CHSL-MOCK-1",
+      title: "SSC CHSL 2026: Tier-1 Full Length TCS Mock Test 1",
+      duration: "60 Mins",
+      questions: 100,
+      marks: 200,
+      isFree: true,
+      tag: "LIVE TEST"
+    },
+    availableTests: [
+      { id: "SSC-CHSL-MOCK-1", title: "SSC CHSL 2026: Tier-1 Full Length TCS Mock Test 1", duration: "60 Mins", questions: 100, marks: 200, isFree: true, tag: "FREE DEMO MOCK", exam: "SSC CHSL" },
+      { id: "SSC-CHSL-MOCK-2", title: "SSC CHSL 2026: Tier-1 Mock Test 2 (Quantitative & Reasoning)", duration: "60 Mins", questions: 100, marks: 200, isFree: false, tag: "PRO TEST", exam: "SSC CHSL" },
+      { id: "SSC-CHSL-PYQ-1", title: "SSC CHSL Official Solved Previous Year Paper (2024 Shift-1)", duration: "60 Mins", questions: 100, marks: 200, isFree: false, tag: "SOLVED PYQ", exam: "SSC CHSL" },
+      { id: "SSC-CHSL-SEC-1", title: "SSC CHSL Sectional Mock: Quantitative Aptitude Speed Drill", duration: "20 Mins", questions: 25, marks: 50, isFree: false, tag: "SECTIONAL TEST", exam: "SSC CHSL" },
+      { id: "SSC-CHSL-SEC-2", title: "SSC CHSL Sectional Mock: English Language & Comprehension", duration: "20 Mins", questions: 25, marks: 50, isFree: false, tag: "SECTIONAL TEST", exam: "SSC CHSL" }
+    ],
+    aboutExam: {
+      conductingBody: "Staff Selection Commission (SSC)",
+      examName: "Combined Higher Secondary Level (10+2) Examination (SSC CHSL)",
+      posts: "Lower Division Clerk (LDC), Junior Secretariat Assistant (JSA), Data Entry Operator (DEO)",
+      eligibility: "10+2 (Higher Secondary) from a recognized Board / University",
+      examMode: "Computer Based Test (CBT) across Pan-India TCS exam centers",
+      stages: "Tier-I (Computer Based Examination) + Tier-II (Objective + Skill/Typing Test)",
+      tier1Pattern: "100 Objective MCQs, 200 Marks, 60 Minutes. 4 Sections: English Language (25 Qs), General Intelligence & Reasoning (25 Qs), Quantitative Aptitude (25 Qs), General Awareness (25 Qs). Negative marking: 0.50 marks per incorrect answer.",
+      tier2Pattern: "Session I: Mathematical Abilities (30 Qs), Reasoning & General Intelligence (30 Qs), English Language & Comprehension (40 Qs), General Awareness (20 Qs), Computer Knowledge (15 Qs). Session II: Skill Test / Typing Test Module.",
+      frequency: "Conducted Annually across India."
+    },
+    whyThisSeries: [
+      "Strictly patterned on the latest 2026 TCS exam interface, bilingual layout, and revised SSC marking scheme.",
+      "Comprehensive test matrix: 30 Full-Length Mocks for both Tier 1 & Tier 2, plus 100 Chapter-wise practice drills.",
+      "All-India Percentile & Rank Predictor comparing your scores against 900k+ competitive aspirants.",
+      "Detailed step-by-step explanations with shortcut tricks for Quant and grammar rules for English.",
+      "Instant error diagnostic dashboard identifying recurring mistakes and speed bottlenecks."
+    ],
+    whatYouGet: [
+      "30 Full-Length Mock Tests (Tier 1 & Tier 2 with real timer & scoring)",
+      "100 Chapter-wise topic practice tests covering all Arithmetic, Reasoning & English concepts",
+      "25 Sectional / Subject-wise speed boosters",
+      "40+ Solved Previous Year Papers (PYPs) with video-like text explanations",
+      "2 All-India Live National Level Mock Tests with All-India Rank (AIR)",
+      "1-Year Full Pass access with unlimited re-attempts and solution reviews"
+    ]
+  },
+  {
+    id: "TS-JAIIB-2026",
+    category: "banking",
+    title: "JAIIB 2026 Complete Mock Test Series (IIBF 4-Paper Flagship)",
+    exam: "JAIIB",
+    emblemBg: "#fef3c7",
+    emblemColor: "#b45309",
+    emblemIcon: "🏛️",
+    users: "184.2k Bankers",
+    totalTests: 91,
+    freeTests: 4,
+    languages: "English & Hindi",
+    lastUpdated: "Nov 7, 2026",
+    price: 399,
+    mrp: 1499,
+    passType: "Yearly Pass @ ₹399",
+    isLive: true,
+    liveTests: 2,
+    fullLengthTests: 30,
+    chapterWiseTests: 45,
+    moduleWiseTests: 4,
+    subjectWiseTests: 10,
+    col1: [
+      "2 Live Tests",
+      "30 Full Length Tests (100 MCQs)",
+      "45 Chapter-wise Tests (45 Units)"
+    ],
+    col2: [
+      "4 Module-wise Tests (Mod A-D)",
+      "10 Subject-wise Tests",
+      "4 Compulsory IIBF Papers"
+    ],
+    col3: [
+      "Real IIBF 2-Hour CBT Simulation",
+      "No Negative Marking Scheme",
+      "Valid for 1 Full Year"
+    ],
+    bullets: [
+      "Full Length Test 1 with 100 MCQs & Detailed Explanations",
+      "45 Chapter Tests (45 Units across Modules A, B, C & D)",
+      "4 Comprehensive Module Tests + 2 All-India Live Tests",
+      "Yearly Pass @ ₹399 (Original ₹1,499 - 73% OFF)"
+    ],
+    suggestedTest: {
+      id: "JAIIB-IEIFS-1",
+      title: "JAIIB Paper 1 (IE & IFS) Full-Length Mock Test 1 (100 MCQs)",
+      duration: "120 Mins",
+      questions: 100,
+      marks: 100,
+      isFree: true,
+      tag: "100-MCQ FULL MOCK"
+    },
+    availableTests: [
+      { id: "JAIIB-IEIFS-1", title: "JAIIB Paper 1 (IE & IFS) Full-Length Mock Test 1 (100 MCQs)", duration: "120 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "JAIIB Paper 1" },
+      { id: "JAIIB-PPB-1", title: "JAIIB Paper 2 (PPB): Principles & Practices of Banking Full Mock", duration: "120 Mins", questions: 100, marks: 100, isFree: false, tag: "PRO MOCK", exam: "JAIIB Paper 2" },
+      { id: "JAIIB-AFM-1", title: "JAIIB Paper 3 (AFM): Accounting & Financial Management for Bankers Mock", duration: "120 Mins", questions: 100, marks: 100, isFree: false, tag: "PRO MOCK", exam: "JAIIB Paper 3" },
+      { id: "JAIIB-RBWM-1", title: "JAIIB Paper 4 (RBWM): Retail Banking & Wealth Management Full Mock", duration: "120 Mins", questions: 100, marks: 100, isFree: false, tag: "PRO MOCK", exam: "JAIIB Paper 4" },
+      { id: "JAIIB-MOD-A", title: "JAIIB Paper 1 Module-A Special: Indian Economic Architecture", duration: "45 Mins", questions: 35, marks: 35, isFree: false, tag: "MODULE TEST", exam: "JAIIB Paper 1" },
+      { id: "JAIIB-MOD-B", title: "JAIIB Paper 1 Module-B Special: Economic Planning in India & NITI Aayog", duration: "45 Mins", questions: 35, marks: 35, isFree: false, tag: "MODULE TEST", exam: "JAIIB Paper 1" },
+      { id: "JAIIB-MOD-C", title: "JAIIB Paper 1 Module-C Special: Indian Financial Architecture", duration: "45 Mins", questions: 35, marks: 35, isFree: false, tag: "MODULE TEST", exam: "JAIIB Paper 1" },
+      { id: "JAIIB-MOD-D", title: "JAIIB Paper 1 Module-D Special: Financial Products and Services", duration: "45 Mins", questions: 35, marks: 35, isFree: false, tag: "MODULE TEST", exam: "JAIIB Paper 1" }
+    ],
+    aboutExam: {
+      conductingBody: "Indian Institute of Banking & Finance (IIBF)",
+      examName: "JAIIB (Junior Associate of the Indian Institute of Bankers)",
+      purpose: "Premier career-progression and salary increment certification for commercial bank employees, public sector bankers, RRBs, and cooperative banks.",
+      examMode: "Online Computer Based Test (CBT). Simple non-programmable calculator allowed.",
+      papers: [
+        "Paper 1: Indian Economy & Indian Financial System (IE & IFS)",
+        "Paper 2: Principles & Practices of Banking (PPB)",
+        "Paper 3: Accounting & Financial Management for Bankers (AFM)",
+        "Paper 4: Retail Banking & Wealth Management (RBWM)"
+      ],
+      paperStructure: "Each paper consists of 100 Objective MCQs for 100 Marks. Duration: 2 Hours (120 Minutes).",
+      negativeMarking: "NO Negative Marking (0 marks deducted for wrong answers).",
+      passingCriteria: "Minimum 50 out of 100 in each paper; OR at least 45 marks in each paper with a 50% aggregate (200/400) in a single attempt.",
+      attemptsValidity: "Maximum 5 attempts or 3 years from first registration date (whichever is earlier). Passed papers credits retained.",
+      examDates2026: "Paper 1 (IE & IFS): 01 Nov 2026 | Paper 2 (PPB): 22 Nov 2026 | Paper 3 (AFM): 28 Nov 2026 | Paper 4 (RBWM): 29 Nov 2026."
+    },
+    whyThisSeries: [
+      "Exact IIBF online CBT simulation: 100 MCQs, 2-hour countdown timer, on-screen financial calculator, and official scoring rules without negative marking.",
+      "Strict modular breakdown: Paper 1 includes 45 chapters across Modules A, B, C, and D matching the official MacMillan and IIBF curriculum.",
+      "Includes full-length 100-MCQ mock test incorporating our verified 100 questions with comprehensive answers and explanations.",
+      "Authored by senior banking professionals and treasury specialists covering latest RBI circulars, banking regulations, and macroeconomic data.",
+      "Instant score analysis and question-by-question review explaining every answer option."
+    ],
+    whatYouGet: [
+      "30 Full-Length Mock Tests (100 MCQs each matching IIBF standard)",
+      "45 Chapter-wise / Unit-wise practice tests corresponding to all 45 Units of Paper 1",
+      "4 Module-wise tests (Module A, Module B, Module C, Module D)",
+      "2 All-India Live Banker Mock Tests with instant AIR and score cards",
+      "10 Subject-wise drills & quick formula sheets",
+      "1-Year Full Pass access with instant score analysis & post-exam solutions review"
+    ]
+  },
+  {
     id: "TS-SBI-APPRENTICE-2026",
     category: "banking",
     title: "SBI Apprentice Test Series 2026",
@@ -541,43 +726,16 @@ const TEST_SERIES_CATALOG = [
     freeTests: 3,
     languages: "English, Hindi",
     lastUpdated: "Nov 6, 2026",
-    price: 199,
-    mrp: 499,
-    col1: [
-      "10 Full Length Tests",
-      "26 Sectional Tests",
-      "Live Exam Hall Simulation"
-    ],
-    col2: [
-      "Reasoning & Computer Aptitude",
-      "General Financial Awareness",
-      "Quantitative Aptitude Drills"
-    ],
-    col3: [
-      "Bilingual Step Solutions",
-      "Detailed Cutoff Tracker",
-      "+ 20 More Tests"
-    ],
-    bullets: [
-      "Ace Your SBI Apprentice 2026. Attempt First Test for Free!",
-      "Conducted in Hindi & English.",
-      "Total Tests - 36 (10 Full Length Tests, 26 Sectional Tests)",
-      "Valid till 31 March 2027"
-    ],
-    suggestedTest: {
-      id: "BANK-MOCK-1",
-      title: "SBI Apprentice 2026 Full Length Mock Test 1",
-      duration: "60 Mins",
-      questions: 100,
-      marks: 100,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "BANK-MOCK-1", title: "SBI Apprentice 2026 Full Length Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "SBI APPRENTICE" },
-      { id: "SBI-APP-SEC-1", title: "SBI Apprentice Sectional Mock: Quantitative Aptitude", duration: "20 Mins", questions: 25, marks: 25, isFree: false, tag: "SECTIONAL TEST", exam: "SBI APPRENTICE" },
-      { id: "SBI-APP-SEC-2", title: "SBI Apprentice Sectional Mock: General & Financial Awareness", duration: "20 Mins", questions: 25, marks: 25, isFree: false, tag: "SECTIONAL TEST", exam: "SBI APPRENTICE" }
-    ]
+    price: 399,
+    mrp: 999,
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "10 Full Length Tests", "26 Sectional Tests", "Live Exam Hall Simulation" ],
+    col2: [ "Reasoning & Computer Aptitude", "General Financial Awareness", "Quantitative Aptitude Drills" ],
+    col3: [ "Bilingual Step Solutions", "Detailed Cutoff Tracker", "+ 20 More Tests" ],
+    bullets: [ "Ace Your SBI Apprentice 2026. Scheduled for next release cohort.", "Conducted in Hindi & English.", "Total Tests - 36 (Full Length + Sectional)", "Launching Shortly" ],
+    suggestedTest: { id: "BANK-MOCK-1", title: "SBI Apprentice 2026 Full Length Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "BANK-MOCK-1", title: "SBI Apprentice 2026 Full Length Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "SBI APPRENTICE" } ]
   },
   {
     id: "TS-RBI-ASSISTANT-2026",
@@ -592,42 +750,16 @@ const TEST_SERIES_CATALOG = [
     freeTests: 2,
     languages: "English, Hindi",
     lastUpdated: "Nov 6, 2026",
-    price: 199,
-    mrp: 499,
-    col1: [
-      "15 Prelims Full Mocks",
-      "10 Mains High-Level Mocks",
-      "English Language Drills"
-    ],
-    col2: [
-      "Numerical Ability Boosters",
-      "Reasoning & Puzzle Bank",
-      "Banking & RBI Special"
-    ],
-    col3: [
-      "TCS Interface Simulation",
-      "All-India Percentile Rank",
-      "+ 15 More Tests"
-    ],
-    bullets: [
-      "Ace Your RBI Assistant 2026 Exam. Attempt First Test for Free!",
-      "Conducted in Hindi & English.",
-      "Total Tests - 28 (Full Length Tests + Sectional)",
-      "Valid till 31 March 2027"
-    ],
-    suggestedTest: {
-      id: "BANK-MOCK-1",
-      title: "RBI Assistant Prelims Full Length Mock Test 1",
-      duration: "60 Mins",
-      questions: 100,
-      marks: 100,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "BANK-MOCK-1", title: "RBI Assistant Prelims Full Length Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "RBI ASSISTANT" },
-      { id: "RBI-ASST-MAIN-1", title: "RBI Assistant Mains High-Level Mock Test 1", duration: "135 Mins", questions: 200, marks: 200, isFree: false, tag: "PRO TEST", exam: "RBI ASSISTANT" }
-    ]
+    price: 399,
+    mrp: 999,
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "15 Prelims Full Mocks", "10 Mains High-Level Mocks", "English Language Drills" ],
+    col2: [ "Numerical Ability Boosters", "Reasoning & Puzzle Bank", "Banking & RBI Special" ],
+    col3: [ "TCS Interface Simulation", "All-India Percentile Rank", "+ 15 More Tests" ],
+    bullets: [ "Ace Your RBI Assistant 2026 Exam. Scheduled for next release cohort.", "Conducted in Hindi & English.", "Total Tests - 28 (Full Length Tests + Sectional)", "Launching Shortly" ],
+    suggestedTest: { id: "BANK-MOCK-1", title: "RBI Assistant Prelims Full Length Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "BANK-MOCK-1", title: "RBI Assistant Prelims Full Length Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "RBI ASSISTANT" } ]
   },
   {
     id: "TS-SBI-PO-2026",
@@ -642,93 +774,16 @@ const TEST_SERIES_CATALOG = [
     freeTests: 5,
     languages: "English, Hindi",
     lastUpdated: "Nov 6, 2026",
-    price: 199,
-    mrp: 499,
-    col1: [
-      "25 Full Length Tests",
-      "81 Chapter Tests",
-      "35 Sectional Tests"
-    ],
-    col2: [
-      "High-Level Puzzles & Seating",
-      "Advanced Data Interpretation",
-      "Descriptive Paper Test Module"
-    ],
-    col3: [
-      "Step-by-Step Explanations",
-      "Sectional Cutoff Analytics",
-      "+ 80 More Tests"
-    ],
-    bullets: [
-      "Prepare with high-level SBI PO Pre & Mains mock tests. Attempt First Test for Free!",
-      "Conducted in Hindi & English.",
-      "Total Tests - 141 (25 Full Length Tests, 81 Chapter Tests, 35 Sectional Tests)",
-      "Valid till 31 March 2027"
-    ],
-    suggestedTest: {
-      id: "BANK-MOCK-1",
-      title: "SBI PO Prelims All-India Live Mock Test 1",
-      duration: "60 Mins",
-      questions: 100,
-      marks: 100,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "BANK-MOCK-1", title: "SBI PO Prelims All-India Live Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "SBI PO" },
-      { id: "SBI-PO-MAINS-1", title: "SBI PO Mains Full Length Comprehensive Mock 1", duration: "180 Mins", questions: 155, marks: 200, isFree: false, tag: "PRO TEST", exam: "SBI PO" }
-    ]
-  },
-  {
-    id: "TS-SSC-CHSL-2026",
-    category: "ssc",
-    title: "SSC CHSL Mock Test Series 2026 (Tier I & Tier II)",
-    exam: "SSC CHSL",
-    emblemBg: "#fee2e2",
-    emblemColor: "#dc2626",
-    emblemIcon: "📋",
-    users: "911.7k Users",
-    totalTests: 2083,
-    freeTests: 5,
-    languages: "English, Hindi + 8 More",
-    lastUpdated: "Nov 6, 2026",
-    price: 199,
+    price: 399,
     mrp: 999,
-    col1: [
-      "2 Live Tests",
-      "60 Sectional Tests (New Pattern)",
-      "140 PYST 2024-25"
-    ],
-    col2: [
-      "198 Chapter Tests (Tier I)",
-      "55 Full Tests (New Pattern)",
-      "120 PYP (Tier I)"
-    ],
-    col3: [
-      "35 Current Affairs Special",
-      "50 Speed Drills",
-      "+ 1543 More Tests"
-    ],
-    bullets: [
-      "2 Live Tests",
-      "55 Full Tests (New Pattern)",
-      "60 Sectional Tests (New Pattern)",
-      "+ 1966 more tests"
-    ],
-    suggestedTest: {
-      id: "SSC-CHSL-MOCK-1",
-      title: "SSC CHSL 2026: Tier-1 Full Length TCS Mock Test 1",
-      duration: "15 Mins",
-      questions: 8,
-      marks: 16,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "SSC-CHSL-MOCK-1", title: "SSC CHSL 2026: Tier-1 Full Length TCS Mock Test 1", duration: "15 Mins", questions: 8, marks: 16, isFree: true, tag: "FREE DEMO MOCK", exam: "SSC CHSL" },
-      { id: "SSC-CHSL-MOCK-2", title: "SSC CHSL 2026: Tier-1 Mock Test 2 (Quantitative & Reasoning)", duration: "60 Mins", questions: 100, marks: 200, isFree: false, tag: "PRO TEST", exam: "SSC CHSL" },
-      { id: "SSC-CHSL-PYQ-1", title: "SSC CHSL Official Solved Previous Year Paper (2024 Shift-1)", duration: "60 Mins", questions: 100, marks: 200, isFree: false, tag: "SOLVED PYQ", exam: "SSC CHSL" }
-    ]
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "25 Full Length Tests", "81 Chapter Tests", "35 Sectional Tests" ],
+    col2: [ "High-Level Puzzles & Seating", "Advanced Data Interpretation", "Descriptive Paper Test Module" ],
+    col3: [ "Step-by-Step Explanations", "Sectional Cutoff Analytics", "+ 80 More Tests" ],
+    bullets: [ "Prepare with high-level SBI PO Pre & Mains mock tests. Scheduled for next cohort.", "Conducted in Hindi & English.", "Total Tests - 141 (Full Length + Chapter Tests)", "Launching Shortly" ],
+    suggestedTest: { id: "BANK-MOCK-1", title: "SBI PO Prelims All-India Live Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "BANK-MOCK-1", title: "SBI PO Prelims All-India Live Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "SBI PO" } ]
   },
   {
     id: "TS-CA-2026",
@@ -743,42 +798,16 @@ const TEST_SERIES_CATALOG = [
     freeTests: 83,
     languages: "English, Hindi + 8 More",
     lastUpdated: "Nov 6, 2026",
-    price: 149,
-    mrp: 699,
-    col1: [
-      "32 All India Revision LT",
-      "17 Half-Yearly Revision: Jan to June",
-      "24 Monthly Compendiums"
-    ],
-    col2: [
-      "17 Quarterly Revision: Jan-Feb-Mar",
-      "50 Weekly Speed Quizzes",
-      "30 Odisha GK Specials"
-    ],
-    col3: [
-      "29 Union Budget & Eco Survey",
-      "45 Government Schemes",
-      "+ 306 More Tests"
-    ],
-    bullets: [
-      "32 All India Revision LT",
-      "17 Half-Yearly Revision: Jan to June",
-      "17 Quarterly Revision: Jan-Feb-Mar",
-      "+ 459 more tests"
-    ],
-    suggestedTest: {
-      id: "BANK-MOCK-1",
-      title: "Monthly Current Affairs & Banking Awareness Mock 1",
-      duration: "20 Mins",
-      questions: 25,
-      marks: 50,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "BANK-MOCK-1", title: "Monthly Current Affairs & Banking Awareness Mock 1", duration: "20 Mins", questions: 25, marks: 50, isFree: true, tag: "FREE DEMO MOCK", exam: "CURRENT AFFAIRS" },
-      { id: "OSSC-MOCK-1", title: "Odisha Current Affairs & Static GK Special Mock", duration: "25 Mins", questions: 30, marks: 60, isFree: true, tag: "FREE DEMO MOCK", exam: "ODISHA GK" }
-    ]
+    price: 399,
+    mrp: 999,
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "32 All India Revision LT", "17 Half-Yearly Revision: Jan to June", "24 Monthly Compendiums" ],
+    col2: [ "17 Quarterly Revision: Jan-Feb-Mar", "50 Weekly Speed Quizzes", "30 Odisha GK Specials" ],
+    col3: [ "29 Union Budget & Eco Survey", "45 Government Schemes", "+ 306 More Tests" ],
+    bullets: [ "32 All India Revision LT", "17 Half-Yearly Revision: Jan to June", "17 Quarterly Revision: Jan-Feb-Mar", "Launching Shortly" ],
+    suggestedTest: { id: "BANK-MOCK-1", title: "Monthly Current Affairs & Banking Awareness Mock 1", duration: "20 Mins", questions: 25, marks: 50, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "BANK-MOCK-1", title: "Monthly Current Affairs & Banking Awareness Mock 1", duration: "20 Mins", questions: 25, marks: 50, isFree: true, tag: "FREE DEMO MOCK", exam: "CURRENT AFFAIRS" } ]
   },
   {
     id: "TS-SSC-CGL-2026",
@@ -793,42 +822,16 @@ const TEST_SERIES_CATALOG = [
     freeTests: 51,
     languages: "English, Hindi",
     lastUpdated: "Nov 6, 2026",
-    price: 249,
-    mrp: 1299,
-    col1: [
-      "2 Live Tests",
-      "22 Sectional Tests (Tier II)",
-      "210 PYST 2024-25"
-    ],
-    col2: [
-      "198 Chapter Tests (Tier I)",
-      "65 Full Tests (New Pattern)",
-      "250 PYP (Tier I & II)"
-    ],
-    col3: [
-      "40 Quantitative Boosters",
-      "60 English Vocab Drills",
-      "+ 1789 More Tests"
-    ],
-    bullets: [
-      "2 Live Tests",
-      "198 Chapter Tests (Tier I)",
-      "22 Sectional Tests (Tier II)",
-      "+ 2404 more tests"
-    ],
-    suggestedTest: {
-      id: "SSC-MOCK-1",
-      title: "SSC CGL 2026: Tier-1 Full Length TCS Mock Test 1",
-      duration: "60 Mins",
-      questions: 100,
-      marks: 200,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "SSC-MOCK-1", title: "SSC CGL 2026: Tier-1 Full Length TCS Mock Test 1", duration: "60 Mins", questions: 100, marks: 200, isFree: true, tag: "FREE DEMO MOCK", exam: "SSC CGL" },
-      { id: "SSC-CHSL-MOCK-1", title: "SSC Speed Diagnostic & Aptitude Mock", duration: "15 Mins", questions: 8, marks: 16, isFree: true, tag: "FREE TEST", exam: "SSC" }
-    ]
+    price: 399,
+    mrp: 999,
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "2 Live Tests", "22 Sectional Tests (Tier II)", "210 PYST 2024-25" ],
+    col2: [ "198 Chapter Tests (Tier I)", "65 Full Tests (New Pattern)", "250 PYP (Tier I & II)" ],
+    col3: [ "40 Quantitative Boosters", "60 English Vocab Drills", "+ 1789 More Tests" ],
+    bullets: [ "2 Live Tests", "198 Chapter Tests (Tier I)", "22 Sectional Tests (Tier II)", "Launching Shortly" ],
+    suggestedTest: { id: "SSC-MOCK-1", title: "SSC CGL 2026: Tier-1 Full Length TCS Mock Test 1", duration: "60 Mins", questions: 100, marks: 200, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "SSC-MOCK-1", title: "SSC CGL 2026: Tier-1 Full Length TCS Mock Test 1", duration: "60 Mins", questions: 100, marks: 200, isFree: true, tag: "FREE DEMO MOCK", exam: "SSC CGL" } ]
   },
   {
     id: "TS-RAILWAY-NTPC",
@@ -843,145 +846,40 @@ const TEST_SERIES_CATALOG = [
     freeTests: 4,
     languages: "English, Hindi + 6 More",
     lastUpdated: "Nov 6, 2026",
-    price: 199,
+    price: 399,
     mrp: 999,
-    col1: [
-      "2 Live Test",
-      "30 Sectional Test (CBT 1)",
-      "141 PYST 2024-25"
-    ],
-    col2: [
-      "255 Chapter Test (CBT 1)",
-      "20 Full Test (CBT 1)",
-      "212 PYP (CBT 1)"
-    ],
-    col3: [
-      "29 Current Affairs Express",
-      "72 PYST 2025-26",
-      "+ 19 More Tests"
-    ],
-    bullets: [
-      "2 Live Tests",
-      "255 Chapter Tests (CBT 1)",
-      "20 Full Tests (CBT 1)",
-      "+ 529 More Tests"
-    ],
-    suggestedTest: {
-      id: "RAILWAY-MOCK-1",
-      title: "RRB NTPC CBT-1 All India Live Mock Test 1",
-      duration: "90 Mins",
-      questions: 100,
-      marks: 100,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "RAILWAY-MOCK-1", title: "RRB NTPC CBT-1 All India Live Mock Test 1", duration: "90 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "RRB NTPC" },
-      { id: "RAILWAY-MOCK-2", title: "RRB NTPC CBT-1 Full Length Mock Test 2 (Quantitative, Reasoning & GA)", duration: "90 Mins", questions: 100, marks: 100, isFree: false, tag: "PRO TEST", exam: "RRB NTPC" },
-      { id: "RAILWAY-CHAPT-1", title: "RRB NTPC CBT-1 Chapter Test: Arithmetic & Number System", duration: "30 Mins", questions: 30, marks: 30, isFree: false, tag: "CHAPTER TEST", exam: "RRB NTPC" },
-      { id: "RAILWAY-PYP-1", title: "RRB NTPC Official Solved PYP (2024 Shift-1 with Detailed Solutions)", duration: "90 Mins", questions: 100, marks: 100, isFree: false, tag: "SOLVED PYP", exam: "RRB NTPC" }
-    ]
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "2 Live Test", "30 Sectional Test (CBT 1)", "141 PYST 2024-25" ],
+    col2: [ "255 Chapter Test (CBT 1)", "20 Full Test (CBT 1)", "212 PYP (CBT 1)" ],
+    col3: [ "29 Current Affairs Express", "72 PYST 2025-26", "+ 19 More Tests" ],
+    bullets: [ "2 Live Tests", "30 Sectional Tests (CBT 1)", "255 Chapter Tests (CBT 1)", "Launching Shortly" ],
+    suggestedTest: { id: "RAILWAY-MOCK-1", title: "RRB NTPC CBT-1 Full Length All-India Mock Test 1", duration: "90 Mins", questions: 100, marks: 100, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "RAILWAY-MOCK-1", title: "RRB NTPC CBT-1 Full Length All-India Mock Test 1", duration: "90 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "RRB NTPC" } ]
   },
   {
     id: "TS-OSSC-CGL-2026",
     category: "ossc",
-    title: "OSSC CGL & Odisha State Govt Exam Mock Series 2026",
+    title: "OSSC CGL 2026 Prelims & Mains Comprehensive Mock Series",
     exam: "OSSC CGL",
-    emblemBg: "#ecfdf5",
-    emblemColor: "#047857",
+    emblemBg: "#dcfce7",
+    emblemColor: "#15803d",
     emblemIcon: "🏢",
-    users: "385.6k Users",
-    totalTests: 450,
-    freeTests: 8,
-    languages: "English, Odia",
+    users: "389.5k Users",
+    totalTests: 184,
+    freeTests: 6,
+    languages: "Odia, English",
     lastUpdated: "Nov 6, 2026",
-    price: 199,
-    mrp: 899,
-    col1: [
-      "10 Live State Tests",
-      "25 Odia Language Tests",
-      "50 Odisha GK Specials"
-    ],
-    col2: [
-      "45 Full Length Mocks",
-      "60 Arithmetic Drills",
-      "35 Reasoning Drills"
-    ],
-    col3: [
-      "20 Computer Awareness",
-      "30 OSSC Previous Papers",
-      "+ 175 More Tests"
-    ],
-    bullets: [
-      "Odisha GK, History, Geography & Culture Special",
-      "Odia Grammar, Vocabulary & Comprehension",
-      "Arithmetic & Logical Reasoning Practice",
-      "OSSC, OSSSC RI/AMIN & OPSC OAS Pattern"
-    ],
-    suggestedTest: {
-      id: "OSSC-MOCK-1",
-      title: "OSSC CGL Prelims Full Length Mock Test 1",
-      duration: "90 Mins",
-      questions: 100,
-      marks: 100,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "OSSC-MOCK-1", title: "OSSC CGL Prelims Full Length Mock Test 1", duration: "90 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "OSSC" }
-    ]
-  },
-  {
-    id: "TS-JAIIB-2026",
-    category: "regulatory",
-    title: "JAIIB 2026 Complete 4-Paper Mock Test Series (IIBF)",
-    exam: "JAIIB",
-    emblemBg: "#fef3c7",
-    emblemColor: "#b45309",
-    emblemIcon: "🏛️",
-    users: "420.5k Users",
-    totalTests: 120,
-    freeTests: 4,
-    languages: "English, Hindi",
-    lastUpdated: "Nov 6, 2026",
-    price: 249,
-    mrp: 1199,
-    col1: [
-      "IE&IFS Full Mocks",
-      "PPB Practice Tests",
-      "Real IIBF Calculator"
-    ],
-    col2: [
-      "AFM Financial Analysis",
-      "RBWM Retail Banking",
-      "Case Study Questions"
-    ],
-    col3: [
-      "Bilingual Solutions",
-      "Sectional Cutoff Tracker",
-      "+ 100 More Tests"
-    ],
-    bullets: [
-      "All 4 Compulsory Papers (IE&IFS, PPB, AFM, RBWM)",
-      "40 Full-Length Mocks (10 per Paper)",
-      "Real IIBF Financial Calculator on Screen",
-      "Detailed Bilingual Step-by-Step Solutions"
-    ],
-    suggestedTest: {
-      id: "JAIIB-IEIFS-1",
-      title: "Paper 1: Indian Economy & Financial System Full Mock",
-      duration: "15 Mins",
-      questions: 8,
-      marks: 16,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "JAIIB-IEIFS-1", title: "Paper 1: Indian Economy & Financial System Full Mock", duration: "15 Mins", questions: 8, marks: 16, isFree: true, tag: "FREE DEMO MOCK", exam: "JAIIB" },
-      { id: "JAIIB-PPB-1", title: "Paper 2: Principles & Practices of Banking Full Mock", duration: "15 Mins", questions: 5, marks: 10, isFree: true, tag: "FREE DEMO MOCK", exam: "JAIIB" },
-      { id: "JAIIB-AFM-1", title: "Paper 3: Accounting & Financial Management for Bankers", duration: "15 Mins", questions: 4, marks: 8, isFree: true, tag: "FREE DEMO MOCK", exam: "JAIIB" },
-      { id: "JAIIB-RBWM-1", title: "Paper 4: Retail Banking & Wealth Management Full Mock", duration: "15 Mins", questions: 4, marks: 8, isFree: true, tag: "FREE DEMO MOCK", exam: "JAIIB" }
-    ]
+    price: 399,
+    mrp: 999,
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "15 Full Length Prelims Mocks", "10 Mains Odia & English Papers", "Special Odisha Economy Drills" ],
+    col2: [ "Maths & Reasoning Boosters", "Odisha History & Geography Sets", "Odisha Static GK Pack" ],
+    col3: [ "Bilingual Interface (Odia/English)", "Instant Score & Negative Marking", "+ 130 More Tests" ],
+    bullets: [ "15 Full Length Prelims Mocks", "10 Mains Odia & English Papers", "Special Odisha Economy Drills", "Launching Shortly" ],
+    suggestedTest: { id: "OSSC-MOCK-1", title: "OSSC CGL Prelims Full Length Mock Test 1", duration: "90 Mins", questions: 100, marks: 100, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "OSSC-MOCK-1", title: "OSSC CGL Prelims Full Length Mock Test 1", duration: "90 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "OSSC" } ]
   },
   {
     id: "TS-BANKING-FOUNDATION",
@@ -996,433 +894,208 @@ const TEST_SERIES_CATALOG = [
     freeTests: 12,
     languages: "English, Hindi",
     lastUpdated: "Nov 6, 2026",
-    price: 249,
-    mrp: 1199,
-    col1: [
-      "15 Live Mocks",
-      "40 Sectional Speed Tests",
-      "60 High-Level Puzzles"
-    ],
-    col2: [
-      "50 SBI/IBPS Full Mocks",
-      "45 Data Interpretation",
-      "35 Banking Awareness"
-    ],
-    col3: [
-      "25 Computer Aptitude",
-      "40 Memory Based PYPs",
-      "+ 1528 More Tests"
-    ],
-    bullets: [
-      "SBI PO & Clerk Full Mocks (Prelims + Mains)",
-      "IBPS PO & RRB Officer Scale-1 Pattern",
-      "High-Level Puzzles & Data Interpretation",
-      "Sectional Cutoff & All-India Rank Tracker"
-    ],
-    suggestedTest: {
-      id: "BANK-MOCK-1",
-      title: "SBI / IBPS PO Prelims Complete Mock Test 1",
-      duration: "60 Mins",
-      questions: 100,
-      marks: 100,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "BANK-MOCK-1", title: "SBI / IBPS PO Prelims Complete Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "BANKING" }
-    ]
+    price: 399,
+    mrp: 999,
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "SBI, IBPS, RRB Pre & Mains", "50 Sectional Quant Drills", "50 Reasoning Puzzles Bank" ],
+    col2: [ "Daily Speed Quizzes", "Banking & Economic Awareness", "Descriptive English Evaluator" ],
+    col3: [ "All-India Rank Percentile", "Performance Analytics", "+ 1500 More Tests" ],
+    bullets: [ "SBI, IBPS, RRB Pre & Mains", "50 Sectional Quant Drills", "50 Reasoning Puzzles Bank", "Launching Shortly" ],
+    suggestedTest: { id: "BANK-MOCK-1", title: "Banking Foundation Diagnostic Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "BANK-MOCK-1", title: "Banking Foundation Diagnostic Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "BANK" } ]
   },
   {
     id: "TS-TEACHING-CTET",
     category: "teaching",
-    title: "Teaching Exams (CTET, Odisha OTET & OSSTET) Mock Series",
+    title: "Teaching Exams Mock Test Series (CTET, OSSTET, OTET)",
     exam: "TEACHING",
-    emblemBg: "#fae8ff",
-    emblemColor: "#86198f",
-    emblemIcon: "📚",
-    users: "640.2k Users",
-    totalTests: 650,
-    freeTests: 6,
+    emblemBg: "#fef3c7",
+    emblemColor: "#b45309",
+    emblemIcon: "🎓",
+    users: "640.1k Users",
+    totalTests: 340,
+    freeTests: 8,
     languages: "English, Hindi, Odia",
     lastUpdated: "Nov 6, 2026",
-    price: 199,
-    mrp: 899,
-    col1: [
-      "Child Development & Pedagogy",
-      "Language I (Odia/Hindi)",
-      "Language II (English)"
-    ],
-    col2: [
-      "Mathematics & Science",
-      "Environmental Studies (EVS)",
-      "Social Science Mocks"
-    ],
-    col3: [
-      "25 CTET Official PYPs",
-      "15 OTET Special Sets",
-      "+ 550 More Tests"
-    ],
-    bullets: [
-      "Child Development & Pedagogy (CDP) Special",
-      "Language I (Odia/Hindi) & Language II (English)",
-      "Mathematics & Environmental Studies (EVS)",
-      "Detailed Explanations with Sectional Cutoffs"
-    ],
-    suggestedTest: {
-      id: "OSSC-MOCK-1",
-      title: "Teaching Aptitude & Pedagogy Practice Mock 1",
-      duration: "60 Mins",
-      questions: 60,
-      marks: 60,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "OSSC-MOCK-1", title: "Teaching Aptitude & Pedagogy Practice Mock 1", duration: "60 Mins", questions: 60, marks: 60, isFree: true, tag: "FREE TEST", exam: "TEACHING" }
-    ]
+    price: 399,
+    mrp: 999,
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "CTET Paper 1 & 2 Mocks", "Child Pedagogy Specialists", "Social Studies / Science" ],
+    col2: [ "Odia Language Papers", "Maths Pedagogy Drills", "Previous 10-Year Solved Papers" ],
+    col3: [ "Real Exam Timer & Marking", "Instant Performance Score", "+ 280 More Tests" ],
+    bullets: [ "CTET Paper 1 & 2 Mocks", "Child Pedagogy Specialists", "Social Studies / Science", "Launching Shortly" ],
+    suggestedTest: { id: "OSSC-MOCK-1", title: "CTET & State TET Child Development & Pedagogy Mock", duration: "30 Mins", questions: 30, marks: 30, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "OSSC-MOCK-1", title: "CTET & State TET Child Development & Pedagogy Mock", duration: "30 Mins", questions: 30, marks: 30, isFree: true, tag: "FREE DEMO MOCK", exam: "TET" } ]
   },
   {
     id: "TS-DEFENCE-ALL",
     category: "defence",
-    title: "Defence Exams (NDA, CDS, AFCAT & Agniveer) Test Series",
+    title: "Defence Services Mock Test Series (NDA, CDS, AFCAT, Agniveer)",
     exam: "DEFENCE",
-    emblemBg: "#f1f5f9",
-    emblemColor: "#334155",
-    emblemIcon: "🛡️",
-    users: "780.4k Users",
-    totalTests: 920,
-    freeTests: 8,
+    emblemBg: "#fee2e2",
+    emblemColor: "#b91c1c",
+    emblemIcon: "🎖️",
+    users: "512.8k Users",
+    totalTests: 420,
+    freeTests: 6,
     languages: "English, Hindi",
     lastUpdated: "Nov 6, 2026",
-    price: 199,
+    price: 399,
     mrp: 999,
-    col1: [
-      "NDA Mathematics",
-      "General Ability Test (GAT)",
-      "CDS Elementary Maths"
-    ],
-    col2: [
-      "CDS English & GK Mocks",
-      "Air Force Agniveer Vayu",
-      "Navy SSR / MR Practice"
-    ],
-    col3: [
-      "Speed Diagnostics",
-      "Negative Marking Drill",
-      "+ 800 More Tests"
-    ],
-    bullets: [
-      "NDA Mathematics & General Ability Test (GAT)",
-      "CDS Elementary Maths, English & GK",
-      "Air Force Agniveer Vayu CBT Mocks",
-      "All-India Ranking with Negative Marking"
-    ],
-    suggestedTest: {
-      id: "SSC-MOCK-1",
-      title: "Defence General Ability & Aptitude Mock 1",
-      duration: "60 Mins",
-      questions: 60,
-      marks: 60,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "SSC-MOCK-1", title: "Defence General Ability & Aptitude Mock 1", duration: "60 Mins", questions: 60, marks: 60, isFree: true, tag: "FREE TEST", exam: "DEFENCE" }
-    ]
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "NDA Mathematics & GAT", "CDS Elementary Maths & GK", "AFCAT Online Mock Papers" ],
+    col2: [ "Agniveer Army/Navy/Airforce", "Physics & Chemistry Boosters", "SSB Interview Orientation" ],
+    col3: [ "UPSC Standard Negative Marking", "All-India Cutoff Analysis", "+ 350 More Tests" ],
+    bullets: [ "NDA Mathematics & GAT", "CDS Elementary Maths & GK", "AFCAT Online Mock Papers", "Launching Shortly" ],
+    suggestedTest: { id: "SSC-MOCK-1", title: "Defence Services General Ability & Science Mock 1", duration: "60 Mins", questions: 50, marks: 100, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "SSC-MOCK-1", title: "Defence Services General Ability & Science Mock 1", duration: "60 Mins", questions: 50, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "DEFENCE" } ]
   },
   {
     id: "TS-AE-JE-ENGG",
-    category: "aeje",
-    title: "AE/JE Engineering Exams (SSC JE, Civil, Electrical, Mech)",
-    exam: "AEJE",
+    category: "engineering",
+    title: "SSC JE & State AE/JE Engineering Mock Series (Civil/Mech/Elec)",
+    exam: "AE/JE ENGG",
     emblemBg: "#e0e7ff",
     emblemColor: "#3730a3",
-    emblemIcon: "📐",
-    users: "512.3k Users",
-    totalTests: 580,
+    emblemIcon: "⚙️",
+    users: "280.4k Users",
+    totalTests: 310,
     freeTests: 5,
     languages: "English, Hindi",
     lastUpdated: "Nov 6, 2026",
-    price: 249,
-    mrp: 1299,
-    col1: [
-      "Technical Core Papers",
-      "General Awareness",
-      "Reasoning Practice"
-    ],
-    col2: [
-      "Civil / Mech / Elec Mocks",
-      "SSC JE Paper-1 Drills",
-      "Formula Cheat Sheets"
-    ],
-    col3: [
-      "Official PYPs 2018-2024",
-      "Negative Marking Drill",
-      "+ 450 More Tests"
-    ],
-    bullets: [
-      "Technical Engineering Core Branch Papers",
-      "General Awareness & Logical Reasoning",
-      "Previous Year Questions (2018–2024)",
-      "TCS Pattern Negative Marking Simulation"
-    ],
-    suggestedTest: {
-      id: "RAILWAY-MOCK-1",
-      title: "AE/JE Technical & Aptitude Mock 1",
-      duration: "60 Mins",
-      questions: 60,
-      marks: 60,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "RAILWAY-MOCK-1", title: "AE/JE Technical & Aptitude Mock 1", duration: "60 Mins", questions: 60, marks: 60, isFree: true, tag: "FREE TEST", exam: "AE/JE" }
-    ]
+    price: 399,
+    mrp: 999,
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "Technical Core Disciplines", "General Engineering Mocks", "SSC JE Paper 1 & 2 CBT" ],
+    col2: [ "State PSC AE Specialized Papers", "Engineering Mechanics & SOM", "Electrical Circuits & Machines" ],
+    col3: [ "Formula Memory Drills", "Detailed Step Calculations", "+ 250 More Tests" ],
+    bullets: [ "Technical Core Disciplines", "General Engineering Mocks", "SSC JE Paper 1 & 2 CBT", "Launching Shortly" ],
+    suggestedTest: { id: "RAILWAY-MOCK-1", title: "SSC JE General Intelligence & Reasoning Full Mock", duration: "60 Mins", questions: 50, marks: 50, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "RAILWAY-MOCK-1", title: "SSC JE General Intelligence & Reasoning Full Mock", duration: "60 Mins", questions: 50, marks: 50, isFree: true, tag: "FREE DEMO MOCK", exam: "AE/JE" } ]
   },
   {
     id: "TS-PG-ENTRANCE",
     category: "pg",
-    title: "PG Entrance Exams (CUET PG, CPET Odisha & IIT JAM)",
-    exam: "PG",
+    title: "PG Entrance Mock Series (CUET PG, MBA Entrance, State PG)",
+    exam: "PG ENTRANCE",
     emblemBg: "#ede9fe",
-    emblemColor: "#6b21a8",
-    emblemIcon: "🎓",
-    users: "280.1k Users",
-    totalTests: 340,
+    emblemColor: "#5b21b6",
+    emblemIcon: "📚",
+    users: "190.2k Users",
+    totalTests: 180,
     freeTests: 4,
-    languages: "English",
+    languages: "English, Hindi",
     lastUpdated: "Nov 6, 2026",
-    price: 199,
-    mrp: 899,
-    col1: [
-      "CUET PG General Paper",
-      "Domain Science / Arts",
-      "Higher Reasoning Drills"
-    ],
-    col2: [
-      "CPET Odisha State Sets",
-      "IIT JAM Foundation",
-      "Speed Diagnostics"
-    ],
-    col3: [
-      "Detailed Explanations",
-      "Rank Benchmarking",
-      "+ 250 More Tests"
-    ],
-    bullets: [
-      "CUET PG General Paper + Subject Modules",
-      "CPET Odisha State PG Entrance Sets",
-      "Domain Knowledge Tests & Mock Drills",
-      "Speed Diagnostic with Timed Analytics"
-    ],
-    suggestedTest: {
-      id: "BANK-MOCK-1",
-      title: "PG General Aptitude & Higher Reasoning Mock",
-      duration: "45 Mins",
-      questions: 50,
-      marks: 100,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "BANK-MOCK-1", title: "PG General Aptitude & Higher Reasoning Mock", duration: "45 Mins", questions: 50, marks: 100, isFree: true, tag: "FREE TEST", exam: "PG ENTRANCE" }
-    ]
+    price: 399,
+    mrp: 999,
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "CUET PG General & Domain", "MBA CAT / MAT / CMAT Foundation", "General Aptitude & Data Interp" ],
+    col2: [ "Higher English Comprehension", "Logical & Analytical Reasoning", "Current Affairs for PG" ],
+    col3: [ "NTA Pattern CBT Timer", "Subject Wise Percentile", "+ 140 More Tests" ],
+    bullets: [ "CUET PG General & Domain", "MBA CAT / MAT / CMAT Foundation", "General Aptitude & Data Interp", "Launching Shortly" ],
+    suggestedTest: { id: "BANK-MOCK-1", title: "CUET PG Section 1: General Comprehension & Verbal Ability", duration: "45 Mins", questions: 25, marks: 100, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "BANK-MOCK-1", title: "CUET PG Section 1: General Comprehension & Verbal Ability", duration: "45 Mins", questions: 25, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "PG" } ]
   },
   {
     id: "TS-FITTER-TRADE",
     category: "fitter",
-    title: "ITI Fitter & Technical Trade Test Series (ISRO, DRDO, Railway)",
+    title: "ITI Fitter Trade Certification & Railway ALP Tech Mock Series",
     exam: "FITTER",
-    emblemBg: "#fef3c7",
-    emblemColor: "#92400e",
+    emblemBg: "#f1f5f9",
+    emblemColor: "#334155",
     emblemIcon: "🔧",
-    users: "195.4k Users",
-    totalTests: 280,
+    users: "145.7k Users",
+    totalTests: 160,
     freeTests: 4,
-    languages: "English, Hindi, Odia",
+    languages: "Hindi, English, Odia",
     lastUpdated: "Nov 6, 2026",
-    price: 199,
-    mrp: 799,
-    col1: [
-      "ITI Fitter Theory",
-      "Workshop Calculations",
-      "Engineering Drawing"
-    ],
-    col2: [
-      "DRDO CEPTAM Trade",
-      "ISRO Technician Mocks",
-      "Railway ALP Trade Sets"
-    ],
-    col3: [
-      "Negative Marking Drills",
-      "Bilingual Step Solutions",
-      "+ 200 More Tests"
-    ],
-    bullets: [
-      "ITI Fitter Theory & Workshop Calculations",
-      "Engineering Drawing & Trade Practical MCQs",
-      "DRDO CEPTAM, ISRO & Railway ALP Trade Sets",
-      "Negative Marking Trade Simulation"
-    ],
-    suggestedTest: {
-      id: "RAILWAY-MOCK-1",
-      title: "Fitter Trade & Workshop Calculation Mock 1",
-      duration: "60 Mins",
-      questions: 50,
-      marks: 50,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "RAILWAY-MOCK-1", title: "Fitter Trade & Workshop Calculation Mock 1", duration: "60 Mins", questions: 50, marks: 50, isFree: true, tag: "FREE TEST", exam: "FITTER" }
-    ]
+    price: 399,
+    mrp: 999,
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "NIMI Pattern Fitter Theory", "Railway ALP Technician Part-B", "Measuring & Marking Tools" ],
+    col2: [ "Lathe & Shaper Operations", "Heat Treatment & Metallurgy", "Welding & Safety Precaution" ],
+    col3: [ "Trade Practical MCQs", "Bilingual Explanations", "+ 120 More Tests" ],
+    bullets: [ "NIMI Pattern Fitter Theory", "Railway ALP Technician Part-B", "Measuring & Marking Tools", "Launching Shortly" ],
+    suggestedTest: { id: "RAILWAY-MOCK-1", title: "ITI Fitter Trade Theory Diagnostic Mock 1", duration: "45 Mins", questions: 35, marks: 35, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "RAILWAY-MOCK-1", title: "ITI Fitter Trade Theory Diagnostic Mock 1", duration: "45 Mins", questions: 35, marks: 35, isFree: true, tag: "FREE DEMO MOCK", exam: "FITTER" } ]
   },
   {
     id: "TS-ELECTRICIAN-TRADE",
     category: "electrician",
-    title: "Electrician Trade & Wireman Exam Series (Power Grid, OPTCL)",
+    title: "ITI Electrician & Wireman Trade Test Series (State & Central)",
     exam: "ELECTRICIAN",
-    emblemBg: "#fee2e2",
-    emblemColor: "#b91c1c",
+    emblemBg: "#fef3c7",
+    emblemColor: "#b45309",
     emblemIcon: "⚡",
-    users: "245.8k Users",
-    totalTests: 320,
-    freeTests: 5,
-    languages: "English, Hindi, Odia",
+    users: "162.3k Users",
+    totalTests: 175,
+    freeTests: 4,
+    languages: "Hindi, English, Odia",
     lastUpdated: "Nov 6, 2026",
-    price: 199,
-    mrp: 799,
-    col1: [
-      "Electrician Theory",
-      "AC/DC Machine Principles",
-      "Safety Rules & Earthing"
-    ],
-    col2: [
-      "OPTCL Junior Technician",
-      "Power Grid Electrical",
-      "Domestic Wiring Drills"
-    ],
-    col3: [
-      "Circuit Diagrams MCQs",
-      "Bilingual Answers",
-      "+ 240 More Tests"
-    ],
-    bullets: [
-      "Electrician Theory & AC/DC Machine Principles",
-      "Safety Rules, Earthing & Domestic Wiring",
-      "OPTCL, Tata Power & State Electricity Sets",
-      "Detailed Diagrams & Bilingual Answers"
-    ],
-    suggestedTest: {
-      id: "RAILWAY-MOCK-1",
-      title: "Electrician Theory & Power Circuit Mock 1",
-      duration: "60 Mins",
-      questions: 50,
-      marks: 50,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "RAILWAY-MOCK-1", title: "Electrician Theory & Power Circuit Mock 1", duration: "60 Mins", questions: 50, marks: 50, isFree: true, tag: "FREE TEST", exam: "ELECTRICIAN" }
-    ]
+    price: 399,
+    mrp: 999,
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "NIMI Electrical Theory", "Transformers & AC/DC Motors", "Electrical Wiring & Earthing" ],
+    col2: [ "Basic Electronics & Digital", "Transmission & Distribution", "OPTCL, DISCOM & State Power" ],
+    col3: [ "Circuit Diagrams & Formulae", "Safety & Indian Electricity Rules", "+ 130 More Tests" ],
+    bullets: [ "NIMI Electrical Theory", "Transformers & AC/DC Motors", "Electrical Wiring & Earthing", "Launching Shortly" ],
+    suggestedTest: { id: "RAILWAY-MOCK-1", title: "ITI Electrician Trade Theory Comprehensive Mock 1", duration: "45 Mins", questions: 35, marks: 35, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "RAILWAY-MOCK-1", title: "ITI Electrician Trade Theory Comprehensive Mock 1", duration: "45 Mins", questions: 35, marks: 35, isFree: true, tag: "FREE DEMO MOCK", exam: "ELECTRICIAN" } ]
   },
   {
     id: "TS-JUDICIARY-LAW",
     category: "judiciary",
-    title: "Judiciary & Law Officer Exams (OJS, CLAT PG & IBPS SO Law)",
+    title: "Judicial Services Exam & Law Officer Mock Series (OJS, CLAT PG)",
     exam: "JUDICIARY",
-    emblemBg: "#f1f5f9",
-    emblemColor: "#0f172a",
+    emblemBg: "#fdf4ff",
+    emblemColor: "#86198f",
     emblemIcon: "⚖️",
-    users: "165.2k Users",
-    totalTests: 210,
+    users: "98.4k Users",
+    totalTests: 150,
     freeTests: 3,
     languages: "English",
     lastUpdated: "Nov 6, 2026",
-    price: 249,
-    mrp: 1299,
-    col1: [
-      "Constitutional Law & BNS",
-      "CrPC & Indian Evidence",
-      "OJS Prelims Pattern"
-    ],
-    col2: [
-      "IBPS SO Law Officer",
-      "CLAT PG Landmark Judgments",
-      "Case Law Analysis"
-    ],
-    col3: [
-      "Sectional Speed Drills",
-      "Detailed Legal Excerpts",
-      "+ 150 More Tests"
-    ],
-    bullets: [
-      "Constitutional Law, IPC/BNS, CrPC & Evidence",
-      "Odisha Judicial Services (OJS) Prelims Pattern",
-      "IBPS SO Law Officer Professional Knowledge",
-      "Landmark Judgments & Case Law Analysis"
-    ],
-    suggestedTest: {
-      id: "JAIIB-PPB-1",
-      title: "Banking & Commercial Law Special Mock",
-      duration: "15 Mins",
-      questions: 5,
-      marks: 10,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "JAIIB-PPB-1", title: "Banking & Commercial Law Special Mock", duration: "15 Mins", questions: 5, marks: 10, isFree: true, tag: "FREE TEST", exam: "JUDICIARY" }
-    ]
+    price: 399,
+    mrp: 999,
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "Constitutional Law & CrPC", "Civil Procedure Code & Evidence Act", "Indian Penal Code & Contract Act" ],
+    col2: [ "State Specific Local Laws", "Landmark Supreme Court Judgments", "Law Officer Bank Recruitment" ],
+    col3: [ "Case Law Analytical Questions", "Detailed Legal Rationale", "+ 110 More Tests" ],
+    bullets: [ "Constitutional Law & CrPC", "Civil Procedure Code & Evidence Act", "Indian Penal Code & Contract Act", "Launching Shortly" ],
+    suggestedTest: { id: "JAIIB-PPB-1", title: "Judicial Services & Law Officer Core Civil Law Mock 1", duration: "60 Mins", questions: 50, marks: 100, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "JAIIB-PPB-1", title: "Judicial Services & Law Officer Core Civil Law Mock 1", duration: "60 Mins", questions: 50, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "LAW" } ]
   },
   {
     id: "TS-CIVIL-SERVICES",
     category: "civil",
-    title: "Civil Services (UPSC CSE & OPSC OAS) Foundation Series",
+    title: "Civil Services Foundation Mock Series (UPSC CSE & OPSC OAS)",
     exam: "CIVIL SERVICES",
-    emblemBg: "#f0fdf4",
-    emblemColor: "#15803d",
+    emblemBg: "#ecfdf5",
+    emblemColor: "#047857",
     emblemIcon: "🇮🇳",
     users: "890.3k Users",
-    totalTests: 780,
-    freeTests: 6,
+    totalTests: 220,
+    freeTests: 5,
     languages: "English, Odia",
     lastUpdated: "Nov 6, 2026",
-    price: 249,
-    mrp: 1499,
-    col1: [
-      "GS Paper 1 (History, Polity)",
-      "CSAT Paper 2 (Reasoning)",
-      "OPSC OAS Odisha Heritage"
-    ],
-    col2: [
-      "Current Affairs Monthly",
-      "Economic Survey Analysis",
-      "Environment & Ecology"
-    ],
-    col3: [
-      "All-India Percentile",
-      "Faculty Step Solutions",
-      "+ 680 More Tests"
-    ],
-    bullets: [
-      "GS Paper 1: History, Polity, Geography & Economy",
-      "CSAT Paper 2: Reading Comprehension & Maths",
-      "OPSC OAS Prelims Odisha Heritage & Current Events",
-      "Detailed Faculty Analysis & Cutoff Insights"
-    ],
-    suggestedTest: {
-      id: "OSSC-MOCK-1",
-      title: "General Studies & Governance Practice Mock 1",
-      duration: "60 Mins",
-      questions: 50,
-      marks: 100,
-      isFree: true,
-      tag: "LIVE TEST"
-    },
-    availableTests: [
-      { id: "OSSC-MOCK-1", title: "General Studies & Governance Practice Mock 1", duration: "60 Mins", questions: 50, marks: 100, isFree: true, tag: "FREE TEST", exam: "CIVIL SERVICES" }
-    ]
+    price: 399,
+    mrp: 999,
+    isLive: false,
+    badge: "OPENING SOON",
+    col1: [ "General Studies Paper 1 (UPSC/OPSC)", "CSAT Aptitude & Comprehension", "Modern History & Indian Polity" ],
+    col2: [ "Geography & Environment Special", "Odisha Special GS Paper (OAS)", "Economy & Current Affairs Booster" ],
+    col3: [ "Negative Marking Calculation", "All-India IAS/OAS Percentile", "+ 180 More Tests" ],
+    bullets: [ "General Studies Paper 1 (UPSC/OPSC)", "CSAT Aptitude & Comprehension", "Modern History & Indian Polity", "Launching Shortly" ],
+    suggestedTest: { id: "OSSC-MOCK-1", title: "UPSC / OPSC General Studies Prelims Mock 1", duration: "120 Mins", questions: 100, marks: 200, isFree: true, tag: "LIVE TEST" },
+    availableTests: [ { id: "OSSC-MOCK-1", title: "UPSC / OPSC General Studies Prelims Mock 1", duration: "120 Mins", questions: 100, marks: 200, isFree: true, tag: "FREE DEMO MOCK", exam: "CIVIL SERVICES" } ]
   }
 ];
 
@@ -1510,14 +1183,18 @@ window.handleCategorySearch = function(query) {
 window.openCartWithSeries = function(seriesId) {
   const s = TEST_SERIES_CATALOG.find(x => x.id === seriesId);
   if (!s) return;
-  const mrp = s.mrp || 499;
-  const price = s.price || 199;
+  if (!s.isLive) {
+    openComingSoonSeriesModal(seriesId);
+    return;
+  }
+  const mrp = s.mrp || 999;
+  const price = s.price || 399;
   const discountPct = Math.round(((mrp - price) / mrp) * 100);
 
   window.addToCart({
     id: s.id,
     title: s.title,
-    subtitle: "Online Test Module",
+    subtitle: s.passType || "Yearly Pass @ ₹399",
     badge: s.exam || "TEST MODULE",
     icon: s.emblemIcon || "📋",
     price: price,
@@ -1579,74 +1256,100 @@ function renderTestSeriesCatalogCards() {
     return;
   }
 
-  // Exact Match to Physics Wallah Card Layout in Screenshot media_1794032183143_b50fe2fa.jpg
-  container.innerHTML = filtered.map(s => `
-    <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 4px 14px rgba(15,23,42,0.04);transition:transform 0.15s,box-shadow 0.15s;position:relative;">
-      <div>
-        <!-- Top Row: Title on Left, NEW Badge, WhatsApp Share on Right -->
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-          <h3 style="margin:0;font-size:14.5px;font-weight:850;color:#0f2a5c;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;" title="${escapeHtml(s.title)}">
-            ${escapeHtml(s.title)}
-          </h3>
-          <span style="background:#fef08a;color:#854d0e;font-size:9.5px;font-weight:900;padding:2px 6px;border-radius:4px;flex-shrink:0;">
-            NEW
-          </span>
-          <button type="button" onclick="shareParticularSeries('${s.id}')" title="Share on WhatsApp"
-            style="background:none;border:none;cursor:pointer;font-size:18px;color:#22c55e;padding:0 2px;line-height:1;margin-left:2px;">
-            💬
-          </button>
-        </div>
+  // Physics Wallah Benchmark Card Layout with Live vs. Upcoming Status & ₹399 Yearly Pass
+  container.innerHTML = filtered.map(s => {
+    const isLive = s.isLive === true;
+    const mrp = s.mrp || 999;
+    const price = s.price || 399;
+    const discountPct = Math.round(((mrp - price) / mrp) * 100);
 
-        <!-- Landscape Banner Graphic (Matching Screenshot Amber Card) -->
-        <div style="background:linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);border:1.5px solid #fde68a;border-radius:10px;padding:16px 12px;margin:8px 0 14px;position:relative;text-align:center;min-height:96px;display:flex;flex-direction:column;justify-content:center;align-items:center;">
-          <div style="font-size:12px;font-weight:900;color:#78350f;letter-spacing:0.5px;text-transform:uppercase;line-height:1.3;max-width:240px;margin-bottom:6px;">
-            ${escapeHtml(s.title.toUpperCase())}
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <span style="font-size:20px;">${s.emblemIcon || '📋'}</span>
-            <span style="font-size:10.5px;font-weight:850;color:#92400e;letter-spacing:0.5px;">C2S FACULTY BENCHMARK</span>
-          </div>
-          <!-- Dark Pill Badge at bottom of banner matching screenshot -->
-          <div style="position:absolute;bottom:6px;background:#0f172a;color:#ffffff;font-size:9.5px;font-weight:900;padding:2px 10px;border-radius:999px;letter-spacing:0.5px;">
-            TOTAL TESTS: ${s.totalTests}
-          </div>
-        </div>
-
-        <!-- 4 Star Bullets (Matching Screenshot Exactly) -->
-        <div style="display:flex;flex-direction:column;gap:6px;font-size:11.8px;color:#475569;margin-bottom:16px;line-height:1.45;">
-          ${(s.bullets || []).slice(0, 4).map(b => `
-            <div style="display:flex;align-items:flex-start;gap:6px;">
-              <span style="color:#f59e0b;font-size:12px;flex-shrink:0;">⭐</span>
-              <span>${escapeHtml(b)}</span>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-
-      <!-- Bottom Row: Price & Action Buttons -->
-      <div style="border-top:1px solid #f1f5f9;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+    return `
+      <div style="background:#ffffff;border:1.5px solid ${isLive ? '#cbd5e1' : '#e2e8f0'};border-radius:14px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 4px 14px rgba(15,23,42,${isLive ? '0.07' : '0.03'});transition:transform 0.15s,box-shadow 0.15s;position:relative;">
         <div>
-          <div style="display:flex;align-items:baseline;gap:6px;">
-            <strong style="font-size:17.5px;font-weight:900;color:#0f2a5c;">₹${s.price || 199}</strong>
-            <span style="font-size:12px;color:#94a3b8;text-decoration:line-through;">₹${s.mrp || 499}</span>
-            <span style="background:#0ea5e9;color:#ffffff;font-size:10px;font-weight:800;padding:2px 5px;border-radius:4px;">60% OFF</span>
+          <!-- Top Row: Title on Left, Status Badge, WhatsApp Share on Right -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <h3 style="margin:0;font-size:14.5px;font-weight:850;color:#0f2a5c;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;" title="${escapeHtml(s.title)}">
+              ${escapeHtml(s.title)}
+            </h3>
+            ${isLive 
+              ? `<span style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-size:9.5px;font-weight:900;padding:2px 7px;border-radius:4px;flex-shrink:0;">🌟 LAUNCHED</span>`
+              : `<span style="background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1;font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:4px;flex-shrink:0;">🚀 OPENING SOON</span>`
+            }
+            <button type="button" onclick="shareParticularSeries('${s.id}')" title="Share on WhatsApp"
+              style="background:none;border:none;cursor:pointer;font-size:18px;color:#22c55e;padding:0 2px;line-height:1;margin-left:2px;">
+              💬
+            </button>
+          </div>
+
+          <!-- Landscape Banner Graphic (Matching Screenshot Amber Card) -->
+          <div style="background:linear-gradient(135deg, ${isLive ? '#fef3c7 0%, #fed7aa 100%' : '#f8fafc 0%, #f1f5f9 100%'});border:1.5px solid ${isLive ? '#fde68a' : '#e2e8f0'};border-radius:10px;padding:16px 12px;margin:8px 0 14px;position:relative;text-align:center;min-height:96px;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+            <div style="font-size:12px;font-weight:900;color:${isLive ? '#78350f' : '#475569'};letter-spacing:0.5px;text-transform:uppercase;line-height:1.3;max-width:240px;margin-bottom:6px;">
+              ${escapeHtml(s.title.toUpperCase())}
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-size:20px;">${s.emblemIcon || '📋'}</span>
+              <span style="font-size:10.5px;font-weight:850;color:${isLive ? '#92400e' : '#64748b'};letter-spacing:0.5px;">
+                ${isLive ? 'C2S FACULTY BENCHMARK' : 'SCHEDULED COHORT RELEASE'}
+              </span>
+            </div>
+            <!-- Dark Pill Badge at bottom of banner matching screenshot -->
+            <div style="position:absolute;bottom:6px;background:#0f172a;color:#ffffff;font-size:9.5px;font-weight:900;padding:2px 10px;border-radius:999px;letter-spacing:0.5px;">
+              TOTAL TESTS: ${s.totalTests}
+            </div>
+          </div>
+
+          <!-- 4 Star Bullets (Matching Screenshot Exactly) -->
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:11.8px;color:#475569;margin-bottom:16px;line-height:1.45;">
+            ${(s.bullets || []).slice(0, 4).map(b => `
+              <div style="display:flex;align-items:flex-start;gap:6px;">
+                <span style="color:${isLive ? '#f59e0b' : '#94a3b8'};font-size:12px;flex-shrink:0;">⭐</span>
+                <span>${escapeHtml(b)}</span>
+              </div>
+            `).join("")}
           </div>
         </div>
-        <div style="display:flex;gap:6px;">
-          <button type="button" class="btn" onclick="openAvailableSeriesModal('${s.id}')"
-            style="background:#06b6d4;color:#ffffff;font-size:12px;font-weight:800;padding:8px 12px;border-radius:6px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(6,182,212,0.3);transition:all 0.15s ease;"
-            onmouseenter="this.style.background='#0891b2'" onmouseleave="this.style.background='#06b6d4'">
-            <span>Explore Tests →</span>
-          </button>
-          <button type="button" class="btn" onclick="openCartWithSeries('${s.id}')"
-            style="background:#3b82f6;color:#ffffff;font-size:12px;font-weight:800;padding:8px 12px;border-radius:6px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(59,130,246,0.35);transition:all 0.15s ease;"
-            onmouseenter="this.style.background='#2563eb'" onmouseleave="this.style.background='#3b82f6'">
-            <span>🛒 Buy Pass</span>
-          </button>
+
+        <!-- Bottom Row: Price & Action Buttons -->
+        <div style="border-top:1px solid #f1f5f9;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+          <div>
+            ${isLive 
+              ? `<div style="display:flex;align-items:baseline;gap:6px;">
+                   <strong style="font-size:17.5px;font-weight:900;color:#0f2a5c;">₹${price}</strong>
+                   <span style="font-size:12px;color:#94a3b8;text-decoration:line-through;">₹${mrp}</span>
+                   <span style="background:#059669;color:#ffffff;font-size:10px;font-weight:800;padding:2px 5px;border-radius:4px;">YEARLY PASS</span>
+                 </div>`
+              : `<div style="display:flex;align-items:baseline;gap:6px;">
+                   <strong style="font-size:14.5px;font-weight:800;color:#64748b;">Cohort Scheduled</strong>
+                   <span style="font-size:11px;color:#0284c7;font-weight:800;">₹399/yr</span>
+                 </div>`
+            }
+          </div>
+          <div style="display:flex;gap:6px;">
+            ${isLive 
+              ? `<button type="button" class="btn" onclick="openAvailableSeriesModal('${s.id}')"
+                   style="background:#06b6d4;color:#ffffff;font-size:12px;font-weight:800;padding:8px 12px;border-radius:6px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(6,182,212,0.3);transition:all 0.15s ease;"
+                   onmouseenter="this.style.background='#0891b2'" onmouseleave="this.style.background='#06b6d4'">
+                   <span>Explore Tests →</span>
+                 </button>
+                 <button type="button" class="btn" onclick="openCartWithSeries('${s.id}')"
+                   style="background:#3b82f6;color:#ffffff;font-size:12px;font-weight:800;padding:8px 12px;border-radius:6px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(59,130,246,0.35);transition:all 0.15s ease;"
+                   onmouseenter="this.style.background='#2563eb'" onmouseleave="this.style.background='#3b82f6'">
+                   <span>🛒 Buy Pass (₹399)</span>
+                 </button>`
+              : `<button type="button" class="btn" onclick="openComingSoonSeriesModal('${s.id}')"
+                   style="background:#64748b;color:#ffffff;font-size:12px;font-weight:800;padding:8px 12px;border-radius:6px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                   <span>Opening Soon ▾</span>
+                 </button>
+                 <button type="button" class="btn ghost" onclick="openComingSoonSeriesModal('${s.id}')"
+                   style="padding:7px 10px;font-size:11.5px;font-weight:750;border-radius:6px;border:1px solid #cbd5e1;color:#475569;background:#f8fafc;cursor:pointer;">
+                   <span>🔔 Notify Me</span>
+                 </button>`
+            }
+          </div>
         </div>
       </div>
-    </div>
-  `).join("");
+    `;
+  }).join("");
 }
 
 let activeSeriesModalId = null;
@@ -1655,6 +1358,11 @@ let pendingEnrollSeriesId = null;
 window.openAvailableSeriesModal = function(seriesId) {
   const series = TEST_SERIES_CATALOG.find(s => s.id === seriesId);
   if (!series) return;
+
+  if (!series.isLive) {
+    openComingSoonSeriesModal(seriesId);
+    return;
+  }
 
   activeSeriesModalId = seriesId;
 
@@ -1835,8 +1543,186 @@ window.openAvailableSeriesModal = function(seriesId) {
     `).join("");
   }
 
+  // 8. Render Detailed Test Counters Strip
+  const countersEl = document.getElementById("availModalCountersRow");
+  if (countersEl) {
+    const liveCount = series.liveTests || 2;
+    const fullCount = series.fullLengthTests || 30;
+    const chapCount = series.chapterWiseTests ? (series.chapterWiseTests + (series.id === 'TS-JAIIB-2026' ? ' Units' : ' Tests')) : '100 Tests';
+    const modCount = series.moduleWiseTests ? `${series.moduleWiseTests} Modules` : (series.subjectWiseTests ? `${series.subjectWiseTests} Sectional` : '10 Tests');
+    const pypCount = series.previousYearTests ? `${series.previousYearTests} Solved PYPs` : (series.id === 'TS-JAIIB-2026' ? '4 IIBF Papers' : '20+ Tests');
+
+    countersEl.innerHTML = `
+      <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:10px;padding:8px 10px;text-align:center;">
+        <span style="font-size:16px;display:block;">🔴</span>
+        <strong style="font-size:14px;color:#1e40af;display:block;">${liveCount}</strong>
+        <span style="font-size:10.5px;color:#3b82f6;font-weight:750;">Live Tests</span>
+      </div>
+      <div style="background:#ecfdf5;border:1.5px solid #a7f3d0;border-radius:10px;padding:8px 10px;text-align:center;">
+        <span style="font-size:16px;display:block;">📝</span>
+        <strong style="font-size:14px;color:#065f46;display:block;">${fullCount}</strong>
+        <span style="font-size:10.5px;color:#059669;font-weight:750;">Full Length</span>
+      </div>
+      <div style="background:#fef3c7;border:1.5px solid #fde68a;border-radius:10px;padding:8px 10px;text-align:center;">
+        <span style="font-size:16px;display:block;">📖</span>
+        <strong style="font-size:14px;color:#92400e;display:block;">${chapCount}</strong>
+        <span style="font-size:10.5px;color:#d97706;font-weight:750;">Chapter-wise</span>
+      </div>
+      <div style="background:#f3e8ff;border:1.5px solid #e9d5ff;border-radius:10px;padding:8px 10px;text-align:center;">
+        <span style="font-size:16px;display:block;">📊</span>
+        <strong style="font-size:14px;color:#6b21a8;display:block;">${modCount}</strong>
+        <span style="font-size:10.5px;color:#9333ea;font-weight:750;">Subject / Module</span>
+      </div>
+      <div style="background:#f1f5f9;border:1.5px solid #cbd5e1;border-radius:10px;padding:8px 10px;text-align:center;">
+        <span style="font-size:16px;display:block;">📑</span>
+        <strong style="font-size:14px;color:#334155;display:block;">${pypCount}</strong>
+        <span style="font-size:10.5px;color:#64748b;font-weight:750;">Papers / PYPs</span>
+      </div>
+      <div style="background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:8px 10px;text-align:center;">
+        <span style="font-size:16px;display:block;">👑</span>
+        <strong style="font-size:14px;color:#9a3412;display:block;">₹399</strong>
+        <span style="font-size:10.5px;color:#ea580c;font-weight:800;">Yearly Pass</span>
+      </div>
+    `;
+  }
+
+  // 9. Render Deep Details Section (About That Exam, Why This Test Series, What You Will Get)
+  const deepEl = document.getElementById("availModalDeepDetailsSection");
+  if (deepEl) {
+    const ab = series.aboutExam || {};
+    const whyList = series.whyThisSeries || [];
+    const getList = series.whatYouGet || [];
+
+    deepEl.innerHTML = `
+      <div style="margin-bottom:24px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:22px;">🏛️</span>
+          <h3 style="margin:0;font-size:17.5px;font-weight:900;color:#0f2a5c;">About ${escapeHtml(series.exam)} Examination</h3>
+        </div>
+        
+        <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:18px 22px;box-shadow:0 2px 8px rgba(15,23,42,0.03);">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:14px;margin-bottom:14px;font-size:13px;">
+            <div>
+              <span style="color:#64748b;font-weight:700;display:block;font-size:11.5px;text-transform:uppercase;">Conducting Body</span>
+              <strong style="color:#0f172a;">${escapeHtml(ab.conductingBody || 'Authorized Examination Board')}</strong>
+            </div>
+            <div>
+              <span style="color:#64748b;font-weight:700;display:block;font-size:11.5px;text-transform:uppercase;">Official Exam Name</span>
+              <strong style="color:#0f172a;">${escapeHtml(ab.examName || series.title)}</strong>
+            </div>
+            <div>
+              <span style="color:#64748b;font-weight:700;display:block;font-size:11.5px;text-transform:uppercase;">Examination Mode</span>
+              <strong style="color:#0f172a;">${escapeHtml(ab.examMode || 'Online Computer Based Test (CBT)')}</strong>
+            </div>
+            ${ab.eligibility ? `
+            <div>
+              <span style="color:#64748b;font-weight:700;display:block;font-size:11.5px;text-transform:uppercase;">Eligibility Criteria</span>
+              <strong style="color:#0f172a;">${escapeHtml(ab.eligibility)}</strong>
+            </div>` : ''}
+            ${ab.negativeMarking ? `
+            <div>
+              <span style="color:#64748b;font-weight:700;display:block;font-size:11.5px;text-transform:uppercase;">Negative Marking</span>
+              <strong style="color:#059669;">${escapeHtml(ab.negativeMarking)}</strong>
+            </div>` : ''}
+            ${ab.passingCriteria ? `
+            <div>
+              <span style="color:#64748b;font-weight:700;display:block;font-size:11.5px;text-transform:uppercase;">Passing &amp; Qualification Criteria</span>
+              <strong style="color:#0f172a;">${escapeHtml(ab.passingCriteria)}</strong>
+            </div>` : ''}
+            ${ab.examDates2026 ? `
+            <div style="grid-column:1/-1;">
+              <span style="color:#64748b;font-weight:700;display:block;font-size:11.5px;text-transform:uppercase;">Official Exam Dates (2026 Cycle)</span>
+              <strong style="color:#ea580c;">${escapeHtml(ab.examDates2026)}</strong>
+            </div>` : ''}
+          </div>
+
+          ${ab.papers ? `
+          <div style="margin-top:14px;padding-top:14px;border-top:1px dashed #cbd5e1;">
+            <span style="font-size:12.5px;font-weight:800;color:#0f2a5c;display:block;margin-bottom:8px;">4 Compulsory Papers of JAIIB:</span>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:8px;">
+              ${ab.papers.map(p => `
+                <div style="background:#f8fafc;border:1px solid #e2e8f0;padding:8px 12px;border-radius:8px;font-size:12.5px;font-weight:750;color:#334155;">
+                  ✓ ${escapeHtml(p)}
+                </div>
+              `).join("")}
+            </div>
+          </div>` : ''}
+
+          ${ab.tier1Pattern ? `
+          <div style="margin-top:12px;background:#f8fafc;padding:12px 14px;border-radius:8px;font-size:12.5px;color:#334155;line-height:1.6;">
+            <strong>Tier-1 Pattern:</strong> ${escapeHtml(ab.tier1Pattern)}
+          </div>` : ''}
+        </div>
+      </div>
+
+      <div style="margin-bottom:24px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:22px;">⭐</span>
+          <h3 style="margin:0;font-size:17.5px;font-weight:900;color:#0f2a5c;">Why Choose C2S Test Series?</h3>
+        </div>
+        <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:18px 22px;box-shadow:0 2px 8px rgba(15,23,42,0.03);">
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            ${whyList.map(w => `
+              <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#334155;line-height:1.55;">
+                <span style="color:#059669;font-weight:900;font-size:15px;flex-shrink:0;">✓</span>
+                <span>${escapeHtml(w)}</span>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:22px;">🎁</span>
+          <h3 style="margin:0;font-size:17.5px;font-weight:900;color:#0f2a5c;">What You Will Get In This Test Series</h3>
+        </div>
+        <div style="background:linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);border:1.5px solid #a7f3d0;border-radius:14px;padding:20px 22px;box-shadow:0 4px 12px rgba(5,150,105,0.05);">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:12px;margin-bottom:14px;">
+            ${getList.map(g => `
+              <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#065f46;font-weight:750;line-height:1.5;">
+                <span style="color:#10b981;font-size:16px;">✦</span>
+                <span>${escapeHtml(g)}</span>
+              </div>
+            `).join("")}
+          </div>
+          <div style="border-top:1px dashed #6ee7b7;padding-top:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+            <div style="font-size:12.5px;color:#047857;font-weight:800;">
+              👑 Complete Yearly Pass Access: Only ₹${series.price || 399}/year (Flat ${Math.round(((series.mrp - series.price) / series.mrp) * 100)}% Discount)
+            </div>
+            <button type="button" class="btn" onclick="openCurrentSeriesBuyModal()"
+              style="background:#059669;color:#ffffff;font-size:12.5px;font-weight:900;padding:8px 18px;border-radius:6px;border:none;cursor:pointer;box-shadow:0 2px 8px rgba(5,150,105,0.3);">
+              Enroll Now @ ₹${series.price || 399}/yr →
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   modal.style.display = "flex";
 };
+
+window.openComingSoonSeriesModal = function(seriesId) {
+  const series = TEST_SERIES_CATALOG.find(s => s.id === seriesId);
+  const modal = document.getElementById("c2sComingSoonModal");
+  if (!modal) return;
+  const titleEl = document.getElementById("csModalTitle");
+  const descEl = document.getElementById("csModalDesc");
+  if (titleEl && series) {
+    titleEl.textContent = `${series.title} — Opening Soon!`;
+  }
+  if (descEl && series) {
+    descEl.textContent = `The ${series.title} template is currently being scheduled and will open gradually in upcoming batches. You can immediately access our officially launched active test series below (@ ₹399/- Yearly Pass).`;
+  }
+  modal.style.display = "flex";
+};
+
+window.closeComingSoonModal = function() {
+  const modal = document.getElementById("c2sComingSoonModal");
+  if (modal) modal.style.display = "none";
+};
+
 
 window.closeAvailableSeriesModal = function() {
   const modal = document.getElementById("availableSeriesModal");
@@ -2352,14 +2238,14 @@ window.openCurrentSeriesBuyModal = function() {
     return;
   }
 
-  const mrp = series.mrp || 499;
-  const price = series.price || 199;
+  const mrp = series.mrp || 999;
+  const price = series.price || 399;
   const discountPct = Math.round(((mrp - price) / mrp) * 100);
 
   window.addToCart({
     id: series.id,
     title: series.title,
-    subtitle: "Online Test Module",
+    subtitle: series.passType || "Yearly Pass @ ₹399",
     badge: series.exam || "TEST MODULE",
     icon: series.emblemIcon || "📋",
     price: price,
@@ -5410,19 +5296,17 @@ const ENRICHED_TESTS = [
   {
     id: "JAIIB-IEIFS-1",
     exam: "JAIIB",
-    title: "JAIIB: Indian Economy & Financial System (Paper 1 Full Mock)",
-    minutes: 15,
+    title: "JAIIB Paper 1 (IE & IFS) Full-Length Mock Test 1 (100 MCQs)",
+    minutes: 120,
+    marks: 100,
+    negativeMarking: 0,
     calculatorAllowed: true,
-    qs: [
-      ["Which body formulates and implements Monetary Policy in India?", ["Ministry of Finance", "Reserve Bank of India (RBI)", "SEBI", "NITI Aayog"], 1, "Under Section 45ZB of the amended RBI Act 1934, the Monetary Policy Committee (MPC) of the Reserve Bank of India is mandated to fix the benchmark policy rate required to maintain price stability with growth.", "Indian Economy & Financial System"],
-      ["In national income accounting, what is Net Domestic Product (NDP)?", ["GDP minus Depreciation", "GDP plus Net Foreign Income", "GNP minus Indirect Taxes", "NNP plus Subsidies"], 0, "Net Domestic Product (NDP) = Gross Domestic Product (GDP) minus Depreciation (Consumption of Fixed Capital).", "Indian Economy & Financial System"],
-      ["The Reserve Bank of India was established on 1 April 1935 on the recommendation of which body?", ["Narasimham Committee", "Hilton Young Commission", "Raghuram Rajan Committee", "Verma Committee"], 1, "The Royal Commission on Indian Currency and Finance (popularly Hilton Young Commission) in 1926 recommended setting up a central bank, resulting in the enactment of the RBI Act 1934.", "Banking History & Regulation"],
-      ["What is the maximum deposit insurance coverage provided by DICGC per depositor per bank?", ["₹1 Lakh", "₹2 Lakhs", "₹5 Lakhs", "₹10 Lakhs"], 2, "DICGC covers both principal and interest up to a maximum statutory ceiling of ₹5,00,000 per depositor per insured commercial / cooperative bank.", "Banking Laws & Insurance"],
-      ["What is the mandatory Priority Sector Lending (PSL) target for Domestic Commercial Banks?", ["25% of ANBC", "40% of ANBC", "50% of ANBC", "32% of ANBC"], 1, "Under RBI Master Directions, the overall Priority Sector Lending target for domestic commercial banks is 40% of Adjusted Net Bank Credit (ANBC) or CEOBE.", "Priority Sector Lending"],
-      ["What does MSF stand for in RBI's liquidity framework?", ["Marginal Standing Facility", "Monetary Stability Fund", "Market Stabilization Framework", "Mandatory Statutory Facility"], 0, "MSF (Marginal Standing Facility) is an overnight emergency lending window for scheduled banks against approved government securities.", "Monetary Policy Operations"],
-      ["Which financial market segment deals in short-term credit instruments with maturity up to 1 year?", ["Capital Market", "Money Market", "Forex Futures", "Derivatives Exchange"], 1, "The Money Market deals in short-term financial instruments (T-Bills, Commercial Papers, CPs, CDs) having maturities up to 365 days.", "Financial Markets"],
-      ["External Benchmark Lending Rate (EBLR) linked to Repo Rate was made mandatory by RBI in which year?", ["2016", "2018", "2019", "2021"], 2, "RBI mandated all scheduled commercial banks to link floating rate retail and MSME loans to external benchmarks (such as Repo rate) effective October 1, 2019.", "Monetary Policy Transmission"]
-    ]
+    qs: (typeof window !== "undefined" && window.JAIIB_PAPER1_QUESTIONS && window.JAIIB_PAPER1_QUESTIONS.length === 100)
+      ? window.JAIIB_PAPER1_QUESTIONS
+      : [
+          ["Which body formulates and implements Monetary Policy in India?", ["Ministry of Finance", "Reserve Bank of India (RBI)", "SEBI", "NITI Aayog"], 1, "Under Section 45ZB of the amended RBI Act 1934, the Monetary Policy Committee (MPC) of the Reserve Bank of India is mandated to fix the benchmark policy rate required to maintain price stability with growth.", "Indian Economy & Financial System"],
+          ["In national income accounting, what is Net Domestic Product (NDP)?", ["GDP minus Depreciation", "GDP plus Net Foreign Income", "GNP minus Indirect Taxes", "NNP plus Subsidies"], 0, "Net Domestic Product (NDP) = Gross Domestic Product (GDP) minus Depreciation (Consumption of Fixed Capital).", "Indian Economy & Financial System"]
+        ]
   },
   {
     id: "JAIIB-PPB-1",
@@ -5590,6 +5474,13 @@ function startTest(testId) {
   const allTests = [...ENRICHED_TESTS, ...customTests];
   const t = allTests.find(x => x.id === testId);
   if (!t) return alert("Test not found.");
+
+  if (t.id === "JAIIB-IEIFS-1" && typeof window !== "undefined" && window.JAIIB_PAPER1_QUESTIONS && window.JAIIB_PAPER1_QUESTIONS.length === 100) {
+    t.qs = window.JAIIB_PAPER1_QUESTIONS;
+    t.minutes = 120;
+    t.marks = 100;
+    t.negativeMarking = 0;
+  }
 
   // Check if test requires unlocking
   if (!isTestUnlocked(t.id)) {
@@ -5936,8 +5827,10 @@ function submitExam(reason) {
     }
   });
 
-  // Calculate score with negative marking (-0.25)
-  const rawScore = (correct * 1) - (wrong * 0.25);
+  // Calculate score with exam-specific negative marking (JAIIB has 0 negative marking)
+  const isJaiibExam = (t.exam && t.exam.includes("JAIIB")) || (t.id && t.id.includes("JAIIB")) || (t.negativeMarking === 0);
+  const negFactor = isJaiibExam ? 0 : 0.25;
+  const rawScore = (correct * 1) - (wrong * negFactor);
   const finalScore = Math.max(0, rawScore).toFixed(2);
   const accuracy = (correct + wrong) > 0 ? Math.round((correct / (correct + wrong)) * 100) : 0;
   const timeTakenSeconds = (t.minutes * 60) - testSecondsRemaining;
