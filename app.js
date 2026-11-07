@@ -529,6 +529,157 @@ const TEST_CATEGORIES = [
 
 const TEST_SERIES_CATALOG = [
   {
+    id: "TS-SBI-APPRENTICE-2026",
+    category: "banking",
+    title: "SBI Apprentice Test Series 2026",
+    exam: "SBI APPRENTICE",
+    emblemBg: "#fef3c7",
+    emblemColor: "#b45309",
+    emblemIcon: "🏦",
+    users: "210.4k Users",
+    totalTests: 36,
+    freeTests: 3,
+    languages: "English, Hindi",
+    lastUpdated: "Nov 6, 2026",
+    price: 199,
+    mrp: 499,
+    col1: [
+      "10 Full Length Tests",
+      "26 Sectional Tests",
+      "Live Exam Hall Simulation"
+    ],
+    col2: [
+      "Reasoning & Computer Aptitude",
+      "General Financial Awareness",
+      "Quantitative Aptitude Drills"
+    ],
+    col3: [
+      "Bilingual Step Solutions",
+      "Detailed Cutoff Tracker",
+      "+ 20 More Tests"
+    ],
+    bullets: [
+      "Ace Your SBI Apprentice 2026. Attempt First Test for Free!",
+      "Conducted in Hindi & English.",
+      "Total Tests - 36 (10 Full Length Tests, 26 Sectional Tests)",
+      "Valid till 31 March 2027"
+    ],
+    suggestedTest: {
+      id: "BANK-MOCK-1",
+      title: "SBI Apprentice 2026 Full Length Mock Test 1",
+      duration: "60 Mins",
+      questions: 100,
+      marks: 100,
+      isFree: true,
+      tag: "LIVE TEST"
+    },
+    availableTests: [
+      { id: "BANK-MOCK-1", title: "SBI Apprentice 2026 Full Length Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "SBI APPRENTICE" },
+      { id: "SBI-APP-SEC-1", title: "SBI Apprentice Sectional Mock: Quantitative Aptitude", duration: "20 Mins", questions: 25, marks: 25, isFree: false, tag: "SECTIONAL TEST", exam: "SBI APPRENTICE" },
+      { id: "SBI-APP-SEC-2", title: "SBI Apprentice Sectional Mock: General & Financial Awareness", duration: "20 Mins", questions: 25, marks: 25, isFree: false, tag: "SECTIONAL TEST", exam: "SBI APPRENTICE" }
+    ]
+  },
+  {
+    id: "TS-RBI-ASSISTANT-2026",
+    category: "banking",
+    title: "RBI Assistant (Pre+Mains) Mock Test Series 2026",
+    exam: "RBI ASSISTANT",
+    emblemBg: "#fef3c7",
+    emblemColor: "#b45309",
+    emblemIcon: "🏛️",
+    users: "340.8k Users",
+    totalTests: 28,
+    freeTests: 2,
+    languages: "English, Hindi",
+    lastUpdated: "Nov 6, 2026",
+    price: 199,
+    mrp: 499,
+    col1: [
+      "15 Prelims Full Mocks",
+      "10 Mains High-Level Mocks",
+      "English Language Drills"
+    ],
+    col2: [
+      "Numerical Ability Boosters",
+      "Reasoning & Puzzle Bank",
+      "Banking & RBI Special"
+    ],
+    col3: [
+      "TCS Interface Simulation",
+      "All-India Percentile Rank",
+      "+ 15 More Tests"
+    ],
+    bullets: [
+      "Ace Your RBI Assistant 2026 Exam. Attempt First Test for Free!",
+      "Conducted in Hindi & English.",
+      "Total Tests - 28 (Full Length Tests + Sectional)",
+      "Valid till 31 March 2027"
+    ],
+    suggestedTest: {
+      id: "BANK-MOCK-1",
+      title: "RBI Assistant Prelims Full Length Mock Test 1",
+      duration: "60 Mins",
+      questions: 100,
+      marks: 100,
+      isFree: true,
+      tag: "LIVE TEST"
+    },
+    availableTests: [
+      { id: "BANK-MOCK-1", title: "RBI Assistant Prelims Full Length Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "RBI ASSISTANT" },
+      { id: "RBI-ASST-MAIN-1", title: "RBI Assistant Mains High-Level Mock Test 1", duration: "135 Mins", questions: 200, marks: 200, isFree: false, tag: "PRO TEST", exam: "RBI ASSISTANT" }
+    ]
+  },
+  {
+    id: "TS-SBI-PO-2026",
+    category: "banking",
+    title: "SBI PO (Pre+Mains) Mock Test Series 2026",
+    exam: "SBI PO",
+    emblemBg: "#fef3c7",
+    emblemColor: "#b45309",
+    emblemIcon: "🏦",
+    users: "580.6k Users",
+    totalTests: 141,
+    freeTests: 5,
+    languages: "English, Hindi",
+    lastUpdated: "Nov 6, 2026",
+    price: 199,
+    mrp: 499,
+    col1: [
+      "25 Full Length Tests",
+      "81 Chapter Tests",
+      "35 Sectional Tests"
+    ],
+    col2: [
+      "High-Level Puzzles & Seating",
+      "Advanced Data Interpretation",
+      "Descriptive Paper Test Module"
+    ],
+    col3: [
+      "Step-by-Step Explanations",
+      "Sectional Cutoff Analytics",
+      "+ 80 More Tests"
+    ],
+    bullets: [
+      "Prepare with high-level SBI PO Pre & Mains mock tests. Attempt First Test for Free!",
+      "Conducted in Hindi & English.",
+      "Total Tests - 141 (25 Full Length Tests, 81 Chapter Tests, 35 Sectional Tests)",
+      "Valid till 31 March 2027"
+    ],
+    suggestedTest: {
+      id: "BANK-MOCK-1",
+      title: "SBI PO Prelims All-India Live Mock Test 1",
+      duration: "60 Mins",
+      questions: 100,
+      marks: 100,
+      isFree: true,
+      tag: "LIVE TEST"
+    },
+    availableTests: [
+      { id: "BANK-MOCK-1", title: "SBI PO Prelims All-India Live Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "SBI PO" },
+      { id: "SBI-PO-MAINS-1", title: "SBI PO Mains Full Length Comprehensive Mock 1", duration: "180 Mins", questions: 155, marks: 200, isFree: false, tag: "PRO TEST", exam: "SBI PO" }
+    ]
+  },
+  {
     id: "TS-SSC-CHSL-2026",
     category: "ssc",
     title: "SSC CHSL Mock Test Series 2026 (Tier I & Tier II)",
@@ -1312,9 +1463,77 @@ window.selectTestSeriesCategory = function(catId, btn) {
   renderTestSeriesCatalogCards();
 };
 
+let activePwTypeFilter = "all";
+let activePwModeFilter = "all";
+
+window.handlePwGoalChange = function(category) {
+  currentTestSeriesCategory = category;
+  const labelEl = document.getElementById("currentCatLabel");
+  if (labelEl) {
+    if (category === "banking") labelEl.textContent = "Bank PO & Clerk Exams";
+    else if (category === "ssc") labelEl.textContent = "SSC Exams";
+    else if (category === "railway") labelEl.textContent = "Railway Exams";
+    else if (category === "ossc") labelEl.textContent = "Odisha State Exams";
+    else labelEl.textContent = "Recommended";
+  }
+  renderTestSeriesCatalogCards();
+};
+
+window.handlePwTypeFilter = function(type) {
+  activePwTypeFilter = type;
+  renderTestSeriesCatalogCards();
+};
+
+window.handlePwModeFilter = function(mode) {
+  activePwModeFilter = mode;
+  renderTestSeriesCatalogCards();
+};
+
+window.resetPwFilters = function() {
+  activePwTypeFilter = "all";
+  activePwModeFilter = "all";
+  currentCategorySearchQuery = "";
+  const typeEl = document.getElementById("pwFilterType");
+  const modeEl = document.getElementById("pwFilterMode");
+  const searchEl = document.getElementById("catTestSeriesSearch");
+  if (typeEl) typeEl.value = "all";
+  if (modeEl) modeEl.value = "all";
+  if (searchEl) searchEl.value = "";
+  renderTestSeriesCatalogCards();
+};
+
 window.handleCategorySearch = function(query) {
   currentCategorySearchQuery = String(query || "").toLowerCase().trim();
   renderTestSeriesCatalogCards();
+};
+
+window.openCartWithSeries = function(seriesId) {
+  const s = TEST_SERIES_CATALOG.find(x => x.id === seriesId);
+  if (!s) return;
+  const mrp = s.mrp || 499;
+  const price = s.price || 199;
+  const discountPct = Math.round(((mrp - price) / mrp) * 100);
+
+  window.addToCart({
+    id: s.id,
+    title: s.title,
+    subtitle: "Online Test Module",
+    badge: s.exam || "TEST MODULE",
+    icon: s.emblemIcon || "📋",
+    price: price,
+    mrp: mrp,
+    discountPercent: discountPct
+  }, true);
+};
+
+window.shareParticularSeries = function(seriesId) {
+  const s = TEST_SERIES_CATALOG.find(x => x.id === seriesId);
+  if (!s) return;
+  const text = `🎯 Check out *${s.title}* on C2S (College to Service)!\n\n` +
+    `⚡ ${s.totalTests} Total Tests (${s.freeTests} Free Tests Included)\n` +
+    `💰 Only ₹${s.price || 199} (Regular ₹${s.mrp || 499}) &bull; Valid till 31 March 2027\n\n` +
+    `👉 Start Free Demo Mock: https://c2seri.com/#tests`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
 };
 
 function renderTestSeriesCatalogCards() {
@@ -1325,6 +1544,7 @@ function renderTestSeriesCatalogCards() {
     ? TEST_SERIES_CATALOG 
     : TEST_SERIES_CATALOG.filter(s => s.category === currentTestSeriesCategory);
 
+  // Search filter
   if (currentCategorySearchQuery) {
     filtered = filtered.filter(s => 
       s.title.toLowerCase().includes(currentCategorySearchQuery) ||
@@ -1334,62 +1554,96 @@ function renderTestSeriesCatalogCards() {
     );
   }
 
+  // Type filter
+  if (activePwTypeFilter !== "all") {
+    filtered = filtered.filter(s => {
+      if (activePwTypeFilter === "full") return s.bullets.some(b => b.toLowerCase().includes("full"));
+      if (activePwTypeFilter === "sectional") return s.bullets.some(b => b.toLowerCase().includes("sectional"));
+      if (activePwTypeFilter === "chapter") return s.bullets.some(b => b.toLowerCase().includes("chapter"));
+      if (activePwTypeFilter === "pyp") return s.bullets.some(b => b.toLowerCase().includes("pyp") || b.toLowerCase().includes("previous"));
+      return true;
+    });
+  }
+
   const countEl = document.getElementById("currentCatCount");
-  if (countEl) countEl.textContent = `Showing ${filtered.length} Series`;
+  if (countEl) countEl.textContent = filtered.length;
 
   if (!filtered.length) {
     container.innerHTML = `
       <div style="grid-column:1/-1;text-align:center;padding:48px 20px;background:#ffffff;border-radius:14px;border:1.5px dashed #cbd5e1;">
         <span style="font-size:32px;display:block;margin-bottom:8px;">🔍</span>
         <h4 style="margin:0 0 4px;font-size:16px;color:#0f2a5c;">No Test Series Found</h4>
-        <p style="margin:0;font-size:13px;color:#64748b;">Try searching another keyword or choose another category from the left.</p>
+        <p style="margin:0;font-size:13px;color:#64748b;">Try searching another keyword or choose another goal category above.</p>
       </div>
     `;
     return;
   }
 
+  // Exact Match to Physics Wallah Card Layout in Screenshot media_1794032183143_b50fe2fa.jpg
   container.innerHTML = filtered.map(s => `
-    <div class="testbook-ts-card">
+    <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 4px 14px rgba(15,23,42,0.04);transition:transform 0.15s,box-shadow 0.15s;position:relative;">
       <div>
-        <!-- Top Row: Emblem + Users Badge -->
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <div style="width:38px;height:38px;border-radius:50%;background:${s.emblemBg};color:${s.emblemColor};display:flex;align-items:center;justify-content:center;font-size:18px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 1px 3px rgba(0,0,0,0.06);">
-            ${s.emblemIcon}
-          </div>
-          <span style="background:#fef3c7;color:#92400e;font-size:11px;font-weight:750;padding:3.5px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:3px;border:1px solid #fde68a;">
-            <span>⚡</span> <span>${s.users}</span>
+        <!-- Top Row: Title on Left, NEW Badge, WhatsApp Share on Right -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:14.5px;font-weight:850;color:#0f2a5c;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;" title="${escapeHtml(s.title)}">
+            ${escapeHtml(s.title)}
+          </h3>
+          <span style="background:#fef08a;color:#854d0e;font-size:9.5px;font-weight:900;padding:2px 6px;border-radius:4px;flex-shrink:0;">
+            NEW
           </span>
+          <button type="button" onclick="shareParticularSeries('${s.id}')" title="Share on WhatsApp"
+            style="background:none;border:none;cursor:pointer;font-size:18px;color:#22c55e;padding:0 2px;line-height:1;margin-left:2px;">
+            💬
+          </button>
         </div>
 
-        <!-- Title -->
-        <h3 style="font-size:15px;font-weight:800;color:#0f172a;margin:0 0 6px;line-height:1.35;min-height:40px;">
-          ${s.title}
-        </h3>
-
-        <!-- Total Tests & Free Tests (Cyan Accent) -->
-        <div style="font-size:12.5px;font-weight:750;color:#0284c7;margin-bottom:6px;">
-          ${s.totalTests} Total Tests | ${s.freeTests} Free Tests
+        <!-- Landscape Banner Graphic (Matching Screenshot Amber Card) -->
+        <div style="background:linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);border:1.5px solid #fde68a;border-radius:10px;padding:16px 12px;margin:8px 0 14px;position:relative;text-align:center;min-height:96px;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+          <div style="font-size:12px;font-weight:900;color:#78350f;letter-spacing:0.5px;text-transform:uppercase;line-height:1.3;max-width:240px;margin-bottom:6px;">
+            ${escapeHtml(s.title.toUpperCase())}
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span style="font-size:20px;">${s.emblemIcon || '📋'}</span>
+            <span style="font-size:10.5px;font-weight:850;color:#92400e;letter-spacing:0.5px;">C2S FACULTY BENCHMARK</span>
+          </div>
+          <!-- Dark Pill Badge at bottom of banner matching screenshot -->
+          <div style="position:absolute;bottom:6px;background:#0f172a;color:#ffffff;font-size:9.5px;font-weight:900;padding:2px 10px;border-radius:999px;letter-spacing:0.5px;">
+            TOTAL TESTS: ${s.totalTests}
+          </div>
         </div>
 
-        <!-- Languages -->
-        <div style="font-size:11.5px;color:#64748b;margin-bottom:12px;display:flex;align-items:center;gap:4px;">
-          <span>🌐</span> <span>${s.languages}</span>
+        <!-- 4 Star Bullets (Matching Screenshot Exactly) -->
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:11.8px;color:#475569;margin-bottom:16px;line-height:1.45;">
+          ${(s.bullets || []).slice(0, 4).map(b => `
+            <div style="display:flex;align-items:flex-start;gap:6px;">
+              <span style="color:#f59e0b;font-size:12px;flex-shrink:0;">⭐</span>
+              <span>${escapeHtml(b)}</span>
+            </div>
+          `).join("")}
         </div>
-
-        <!-- Bullets -->
-        <ul style="margin:0 0 18px;padding-left:14px;font-size:12px;color:#475569;line-height:1.65;">
-          ${s.bullets.map(b => `<li>${b}</li>`).join("")}
-        </ul>
       </div>
 
-      <!-- Action Button (Matching Screenshot Cyan Button) -->
-      <div>
-        <button type="button" class="btn" 
-          style="background:#06b6d4;color:#ffffff;font-size:13.5px;font-weight:800;padding:10px;width:100%;border-radius:6px;border:none;cursor:pointer;box-shadow:0 2px 6px rgba(6,182,212,0.3);transition:all 0.15s ease;"
-          onmouseenter="this.style.background='#0891b2'" onmouseleave="this.style.background='#06b6d4'"
-          onclick="openAvailableSeriesModal('${s.id}')">
-          View Test Series
-        </button>
+      <!-- Bottom Row: Price & Action Buttons -->
+      <div style="border-top:1px solid #f1f5f9;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:6px;">
+            <strong style="font-size:17.5px;font-weight:900;color:#0f2a5c;">₹${s.price || 199}</strong>
+            <span style="font-size:12px;color:#94a3b8;text-decoration:line-through;">₹${s.mrp || 499}</span>
+            <span style="background:#0ea5e9;color:#ffffff;font-size:10px;font-weight:800;padding:2px 5px;border-radius:4px;">60% OFF</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button type="button" class="btn" onclick="openAvailableSeriesModal('${s.id}')"
+            style="background:#06b6d4;color:#ffffff;font-size:12px;font-weight:800;padding:8px 12px;border-radius:6px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(6,182,212,0.3);transition:all 0.15s ease;"
+            onmouseenter="this.style.background='#0891b2'" onmouseleave="this.style.background='#06b6d4'">
+            <span>Explore Tests →</span>
+          </button>
+          <button type="button" class="btn" onclick="openCartWithSeries('${s.id}')"
+            style="background:#3b82f6;color:#ffffff;font-size:12px;font-weight:800;padding:8px 12px;border-radius:6px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(59,130,246,0.35);transition:all 0.15s ease;"
+            onmouseenter="this.style.background='#2563eb'" onmouseleave="this.style.background='#3b82f6'">
+            <span>🛒 Buy Pass</span>
+          </button>
+        </div>
       </div>
     </div>
   `).join("");
