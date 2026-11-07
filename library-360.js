@@ -1,109 +1,142 @@
 /* ==========================================================================
-   C2S 24-HOUR PREMIUM STUDY LIBRARY — 360° GOOGLE STREET VIEW ENGINE
-   High-Performance 360 Panorama Tour with Hotspot Desks & Radar Minimap
+   C2S 24-HOUR PREMIUM STUDY LIBRARY — 3D VIRTUAL TOUR & STREET VIEW ENGINE
+   Matterport & Google Street View Style High-Performance 360 Panorama Tour
    ========================================================================== */
 
 (function() {
   'use strict';
 
-  // 5 Viewpoints in the Study Sanctuary: Upper Floor Zone A, Lower Floor Zones B, C, D, and Reception
+  // 5 Authentic Viewpoints with Dedicated High-Resolution Campus Photos
   const VIEWPOINTS = {
     zone_a: {
       name: "Upper Floor (2nd Floor) • Zone A: Executive Sanctuary",
       tag: "24 Seats (S-1 to S-24) • Attached Lockers L-1 to L-24 • 5G Ultra Wi-Fi",
-      desks: Array.from({length: 24}, (_, i) => "S-" + (i + 1)),
-      initialYaw: 0,
-      initialPitch: -4,
+      imageSrc: "/images/hero-library-desktop.jpg",
+      initialYaw: 20,
+      initialPitch: -3,
+      hotspots: [
+        { deskId: "S-2", yaw: -48, pitch: -8 },
+        { deskId: "S-6", yaw: -24, pitch: -6 },
+        { deskId: "S-10", yaw: 0, pitch: -5 },
+        { deskId: "S-12", yaw: 24, pitch: -6 },
+        { deskId: "S-16", yaw: 48, pitch: -8 },
+        { deskId: "S-20", yaw: 76, pitch: -10 }
+      ],
       navArrows: [
-        { target: "zone_b", yaw: 90, pitch: -15, label: "Take Stairs to 1st Floor (Zone B) →" },
-        { target: "reception", yaw: 180, pitch: -12, label: "← Walk to Reception & Entry" }
+        { target: "zone_b", yaw: 110, pitch: -16, label: "🚶 Step to 1st Floor (Zone B) →" },
+        { target: "reception", yaw: -140, pitch: -15, label: "← Walk to Reception & Entry" }
       ]
     },
     zone_b: {
       name: "Lower Floor (1st Floor) • Zone B: Left Wall Bay",
       tag: "43 Seats (S-25 to S-67) • Split Inverter A/C • Lockers L-25 to L-67",
-      desks: Array.from({length: 43}, (_, i) => "S-" + (i + 25)),
+      imageSrc: "/images/library/c2s-library-aisle-hall.jpg",
       initialYaw: 90,
-      initialPitch: -4,
+      initialPitch: -3,
+      hotspots: [
+        { deskId: "S-28", yaw: 50, pitch: -9 },
+        { deskId: "S-35", yaw: 72, pitch: -7 },
+        { deskId: "S-42", yaw: 90, pitch: -6 },
+        { deskId: "S-50", yaw: 112, pitch: -7 },
+        { deskId: "S-58", yaw: 135, pitch: -9 }
+      ],
       navArrows: [
-        { target: "zone_a", yaw: 270, pitch: -15, label: "← Take Stairs to 2nd Floor (Zone A)" },
-        { target: "zone_c", yaw: 90, pitch: -15, label: "Walk to Zone C (Center Sanctuary) →" }
+        { target: "zone_a", yaw: 240, pitch: -15, label: "← Take Stairs to 2nd Floor (Zone A)" },
+        { target: "zone_c", yaw: 85, pitch: -16, label: "Walk to Zone C (Center Sanctuary) →" }
       ]
     },
     zone_c: {
       name: "Lower Floor (1st Floor) • Zone C: Center Dual-Row Sanctuary",
       tag: "42 Seats (S-68 to S-109) • Dual Corridor Aisle • Lockers L-68 to L-109",
-      desks: Array.from({length: 42}, (_, i) => "S-" + (i + 68)),
-      initialYaw: 180,
-      initialPitch: -4,
+      imageSrc: "/images/library/c2s-library-hall-panoramic.jpg",
+      initialYaw: 0,
+      initialPitch: -2,
+      hotspots: [
+        { deskId: "S-70", yaw: -42, pitch: -8 },
+        { deskId: "S-78", yaw: -20, pitch: -6 },
+        { deskId: "S-85", yaw: 0, pitch: -5 },
+        { deskId: "S-94", yaw: 22, pitch: -6 },
+        { deskId: "S-102", yaw: 46, pitch: -8 }
+      ],
       navArrows: [
-        { target: "zone_b", yaw: 270, pitch: -15, label: "← Walk to Zone B (Left Bay)" },
-        { target: "zone_d", yaw: 90, pitch: -15, label: "Walk to Zone D (Right Bay) →" }
+        { target: "zone_b", yaw: -110, pitch: -15, label: "← Walk to Zone B (Left Bay)" },
+        { target: "zone_d", yaw: 95, pitch: -16, label: "Walk to Zone D (Right Bay) →" }
       ]
     },
     zone_d: {
       name: "Lower Floor (1st Floor) • Zone D: Right Wall Bay & Reception",
-      tag: "40 Seats (S-110 to S-149) • Proximity to Biometrics & Lockers L-110 to L-149",
-      desks: Array.from({length: 40}, (_, i) => "S-" + (i + 110)),
-      initialYaw: 270,
-      initialPitch: -4,
+      tag: "40 Seats (S-110 to S-149) • Direct Access to Lockers L-110 to L-149",
+      imageSrc: "/images/library/c2s-library-study-cabins.jpg",
+      initialYaw: 90,
+      initialPitch: -2,
+      hotspots: [
+        { deskId: "S-114", yaw: 55, pitch: -8 },
+        { deskId: "S-122", yaw: 78, pitch: -7 },
+        { deskId: "S-130", yaw: 95, pitch: -6 },
+        { deskId: "S-138", yaw: 118, pitch: -7 },
+        { deskId: "S-145", yaw: 140, pitch: -9 }
+      ],
       navArrows: [
-        { target: "zone_c", yaw: 270, pitch: -15, label: "← Walk to Zone C (Center)" },
+        { target: "zone_c", yaw: -90, pitch: -15, label: "← Walk to Zone C (Center)" },
         { target: "reception", yaw: 0, pitch: -12, label: "Walk to Reception & RO Water →" }
       ]
     },
     reception: {
       name: "Main Reception & Entry Sanctuary (1st Floor)",
       tag: "Biometric Punch • RO Hot/Cold Water • Help Desk (9777481909)",
-      desks: [],
+      imageSrc: "/images/library/c2s-library-grand-entrance.jpg",
       initialYaw: 0,
       initialPitch: 0,
+      hotspots: [],
       navArrows: [
-        { target: "zone_b", yaw: 0, pitch: -10, label: "Enter Zone B & C (1st Floor) →" },
-        { target: "zone_a", yaw: 180, pitch: -10, label: "Take Stairs to 2nd Floor (Zone A) →" }
+        { target: "zone_b", yaw: 45, pitch: -10, label: "Enter Zone B & C (1st Floor) →" },
+        { target: "zone_a", yaw: -45, pitch: -10, label: "Take Stairs to 2nd Floor (Zone A) →" }
       ]
     }
   };
 
   // State
   let currentViewpoint = 'zone_a';
-  let yaw = 0;       // Horizontal rotation in degrees [0..360]
-  let pitch = -4;    // Vertical tilt in degrees [-60..60]
-  let targetYaw = 0;
-  let targetPitch = -4;
-  let fov = 75;       // Field of view in degrees [45..95]
+  let yaw = 20;       // Horizontal rotation in degrees [0..360]
+  let pitch = -3;     // Vertical tilt in degrees [-60..60]
+  let targetYaw = 20;
+  let targetPitch = -3;
+  let fov = 75;        // Field of view in degrees [45..95]
   let isDragging = false;
   let lastMouseX = 0;
   let lastMouseY = 0;
   let autoRotate = true;
   let nightMode = false;
-  let selectedDesk = "S-25";
+  let selectedDesk = "S-12";
+  let hoveredDesk = null;
+  let hoveredNav = null;
 
-  // Pre-seeded occupied desks matching active student enrollments
+  // Pre-seeded occupied desks matching student register
   const occupiedDesks = new Set(["S-05", "S-14", "S-25", "S-36", "S-70", "S-85", "S-112", "S-135"]);
 
-  let canvas, ctx, panoramaCache = {};
-  let libraryPhoto = null;
+  let canvas, ctx;
+  const imageCache = {};
 
-  // Load Authentic Photorealistic Image Plate
-  function preloadPhotorealisticPlate() {
-    try {
+  // Preload all 5 Authentic Campus Photographs
+  function preloadAllPhotographs() {
+    Object.keys(VIEWPOINTS).forEach(key => {
+      const vp = VIEWPOINTS[key];
       const img = new Image();
       img.onload = function() {
-        libraryPhoto = img;
-        panoramaCache = {}; // Invalidate cache so texture updates with real photo
+        imageCache[key] = img;
       };
       img.onerror = function() {
+        // Fallback to hero image if relative path issue
         if (!img._retried) {
           img._retried = true;
-          img.src = '../images/hero-library-desktop.jpg';
+          img.src = '/images/hero-library-desktop.jpg';
         }
       };
-      img.src = '/images/hero-library-desktop.jpg';
-    } catch (e) {}
+      img.src = vp.imageSrc;
+    });
   }
 
-  // Safe RoundRect Helper that works in all browsers
+  // Helper for drawing smooth rounded rectangles
   function drawSafeRoundRect(c, x, y, w, h, r) {
     if (typeof c.roundRect === 'function') {
       try {
@@ -124,175 +157,34 @@
     c.closePath();
   }
 
-  // Generate High-Res 360 Panorama Texture
-  function generatePanoramaTexture(vpKey, isNight) {
-    try {
-      const pCanvas = document.createElement('canvas');
-      pCanvas.width = 2560;
-      pCanvas.height = 1280;
-      const pCtx = pCanvas.getContext('2d');
-      if (!pCtx) return null;
-      const w = pCanvas.width;
-      const h = pCanvas.height;
+  // Convert 3D Spherical Coordinates (yaw, pitch) to 2D Screen Space
+  function sphericalToScreen(targetYawDeg, targetPitchDeg, screenW, screenH) {
+    let deltaYaw = targetYawDeg - yaw;
+    while (deltaYaw > 180) deltaYaw -= 360;
+    while (deltaYaw < -180) deltaYaw += 360;
 
-      // Base Wall & Carpet Colors
-      const ceilingColor = isNight ? '#030712' : '#0a192f';
-      const wallColor = isNight ? '#0b1329' : '#1e293b';
-      const floorColor = isNight ? '#111827' : '#1a2333';
+    const deltaPitch = targetPitchDeg - pitch;
+    const halfFovX = fov / 2;
+    const halfFovY = (fov * (screenH / screenW)) / 2;
 
-      // 1. Ceiling Linear Gradient
-      const ceilingGrad = pCtx.createLinearGradient(0, 0, 0, h * 0.46);
-      ceilingGrad.addColorStop(0, ceilingColor);
-      ceilingGrad.addColorStop(1, wallColor);
-      pCtx.fillStyle = ceilingGrad;
-      pCtx.fillRect(0, 0, w, h * 0.46);
-
-      // 2. Floor Carpet with Acoustic Depth
-      const floorGrad = pCtx.createLinearGradient(0, h * 0.46, 0, h);
-      floorGrad.addColorStop(0, wallColor);
-      floorGrad.addColorStop(0.12, floorColor);
-      floorGrad.addColorStop(1, isNight ? '#020617' : '#0f172a');
-      pCtx.fillStyle = floorGrad;
-      pCtx.fillRect(0, h * 0.46, w, h * 0.54);
-
-      // 3. Composite Real Photorealistic Image Plate if loaded
-      if (libraryPhoto && libraryPhoto.complete && libraryPhoto.naturalWidth > 0) {
-        try {
-          pCtx.save();
-          pCtx.globalAlpha = isNight ? 0.65 : 0.85;
-          pCtx.drawImage(libraryPhoto, 0, h * 0.22, w * 0.5, h * 0.62);
-          pCtx.drawImage(libraryPhoto, w * 0.5, h * 0.22, w * 0.5, h * 0.62);
-          pCtx.restore();
-        } catch (pe) {}
-      }
-
-      // 4. Perspective Floor Grid Lines
-      pCtx.strokeStyle = isNight ? 'rgba(56, 189, 248, 0.15)' : 'rgba(255, 255, 255, 0.10)';
-      pCtx.lineWidth = 1.5;
-      for (let x = 0; x < w; x += 80) {
-        pCtx.beginPath();
-        pCtx.moveTo(x, h * 0.48);
-        pCtx.lineTo(x, h);
-        pCtx.stroke();
-      }
-      for (let y = h * 0.48; y < h; y += 36) {
-        pCtx.beginPath();
-        pCtx.moveTo(0, y);
-        pCtx.lineTo(w, y);
-        pCtx.stroke();
-      }
-
-      // 5. Ceiling Recessed Warm LED Spotlights
-      for (let x = 40; x < w; x += 140) {
-        try {
-          const lampGrad = pCtx.createRadialGradient(x, h * 0.20, 2, x, h * 0.20, 50);
-          lampGrad.addColorStop(0, isNight ? 'rgba(251, 191, 36, 0.95)' : 'rgba(255, 255, 255, 0.98)');
-          lampGrad.addColorStop(0.35, isNight ? 'rgba(245, 158, 11, 0.4)' : 'rgba(224, 242, 254, 0.45)');
-          lampGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-          pCtx.fillStyle = lampGrad;
-          pCtx.beginPath();
-          pCtx.arc(x, h * 0.20, 50, 0, Math.PI * 2);
-          pCtx.fill();
-        } catch (le) {}
-      }
-
-      // 6. Architectural Header Signs
-      pCtx.save();
-      pCtx.fillStyle = isNight ? '#38bdf8' : '#93c5fd';
-      pCtx.font = 'bold 24px system-ui, -apple-system, sans-serif';
-      pCtx.textAlign = 'center';
-      pCtx.shadowColor = isNight ? '#0284c7' : '#2563eb';
-      pCtx.shadowBlur = 14;
-
-      pCtx.fillText('🏛️ C2S 24-HOUR PREMIUM STUDY SANCTUARY • PATRAPADA', w * 0.25, h * 0.32);
-      pCtx.fillText('⚡ 100% DG POWER BACKUP • 300 MBPS DUAL FIBER WI-FI', w * 0.75, h * 0.32);
-
-      pCtx.fillStyle = '#f59e0b';
-      pCtx.font = 'bold 16px system-ui, -apple-system, sans-serif';
-      pCtx.fillText('ZONE A: SILENT CUBICLES | ZONE B: DIGITAL POWER HUB | ZONE C: ACOUSTIC PODS', w * 0.5, h * 0.37);
-      pCtx.restore();
-
-      // 7. Individual Wooden Study Cubicles with Warm Gooseneck Lamps
-      for (let i = 0; i < 16; i++) {
-        const dx = (w / 16) * i + 18;
-        const dy = h * 0.53 + (i % 2 === 0 ? 0 : 20);
-        const dw = (w / 16) - 36;
-        const dh = 120;
-
-        // Wooden Desk Surface
-        pCtx.fillStyle = isNight ? '#1e293b' : '#334155';
-        pCtx.fillRect(dx, dy, dw, dh);
-        pCtx.strokeStyle = isNight ? '#0ea5e9' : '#64748b';
-        pCtx.lineWidth = 1.5;
-        pCtx.strokeRect(dx, dy, dw, dh);
-
-        // Acoustic Soundproofing Wall Partition
-        pCtx.fillStyle = isNight ? 'rgba(15, 23, 42, 0.95)' : 'rgba(51, 65, 85, 0.95)';
-        pCtx.fillRect(dx + 4, dy - 50, dw - 8, 50);
-
-        // Warm Desk Lamp Amber Cone
-        try {
-          const deskLampGrad = pCtx.createRadialGradient(dx + dw / 2, dy - 24, 2, dx + dw / 2, dy - 24, 40);
-          deskLampGrad.addColorStop(0, isNight ? 'rgba(253, 224, 71, 0.9)' : 'rgba(255, 255, 255, 0.8)');
-          deskLampGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-          pCtx.fillStyle = deskLampGrad;
-          pCtx.beginPath();
-          pCtx.arc(dx + dw / 2, dy - 24, 40, 0, Math.PI * 2);
-          pCtx.fill();
-        } catch (de) {}
-
-        // Ergonomic High-Back Mesh Chair
-        pCtx.fillStyle = isNight ? '#0a0f1d' : '#1e293b';
-        pCtx.fillRect(dx + dw * 0.28, dy + dh - 10, dw * 0.44, 32);
-      }
-
-      return pCanvas;
-    } catch (e) {
-      console.warn("Panorama generation error:", e);
+    if (Math.abs(deltaYaw) > halfFovX * 1.3 || Math.abs(deltaPitch) > halfFovY * 1.4) {
       return null;
     }
+
+    const screenX = (screenW / 2) + (deltaYaw / halfFovX) * (screenW / 2);
+    const screenY = (screenH / 2) - (deltaPitch / halfFovY) * (screenH / 2);
+
+    return { x: screenX, y: screenY };
   }
 
-  // Retrieve cached texture
-  function getPanorama() {
-    const key = currentViewpoint + '_' + (nightMode ? 'night' : 'day') + '_' + (libraryPhoto ? 'photo' : 'proc');
-    if (!panoramaCache[key]) {
-      panoramaCache[key] = generatePanoramaTexture(currentViewpoint, nightMode);
-    }
-    return panoramaCache[key];
-  }
-
-  // Spherical Coordinates (yaw, pitch) to Screen (x, y)
-  function sphericalToScreen(tYaw, tPitch, screenW, screenH) {
-    let diffYaw = (tYaw - yaw) % 360;
-    if (diffYaw < -180) diffYaw += 360;
-    if (diffYaw > 180) diffYaw -= 360;
-
-    const hFov = fov * (screenW / screenH);
-    if (Math.abs(diffYaw) > hFov * 0.72) return null;
-
-    const diffPitch = tPitch - pitch;
-    if (Math.abs(diffPitch) > fov * 0.72) return null;
-
-    const x = screenW / 2 + (diffYaw / (hFov / 2)) * (screenW / 2);
-    const y = screenH / 2 - (diffPitch / (fov / 2)) * (screenH / 2);
-
-    return { x, y };
-  }
-
-  // Main 360 Render Loop (60 FPS)
-  function render360() {
-    // Schedule next frame FIRST so the loop never halts
-    requestAnimationFrame(render360);
-
+  // Main 3D Animation & Render Loop
+  function render() {
+    requestAnimationFrame(render);
     if (!canvas || !ctx) return;
-
-    // Dynamically maintain canvas dimensions
-    resizeCanvas();
 
     const w = canvas.width;
     const h = canvas.height;
-    if (w <= 0 || h <= 0) return;
+    if (w === 0 || h === 0) return;
 
     try {
       // Smooth camera interpolation
@@ -301,200 +193,251 @@
       if (yaw < 0) { yaw += 360; targetYaw += 360; }
       if (yaw >= 360) { yaw -= 360; targetYaw -= 360; }
 
-      // Auto-rotation when not interacting
+      // Slow cinematic auto-rotation when user is not dragging
       if (autoRotate && !isDragging) {
-        targetYaw += 0.08;
+        targetYaw += 0.06;
       }
 
-      // 1. Guaranteed Visible Study Environment Backdrop (Instant, Never Black!)
-      const ceilGrad = ctx.createLinearGradient(0, 0, 0, h * 0.48);
-      ceilGrad.addColorStop(0, nightMode ? '#020617' : '#0a192f');
-      ceilGrad.addColorStop(1, nightMode ? '#0f172a' : '#1e293b');
-      ctx.fillStyle = ceilGrad;
-      ctx.fillRect(0, 0, w, h * 0.48);
+      // 1. Clear Viewport
+      ctx.clearRect(0, 0, w, h);
 
-      const flrGrad = ctx.createLinearGradient(0, h * 0.48, 0, h);
-      flrGrad.addColorStop(0, nightMode ? '#0b1329' : '#1e293b');
-      flrGrad.addColorStop(1, nightMode ? '#020617' : '#0f172a');
-      ctx.fillStyle = flrGrad;
-      ctx.fillRect(0, h * 0.48, w, h * 0.52);
+      // 2. Seamless 360 High-Res Photographic Panorama Projection
+      const currentImg = imageCache[currentViewpoint] || imageCache['zone_a'];
+      if (currentImg && currentImg.complete && currentImg.naturalWidth > 0) {
+        const fullWidth = (360 / fov) * w;
+        const fullHeight = (180 / fov) * h;
+        const startX = (w / 2) - (yaw / 360) * fullWidth;
+        const startY = (h / 2) - (fullHeight / 2) + (pitch / 90) * (fullHeight * 0.45);
 
-      // Perspective horizon line
-      ctx.strokeStyle = nightMode ? 'rgba(56, 189, 248, 0.4)' : 'rgba(147, 197, 253, 0.35)';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(0, h * 0.48);
-      ctx.lineTo(w, h * 0.48);
-      ctx.stroke();
-
-      // 2. Seamless 360 Panorama Projection
-      try {
-        const pano = getPanorama();
-        if (pano) {
-          const fullWidth = (360 / fov) * w;
-          const fullHeight = (180 / fov) * h;
-          const startX = (w / 2) - (yaw / 360) * fullWidth;
-          const startY = (h / 2) - (fullHeight / 2) + (pitch / 90) * (fullHeight * 0.4);
-
-          const firstTile = Math.floor((0 - startX) / fullWidth);
-          for (let i = firstTile - 1; i <= firstTile + 2; i++) {
-            const tileX = startX + i * fullWidth;
-            if (tileX + fullWidth > 0 && tileX < w) {
-              ctx.drawImage(pano, tileX, startY, fullWidth, fullHeight);
-            }
+        const firstTile = Math.floor((0 - startX) / fullWidth);
+        for (let i = firstTile - 1; i <= firstTile + 2; i++) {
+          const tileX = startX + i * fullWidth;
+          if (tileX + fullWidth > 0 && tileX < w) {
+            ctx.drawImage(currentImg, tileX, startY, fullWidth, fullHeight);
           }
         }
-      } catch (panoErr) {}
-
-      // 3. Subtle Cinematic Radial Vignette
-      try {
-        const vigGrad = ctx.createRadialGradient(w / 2, h / 2, h * 0.35, w / 2, h / 2, h * 0.85);
-        vigGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
-        vigGrad.addColorStop(1, nightMode ? 'rgba(2, 6, 23, 0.70)' : 'rgba(10, 25, 47, 0.40)');
-        ctx.fillStyle = vigGrad;
+      } else {
+        // High-end fallback ambient gradient while image loads
+        const ambientGrad = ctx.createLinearGradient(0, 0, 0, h);
+        ambientGrad.addColorStop(0, '#0a192f');
+        ambientGrad.addColorStop(0.5, '#1e293b');
+        ambientGrad.addColorStop(1, '#0f172a');
+        ctx.fillStyle = ambientGrad;
         ctx.fillRect(0, 0, w, h);
-      } catch (ve) {}
+      }
 
-      // 4. Render Desk Pins in Current Viewpoint
+      // 3. Cinematic Vignette (Subtle Day Depth / Cozy Night Lamp Ambiance)
+      const vigGrad = ctx.createRadialGradient(w / 2, h / 2, h * 0.25, w / 2, h / 2, h * 0.85);
+      vigGrad.addColorStop(0, nightMode ? 'rgba(251, 191, 36, 0.08)' : 'rgba(0, 0, 0, 0)');
+      vigGrad.addColorStop(1, nightMode ? 'rgba(2, 6, 23, 0.65)' : 'rgba(15, 23, 42, 0.35)');
+      ctx.fillStyle = vigGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // 4. Render Spatial 3D Desk Beacon Hotspots
       const vp = VIEWPOINTS[currentViewpoint] || VIEWPOINTS.zone_a;
-      const desks = vp.desks || [];
+      const hotspots = vp.hotspots || [];
 
-      desks.forEach((deskId, idx) => {
+      hotspots.forEach(hp => {
         try {
-          const deskYaw = ((idx - 7.5) / 16) * 150 + vp.initialYaw;
-          const deskPitch = -11 + (idx % 2 === 0 ? 0 : 3.5);
-
-          const pt = sphericalToScreen(deskYaw, deskPitch, w, h);
+          const pt = sphericalToScreen(hp.yaw, hp.pitch, w, h);
           if (pt) {
-            drawDeskHotspot(pt.x, pt.y, deskId);
+            draw3DBeaconHotspot(pt.x, pt.y, hp.deskId);
           }
-        } catch (de) {}
+        } catch (e) {}
       });
 
-      // 5. Render Floor Navigation Arrows
+      // 5. Render Floating Detail Card if a Desk is Hovered or Active
+      if (hoveredDesk || selectedDesk) {
+        const activeId = hoveredDesk || selectedDesk;
+        const activeHp = hotspots.find(h => h.deskId === activeId);
+        if (activeHp) {
+          const pt = sphericalToScreen(activeHp.yaw, activeHp.pitch, w, h);
+          if (pt) {
+            drawFloatingGlassCard(pt.x, pt.y, activeId);
+          }
+        }
+      }
+
+      // 6. Render Floor Navigation Chevrons (Google Street View Walking Arrows)
       (vp.navArrows || []).forEach(nav => {
         try {
           const pt = sphericalToScreen(nav.yaw, nav.pitch, w, h);
           if (pt) {
-            drawNavigationArrow(pt.x, pt.y, nav);
+            drawNavigationChevron(pt.x, pt.y, nav);
           }
         } catch (ne) {}
       });
 
-      // 6. Synchronize Compass Needle
+      // 7. Synchronize Compass Needle
       try {
         updateCompassUi(yaw);
       } catch (ce) {}
 
-      // 7. Synchronize Real-time Radar Minimap
+      // 8. Synchronize Real-Time Radar Minimap
       try {
         drawRadarMinimap(yaw);
       } catch (re) {}
 
     } catch (err) {
-      console.warn("Render 360 loop error:", err);
+      console.warn("3D Render loop exception:", err);
     }
   }
 
-  // Draw Interactive Desk Pin
-  function drawDeskHotspot(x, y, deskId) {
+  // Draw 3D Beacon Hotspot (Clean, Small, Elegant Circular Beacon)
+  function draw3DBeaconHotspot(x, y, deskId) {
     const isSelected = selectedDesk === deskId;
+    const isHovered = hoveredDesk === deskId;
     const isOccupied = occupiedDesks.has(deskId);
 
     ctx.save();
 
-    // Animated Pulse Ring
+    // Animated Subtle Ripple Pulse
     const now = performance.now() * 0.003;
     const pulse = (Math.sin(now + parseInt(deskId.replace(/\D/g, '') || 1)) + 1) * 0.5;
 
+    // Outer Aura Ring
     ctx.beginPath();
-    ctx.arc(x, y, 16 + pulse * 6, 0, Math.PI * 2);
-    ctx.fillStyle = isSelected ? 'rgba(37, 99, 235, 0.32)' : (isOccupied ? 'rgba(148, 163, 184, 0.18)' : 'rgba(16, 185, 129, 0.32)');
+    ctx.arc(x, y, 14 + pulse * 5, 0, Math.PI * 2);
+    ctx.fillStyle = isSelected 
+      ? 'rgba(59, 130, 246, 0.35)' 
+      : (isOccupied ? 'rgba(148, 163, 184, 0.18)' : 'rgba(16, 185, 129, 0.30)');
     ctx.fill();
 
-    // Outer Pin Body
+    // Beacon Core Button
+    const baseRadius = isHovered ? 14 : 12;
     ctx.beginPath();
-    ctx.arc(x, y, 14, 0, Math.PI * 2);
+    ctx.arc(x, y, baseRadius, 0, Math.PI * 2);
     ctx.fillStyle = isSelected ? '#2563eb' : (isOccupied ? '#64748b' : '#10b981');
     ctx.fill();
     ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = 2.2;
     ctx.stroke();
 
-    // Center Icon / Dot
+    // Center Indicator Dot
     ctx.beginPath();
-    ctx.arc(x, y, 5, 0, Math.PI * 2);
+    ctx.arc(x, y, 4, 0, Math.PI * 2);
     ctx.fillStyle = '#ffffff';
     ctx.fill();
 
-    // Desk Label Pill with Verified Price
-    const labelText = `Desk ${deskId}`;
-    const priceText = isOccupied ? 'Occupied' : '₹1000/mo';
-    ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
-    const textW = Math.max(76, (ctx.measureText ? ctx.measureText(labelText).width : 40) + 24);
-    const pillH = 34;
-    const pillX = x - textW / 2;
-    const pillY = y - 46;
+    // Subtle Pill Tag below beacon
+    ctx.font = 'bold 9.5px system-ui, -apple-system, sans-serif';
+    const tagText = deskId;
+    const tagW = ctx.measureText(tagText).width + 10;
+    const tagH = 16;
+    const tagX = x - tagW / 2;
+    const tagY = y + 14;
 
-    // Badge Background
-    ctx.fillStyle = isSelected ? 'rgba(15, 23, 42, 0.94)' : 'rgba(15, 23, 42, 0.88)';
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
     ctx.strokeStyle = isSelected ? '#3b82f6' : (isOccupied ? '#475569' : '#10b981');
-    ctx.lineWidth = isSelected ? 2 : 1.2;
-
+    ctx.lineWidth = 1;
     ctx.beginPath();
-    drawSafeRoundRect(ctx, pillX, pillY, textW, pillH, 8);
+    drawSafeRoundRect(ctx, tagX, tagY, tagW, tagH, 4);
     ctx.fill();
     ctx.stroke();
 
-    // Desk Title
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(labelText, x, pillY + 11);
-
-    // Subtext: Status & Price
-    ctx.fillStyle = isSelected ? '#60a5fa' : (isOccupied ? '#94a3b8' : '#34d399');
-    ctx.font = 'bold 9.5px system-ui, -apple-system, sans-serif';
-    ctx.fillText(priceText, x, pillY + 24);
+    ctx.fillText(tagText, x, tagY + 8);
 
     ctx.restore();
   }
 
-  // Draw Floor Walking Navigation Arrow
-  function drawNavigationArrow(x, y, nav) {
+  // Draw Floating Glassmorphism Detail Card on Hover / Active Selection
+  function drawFloatingGlassCard(x, y, deskId) {
+    const isOccupied = occupiedDesks.has(deskId);
+    const cardW = 186;
+    const cardH = 68;
+    const cardX = x - cardW / 2;
+    const cardY = y - cardH - 18;
+
+    ctx.save();
+
+    // Connecting Pin Stem
+    ctx.strokeStyle = isOccupied ? '#94a3b8' : '#10b981';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([3, 2]);
+    ctx.beginPath();
+    ctx.moveTo(x, y - 10);
+    ctx.lineTo(x, cardY + cardH);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Card Glass Background
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.94)';
+    ctx.strokeStyle = isOccupied ? '#475569' : '#10b981';
+    ctx.lineWidth = 1.5;
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    ctx.shadowBlur = 12;
+
+    ctx.beginPath();
+    drawSafeRoundRect(ctx, cardX, cardY, cardW, cardH, 8);
+    ctx.fill();
+    ctx.stroke();
+
+    // Header: Desk Number + Status Pill
+    ctx.shadowColor = 'transparent';
+    ctx.font = 'bold 12px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText(`💺 Seat ${deskId}`, cardX + 10, cardY + 10);
+
+    // Status Badge
+    const statusText = isOccupied ? 'Occupied' : '🟢 Free';
+    ctx.font = 'bold 9.5px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = isOccupied ? '#94a3b8' : '#34d399';
+    ctx.textAlign = 'right';
+    ctx.fillText(statusText, cardX + cardW - 10, cardY + 12);
+
+    // Specs Row
+    ctx.font = '600 9.5px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#94a3b8';
+    ctx.textAlign = 'left';
+    ctx.fillText(`⚡ Locker #${deskId.replace(/\D/g, '')} • 230V Socket & Lamp`, cardX + 10, cardY + 28);
+
+    // Action CTA Row
+    ctx.font = 'bold 10px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = isOccupied ? '#ef4444' : '#38bdf8';
+    ctx.fillText(isOccupied ? 'Reserved by Aspirant' : '₹1000/mo • Click to Reserve →', cardX + 10, cardY + 46);
+
+    ctx.restore();
+  }
+
+  // Draw Google Street View Navigation Chevron (Floor Direction Arrow)
+  function drawNavigationChevron(x, y, nav) {
     ctx.save();
 
     const now = performance.now() * 0.003;
-    const bounce = Math.sin(now) * 4;
+    const bounce = Math.sin(now) * 3;
 
-    // Arrow Circle Base
+    // Outer Circle Ring
     ctx.beginPath();
-    ctx.arc(x, y + bounce, 18, 0, Math.PI * 2);
+    ctx.arc(x, y + bounce, 16, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(234, 88, 12, 0.92)';
     ctx.fill();
     ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = 2.2;
     ctx.stroke();
 
-    // Directional Triangle
+    // Chevron Arrow Icon
     ctx.beginPath();
-    ctx.moveTo(x - 5, y + bounce + 6);
-    ctx.lineTo(x, y + bounce - 6);
-    ctx.lineTo(x + 5, y + bounce + 6);
+    ctx.moveTo(x - 5, y + bounce + 5);
+    ctx.lineTo(x, y + bounce - 5);
+    ctx.lineTo(x + 5, y + bounce + 5);
     ctx.closePath();
     ctx.fillStyle = '#ffffff';
     ctx.fill();
 
-    // Navigation Label Pill
+    // Navigation Text Label Pill
     ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
     const textW = (ctx.measureText ? ctx.measureText(nav.label).width : 90) + 18;
     const pillX = x - textW / 2;
-    const pillY = y + bounce + 24;
+    const pillY = y + bounce + 22;
 
-    ctx.fillStyle = 'rgba(15, 23, 42, 0.90)';
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
     ctx.strokeStyle = '#ea580c';
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = 1.2;
     ctx.beginPath();
     drawSafeRoundRect(ctx, pillX, pillY, textW, 22, 6);
     ctx.fill();
@@ -508,7 +451,7 @@
     ctx.restore();
   }
 
-  // Synchronize Compass Needle Needle
+  // Compass UI update
   function updateCompassUi(currentYaw) {
     const needle = document.getElementById('c2sCompassNeedle');
     if (needle) {
@@ -613,15 +556,23 @@
     });
 
     window.addEventListener('mousemove', e => {
-      if (!isDragging) return;
-      const dx = e.clientX - lastMouseX;
-      const dy = e.clientY - lastMouseY;
-      lastMouseX = e.clientX;
-      lastMouseY = e.clientY;
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+      const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
 
-      targetYaw -= dx * 0.35;
-      targetPitch += dy * 0.25;
-      targetPitch = Math.max(-55, Math.min(55, targetPitch));
+      if (isDragging) {
+        const dx = e.clientX - lastMouseX;
+        const dy = e.clientY - lastMouseY;
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+
+        targetYaw -= dx * 0.35;
+        targetPitch += dy * 0.25;
+        targetPitch = Math.max(-55, Math.min(55, targetPitch));
+      } else {
+        // Detect Hover on Hotspots or Navigation Arrows
+        checkHover(mouseX, mouseY);
+      }
     });
 
     window.addEventListener('mouseup', () => {
@@ -673,13 +624,57 @@
     });
   }
 
+  // Detect Hover on Hotspots & Nav Arrows
+  function checkHover(mouseX, mouseY) {
+    const vp = VIEWPOINTS[currentViewpoint] || VIEWPOINTS.zone_a;
+    const w = canvas.width;
+    const h = canvas.height;
+    let found = false;
+
+    // Check nav arrows
+    for (const nav of (vp.navArrows || [])) {
+      const pt = sphericalToScreen(nav.yaw, nav.pitch, w, h);
+      if (pt) {
+        const dist = Math.hypot(mouseX - pt.x, mouseY - pt.y);
+        if (dist <= 26) {
+          canvas.style.cursor = 'pointer';
+          hoveredNav = nav;
+          found = true;
+          break;
+        }
+      }
+    }
+
+    if (!found) hoveredNav = null;
+
+    // Check desk beacons
+    let foundDesk = null;
+    for (const hp of (vp.hotspots || [])) {
+      const pt = sphericalToScreen(hp.yaw, hp.pitch, w, h);
+      if (pt) {
+        const dist = Math.hypot(mouseX - pt.x, mouseY - pt.y);
+        if (dist <= 22) {
+          foundDesk = hp.deskId;
+          break;
+        }
+      }
+    }
+
+    hoveredDesk = foundDesk;
+    if (foundDesk || hoveredNav) {
+      canvas.style.cursor = 'pointer';
+    } else if (!isDragging) {
+      canvas.style.cursor = 'grab';
+    }
+  }
+
   // Handle Clicks in 360 Space
   function check360Click(clickX, clickY) {
     const vp = VIEWPOINTS[currentViewpoint] || VIEWPOINTS.zone_a;
     const w = canvas.width;
     const h = canvas.height;
 
-    // 1. Navigation Arrows
+    // 1. Navigation Arrows Click
     for (const nav of (vp.navArrows || [])) {
       const pt = sphericalToScreen(nav.yaw, nav.pitch, w, h);
       if (pt) {
@@ -691,24 +686,20 @@
       }
     }
 
-    // 2. Desk Hotspots
-    for (let idx = 0; idx < (vp.desks || []).length; idx++) {
-      const deskId = vp.desks[idx];
-      const deskYaw = ((idx - 7.5) / 16) * 150 + vp.initialYaw;
-      const deskPitch = -11 + (idx % 2 === 0 ? 0 : 3.5);
-
-      const pt = sphericalToScreen(deskYaw, deskPitch, w, h);
+    // 2. Desk Hotspots Click
+    for (const hp of (vp.hotspots || [])) {
+      const pt = sphericalToScreen(hp.yaw, hp.pitch, w, h);
       if (pt) {
         const dist = Math.hypot(clickX - pt.x, clickY - pt.y);
         if (dist <= 26) {
-          onSelect360Desk(deskId);
+          onSelect360Desk(hp.deskId);
           return;
         }
       }
     }
   }
 
-  // Switch Viewpoint (Zone A, B, C, Reception)
+  // Switch Viewpoint (Zone A, B, C, D, Reception)
   window.switch360Viewpoint = function(vpKey) {
     if (!VIEWPOINTS[vpKey]) return;
     currentViewpoint = vpKey;
@@ -716,9 +707,18 @@
     targetYaw = vp.initialYaw;
     targetPitch = vp.initialPitch;
 
-    // Update buttons
+    // Update buttons in Viewpoint Bar
     document.querySelectorAll('.c2s-360-vp-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.vp === vpKey);
+      if (b.dataset.vp === vpKey) {
+        b.style.borderColor = '#2563eb';
+        b.style.background = '#eff6ff';
+        b.style.color = '#1d4ed8';
+      } else {
+        b.style.borderColor = '#cbd5e1';
+        b.style.background = '#ffffff';
+        b.style.color = '#0f2a5c';
+      }
     });
 
     const titleEl = document.getElementById('c2s360VpTitle');
@@ -769,7 +769,7 @@
         hudCta.style.background = "#ea580c";
         hudCta.style.cursor = "pointer";
         hudCta.onclick = function() {
-          window.location.href = `admission.html?seat=${deskId}&shift=FullDay`;
+          window.location.href = `admission.html?desk=${encodeURIComponent(deskId)}&shift=FullDay`;
         };
       }
     }
@@ -782,6 +782,16 @@
     if (btn) {
       btn.style.background = autoRotate ? '#1e3a8a' : 'rgba(15,23,42,0.85)';
       btn.innerHTML = autoRotate ? '🔄 Spinning' : '⏸️ Auto Spin';
+    }
+  };
+
+  // Toggle Ambiance (Day / Night Lamp Mode)
+  window.toggle360Ambiance = function() {
+    nightMode = !nightMode;
+    const btn = document.getElementById('btn360Ambiance');
+    if (btn) {
+      btn.style.background = nightMode ? '#d97706' : 'rgba(15,23,42,0.85)';
+      btn.innerHTML = nightMode ? '💡 Day Mode' : '🌙 Night Lamp Mode';
     }
   };
 
@@ -799,17 +809,7 @@
     fov = 75;
   };
 
-  // Day / Night Ambiance Toggle
-  window.toggle360Ambiance = function() {
-    nightMode = !nightMode;
-    const btn = document.getElementById('btn360Ambiance');
-    if (btn) {
-      btn.innerHTML = nightMode ? '☀️ Daylight Mode' : '🌙 Night Lamp Mode';
-    }
-    panoramaCache = {}; // Invalidate cache
-  };
-
-  // Fullscreen 360
+  // Fullscreen 360 Toggle
   window.toggle360Fullscreen = function() {
     const container = document.getElementById('c2s360Container');
     if (!container) return;
@@ -820,38 +820,37 @@
     }
   };
 
-  // Resize Canvas to Match Element Dimensions
+  // Canvas Resize Handler
   function resizeCanvas() {
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const targetW = Math.max(300, Math.floor((rect.width || 800) * dpr));
-    const targetH = Math.max(200, Math.floor((rect.height || 540) * dpr));
-    if (canvas.width !== targetW || canvas.height !== targetH) {
-      canvas.width = targetW;
-      canvas.height = targetH;
-    }
+    canvas.width = Math.floor(rect.width * dpr);
+    canvas.height = Math.floor(rect.height * dpr);
   }
 
-  // Initialize on DOM Ready
-  function init360Tour() {
+  // Initialization
+  function init() {
     canvas = document.getElementById('c2s360Canvas');
     if (!canvas) return;
     ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
-    setupPointerEvents();
-    preloadPhotorealisticPlate();
-    render360();
 
-    console.log('✓ C2S 360° Google Street View Sanctuary Engine Initialized');
+    preloadAllPhotographs();
+    setupPointerEvents();
+    render();
+
+    // Default select initial desk
+    onSelect360Desk("S-12");
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init360Tour);
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    init360Tour();
+    init();
   }
 
 })();
