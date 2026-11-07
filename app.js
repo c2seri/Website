@@ -1729,79 +1729,309 @@ window.removeSeriesFromDashboard = function(seriesId) {
   if (typeof renderUser === "function") renderUser();
 };
 
-// OPEN TEST SERIES BUY MODAL
-window.openCurrentSeriesBuyModal = function() {
-  if (!activeSeriesModalId) return;
-  const series = TEST_SERIES_CATALOG.find(s => s.id === activeSeriesModalId);
-  if (!series) return;
+// ==========================================================================
+// COMPREHENSIVE CART & ORDER SUMMARY ENGINE (PW ENTERPRISE BENCHMARK)
+// Matches Physics Wallah Order Summary Layout from Screenshot
+// ==========================================================================
+let appliedCartCoupon = null;
+let appliedCouponDiscount = 0;
 
-  const unlocked = store.get("c2s_unlocked_packages", []);
-  if (unlocked.includes(series.id) || store.get("c2s_all_access_pass", false)) {
-    alert(`👑 You already have the full pass unlocked for "${series.title}"! All mock tests, chapter tests and solutions are available.`);
-    return;
+const C2S_COUPONS = {
+  "C2SFREE": { discount: 50, type: "flat", desc: "₹50 Instant Aspirant Discount" },
+  "ODISHA2026": { discount: 0.10, type: "percent", desc: "10% Odisha State Discount" },
+  "DIWALI50": { discount: 0.50, type: "percent", desc: "50% Mega Festive Discount" },
+  "PATRAPADA": { discount: 30, type: "flat", desc: "₹30 Offline Centre Discount" }
+};
+
+window.getCartItems = function() {
+  return store.get("c2s_cart_items", []);
+};
+
+window.updateCartBadge = function() {
+  const items = window.getCartItems();
+  const badge = document.getElementById("headerCartCount");
+  if (badge) {
+    badge.textContent = items.length;
+    badge.style.display = items.length > 0 ? "inline-block" : "none";
   }
+};
 
-  const modal = document.getElementById("seriesBuyModal");
+window.addToCart = function(item, openImmediately = true) {
+  let items = window.getCartItems();
+  const exists = items.some(i => i.id === item.id);
+  if (!exists) {
+    items.push(item);
+    store.set("c2s_cart_items", items);
+  }
+  window.updateCartBadge();
+  if (openImmediately) {
+    window.openCartModal();
+  }
+};
+
+window.removeFromCart = function(itemId) {
+  let items = window.getCartItems();
+  items = items.filter(i => i.id !== itemId);
+  store.set("c2s_cart_items", items);
+  window.updateCartBadge();
+  window.renderCartSummary();
+};
+
+window.openCartModal = function(specificItem = null) {
+  const modal = document.getElementById("c2sOrderSummaryModal");
   if (!modal) return;
 
-  const titleEl = document.getElementById("buyModalTitle");
-  if (titleEl) titleEl.textContent = `Unlock: ${series.title}`;
-
-  const priceEl = document.getElementById("buyModalPrice");
-  if (priceEl) priceEl.textContent = `₹${series.price || 199}`;
-
-  const mrpEl = document.getElementById("buyModalMrp");
-  if (mrpEl) mrpEl.textContent = `₹${series.mrp || 999}`;
-
-  const qrImg = document.getElementById("buyModalQrImg");
-  if (qrImg) {
-    const price = series.price || 199;
-    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3Dc2seri%40okaxis%26pn%3DC2S%2520Education%26am%3D${price}%26cu%3DINR`;
+  if (specificItem) {
+    window.addToCart(specificItem, false);
+  } else {
+    // If cart is empty and activeSeriesModalId is set, auto-seed with active series
+    let items = window.getCartItems();
+    if (items.length === 0 && activeSeriesModalId) {
+      const s = TEST_SERIES_CATALOG.find(x => x.id === activeSeriesModalId);
+      if (s) {
+        const mrp = s.mrp || 499;
+        const price = s.price || 199;
+        const discountPct = Math.round(((mrp - price) / mrp) * 100);
+        items.push({
+          id: s.id,
+          title: s.title,
+          subtitle: "Online Test Module",
+          badge: s.exam || "TEST MODULE",
+          icon: s.emblemIcon || "📋",
+          price: price,
+          mrp: mrp,
+          discountPercent: discountPct
+        });
+        store.set("c2s_cart_items", items);
+        window.updateCartBadge();
+      }
+    }
   }
 
-  const user = store.get("c2s_main_user", null);
-  const mobInput = document.getElementById("buyModalMobile");
-  if (mobInput) {
-    mobInput.value = user && user.mobile ? user.mobile : "";
-  }
+  // Reset steps
+  const step1 = document.getElementById("orderSummaryStep1");
+  const step2 = document.getElementById("orderSummaryStep2");
+  if (step1) step1.style.display = "block";
+  if (step2) step2.style.display = "none";
 
+  window.renderCartSummary();
   modal.style.display = "flex";
 };
 
-window.closeSeriesBuyModal = function() {
-  const modal = document.getElementById("seriesBuyModal");
+window.closeCartModal = function() {
+  const modal = document.getElementById("c2sOrderSummaryModal");
   if (modal) modal.style.display = "none";
 };
 
-// CONFIRM PURCHASE AND UNLOCK PASS
-window.confirmSeriesPurchase = function() {
-  if (!activeSeriesModalId) return;
-  const series = TEST_SERIES_CATALOG.find(s => s.id === activeSeriesModalId);
-  if (!series) return;
+window.handleOrderSummaryBack = function() {
+  const step2 = document.getElementById("orderSummaryStep2");
+  if (step2 && step2.style.display !== "none") {
+    // Go back from step 2 to step 1
+    const step1 = document.getElementById("orderSummaryStep1");
+    if (step1) step1.style.display = "block";
+    step2.style.display = "none";
+    return;
+  }
+  // Otherwise close cart modal
+  window.closeCartModal();
+};
 
-  const mobInput = document.getElementById("buyModalMobile");
+window.renderCartSummary = function() {
+  const items = window.getCartItems();
+  const listEl = document.getElementById("cartItemsList");
+  const countLabel = document.getElementById("summaryItemCountLabel");
+  const rawPriceEl = document.getElementById("summaryRawPrice");
+  const discountEl = document.getElementById("summaryDiscount");
+  const couponDiscEl = document.getElementById("summaryCouponDisc");
+  const finalTotalEl = document.getElementById("summaryFinalTotal");
+  const subtextEl = document.getElementById("summarySubtext");
+  const step2Total = document.getElementById("step2PayableTotal");
+
+  if (!listEl) return;
+
+  if (items.length === 0) {
+    listEl.innerHTML = `
+      <div style="background:#ffffff;border:1.5px dashed #cbd5e1;border-radius:14px;padding:36px 20px;text-align:center;">
+        <span style="font-size:36px;display:block;margin-bottom:8px;">🛒</span>
+        <h3 style="margin:0 0 6px;font-size:17px;color:#0f172a;font-weight:900;">Your Cart is Empty</h3>
+        <p style="margin:0 0 16px;font-size:13px;color:#64748b;">Explore our 204+ CBT Test Series and add your target exam module to start practicing.</p>
+        <button type="button" class="btn blue" onclick="closeCartModal();show('tests');"
+          style="padding:10px 22px;font-size:13.5px;font-weight:800;border-radius:8px;">
+          Browse Test Series Now &rarr;
+        </button>
+      </div>
+    `;
+    if (countLabel) countLabel.textContent = "Price (0 items)";
+    if (rawPriceEl) rawPriceEl.textContent = "₹0";
+    if (discountEl) discountEl.textContent = "- ₹0";
+    if (couponDiscEl) couponDiscEl.textContent = "- ₹0";
+    if (finalTotalEl) finalTotalEl.textContent = "₹0";
+    if (subtextEl) subtextEl.textContent = "You are buying (0) items";
+    if (step2Total) step2Total.textContent = "₹0";
+    return;
+  }
+
+  // Render items matching Physics Wallah screenshot layout
+  listEl.innerHTML = items.map(item => `
+    <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px 20px;display:flex;gap:18px;align-items:center;box-shadow:0 2px 6px rgba(15,23,42,0.03);position:relative;">
+      <!-- Thumbnail Box (Matching Screenshot orange card layout) -->
+      <div style="width:130px;height:82px;border-radius:10px;background:linear-gradient(135deg,#fed7aa,#fdba74);border:1.5px solid #fbd38d;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;padding:6px;text-align:center;">
+        <span style="font-size:22px;margin-bottom:2px;">${item.icon || '📋'}</span>
+        <strong style="font-size:10px;color:#7c2d12;line-height:1.2;font-weight:900;text-transform:uppercase;">${escapeHtml(item.badge || 'TEST MODULE')}</strong>
+      </div>
+
+      <!-- Details -->
+      <div style="flex:1;min-width:200px;">
+        <h3 style="margin:0 0 4px;font-size:16.5px;font-weight:900;color:#0f172a;line-height:1.35;">
+          ${escapeHtml(item.title)}
+        </h3>
+        <div style="font-size:13px;color:#64748b;font-weight:600;margin-bottom:8px;">
+          ${escapeHtml(item.subtitle || 'Online Test Module')}
+        </div>
+        <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;">
+          <span style="font-size:18px;font-weight:900;color:#0f172a;">₹${item.price}</span>
+          <span style="font-size:13.5px;color:#94a3b8;text-decoration:line-through;">₹${item.mrp || 499}</span>
+          <span style="background:#0ea5e9;color:#ffffff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;">
+            ${item.discountPercent || 60}% OFF
+          </span>
+        </div>
+      </div>
+
+      <!-- Remove Button -->
+      <button type="button" onclick="removeFromCart('${item.id}')" title="Remove from Cart"
+        style="position:absolute;top:10px;right:12px;background:none;border:none;color:#94a3b8;font-size:18px;cursor:pointer;padding:4px 8px;border-radius:4px;transition:all 0.15s;"
+        onmouseenter="this.style.color='#ef4444'" onmouseleave="this.style.color='#94a3b8'">
+        ✕
+      </button>
+    </div>
+  `).join("");
+
+  // Calculate pricing math
+  let totalMrp = 0;
+  let totalSelling = 0;
+  items.forEach(i => {
+    totalMrp += (i.mrp || 499);
+    totalSelling += (i.price || 199);
+  });
+
+  const productDiscount = Math.max(0, totalMrp - totalSelling);
+
+  // Calculate coupon discount
+  let couponDeduction = 0;
+  if (appliedCartCoupon && C2S_COUPONS[appliedCartCoupon]) {
+    const c = C2S_COUPONS[appliedCartCoupon];
+    if (c.type === "percent") {
+      couponDeduction = Math.round(totalSelling * c.discount);
+    } else {
+      couponDeduction = Math.min(totalSelling, c.discount);
+    }
+  }
+
+  const finalPayable = Math.max(0, totalSelling - couponDeduction);
+
+  if (countLabel) countLabel.textContent = `Price (${items.length} items)`;
+  if (rawPriceEl) rawPriceEl.textContent = `₹${totalMrp}`;
+  if (discountEl) discountEl.textContent = `- ₹${productDiscount}`;
+  if (couponDiscEl) couponDiscEl.textContent = `- ₹${couponDeduction}`;
+  if (finalTotalEl) finalTotalEl.textContent = `₹${finalPayable}`;
+  if (subtextEl) subtextEl.textContent = `You are buying (${items.length}) items`;
+  if (step2Total) step2Total.textContent = `₹${finalPayable}`;
+};
+
+window.applyCartCoupon = function() {
+  const input = document.getElementById("cartCouponInput");
+  const msgEl = document.getElementById("cartCouponMessage");
+  if (!input) return;
+
+  const code = input.value.trim().toUpperCase();
+  if (!code) {
+    if (msgEl) {
+      msgEl.textContent = "Please enter a coupon code.";
+      msgEl.style.color = "#dc2626";
+    }
+    return;
+  }
+
+  if (C2S_COUPONS[code]) {
+    appliedCartCoupon = code;
+    if (msgEl) {
+      msgEl.textContent = `✓ Coupon "${code}" Applied! ${C2S_COUPONS[code].desc}`;
+      msgEl.style.color = "#16a34a";
+    }
+    window.renderCartSummary();
+  } else {
+    appliedCartCoupon = null;
+    if (msgEl) {
+      msgEl.textContent = "Invalid or expired coupon code. Try C2SFREE or ODISHA2026.";
+      msgEl.style.color = "#dc2626";
+    }
+    window.renderCartSummary();
+  }
+};
+
+window.setCartQuickCoupon = function(code) {
+  const input = document.getElementById("cartCouponInput");
+  if (input) input.value = code;
+  window.applyCartCoupon();
+};
+
+window.proceedToOrderPayment = function() {
+  const items = window.getCartItems();
+  if (items.length === 0) {
+    alert("Your cart is empty! Please add a test series or course first.");
+    return;
+  }
+
+  const step1 = document.getElementById("orderSummaryStep1");
+  const step2 = document.getElementById("orderSummaryStep2");
+  if (step1) step1.style.display = "none";
+  if (step2) step2.style.display = "block";
+
+  // Pre-fill user mobile if logged in
+  const user = store.get("c2s_main_user", null);
+  const mobInput = document.getElementById("checkoutMobile");
+  if (mobInput && user && user.mobile) {
+    mobInput.value = user.mobile;
+  }
+
+  // Update dynamic QR Code for exact payable amount
+  const finalTotalEl = document.getElementById("summaryFinalTotal");
+  const amountStr = (finalTotalEl ? finalTotalEl.textContent : "199").replace(/[^0-9]/g, "") || "199";
+  const qrImg = document.getElementById("checkoutQrImg");
+  if (qrImg) {
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3Dc2seri%40okaxis%26pn%3DC2S%2520Education%26am%3D${amountStr}%26cu%3DINR`;
+  }
+};
+
+// CONFIRM PAYMENT & UNLOCK CART ITEMS
+window.confirmOrderCheckout = function() {
+  const items = window.getCartItems();
+  if (items.length === 0) {
+    alert("No items in cart to checkout.");
+    return;
+  }
+
+  const mobInput = document.getElementById("checkoutMobile");
   const mob = (mobInput ? mobInput.value : "").replace(/[^0-9]/g, "");
   if (mob.length !== 10) {
-    alert("Please enter a valid 10-digit mobile number to bind your Test Series Pass.");
+    alert("Please enter a valid 10-digit mobile number for dashboard activation.");
     if (mobInput) mobInput.focus();
     return;
   }
 
-  // 1. Unlock series package
+  // 1. Unlock all cart item packages
   const unlocked = store.get("c2s_unlocked_packages", []);
-  if (!unlocked.includes(series.id)) {
-    unlocked.push(series.id);
-    store.set("c2s_unlocked_packages", unlocked);
-  }
-
-  // 2. Also enroll on personal dashboard
   const enrolled = store.get("c2s_my_enrolled_series", []);
-  if (!enrolled.includes(series.id)) {
-    enrolled.push(series.id);
-    store.set("c2s_my_enrolled_series", enrolled);
-  }
 
-  // 3. Ensure student session
+  items.forEach(item => {
+    if (!unlocked.includes(item.id)) unlocked.push(item.id);
+    if (!enrolled.includes(item.id)) enrolled.push(item.id);
+  });
+
+  store.set("c2s_unlocked_packages", unlocked);
+  store.set("c2s_my_enrolled_series", enrolled);
+
+  // 2. Ensure student session
   let user = store.get("c2s_main_user", null);
   if (!user) {
     const users = store.get("c2s_main_users", []);
@@ -1814,7 +2044,7 @@ window.confirmSeriesPurchase = function() {
         name: "Student Aspirant",
         mobile: mob,
         email: "",
-        targetExam: series.exam || "Govt Exams",
+        targetExam: items[0].badge || "Govt Exams",
         prepMode: "Online CBT Test Series Pass",
         city: "Bhubaneswar",
         status: "Active Registered Student",
@@ -1826,25 +2056,70 @@ window.confirmSeriesPurchase = function() {
     store.set("c2s_main_user", user);
   }
 
-  // 4. Send official payment receipt
+  // 3. Dispatch receipt
+  const finalTotalEl = document.getElementById("summaryFinalTotal");
+  const finalAmt = (finalTotalEl ? finalTotalEl.textContent : "199").replace(/[^0-9]/g, "") || "199";
+
   if (typeof dispatchGenericPaymentReceipt === "function") {
     dispatchGenericPaymentReceipt({
       studentName: user.name || "Student Aspirant",
       mobile: mob,
-      productTitle: `${series.title} (Pass)`,
-      amount: series.price || 199,
-      orderId: "C2S-TS-" + Date.now().toString().slice(-6)
+      productTitle: items.map(i => i.title).join(", "),
+      amount: parseInt(finalAmt, 10),
+      orderId: "C2S-ORD-" + Date.now().toString().slice(-6)
     });
   }
 
-  closeSeriesBuyModal();
+  // 4. Clear cart & update badge
+  store.set("c2s_cart_items", []);
+  window.updateCartBadge();
+  window.closeCartModal();
 
-  // Refresh available series modal buttons
-  openAvailableSeriesModal(series.id);
+  // 5. Update modals and dashboard
+  if (activeSeriesModalId && typeof openAvailableSeriesModal === "function") {
+    openAvailableSeriesModal(activeSeriesModalId);
+  }
+  if (typeof renderUser === "function") {
+    renderUser();
+  }
 
-  if (typeof renderUser === "function") renderUser();
+  alert(`🎉 PAYMENT SUCCESSFUL!\n\nYour order for ${items.length} item(s) has been confirmed!\n\nAll test series modules have been unlocked and added to your Personal Student Dashboard.`);
+};
 
-  alert(`🎉 PAYMENT CONFIRMED!\n\nYour 1-Year Pass for "${series.title}" has been successfully unlocked and added to your Personal Student Dashboard.`);
+// Aliases for Test Series Modal buttons
+window.openCurrentSeriesBuyModal = function() {
+  if (!activeSeriesModalId) return;
+  const series = TEST_SERIES_CATALOG.find(s => s.id === activeSeriesModalId);
+  if (!series) return;
+
+  const unlocked = store.get("c2s_unlocked_packages", []);
+  if (unlocked.includes(series.id) || store.get("c2s_all_access_pass", false)) {
+    alert(`👑 You already have the full pass unlocked for "${series.title}"! All mock tests, chapter tests and solutions are available.`);
+    return;
+  }
+
+  const mrp = series.mrp || 499;
+  const price = series.price || 199;
+  const discountPct = Math.round(((mrp - price) / mrp) * 100);
+
+  window.addToCart({
+    id: series.id,
+    title: series.title,
+    subtitle: "Online Test Module",
+    badge: series.exam || "TEST MODULE",
+    icon: series.emblemIcon || "📋",
+    price: price,
+    mrp: mrp,
+    discountPercent: discountPct
+  }, true);
+};
+
+window.closeSeriesBuyModal = function() {
+  window.closeCartModal();
+};
+
+window.confirmSeriesPurchase = function() {
+  window.confirmOrderCheckout();
 };
 
 // SHARE TEST SERIES
@@ -7551,10 +7826,12 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     initDynamicScrollEngine();
     initScrollAnimationsAndCounters();
+    if (typeof updateCartBadge === 'function') updateCartBadge();
   });
 } else {
   initDynamicScrollEngine();
   initScrollAnimationsAndCounters();
+  if (typeof updateCartBadge === 'function') updateCartBadge();
 }
 
 /* ==========================================================================

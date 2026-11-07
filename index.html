@@ -158,6 +158,14 @@
             <span>24h Study Library</span>
             <span class="live-dot-green"></span>
           </a>
+          <!-- Cart Button with Live Counter Badge (PW Order Summary Model) -->
+          <button type="button" class="header-cart-btn" onclick="openCartModal()" title="View Order Summary & Cart"
+            style="display:inline-flex;align-items:center;gap:6px;background:#f8fafc;border:1.5px solid #cbd5e1;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:750;color:#0f2a5c;cursor:pointer;transition:all 0.15s ease;">
+            <span style="font-size:15px;">🛒</span>
+            <span>Cart</span>
+            <span id="headerCartCount" style="background:#ef4444;color:#ffffff;font-size:10.5px;font-weight:900;padding:1px 6px;border-radius:999px;min-width:14px;text-align:center;">0</span>
+          </button>
+
           <button type="button" class="header-login-btn" onclick="show('login')" title="Open Student & Member Portal">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -2680,74 +2688,184 @@
       </div>
     </div>
 
-    <!-- Modal 1.5: Instant Test Series Purchase & UPI Modal -->
-    <div id="seriesBuyModal" class="c2s-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.75);z-index:10001;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);">
-      <div style="background:#ffffff;border-radius:18px;max-width:540px;width:100%;box-shadow:0 25px 50px rgba(0,0,0,0.35);border:1.5px solid #cbd5e1;overflow:hidden;position:relative;">
-        <!-- Header -->
-        <div style="background:linear-gradient(135deg, #09132b 0%, #1e3a8a 100%);color:#ffffff;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
-          <div>
-            <div style="font-size:11px;font-weight:850;color:#38bdf8;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">C2S EXAM STORE &bull; INSTANT PASS</div>
-            <h3 id="buyModalTitle" style="margin:0;font-size:18px;font-weight:900;color:#ffffff;line-height:1.3;">Unlock Full Test Series Pass</h3>
+    <!-- Modal 1.5: Comprehensive Order Summary & Cart Checkout Modal (PW Enterprise Benchmark) -->
+    <div id="c2sOrderSummaryModal" class="c2s-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.75);z-index:10001;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);">
+      <div style="background:#f8fafc;border-radius:18px;max-width:980px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,0.35);border:1.5px solid #cbd5e1;position:relative;display:flex;flex-direction:column;">
+        
+        <!-- Top Nav Header (Matching Screenshot Physics Wallah Top Bar) -->
+        <div style="padding:16px 24px;border-bottom:1.5px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#ffffff;border-top-left-radius:18px;border-top-right-radius:18px;">
+          <!-- Left: GO BACK button matching screenshot -->
+          <button type="button" onclick="handleOrderSummaryBack()"
+            style="background:none;border:none;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:#0f172a;cursor:pointer;padding:4px 8px;border-radius:6px;transition:background 0.15s ease;"
+            onmouseenter="this.style.background='#f1f5f9'" onmouseleave="this.style.background='none'">
+            <span style="font-size:16px;">&larr;</span>
+            <span>GO BACK</span>
+          </button>
+
+          <!-- Center: Brand Logo / Wordmark -->
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#0f2a5c;color:#ffffff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;">C2S</div>
+            <strong style="font-size:15px;color:#0f2a5c;font-weight:900;letter-spacing:0.5px;">COLLEGE TO SERVICE</strong>
           </div>
-          <button type="button" onclick="closeSeriesBuyModal()" style="background:rgba(255,255,255,0.15);border:none;color:#ffffff;font-size:18px;border-radius:50%;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+
+          <!-- Right: Close Button -->
+          <button type="button" onclick="closeCartModal()" 
+            style="background:none;border:none;font-size:22px;color:#64748b;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;" title="Close">✕</button>
         </div>
 
-        <!-- Body -->
-        <div style="padding:22px 24px;max-height:80vh;overflow-y:auto;">
-          <!-- Pricing Tag -->
-          <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-            <div>
-              <span style="font-size:12px;color:#1e40af;font-weight:750;display:block;">Aspirant Special Discount (1-Year Pass)</span>
-              <div style="display:flex;align-items:baseline;gap:8px;margin-top:2px;">
-                <span id="buyModalPrice" style="font-size:26px;font-weight:900;color:#0f2a5c;">₹199</span>
-                <span id="buyModalMrp" style="font-size:14px;color:#94a3b8;text-decoration:line-through;">₹999</span>
-                <span style="font-size:11.5px;font-weight:800;color:#16a34a;background:#dcfce7;padding:2px 6px;border-radius:4px;">80% OFF</span>
+        <!-- STEP 1: ORDER SUMMARY (Exact Two-Column Layout from Screenshot) -->
+        <div id="orderSummaryStep1" style="padding:24px 28px;">
+          <!-- Title -->
+          <h1 style="margin:0 0 20px;font-size:24px;font-weight:900;color:#0f172a;">Order Summary</h1>
+
+          <!-- 2-Column Main Layout -->
+          <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;">
+            
+            <!-- Left Column: Cart / Order Items -->
+            <div style="flex:1.35;min-width:320px;">
+              <div id="cartItemsList" style="display:flex;flex-direction:column;gap:14px;">
+                <!-- Populated dynamically by app.js -->
               </div>
             </div>
-            <span style="font-size:12px;font-weight:800;color:#2563eb;background:#ffffff;border:1px solid #bfdbfe;padding:6px 10px;border-radius:6px;text-align:right;">
-              ⚡ Instant Pass
-            </span>
-          </div>
 
-          <!-- Inclusions List -->
-          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px 16px;margin-bottom:16px;">
-            <div style="font-size:12px;font-weight:800;color:#334155;text-transform:uppercase;margin-bottom:6px;">Included in this Series Pass:</div>
-            <ul style="margin:0;padding-left:18px;font-size:12.5px;color:#475569;line-height:1.6;">
-              <li>Full Access to all 800+ Live, Chapter, Sectional &amp; Full Mocks</li>
-              <li>Official Previous Year Solved Papers (PYP &amp; PYST)</li>
-              <li>All-India Rank, Percentile Benchmarking &amp; Solutions Key</li>
-              <li>Unlimited Re-attempts with On-Screen Scratch Pad</li>
-            </ul>
-          </div>
+            <!-- Right Column: Coupon & Payment Summary (Matching Screenshot) -->
+            <div style="flex:1;min-width:300px;">
+              
+              <!-- Coupon / Promo Box (Exact Match) -->
+              <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px 18px;margin-bottom:16px;box-shadow:0 2px 6px rgba(15,23,42,0.03);">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                  <div style="width:24px;height:24px;border-radius:50%;background:#eff6ff;color:#2563eb;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;">%</div>
+                  <strong style="font-size:13.5px;color:#0f172a;">Apply Code/Coupon</strong>
+                </div>
 
-          <!-- Student Contact Verification -->
-          <div style="margin-bottom:14px;">
-            <label style="display:block;font-size:12px;font-weight:750;color:#334155;margin-bottom:4px;">Mobile Number (Linked to your Dashboard) *</label>
-            <input id="buyModalMobile" type="tel" maxlength="10" placeholder="10-digit mobile number" 
-              style="width:100%;padding:10px 12px;font-size:13.5px;border:1.5px solid #cbd5e1;border-radius:8px;outline:none;box-sizing:border-box;">
-          </div>
+                <div style="display:flex;gap:8px;margin-top:8px;">
+                  <input id="cartCouponInput" type="text" placeholder="Enter Coupon Code"
+                    style="flex:1;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;font-weight:750;text-transform:uppercase;outline:none;"
+                    onkeypress="if(event.key==='Enter')applyCartCoupon();">
+                  <button type="button" class="btn blue" onclick="applyCartCoupon()"
+                    style="padding:8px 16px;font-size:12px;font-weight:800;border-radius:8px;cursor:pointer;">
+                    APPLY
+                  </button>
+                </div>
 
-          <!-- UPI QR Code & Instructions -->
-          <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:14px;text-align:center;margin-bottom:16px;">
-            <div style="font-size:12px;font-weight:800;color:#0f2a5c;margin-bottom:8px;">SCAN WITH ANY UPI APP (GPAY / PHONEPE / PAYTM)</div>
-            <div style="display:inline-block;padding:8px;background:#ffffff;border-radius:8px;border:1px solid #cbd5e1;box-shadow:0 2px 6px rgba(0,0,0,0.06);margin-bottom:8px;">
-              <img id="buyModalQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3Dc2seri%40okaxis%26pn%3DC2S%2520Education%26am%3D199%26cu%3DINR" 
-                alt="UPI QR Code" style="width:140px;height:140px;display:block;">
+                <div id="cartCouponMessage" style="font-size:11.5px;margin-top:6px;font-weight:700;"></div>
+
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
+                  <span onclick="setCartQuickCoupon('C2SFREE')" style="cursor:pointer;font-size:11px;background:#eff6ff;color:#1d4ed8;padding:3px 8px;border-radius:4px;border:1px dashed #bfdbfe;font-weight:750;">
+                    🏷️ C2SFREE (-₹50)
+                  </span>
+                  <span onclick="setCartQuickCoupon('ODISHA2026')" style="cursor:pointer;font-size:11px;background:#ecfdf5;color:#047857;padding:3px 8px;border-radius:4px;border:1px dashed #a7f3d0;font-weight:750;">
+                    🏷️ ODISHA2026 (10% OFF)
+                  </span>
+                  <span onclick="setCartQuickCoupon('PATRAPADA')" style="cursor:pointer;font-size:11px;background:#fef3c7;color:#92400e;padding:3px 8px;border-radius:4px;border:1px dashed #fcd34d;font-weight:750;">
+                    🏷️ PATRAPADA (-₹30)
+                  </span>
+                </div>
+              </div>
+
+              <!-- Payment Summary Box (Exact Match to Screenshot) -->
+              <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 2px 6px rgba(15,23,42,0.03);">
+                <h3 style="margin:0 0 16px;font-size:17.5px;font-weight:900;color:#0f172a;">Payment Summary</h3>
+
+                <div style="display:flex;flex-direction:column;gap:11px;font-size:13px;color:#475569;">
+                  <div style="display:flex;justify-content:space-between;">
+                    <span id="summaryItemCountLabel">Price (1 items)</span>
+                    <strong id="summaryRawPrice" style="color:#0f172a;">₹499</strong>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;color:#16a34a;">
+                    <span>Discount</span>
+                    <strong id="summaryDiscount">- ₹300</strong>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;">
+                    <span>Delivery charges</span>
+                    <strong style="color:#16a34a;">₹0</strong>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;color:#16a34a;">
+                    <span>Coupon Disc.</span>
+                    <strong id="summaryCouponDisc">- ₹0</strong>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;">
+                    <span>Wallet Disc.</span>
+                    <strong>₹0</strong>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;">
+                    <span>PW Foundation Donation</span>
+                    <strong>₹0</strong>
+                  </div>
+
+                  <div style="border-top:1.5px solid #e2e8f0;margin:6px 0;"></div>
+
+                  <div style="display:flex;justify-content:space-between;align-items:center;font-size:16px;">
+                    <strong style="color:#0f172a;">Total Amount</strong>
+                    <strong id="summaryFinalTotal" style="color:#0f172a;font-size:22px;font-weight:900;">₹199</strong>
+                  </div>
+                </div>
+
+                <!-- PROCEED TO BUY Button (Matching Screenshot Royal Blue) -->
+                <button type="button" class="btn" onclick="proceedToOrderPayment()"
+                  style="width:100%;margin-top:18px;background:#3b82f6;color:#ffffff;font-size:15px;font-weight:900;padding:14px;border-radius:8px;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px;box-shadow:0 4px 14px rgba(59,130,246,0.35);transition:all 0.15s ease;"
+                  onmouseenter="this.style.background='#2563eb'" onmouseleave="this.style.background='#3b82f6'">
+                  PROCEED TO BUY
+                </button>
+
+                <div id="summarySubtext" style="text-align:center;font-size:12px;color:#64748b;margin-top:10px;font-weight:600;">
+                  You are buying (1) items
+                </div>
+              </div>
+
             </div>
-            <div style="font-size:12.5px;color:#334155;font-weight:700;">
-              UPI ID: <span style="background:#eff6ff;color:#1d4ed8;padding:2px 8px;border-radius:4px;font-family:monospace;font-size:13px;border:1px solid #bfdbfe;">c2seri@okaxis</span>
-              <button type="button" onclick="navigator.clipboard.writeText('c2seri@okaxis');alert('UPI ID copied to clipboard: c2seri@okaxis');" 
-                style="background:none;border:none;color:#0284c7;font-size:11px;font-weight:800;cursor:pointer;margin-left:4px;text-decoration:underline;">Copy</button>
-            </div>
-            <span style="font-size:11px;color:#64748b;display:block;margin-top:4px;">Scan &amp; pay, or click below to simulate instant student activation</span>
           </div>
-
-          <!-- Confirm Activation Button -->
-          <button type="button" class="btn green" onclick="confirmSeriesPurchase()"
-            style="width:100%;padding:12px;font-size:14.5px;font-weight:850;border-radius:8px;cursor:pointer;box-shadow:0 4px 12px rgba(22,163,74,0.3);">
-            ✓ Complete Payment &amp; Unlock Test Series Pass →
-          </button>
         </div>
+
+        <!-- STEP 2: INSTANT UPI PAYMENT & ACTIVATION (Triggered by Proceed to Buy) -->
+        <div id="orderSummaryStep2" style="display:none;padding:24px 28px;">
+          <div style="max-width:560px;margin:0 auto;background:#ffffff;border:1.5px solid #cbd5e1;border-radius:16px;padding:22px 24px;box-shadow:0 4px 16px rgba(15,23,42,0.06);">
+            <div style="text-align:center;margin-bottom:16px;">
+              <span style="font-size:11px;font-weight:800;color:#2563eb;background:#eff6ff;padding:3px 8px;border-radius:4px;text-transform:uppercase;">C2S SECURE UPI CHECKOUT</span>
+              <h2 style="margin:6px 0 2px;font-size:20px;font-weight:900;color:#0f2a5c;">Scan &amp; Pay to Unlock Pass</h2>
+              <span style="font-size:13px;color:#64748b;">Instant activation on your Personal Dashboard</span>
+            </div>
+
+            <!-- Total Amount Bar -->
+            <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <span style="font-weight:750;color:#1e40af;font-size:13px;">Final Payable Amount:</span>
+              <strong id="step2PayableTotal" style="font-size:24px;font-weight:900;color:#0f2a5c;">₹199</strong>
+            </div>
+
+            <!-- Student Mobile Number for Login & Activation -->
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:12px;font-weight:750;color:#334155;margin-bottom:4px;">Mobile Number (for Dashboard Activation &amp; OTP) *</label>
+              <div style="display:flex;gap:6px;">
+                <span style="padding:10px 12px;background:#f1f5f9;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;font-weight:750;color:#475569;">+91</span>
+                <input id="checkoutMobile" type="tel" maxlength="10" placeholder="10-digit mobile number"
+                  style="flex:1;padding:10px 12px;font-size:13.5px;border:1.5px solid #cbd5e1;border-radius:8px;outline:none;box-sizing:border-box;">
+              </div>
+            </div>
+
+            <!-- QR Code Box -->
+            <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:14px;text-align:center;margin-bottom:18px;">
+              <div style="font-size:12px;font-weight:800;color:#0f2a5c;margin-bottom:8px;">SCAN WITH ANY UPI APP (GPAY / PHONEPE / PAYTM)</div>
+              <div style="display:inline-block;padding:8px;background:#ffffff;border-radius:8px;border:1px solid #cbd5e1;box-shadow:0 2px 6px rgba(0,0,0,0.06);margin-bottom:8px;">
+                <img id="checkoutQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3Dc2seri%40okaxis%26pn%3DC2S%2520Education%26am%3D199%26cu%3DINR" 
+                  alt="UPI QR Code" style="width:140px;height:140px;display:block;">
+              </div>
+              <div style="font-size:12.5px;color:#334155;font-weight:700;">
+                UPI ID: <span style="background:#eff6ff;color:#1d4ed8;padding:2px 8px;border-radius:4px;font-family:monospace;font-size:13px;border:1px solid #bfdbfe;">c2seri@okaxis</span>
+                <button type="button" onclick="navigator.clipboard.writeText('c2seri@okaxis');alert('UPI ID copied to clipboard: c2seri@okaxis');" 
+                  style="background:none;border:none;color:#0284c7;font-size:11px;font-weight:800;cursor:pointer;margin-left:4px;text-decoration:underline;">Copy</button>
+              </div>
+            </div>
+
+            <!-- Complete Payment & Unlock Pass Button -->
+            <button type="button" class="btn green" onclick="confirmOrderCheckout()"
+              style="width:100%;padding:14px;font-size:15px;font-weight:900;border-radius:8px;cursor:pointer;box-shadow:0 4px 14px rgba(22,163,74,0.35);text-transform:uppercase;letter-spacing:0.5px;">
+              ✓ Complete Payment &amp; Unlock Pass →
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
       </div>
     </div>
 
