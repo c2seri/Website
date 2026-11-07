@@ -394,14 +394,14 @@
             </span>
           </div>
           <h2 style="font-size:26px;color:#0a192f;margin:2px 0 4px;font-weight:850;letter-spacing:-0.02em;">
-            Interactive Floor Blueprint, Seat Matrix &amp; 360° Tour
+            Architectural Floor Blueprint, Seat Layout &amp; 360° Tour
           </h2>
           <p style="color:#64748b;font-size:14px;margin:0;">
-            Explore the real architectural floor plan, 360° street view, or 2D tactical seat matrix to choose your exact physical seat (Seats 001–149).
+            View the official sanctuary architectural blueprint, 360° street view tour, and layout of all 149 cubicles across both floors (Seats S-01 to S-149).
           </p>
         </div>
 
-        <!-- Mode Switcher: Blueprint vs 2D Matrix vs 360 Street View -->
+        <!-- Mode Switcher: Blueprint vs 2D Layout vs 360 Street View -->
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
           <div style="display:flex;background:#f1f5f9;padding:4px;border-radius:12px;gap:4px;border:1px solid #e2e8f0;flex-wrap:wrap;">
             <button type="button" id="btnModeBlueprint" class="btn" onclick="toggleTourMode('blueprint')"
@@ -410,7 +410,7 @@
             </button>
             <button type="button" id="btnMode2D" class="btn ghost" onclick="toggleTourMode('2d')"
               style="padding:8px 16px;font-size:13px;font-weight:750;border:none;color:#475569;border-radius:9px;cursor:pointer;">
-              💺 Seat Matrix (149 Seats)
+              💺 Seat Layout (149 Seats)
             </button>
             <button type="button" id="btnMode360" class="btn ghost" onclick="toggleTourMode('360')"
               style="padding:8px 16px;font-size:13px;font-weight:750;border:none;color:#475569;border-radius:9px;cursor:pointer;">
@@ -577,11 +577,11 @@
 
               <!-- Direct Action CTA -->
               <div style="background:linear-gradient(135deg, #1e3a8a, #065f46);border-radius:14px;padding:18px;text-align:center;">
-                <div style="font-size:12px;color:#a7f3d0;font-weight:800;margin-bottom:4px;letter-spacing:0.5px;">SECURE YOUR PREFERRED SEAT NOW</div>
+                <div style="font-size:12px;color:#a7f3d0;font-weight:800;margin-bottom:4px;letter-spacing:0.5px;">EXPLORE DEDICATED STUDY CUBICLES</div>
                 <div style="font-size:14px;font-weight:800;color:#ffffff;margin-bottom:12px;">149 seats available across two fully air-conditioned study floors.</div>
                 <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
                   <button type="button" class="btn" onclick="toggleTourMode('2d')" style="background:#ffffff;color:#0f2a5c;padding:10px 18px;font-size:13px;font-weight:800;border-radius:8px;border:none;cursor:pointer;">
-                    View Seat Grid &rarr;
+                    View Seat Layout &rarr;
                   </button>
                   <a href="admission.html" class="btn" style="background:#ea580c;color:#ffffff;padding:10px 18px;font-size:13px;font-weight:850;border-radius:8px;text-decoration:none;display:inline-block;box-shadow:0 4px 12px rgba(234,88,12,0.4);">
                     Online Admission &rarr;
@@ -693,7 +693,7 @@
           <!-- Instruction Pill -->
           <div
             style="background:rgba(15,23,42,0.85);border:1px solid rgba(255,255,255,0.15);padding:6px 12px;border-radius:8px;font-size:11.5px;color:#e2e8f0;backdrop-filter:blur(6px);">
-            👆 <strong>Drag to look 360°</strong> &bull; Click pins to reserve seat
+            👆 <strong>Drag to look 360°</strong> &bull; Explore physical sanctuary layout
           </div>
         </div>
 
@@ -744,37 +744,32 @@
         </div>
       </div>
 
-      <!-- FLOATING SEAT HUD INSPECTOR & INSTANT BOOKING BAR -->
-      <div id="deskInspectorHud"
-        style="margin-top:20px;background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%);border-radius:18px;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;box-shadow:0 10px 30px rgba(15,23,42,0.15);border:1.5px solid #334155;">
+      <!-- ARCHITECTURAL SPECIFICATIONS & ADMISSION STRIP (VIEW-ONLY SANCTUARY LAYOUT) -->
+      <div style="margin-top:20px;background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%);border-radius:18px;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;box-shadow:0 10px 30px rgba(15,23,42,0.15);border:1.5px solid #334155;">
         <div style="display:flex;align-items:center;gap:16px;">
-          <div
-            style="width:48px;height:48px;background:linear-gradient(135deg, #1d4ed8, #059669);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 14px rgba(29,78,216,0.4);">
-            💺
+          <div style="width:48px;height:48px;background:linear-gradient(135deg, #1d4ed8, #059669);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 4px 14px rgba(29,78,216,0.4);">
+            🏛️
           </div>
           <div>
-            <div style="font-size:11.5px;color:#93c5fd;font-weight:750;text-transform:uppercase;letter-spacing:1px;"
-              id="hudZoneName">Lower Floor (1st Fl) • Zone B (Left Wall Bay)</div>
-            <div id="hudDeskName" style="font-size:22px;font-weight:900;color:#ffffff;line-height:1.2;">Seat S-25</div>
-            <div id="hudDeskStatus" style="font-size:12px;margin-top:3px;">
-              <span style="color:#10b981;font-weight:800;">🟢 Vacant &amp; Available</span>
+            <div style="font-size:12px;color:#38bdf8;font-weight:800;text-transform:uppercase;letter-spacing:1px;">
+              PATRAPADA FLAGSHIP SANCTUARY • 149 SEATS (2 FLOORS)
             </div>
-            <div style="font-size:11px;color:#cbd5e1;margin-top:4px;">
-              💡 Personal Warm Light &bull; ⚡ Dedicated 230V Socket &bull; 📶 300 Mbps Fiber Wi-Fi &bull; 💺 Ergonomic High-Back Chair &bull; 🔒 Attached Locker (Seat = Locker) &bull; 🚻 Clean Washroom
+            <div style="font-size:19px;font-weight:900;color:#ffffff;line-height:1.2;margin:3px 0;">
+              2nd Floor: Seats S-01 to S-24 • 1st Floor: Seats S-25 to S-149
+            </div>
+            <div style="font-size:12px;color:#cbd5e1;">
+              💡 Personal Warm LED Lamp &bull; ⚡ Dedicated 230V Socket &bull; 📶 Dual 300 Mbps Fiber Wi-Fi &bull; 🔒 Attached Locker (Seat No = Locker No)
             </div>
           </div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-          <div style="text-align:right;">
-            <div style="font-size:11px;color:#94a3b8;">Seat Shift Status:</div>
-            <div style="font-size:15px;font-weight:850;color:#38bdf8;" id="inspectorShiftPrice">Choose Shift on Admission</div>
-          </div>
-          <button type="button" id="hudBookCta" class="btn"
-            onclick="window.location.href='admission.html?seat=S-25&shift=FullDay'"
-            style="background:#ea580c;color:#ffffff;padding:12px 24px;font-size:15px;font-weight:800;border-radius:10px;box-shadow:0 4px 14px rgba(234,88,12,0.4);border:none;cursor:pointer;">
-            Reserve Seat S-25 Online &rarr;
-          </button>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <a href="admission.html" class="c2s-submit-cta" style="padding:12px 24px;font-size:14px;text-decoration:none;">
+            <span>Proceed to Online Admission →</span>
+          </a>
+          <a href="tel:9777481909" class="btn ghost" style="color:#ffffff;border-color:rgba(255,255,255,0.3);padding:11px 18px;font-size:13.5px;text-decoration:none;">
+            📞 9777481909
+          </a>
         </div>
       </div>
 
@@ -897,9 +892,6 @@
           if (typeof setLibraryFloor === 'function') setLibraryFloor(2);
         } else {
           if (typeof setLibraryFloor === 'function') setLibraryFloor(1);
-        }
-        if (typeof pickSeat === 'function') {
-          pickSeat('S-' + min);
         }
         var el = document.getElementById('c2s2dContainer');
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1223,7 +1215,7 @@
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <a href="admission.html" class="btn orange"
             style="padding:8px 14px;font-size:12.5px;font-weight:800;text-decoration:none;flex:1;text-align:center;">
-            🎟️ Reserve Seat
+            📝 Online Admission &rarr;
           </a>
           <a href="tel:9777481909" class="btn ghost"
             style="padding:8px 14px;font-size:12.5px;font-weight:750;text-decoration:none;flex:1;text-align:center;">

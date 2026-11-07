@@ -361,32 +361,18 @@ function renderTheatreSeats() {
 
         for (let i = r.start; i <= r.end; i++) {
           const seatCode = "S-" + i;
-          const isTaken = Boolean(taken[seatCode] || taken["Desk-" + String(i).padStart(3, "0")] || taken["Desk " + i] || taken["Desk #" + i] || taken[String(i)]);
-          const isSelected = selectedSeat === seatCode || selectedSeat === ("S-" + i) || selectedSeat?.includes("S-" + i) || selectedSeat?.includes("#" + i);
-          const isReserved = (i % 7 === 0) && !isTaken && !isSelected;
-
-          let cls = "c2s-3d-desk available";
-          let statusText = "🟢 Vacant";
-          if (isTaken || isReserved) {
-            cls = "c2s-3d-desk occupied";
-            statusText = "⚪ Occupied";
-          } else if (isSelected) {
-            cls = "c2s-3d-desk selected";
-            statusText = "🔵 Selected";
-          }
-
           const floorLabel = i <= 24 ? "2nd Floor" : "1st Floor";
           const zoneKey = i <= 24 ? "Zone-A" : (i <= 67 ? "Zone-B" : (i <= 109 ? "Zone-C" : "Zone-D"));
 
           html += `
-            <div class="${cls}" title="Seat ${seatCode} (${floorLabel} • ${zoneKey}) • Locker #${i} • ${statusText}" onclick="pickSeat('${seatCode}')">
+            <div class="c2s-3d-desk" title="Seat ${seatCode} (${floorLabel} • ${zoneKey}) • Attached Locker #${i} • 230V Socket &amp; Warm LED Lamp">
               <div class="c2s-desk-header">
-                <span class="c2s-desk-num">${seatCode}</span>
-                <span class="desk-plug" title="Personal 230V Socket & Warm LED Lamp">🔌</span>
+                <span class="c2s-desk-num" style="font-weight:850;color:#0f2a5c;font-size:13px;">${seatCode}</span>
+                <span class="desk-plug" title="Personal 230V Socket &amp; Warm LED Lamp" style="font-size:12px;">🔌</span>
               </div>
-              <div class="c2s-desk-type" style="font-size:9.5px;color:#2563eb;font-weight:750;">Locker #${i}</div>
-              <div class="c2s-desk-footer">
-                <span class="c2s-desk-status">${statusText}</span>
+              <div class="c2s-desk-type" style="font-size:10px;color:#2563eb;font-weight:750;margin-top:2px;">Locker #${i}</div>
+              <div class="c2s-desk-footer" style="margin-top:4px;">
+                <span style="font-size:9.5px;color:#64748b;font-weight:600;">Silent Cubicle</span>
               </div>
             </div>
           `;
@@ -399,36 +385,17 @@ function renderTheatreSeats() {
 
     gridEl.innerHTML = html;
   }
-
-  updateInspectorHUD();
 }
 
 function pickSeat(id) {
-  const taken = store.get("c2s_lib_taken", {});
-  const numMatch = id.match(/\d+/);
-  const num = numMatch ? parseInt(numMatch[0], 10) : 0;
-  const isNumbered = num > 0;
-
-  if (isNumbered) {
-    const seatCode = "S-" + num;
-    if (taken[seatCode] || taken["Desk-" + String(num).padStart(3, "0")] || taken["Desk " + num] || taken["Desk #" + num] || taken[String(num)] || (num % 7 === 0 && !taken[seatCode] && selectedSeat !== seatCode)) {
-      alert("Seat " + seatCode + " is currently occupied by an active student. Please choose an open green seat.");
-      return;
-    }
-    selectedSeat = seatCode;
-  } else {
-    if (taken[id]) {
-      alert("Desk " + id + " is currently occupied. Please choose an open green seat.");
-      return;
-    }
-    selectedSeat = id;
-  }
-
-  renderTheatreSeats();
+  // Public overview map is a view-only architectural blueprint showing layout & amenities.
+  // Physical desk allocation is finalized during admission or at the front desk.
+  return;
 }
 
 function updateInspectorHUD() {
   const hudTitle = document.getElementById("inspectorDeskTitle");
+  if (!hudTitle && !document.getElementById("hudDeskName")) return;
   const hudSpecs = document.getElementById("inspectorDeskSpecs");
   const hudPrice = document.getElementById("inspectorShiftPrice");
   const hudDeskName = document.getElementById("hudDeskName");
