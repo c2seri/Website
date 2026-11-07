@@ -114,3 +114,4 @@ if (!html.includes('data-nav="jeeneet"') && html.includes(targetAnchor)) {
 
 fs.writeFileSync('index.html', html, 'utf8');
 console.log('index.html updated successfully!');
+

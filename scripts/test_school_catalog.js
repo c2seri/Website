@@ -488,3 +488,4 @@ const SCHOOL_COURSES_CATALOG = {
 };
 
 console.log('Total school & entrance courses defined:', Object.keys(SCHOOL_COURSES_CATALOG).length);
+

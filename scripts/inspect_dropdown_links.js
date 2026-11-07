@@ -22,3 +22,4 @@ while ((m = regex1.exec(jChunk)) !== null) {
   c++;
   console.log(c + '. ' + m[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
 }
+

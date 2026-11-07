@@ -14,3 +14,4 @@ lines.forEach((l, i) => {
     console.log(i + ': ' + l.trim());
   }
 });
+

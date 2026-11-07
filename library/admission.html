@@ -249,11 +249,18 @@
             <label style="display:block;font-size:13px;font-weight:800;color:#0f172a;margin-bottom:6px;">
               🪪 Aadhar Card <span style="color:#dc2626;">*</span> <span style="font-size:12px;font-weight:600;color:#64748b;">(Identity Proof)</span>
             </label>
-            <input type="file" id="studAadhar" required accept="image/*,application/pdf,.doc,.docx" onchange="previewPublicAadhar(this)" style="font-size:12px;color:#475569;padding:6px;margin:0 0 6px;">
-            <span style="display:block;font-size:11px;color:#64748b;">PDF, DOC, DOCX or JPG/PNG formats (Max 5 MB).</span>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap;">
+              <input type="file" id="studAadhar" required accept="image/*,application/pdf,.doc,.docx" onchange="previewPublicAadhar(this)" style="font-size:12px;color:#475569;flex:1;padding:6px;margin:0;">
+              <button type="button" class="c2s-upload-btn" onclick="triggerAadharCamera()">
+                📷 Scan with Camera
+              </button>
+            </div>
+            <input type="file" id="studAadharCapture" accept="image/*" capture="environment" onchange="previewPublicAadhar(this)" style="display:none;">
+            <span style="display:block;font-size:11px;color:#64748b;">Take instant photo with phone camera, or upload PDF, JPG/PNG (Max 5 MB).</span>
             <div id="studAadharPreviewWrap" style="display:none;margin-top:8px;align-items:center;gap:10px;">
               <span style="font-size:22px;">📄</span>
               <span id="studAadharName" style="font-size:12px;color:#047857;font-weight:750;">Aadhaar Attached</span>
+              <button type="button" onclick="clearPublicAadhar()" style="background:none;border:none;color:#dc2626;font-size:11px;cursor:pointer;padding:0;text-decoration:underline;">✕ Remove / Retake</button>
             </div>
           </div>
         </div>

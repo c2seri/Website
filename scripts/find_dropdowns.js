@@ -12,3 +12,4 @@ console.log('\nC2S JEE & NEET Wing at:', jIdx);
 if (jIdx !== -1) {
   console.log(html.substring(jIdx - 100, jIdx + 800));
 }
+

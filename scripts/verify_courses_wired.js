@@ -9,3 +9,4 @@ while ((m = regex.exec(html)) !== null) {
 }
 console.log('Total openSchoolCourseDetail occurrences in index.html:', found.length);
 console.log('Unique course keys:', [...new Set(found)]);
+

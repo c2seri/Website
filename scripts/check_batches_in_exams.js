@@ -10,3 +10,4 @@ lines.forEach((l, i) => {
     console.log('   Context:', lines.slice(Math.max(0, i - 3), i + 4).map(x => x.trim()).join(' | '));
   }
 });
+

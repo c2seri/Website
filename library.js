@@ -717,6 +717,28 @@ window.previewPublicPhoto = function(input) {
   reader.readAsDataURL(file);
 };
 
+
+window.triggerAadharCamera = function() {
+  const captureInput = document.getElementById('studAadharCapture');
+  if (captureInput) {
+    captureInput.click();
+  } else {
+    const mainInput = document.getElementById('studAadhar');
+    if (mainInput) mainInput.click();
+  }
+};
+
+window.clearPublicAadhar = function() {
+  publicAadharData = '';
+  publicAadharFileName = '';
+  const input1 = document.getElementById('studAadhar');
+  if (input1) input1.value = '';
+  const input2 = document.getElementById('studAadharCapture');
+  if (input2) input2.value = '';
+  const wrap = document.getElementById('studAadharPreviewWrap');
+  if (wrap) wrap.style.display = 'none';
+};
+
 window.previewPublicAadhar = function(input) {
   if (!input.files || !input.files[0]) return;
   const file = input.files[0];

@@ -6,3 +6,4 @@ const chunk = html.substring(sIdx, eIdx);
 const onClicks = chunk.match(/onclick="[^"]+"/g) || [];
 console.log('Unique onclicks in All Exams:');
 console.log([...new Set(onClicks)]);
+
