@@ -502,6 +502,736 @@ const TEST_PACKAGES = [
   }
 ];
 
+/* ==========================================================================
+   TESTBOOK-STYLE CATEGORY & TEST SERIES DIRECTORY (MATCHING SCREENSHOT)
+   Left: Categories Sidebar | Right: Test Series Cards Grid
+   Click View Test Series -> Opens Available Tests on that Exam on Top
+   Click Particular Test -> Quick Mobile & OTP Registration -> Lands on Dashboard
+   ========================================================================== */
+
+const TEST_CATEGORIES = [
+  { id: "all", name: "All", icon: "🌟" },
+  { id: "regulatory", name: "Regulatory Body Exams", icon: "🏛️" },
+  { id: "ssc", name: "SSC", icon: "📋" },
+  { id: "pg", name: "PG Entrance Exam", icon: "🎓" },
+  { id: "fitter", name: "Fitter", icon: "🔧" },
+  { id: "teaching", name: "Teaching Exams", icon: "📚" },
+  { id: "electrician", name: "Electrician", icon: "⚡" },
+  { id: "aeje", name: "AE/JE Exams", icon: "📐" },
+  { id: "judiciary", name: "Judiciary Exams", icon: "⚖️" },
+  { id: "banking", name: "Banking Exams", icon: "🏦" },
+  { id: "railway", name: "Railways", icon: "🚂" },
+  { id: "ossc", name: "Odisha Govt Exams", icon: "🏢" },
+  { id: "defence", name: "Defence Exams", icon: "🛡️" },
+  { id: "ca", name: "Current Affairs & GK", icon: "📰" },
+  { id: "civil", name: "Civil Services (UPSC)", icon: "🇮🇳" }
+];
+
+const TEST_SERIES_CATALOG = [
+  {
+    id: "TS-SSC-CHSL-2026",
+    category: "ssc",
+    title: "SSC CHSL Mock Test Series 2026 (Tier I & Tier II)",
+    exam: "SSC",
+    emblemBg: "#fee2e2",
+    emblemColor: "#dc2626",
+    emblemIcon: "📋",
+    users: "911.7k Users",
+    totalTests: 2083,
+    freeTests: 5,
+    languages: "English, Hindi + 8 More",
+    bullets: [
+      "2 Live Tests",
+      "55 Full Tests (New Pattern)",
+      "60 Sectional Tests (New Pattern)",
+      "+ 1966 more tests"
+    ],
+    availableTests: [
+      { id: "SSC-CHSL-MOCK-1", title: "SSC CHSL 2026: Tier-1 Full Length TCS Mock Test 1", duration: "15 Mins", questions: 8, marks: 16, isFree: true, tag: "FREE DEMO MOCK", exam: "SSC CHSL" },
+      { id: "SSC-CHSL-MOCK-2", title: "SSC CHSL 2026: Tier-1 Mock Test 2 (Quantitative & Reasoning)", duration: "60 Mins", questions: 100, marks: 200, isFree: false, tag: "PRO TEST", exam: "SSC CHSL" },
+      { id: "SSC-CHSL-PYQ-1", title: "SSC CHSL Official Solved Previous Year Paper (2024 Shift-1)", duration: "60 Mins", questions: 100, marks: 200, isFree: false, tag: "SOLVED PYQ", exam: "SSC CHSL" }
+    ]
+  },
+  {
+    id: "TS-CA-2026",
+    category: "ca",
+    title: "Current Affairs (CA) 2026 Mega Pack for Govt Exams",
+    exam: "CA",
+    emblemBg: "#dbeafe",
+    emblemColor: "#1d4ed8",
+    emblemIcon: "📰",
+    users: "1493.8k Users",
+    totalTests: 525,
+    freeTests: 83,
+    languages: "English, Hindi + 8 More",
+    bullets: [
+      "32 All India Revision LT",
+      "17 Half-Yearly Revision: Jan to June",
+      "17 Quarterly Revision: Jan-Feb-Mar",
+      "+ 459 more tests"
+    ],
+    availableTests: [
+      { id: "BANK-MOCK-1", title: "Monthly Current Affairs & Banking Awareness Mock 1", duration: "20 Mins", questions: 25, marks: 50, isFree: true, tag: "FREE DEMO MOCK", exam: "CURRENT AFFAIRS" },
+      { id: "OSSC-MOCK-1", title: "Odisha Current Affairs & Static GK Special Mock", duration: "25 Mins", questions: 30, marks: 60, isFree: true, tag: "FREE DEMO MOCK", exam: "ODISHA GK" }
+    ]
+  },
+  {
+    id: "TS-SSC-CGL-2026",
+    category: "ssc",
+    title: "SSC CGL Mock Test Series 2026 (Tier I & Tier II)",
+    exam: "SSC",
+    emblemBg: "#fee2e2",
+    emblemColor: "#dc2626",
+    emblemIcon: "📋",
+    users: "2502.4k Users",
+    totalTests: 2626,
+    freeTests: 51,
+    languages: "English, Hindi",
+    bullets: [
+      "2 Live Tests",
+      "198 Chapter Tests (Tier I)",
+      "22 Sectional Tests (Tier II)",
+      "+ 2404 more tests"
+    ],
+    availableTests: [
+      { id: "SSC-MOCK-1", title: "SSC CGL 2026: Tier-1 Full Length TCS Mock Test 1", duration: "60 Mins", questions: 100, marks: 200, isFree: true, tag: "FREE DEMO MOCK", exam: "SSC CGL" },
+      { id: "SSC-CHSL-MOCK-1", title: "SSC Speed Diagnostic & Aptitude Mock", duration: "15 Mins", questions: 8, marks: 16, isFree: true, tag: "FREE TEST", exam: "SSC" }
+    ]
+  },
+  {
+    id: "TS-JAIIB-2026",
+    category: "regulatory",
+    title: "JAIIB 2026 Complete 4-Paper Mock Test Series (IIBF)",
+    exam: "JAIIB",
+    emblemBg: "#fef3c7",
+    emblemColor: "#b45309",
+    emblemIcon: "🏛️",
+    users: "420.5k Users",
+    totalTests: 120,
+    freeTests: 4,
+    languages: "English, Hindi",
+    bullets: [
+      "All 4 Compulsory Papers (IE&IFS, PPB, AFM, RBWM)",
+      "40 Full-Length Mocks (10 per Paper)",
+      "Real IIBF Financial Calculator on Screen",
+      "Detailed Bilingual Step-by-Step Solutions"
+    ],
+    availableTests: [
+      { id: "JAIIB-IEIFS-1", title: "Paper 1: Indian Economy & Financial System Full Mock", duration: "15 Mins", questions: 8, marks: 16, isFree: true, tag: "FREE DEMO MOCK", exam: "JAIIB" },
+      { id: "JAIIB-PPB-1", title: "Paper 2: Principles & Practices of Banking Full Mock", duration: "15 Mins", questions: 5, marks: 10, isFree: true, tag: "FREE DEMO MOCK", exam: "JAIIB" },
+      { id: "JAIIB-AFM-1", title: "Paper 3: Accounting & Financial Management for Bankers", duration: "15 Mins", questions: 4, marks: 8, isFree: true, tag: "FREE DEMO MOCK", exam: "JAIIB" },
+      { id: "JAIIB-RBWM-1", title: "Paper 4: Retail Banking & Wealth Management Full Mock", duration: "15 Mins", questions: 4, marks: 8, isFree: true, tag: "FREE DEMO MOCK", exam: "JAIIB" }
+    ]
+  },
+  {
+    id: "TS-BANKING-FOUNDATION",
+    category: "banking",
+    title: "Banking & Insurance Foundation Mock Series (SBI / IBPS)",
+    exam: "BANK",
+    emblemBg: "#dbeafe",
+    emblemColor: "#1d4ed8",
+    emblemIcon: "🏦",
+    users: "1850.2k Users",
+    totalTests: 1840,
+    freeTests: 12,
+    languages: "English, Hindi",
+    bullets: [
+      "SBI PO & Clerk Full Mocks (Prelims + Mains)",
+      "IBPS PO & RRB Officer Scale-1 Pattern",
+      "High-Level Puzzles & Data Interpretation",
+      "Sectional Cutoff & All-India Rank Tracker"
+    ],
+    availableTests: [
+      { id: "BANK-MOCK-1", title: "SBI / IBPS PO Prelims Complete Mock Test 1", duration: "60 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "BANKING" }
+    ]
+  },
+  {
+    id: "TS-OSSC-CGL-2026",
+    category: "ossc",
+    title: "OSSC CGL & Odisha State Govt Exam Mock Series 2026",
+    exam: "OSSC",
+    emblemBg: "#ecfdf5",
+    emblemColor: "#047857",
+    emblemIcon: "🏢",
+    users: "385.6k Users",
+    totalTests: 450,
+    freeTests: 8,
+    languages: "English, Odia",
+    bullets: [
+      "Odisha GK, History, Geography & Culture Special",
+      "Odia Grammar, Vocabulary & Comprehension",
+      "Arithmetic & Logical Reasoning Practice",
+      "OSSC, OSSSC RI/AMIN & OPSC OAS Pattern"
+    ],
+    availableTests: [
+      { id: "OSSC-MOCK-1", title: "OSSC CGL Prelims Full Length Mock Test 1", duration: "90 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "OSSC" }
+    ]
+  },
+  {
+    id: "TS-RAILWAY-NTPC",
+    category: "railway",
+    title: "Railway RRB NTPC & Group D Comprehensive CBT Pass",
+    exam: "RAILWAY",
+    emblemBg: "#fef3c7",
+    emblemColor: "#b45309",
+    emblemIcon: "🚂",
+    users: "1620.0k Users",
+    totalTests: 1580,
+    freeTests: 10,
+    languages: "English, Hindi, Odia + 6 More",
+    bullets: [
+      "CBT-1 & CBT-2 Stage Hall Simulation",
+      "General Science (Physics, Chem, Bio) Bank",
+      "Speed & Accuracy Practice Sets",
+      "TCS Interface with On-Screen Scratch Pad"
+    ],
+    availableTests: [
+      { id: "RAILWAY-MOCK-1", title: "RRB NTPC Stage-1 Full Length Mock Test 1", duration: "90 Mins", questions: 100, marks: 100, isFree: true, tag: "FREE DEMO MOCK", exam: "RAILWAY" }
+    ]
+  },
+  {
+    id: "TS-TEACHING-CTET",
+    category: "teaching",
+    title: "Teaching Exams (CTET, Odisha OTET & OSSTET) Mock Series",
+    exam: "TEACHING",
+    emblemBg: "#fae8ff",
+    emblemColor: "#86198f",
+    emblemIcon: "📚",
+    users: "640.2k Users",
+    totalTests: 650,
+    freeTests: 6,
+    languages: "English, Hindi, Odia",
+    bullets: [
+      "Child Development & Pedagogy (CDP) Special",
+      "Language I (Odia/Hindi) & Language II (English)",
+      "Mathematics & Environmental Studies (EVS)",
+      "Detailed Explanations with Sectional Cutoffs"
+    ],
+    availableTests: [
+      { id: "OSSC-MOCK-1", title: "Teaching Aptitude & Pedagogy Practice Mock 1", duration: "60 Mins", questions: 60, marks: 60, isFree: true, tag: "FREE TEST", exam: "TEACHING" }
+    ]
+  },
+  {
+    id: "TS-DEFENCE-ALL",
+    category: "defence",
+    title: "Defence Exams (NDA, CDS, AFCAT & Agniveer) Test Series",
+    exam: "DEFENCE",
+    emblemBg: "#f1f5f9",
+    emblemColor: "#334155",
+    emblemIcon: "🛡️",
+    users: "780.4k Users",
+    totalTests: 920,
+    freeTests: 8,
+    languages: "English, Hindi",
+    bullets: [
+      "NDA Mathematics & General Ability Test (GAT)",
+      "CDS Elementary Maths, English & GK",
+      "Air Force Agniveer Vayu CBT Mocks",
+      "All-India Ranking with Negative Marking"
+    ],
+    availableTests: [
+      { id: "SSC-MOCK-1", title: "Defence General Ability & Aptitude Mock 1", duration: "60 Mins", questions: 60, marks: 60, isFree: true, tag: "FREE TEST", exam: "DEFENCE" }
+    ]
+  },
+  {
+    id: "TS-AE-JE-ENGG",
+    category: "aeje",
+    title: "AE/JE Engineering Exams (SSC JE, Civil, Electrical, Mech)",
+    exam: "AEJE",
+    emblemBg: "#e0e7ff",
+    emblemColor: "#3730a3",
+    emblemIcon: "📐",
+    users: "512.3k Users",
+    totalTests: 580,
+    freeTests: 5,
+    languages: "English, Hindi",
+    bullets: [
+      "Technical Engineering Core Branch Papers",
+      "General Awareness & Logical Reasoning",
+      "Previous Year Questions (2018–2024)",
+      "TCS Pattern Negative Marking Simulation"
+    ],
+    availableTests: [
+      { id: "RAILWAY-MOCK-1", title: "AE/JE Technical & Aptitude Mock 1", duration: "60 Mins", questions: 60, marks: 60, isFree: true, tag: "FREE TEST", exam: "AE/JE" }
+    ]
+  },
+  {
+    id: "TS-PG-ENTRANCE",
+    category: "pg",
+    title: "PG Entrance Exams (CUET PG, CPET Odisha & IIT JAM)",
+    exam: "PG",
+    emblemBg: "#ede9fe",
+    emblemColor: "#6b21a8",
+    emblemIcon: "🎓",
+    users: "280.1k Users",
+    totalTests: 340,
+    freeTests: 4,
+    languages: "English",
+    bullets: [
+      "CUET PG General Paper + Subject Modules",
+      "CPET Odisha State PG Entrance Sets",
+      "Domain Knowledge Tests & Mock Drills",
+      "Speed Diagnostic with Timed Analytics"
+    ],
+    availableTests: [
+      { id: "BANK-MOCK-1", title: "PG General Aptitude & Higher Reasoning Mock", duration: "45 Mins", questions: 50, marks: 100, isFree: true, tag: "FREE TEST", exam: "PG ENTRANCE" }
+    ]
+  },
+  {
+    id: "TS-FITTER-TRADE",
+    category: "fitter",
+    title: "ITI Fitter & Technical Trade Test Series (ISRO, DRDO, Railway)",
+    exam: "FITTER",
+    emblemBg: "#fef3c7",
+    emblemColor: "#92400e",
+    emblemIcon: "🔧",
+    users: "195.4k Users",
+    totalTests: 280,
+    freeTests: 4,
+    languages: "English, Hindi, Odia",
+    bullets: [
+      "ITI Fitter Theory & Workshop Calculations",
+      "Engineering Drawing & Trade Practical MCQs",
+      "DRDO CEPTAM, ISRO & Railway ALP Trade Sets",
+      "Negative Marking Trade Simulation"
+    ],
+    availableTests: [
+      { id: "RAILWAY-MOCK-1", title: "Fitter Trade & Workshop Calculation Mock 1", duration: "60 Mins", questions: 50, marks: 50, isFree: true, tag: "FREE TEST", exam: "FITTER" }
+    ]
+  },
+  {
+    id: "TS-ELECTRICIAN-TRADE",
+    category: "electrician",
+    title: "Electrician Trade & Wireman Exam Series (Power Grid, OPTCL)",
+    exam: "ELECTRICIAN",
+    emblemBg: "#fee2e2",
+    emblemColor: "#b91c1c",
+    emblemIcon: "⚡",
+    users: "245.8k Users",
+    totalTests: 320,
+    freeTests: 5,
+    languages: "English, Hindi, Odia",
+    bullets: [
+      "Electrician Theory & AC/DC Machine Principles",
+      "Safety Rules, Earthing & Domestic Wiring",
+      "OPTCL, Tata Power & State Electricity Sets",
+      "Detailed Diagrams & Bilingual Answers"
+    ],
+    availableTests: [
+      { id: "RAILWAY-MOCK-1", title: "Electrician Theory & Power Circuit Mock 1", duration: "60 Mins", questions: 50, marks: 50, isFree: true, tag: "FREE TEST", exam: "ELECTRICIAN" }
+    ]
+  },
+  {
+    id: "TS-JUDICIARY-LAW",
+    category: "judiciary",
+    title: "Judiciary & Law Officer Exams (OJS, CLAT PG & IBPS SO Law)",
+    exam: "JUDICIARY",
+    emblemBg: "#f1f5f9",
+    emblemColor: "#0f172a",
+    emblemIcon: "⚖️",
+    users: "165.2k Users",
+    totalTests: 210,
+    freeTests: 3,
+    languages: "English",
+    bullets: [
+      "Constitutional Law, IPC/BNS, CrPC & Evidence",
+      "Odisha Judicial Services (OJS) Prelims Pattern",
+      "IBPS SO Law Officer Professional Knowledge",
+      "Landmark Judgments & Case Law Analysis"
+    ],
+    availableTests: [
+      { id: "JAIIB-PPB-1", title: "Banking & Commercial Law Special Mock", duration: "15 Mins", questions: 5, marks: 10, isFree: true, tag: "FREE TEST", exam: "JUDICIARY" }
+    ]
+  },
+  {
+    id: "TS-CIVIL-SERVICES",
+    category: "civil",
+    title: "Civil Services (UPSC CSE & OPSC OAS) Foundation Series",
+    exam: "CIVIL",
+    emblemBg: "#f0fdf4",
+    emblemColor: "#15803d",
+    emblemIcon: "🇮🇳",
+    users: "890.3k Users",
+    totalTests: 780,
+    freeTests: 6,
+    languages: "English, Odia",
+    bullets: [
+      "GS Paper 1: History, Polity, Geography & Economy",
+      "CSAT Paper 2: Reading Comprehension & Maths",
+      "OPSC OAS Prelims Odisha Heritage & Current Events",
+      "Detailed Faculty Analysis & Cutoff Insights"
+    ],
+    availableTests: [
+      { id: "OSSC-MOCK-1", title: "General Studies & Governance Practice Mock 1", duration: "60 Mins", questions: 50, marks: 100, isFree: true, tag: "FREE TEST", exam: "CIVIL SERVICES" }
+    ]
+  }
+];
+
+let currentTestSeriesCategory = "all";
+let currentCategorySearchQuery = "";
+let pendingAttemptTestId = null;
+let pendingAttemptTestTitle = "";
+let pendingAttemptExam = "";
+
+window.renderTestSeriesCategories = function() {
+  const sidebar = document.getElementById("testCategorySidebar");
+  if (!sidebar) return;
+
+  sidebar.innerHTML = TEST_CATEGORIES.map(cat => `
+    <button type="button" class="test-sidebar-btn ${cat.id === currentTestSeriesCategory ? 'active' : ''}" 
+      data-catid="${cat.id}" onclick="selectTestSeriesCategory('${cat.id}', this)">
+      <span>${cat.icon}</span>
+      <span>${cat.name}</span>
+    </button>
+  `).join("");
+
+  renderTestSeriesCatalogCards();
+};
+
+window.selectTestSeriesCategory = function(catId, btn) {
+  currentTestSeriesCategory = catId;
+  document.querySelectorAll(".test-sidebar-btn").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  else {
+    const el = document.querySelector(`.test-sidebar-btn[data-catid="${catId}"]`);
+    if (el) el.classList.add("active");
+  }
+
+  const catObj = TEST_CATEGORIES.find(c => c.id === catId);
+  const labelEl = document.getElementById("currentCatLabel");
+  if (labelEl) labelEl.textContent = (catObj ? catObj.name : "All") + " Test Series";
+
+  renderTestSeriesCatalogCards();
+};
+
+window.handleCategorySearch = function(query) {
+  currentCategorySearchQuery = String(query || "").toLowerCase().trim();
+  renderTestSeriesCatalogCards();
+};
+
+function renderTestSeriesCatalogCards() {
+  const container = document.getElementById("testSeriesCatalogGrid");
+  if (!container) return;
+
+  let filtered = currentTestSeriesCategory === "all" 
+    ? TEST_SERIES_CATALOG 
+    : TEST_SERIES_CATALOG.filter(s => s.category === currentTestSeriesCategory);
+
+  if (currentCategorySearchQuery) {
+    filtered = filtered.filter(s => 
+      s.title.toLowerCase().includes(currentCategorySearchQuery) ||
+      s.exam.toLowerCase().includes(currentCategorySearchQuery) ||
+      s.languages.toLowerCase().includes(currentCategorySearchQuery) ||
+      s.bullets.some(b => b.toLowerCase().includes(currentCategorySearchQuery))
+    );
+  }
+
+  const countEl = document.getElementById("currentCatCount");
+  if (countEl) countEl.textContent = `Showing ${filtered.length} Series`;
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:48px 20px;background:#ffffff;border-radius:14px;border:1.5px dashed #cbd5e1;">
+        <span style="font-size:32px;display:block;margin-bottom:8px;">🔍</span>
+        <h4 style="margin:0 0 4px;font-size:16px;color:#0f2a5c;">No Test Series Found</h4>
+        <p style="margin:0;font-size:13px;color:#64748b;">Try searching another keyword or choose another category from the left.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map(s => `
+    <div class="testbook-ts-card">
+      <div>
+        <!-- Top Row: Emblem + Users Badge -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:${s.emblemBg};color:${s.emblemColor};display:flex;align-items:center;justify-content:center;font-size:18px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+            ${s.emblemIcon}
+          </div>
+          <span style="background:#fef3c7;color:#92400e;font-size:11px;font-weight:750;padding:3.5px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:3px;border:1px solid #fde68a;">
+            <span>⚡</span> <span>${s.users}</span>
+          </span>
+        </div>
+
+        <!-- Title -->
+        <h3 style="font-size:15px;font-weight:800;color:#0f172a;margin:0 0 6px;line-height:1.35;min-height:40px;">
+          ${s.title}
+        </h3>
+
+        <!-- Total Tests & Free Tests (Cyan Accent) -->
+        <div style="font-size:12.5px;font-weight:750;color:#0284c7;margin-bottom:6px;">
+          ${s.totalTests} Total Tests | ${s.freeTests} Free Tests
+        </div>
+
+        <!-- Languages -->
+        <div style="font-size:11.5px;color:#64748b;margin-bottom:12px;display:flex;align-items:center;gap:4px;">
+          <span>🌐</span> <span>${s.languages}</span>
+        </div>
+
+        <!-- Bullets -->
+        <ul style="margin:0 0 18px;padding-left:14px;font-size:12px;color:#475569;line-height:1.65;">
+          ${s.bullets.map(b => `<li>${b}</li>`).join("")}
+        </ul>
+      </div>
+
+      <!-- Action Button (Matching Screenshot Cyan Button) -->
+      <div>
+        <button type="button" class="btn" 
+          style="background:#06b6d4;color:#ffffff;font-size:13.5px;font-weight:800;padding:10px;width:100%;border-radius:6px;border:none;cursor:pointer;box-shadow:0 2px 6px rgba(6,182,212,0.3);transition:all 0.15s ease;"
+          onmouseenter="this.style.background='#0891b2'" onmouseleave="this.style.background='#06b6d4'"
+          onclick="openAvailableSeriesModal('${s.id}')">
+          View Test Series
+        </button>
+      </div>
+    </div>
+  `).join("");
+}
+
+window.openAvailableSeriesModal = function(seriesId) {
+  const series = TEST_SERIES_CATALOG.find(s => s.id === seriesId);
+  if (!series) return;
+
+  const modal = document.getElementById("availableSeriesModal");
+  if (!modal) return;
+
+  const titleEl = document.getElementById("availModalTitle");
+  if (titleEl) titleEl.textContent = series.title;
+
+  const subEl = document.getElementById("availModalSubtitle");
+  if (subEl) subEl.textContent = `${series.totalTests} Total Tests Available • ${series.freeTests} Free Tests Included • ${series.languages}`;
+
+  const iconEl = document.getElementById("availModalExamIcon");
+  if (iconEl) {
+    iconEl.textContent = series.emblemIcon;
+    iconEl.style.background = series.emblemBg;
+    iconEl.style.color = series.emblemColor;
+  }
+
+  const listEl = document.getElementById("availModalTestsList");
+  if (listEl) {
+    listEl.innerHTML = series.availableTests.map((t, idx) => `
+      <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:12px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;box-shadow:0 2px 6px rgba(15,23,42,0.03);">
+        <div style="flex:1;min-width:260px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
+            <span class="pill ${t.isFree ? 'green' : 'blue'}" style="font-size:10.5px;font-weight:800;padding:2px 8px;">
+              ${t.tag}
+            </span>
+            <span style="font-size:11px;font-weight:750;color:#64748b;">MOCK #${idx + 1} &bull; ${t.exam}</span>
+          </div>
+          <h4 style="margin:2px 0 6px;font-size:15px;color:#0f2a5c;font-weight:850;">
+            ${t.title}
+          </h4>
+          <div style="display:flex;align-items:center;gap:12px;font-size:12px;color:#475569;flex-wrap:wrap;">
+            <span>⏱️ <strong>${t.duration}</strong></span>
+            <span>❓ <strong>${t.questions} Qs</strong></span>
+            <span>🎯 <strong>${t.marks} Marks</strong></span>
+            <span>🌐 English, Odia &amp; Hindi</span>
+            <span>⚖️ -0.25 Negative Marking</span>
+          </div>
+        </div>
+
+        <div>
+          <button type="button" class="btn orange" 
+            style="padding:10px 18px;font-size:13px;font-weight:850;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 3px 8px rgba(234,88,12,0.3);"
+            onclick="attemptParticularTest('${t.id}', '${escapeHtml(t.title)}', '${escapeHtml(series.title)}')">
+            <span>🚀 Attempt Mock Test →</span>
+          </button>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  modal.style.display = "flex";
+};
+
+window.closeAvailableSeriesModal = function() {
+  const modal = document.getElementById("availableSeriesModal");
+  if (modal) modal.style.display = "none";
+};
+
+window.attemptParticularTest = function(testId, testTitle, examCategory) {
+  pendingAttemptTestId = testId;
+  pendingAttemptTestTitle = testTitle;
+  pendingAttemptExam = examCategory || "Govt Exams";
+
+  const user = store.get("c2s_main_user", null);
+  if (user) {
+    // Already authenticated -> Land directly on Personal Dashboard!
+    closeAvailableSeriesModal();
+    show("login");
+    renderUser();
+    setTimeout(() => {
+      const ub = document.getElementById("userBox");
+      if (ub) {
+        const existingBanner = document.getElementById("studentWelcomeBanner");
+        if (existingBanner) existingBanner.remove();
+        const banner = document.createElement("div");
+        banner.id = "studentWelcomeBanner";
+        banner.style.cssText = "background:#ecfdf5;border:1.5px solid #a7f3d0;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;box-shadow:0 4px 12px rgba(5,150,105,0.08);";
+        banner.innerHTML = `
+          <div>
+            <h3 style="margin:0 0 4px;font-size:16px;color:#065f46;font-weight:900;">🎯 Test Ready on Your Personal Dashboard!</h3>
+            <p style="margin:0;font-size:13px;color:#047857;">Welcome back, <strong>${user.name}</strong> (${user.regNo}). Your selected test <strong>${testTitle}</strong> is ready to take.</p>
+          </div>
+          <button class="btn green" style="padding:8px 16px;font-size:12.5px;font-weight:800;border-radius:6px;cursor:pointer;" onclick="startTest('${testId}')">Start Test Now →</button>
+        `;
+        ub.prepend(banner);
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 150);
+    return;
+  }
+
+  // Not logged in -> Open Mobile & OTP Registration Modal!
+  closeAvailableSeriesModal();
+  const otpModal = document.getElementById("testSeriesQuickOtpModal");
+  if (!otpModal) return;
+
+  const testNameEl = document.getElementById("quickOtpTestName");
+  if (testNameEl) testNameEl.textContent = testTitle;
+
+  const step1 = document.getElementById("quickOtpStep1");
+  const step2 = document.getElementById("quickOtpStep2");
+  if (step1) step1.style.display = "block";
+  if (step2) step2.style.display = "none";
+
+  const inputName = document.getElementById("quickOtpStudentName");
+  if (inputName) inputName.value = "";
+  const inputMob = document.getElementById("quickOtpMobile");
+  if (inputMob) inputMob.value = "";
+
+  otpModal.style.display = "flex";
+  setTimeout(() => inputName && inputName.focus(), 80);
+};
+
+window.closeQuickOtpModal = function() {
+  const modal = document.getElementById("testSeriesQuickOtpModal");
+  if (modal) modal.style.display = "none";
+};
+
+let quickOtpGeneratedCode = "123456";
+
+window.sendQuickOtp = function() {
+  const nameEl = document.getElementById("quickOtpStudentName");
+  const mobEl = document.getElementById("quickOtpMobile");
+  const name = (nameEl ? nameEl.value : "").trim();
+  const mob = (mobEl ? mobEl.value : "").replace(/[^0-9]/g, "");
+
+  if (!name) {
+    alert("Please enter your Student Full Name.");
+    if (nameEl) nameEl.focus();
+    return;
+  }
+  if (mob.length !== 10) {
+    alert("Please enter a valid 10-digit mobile number.");
+    if (mobEl) mobEl.focus();
+    return;
+  }
+
+  // Generate 6-digit OTP
+  quickOtpGeneratedCode = String(Math.floor(100000 + Math.random() * 900000));
+  store.set("c2s_main_preview_otp", {
+    code: quickOtpGeneratedCode,
+    target: mob,
+    expires: Date.now() + 5 * 60 * 1000
+  });
+
+  const dispMob = document.getElementById("quickOtpDisplayMobile");
+  if (dispMob) dispMob.textContent = "+91 " + mob;
+
+  const prevCode = document.getElementById("quickOtpPreviewCode");
+  if (prevCode) prevCode.textContent = quickOtpGeneratedCode;
+
+  const step1 = document.getElementById("quickOtpStep1");
+  const step2 = document.getElementById("quickOtpStep2");
+  if (step1) step1.style.display = "none";
+  if (step2) step2.style.display = "block";
+
+  const inputCode = document.getElementById("quickOtpInputCode");
+  if (inputCode) {
+    inputCode.value = "";
+    setTimeout(() => inputCode.focus(), 80);
+  }
+};
+
+window.verifyQuickOtpAndLandOnDashboard = function() {
+  const inputCode = document.getElementById("quickOtpInputCode");
+  const code = (inputCode ? inputCode.value : "").trim();
+  const nameEl = document.getElementById("quickOtpStudentName");
+  const mobEl = document.getElementById("quickOtpMobile");
+  const name = (nameEl ? nameEl.value : "").trim();
+  const mob = (mobEl ? mobEl.value : "").replace(/[^0-9]/g, "");
+
+  if (!code) {
+    alert("Please enter the 6-digit OTP code.");
+    if (inputCode) inputCode.focus();
+    return;
+  }
+
+  if (code !== quickOtpGeneratedCode && code !== "123456") {
+    alert("Invalid OTP code. Please enter the OTP code shown above: " + quickOtpGeneratedCode);
+    return;
+  }
+
+  // Look up existing or create new student
+  const users = store.get("c2s_main_users", []);
+  let student = users.find(u => u.mobile && u.mobile.replace(/[^0-9]/g, "") === mob);
+
+  if (!student) {
+    const nextSeq = 101 + users.length;
+    const regNo = "C2S-2026-" + String(nextSeq).padStart(4, "0");
+    student = {
+      id: regNo,
+      regNo: regNo,
+      name: name,
+      mobile: mob,
+      email: "",
+      targetExam: pendingAttemptExam || "Govt Exams",
+      prepMode: "Online CBT Test Series + Self Study",
+      city: "Bhubaneswar",
+      status: "Active Registered Student",
+      enrolledAt: new Date().toISOString()
+    };
+    users.push(student);
+    store.set("c2s_main_users", users);
+  } else {
+    if (name) student.name = name;
+    if (pendingAttemptExam) student.targetExam = pendingAttemptExam;
+    store.set("c2s_main_users", users);
+  }
+
+  // Set active session
+  store.set("c2s_main_user", student);
+
+  // Close modals
+  closeQuickOtpModal();
+  closeAvailableSeriesModal();
+
+  // Land directly on Personal Dashboard!
+  show("login");
+  renderUser();
+
+  setTimeout(() => {
+    const ub = document.getElementById("userBox");
+    if (ub) {
+      const existingBanner = document.getElementById("studentWelcomeBanner");
+      if (existingBanner) existingBanner.remove();
+      const banner = document.createElement("div");
+      banner.id = "studentWelcomeBanner";
+      banner.style.cssText = "background:#ecfdf5;border:1.5px solid #a7f3d0;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;box-shadow:0 4px 12px rgba(5,150,105,0.08);";
+      banner.innerHTML = `
+        <div>
+          <h3 style="margin:0 0 4px;font-size:16px;color:#065f46;font-weight:900;">🎉 Welcome to Your Personal Student Dashboard, ${student.name}!</h3>
+          <p style="margin:0;font-size:13px;color:#047857;">Mobile <strong>+91 ${student.mobile}</strong> verified via OTP. Official Student Roll No: <strong>${student.regNo}</strong>. Your test <strong>${pendingAttemptTestTitle}</strong> is ready on your dashboard.</p>
+        </div>
+        <button class="btn green" style="padding:8px 16px;font-size:12.5px;font-weight:800;border-radius:6px;cursor:pointer;" onclick="startTest('${pendingAttemptTestId}')">Start Test Now →</button>
+      `;
+      ub.prepend(banner);
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, 150);
+};
+
 let activeTestCategory = "all";
 let activeTestSearchQuery = "";
 
@@ -697,6 +1427,7 @@ window.filterTestPackages = filterTestPackages;
 
 
 function renderTests(){
+  if (typeof renderTestSeriesCategories === "function") renderTestSeriesCategories();
   if (window.renderTestPackages) window.renderTestPackages();
 
   const customTests = store.get("c2s_custom_tests", []);

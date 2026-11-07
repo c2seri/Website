@@ -2476,92 +2476,148 @@
       </div>
     </section>
 
-    <!-- VIEW: Test Series Page (Standardized Unified Layout) -->
+    <!-- VIEW: Test Series Page (Categories Layout Matching Testbook) -->
     <section data-view="tests" class="hidden">
-      <!-- TESTBOOK CLEAN TOP BAR & SEARCH -->
-      <div class="testbook-portal-header" style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:18px;padding:22px 26px;margin-bottom:24px;box-shadow:0 4px 16px rgba(15,23,42,0.04);">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:16px;">
+      <!-- Main Category & Test Series Container (Matching Testbook Photo) -->
+      <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 6px 20px rgba(15,23,42,0.05);margin-bottom:30px;">
+        <!-- Top Bar: Title on Left, Search on Right -->
+        <div style="padding:18px 24px;border-bottom:1.5px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;background:#ffffff;">
           <div>
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <span style="background:#eff6ff;color:#1d4ed8;font-size:11.5px;font-weight:800;padding:3px 10px;border-radius:6px;border:1px solid #bfdbfe;">CBT TEST SERIES</span>
-              <span style="font-size:12px;color:#64748b;font-weight:700;">• Real TCS Exam Hall Interface</span>
-            </div>
-            <h1 style="font-size:clamp(22px, 3vw, 28px);font-weight:900;color:#0f2a5c;margin:0 0 4px;">
-              Test Series &amp; Mock Tests
-            </h1>
-            <p style="font-size:13.5px;color:#64748b;margin:0;">
-              Practice 100% TCS-pattern CBT mock tests with negative marking, all-India ranking, real timer, and detailed step-by-step solutions.
-            </p>
+            <h2 style="margin:0;font-size:22px;font-weight:900;color:#0f2a5c;">
+              Test Series by Categories
+            </h2>
+            <span style="font-size:12.5px;color:#64748b;font-weight:600;">Select an exam category on the left to explore available test series on the right</span>
           </div>
           
-          <!-- Testbook Sub-Navigation Quick Links -->
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <a href="#testPackagesSection" class="btn" style="background:#0f2a5c;color:#ffffff;padding:8px 16px;font-size:12.5px;font-weight:800;border-radius:8px;text-decoration:none;">
-              🎯 Test Packages
-            </a>
-            <button type="button" class="btn orange" onclick="scrollToAvailableTests()" style="padding:8px 16px;font-size:12.5px;font-weight:800;border-radius:8px;cursor:pointer;">
-              📝 Available Tests (<span id="testbookAvailCount">0</span>)
-            </button>
-            <button type="button" class="btn ghost" onclick="scrollToAttemptedTests()" style="padding:8px 14px;font-size:12.5px;font-weight:750;border-radius:8px;cursor:pointer;">
-              📊 Attempted Tests
-            </button>
+          <!-- Search box on right (exact match to screenshot) -->
+          <div style="position:relative;width:100%;max-width:320px;">
+            <input id="catTestSeriesSearch" type="text" placeholder="Search Test Series" 
+              style="width:100%;padding:9px 14px 9px 36px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;outline:none;background:#ffffff;box-sizing:border-box;color:#0f172a;transition:border-color 0.2s;"
+              onfocus="this.style.borderColor='#0284c7'" onblur="this.style.borderColor='#cbd5e1'"
+              oninput="handleCategorySearch(this.value)">
+            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:#94a3b8;pointer-events:none;">🔍</span>
           </div>
         </div>
 
-        <!-- Testbook Live Search Input -->
-        <div style="position:relative;margin-bottom:14px;">
-          <input id="testSeriesSearchInput" type="text" placeholder="🔍 Search test series or exam (e.g. SSC CHSL, JAIIB, Banking, Railway, OSSC)..." 
-            style="width:100%;padding:12px 16px 12px 42px;font-size:14px;border:1.5px solid #cbd5e1;border-radius:10px;outline:none;background:#f8fafc;color:#0f172a;box-sizing:border-box;transition:all 0.2s;"
-            onfocus="this.style.background='#ffffff';this.style.borderColor='#2563eb';"
-            onblur="this.style.background='#f8fafc';this.style.borderColor='#cbd5e1';"
-            oninput="handleTestbookSearch(this.value)">
-          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:#64748b;pointer-events:none;">🔍</span>
-        </div>
+        <!-- 2-Column Main Body: Left Exams, Right Test Series -->
+        <div class="test-cat-layout-wrap" style="display:flex;min-height:580px;">
+          <!-- Left Sidebar (Exams / Categories) -->
+          <div class="test-cat-sidebar-col" style="width:230px;min-width:210px;border-right:1.5px solid #e2e8f0;background:#ffffff;padding:10px 0;" id="testCategorySidebar">
+            <!-- Dynamically populated by app.js -->
+          </div>
 
-        <!-- Testbook Exam Category Pills -->
-        <div style="display:flex;align-items:center;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;-webkit-overflow-scrolling:touch;" id="testCategoryTabs">
-          <button type="button" class="btn test-cat-pill active" data-cat="all" onclick="filterTestPackages('all')">🌟 All Exams</button>
-          <button type="button" class="btn test-cat-pill" data-cat="ssc" onclick="filterTestPackages('ssc')">📋 SSC Exams</button>
-          <button type="button" class="btn test-cat-pill" data-cat="chsl" onclick="filterTestPackages('chsl')">⚡ SSC CHSL 2026</button>
-          <button type="button" class="btn test-cat-pill" data-cat="banking" onclick="filterTestPackages('banking')">🏛️ Banking &amp; Insurance</button>
-          <button type="button" class="btn test-cat-pill" data-cat="jaiib" onclick="filterTestPackages('jaiib')">🪔 JAIIB / CAIIB (Banking)</button>
-          <button type="button" class="btn test-cat-pill" data-cat="railway" onclick="filterTestPackages('railway')">🚂 Railways (RRB)</button>
-          <button type="button" class="btn test-cat-pill" data-cat="ossc" onclick="filterTestPackages('ossc')">🏢 Odisha State (OSSC)</button>
+          <!-- Right Content Area (Test Series Cards Grid) -->
+          <div style="flex:1;padding:24px;background:#f8fafc;" id="testSeriesGridArea">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <span id="currentCatLabel" style="font-size:13.5px;font-weight:800;color:#334155;text-transform:uppercase;letter-spacing:0.5px;">All Test Series</span>
+              <span id="currentCatCount" style="font-size:12px;color:#64748b;font-weight:700;">Showing 0 Series</span>
+            </div>
+            <div id="testSeriesCatalogGrid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:20px;">
+              <!-- Dynamically populated by app.js -->
+            </div>
+          </div>
         </div>
       </div>
-
-      <!-- TEST PACKAGES SHOWCASE GRID -->
-      <div id="testPackagesSection" class="section-header" style="margin-top:0;">
-        <span class="section-tag">TARGET EXAM PASSES</span>
-        <h2>1. Target Exam Test Series Packages</h2>
-        <p>Complete mock test packages with full-length mocks, sectional tests, and previous year papers.</p>
-        <div class="section-divider"></div>
-      </div>
-
-      <div id="testPackagesGrid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:22px;margin-bottom:36px;">
-        <!-- Dynamically rendered by app.js -->
-      </div>
-
-      <!-- AVAILABLE TESTS SECTION -->
-      <div id="availableTestsSection" class="section-header" style="margin-top:36px;">
-        <span class="section-tag">CBT SIMULATION • ATTEMPT PAPERS</span>
-        <h2>2. Do The Exams Available in Package</h2>
-        <p>Real-time countdown timer, negative marking, on-screen calculator, anti-cheat locked window. Attempted tests move to Given Tests with complete solutions.</p>
-        <div class="section-divider"></div>
-      </div>
-
-      <div id="availTests" class="test-grid" style="margin-bottom:36px;"></div>
 
       <!-- ATTEMPTED TESTS SECTION -->
       <div id="attemptedTestsSection" class="section-header" style="margin-top:36px;">
         <span class="section-tag">PERFORMANCE &bull; ATTEMPTED PAPERS &bull; FULL SOLUTIONS</span>
-        <h2>3. ✅ Attempted Tests &amp; Scorecards</h2>
+        <h2>✅ Attempted Tests &amp; Scorecards</h2>
         <p>Your completed tests with marks, negative marking deduction, correct answer keys, and in-depth step-by-step explanations.</p>
         <div class="section-divider"></div>
       </div>
 
       <div id="givenTests" style="margin-bottom:40px;"></div>
     </section>
+
+    <!-- Modal 1: Available Test Series on that Exam (Opens on Top) -->
+    <div id="availableSeriesModal" class="c2s-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.65);z-index:9999;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px);">
+      <div style="background:#ffffff;border-radius:18px;max-width:760px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,0.25);border:1.5px solid #cbd5e1;position:relative;">
+        <!-- Modal Header -->
+        <div style="padding:20px 24px;border-bottom:1.5px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border-top-left-radius:18px;border-top-right-radius:18px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div id="availModalExamIcon" style="width:42px;height:42px;border-radius:50%;background:#eff6ff;display:flex;align-items:center;justify-content:center;font-size:20px;border:1.5px solid #bfdbfe;">📋</div>
+            <div>
+              <h3 id="availModalTitle" style="margin:0;font-size:18px;font-weight:900;color:#0f2a5c;">SSC CHSL Mock Test Series 2026</h3>
+              <span id="availModalSubtitle" style="font-size:12px;color:#0284c7;font-weight:800;">2083 Total Tests Available &bull; 5 Free Tests Included</span>
+            </div>
+          </div>
+          <button type="button" onclick="closeAvailableSeriesModal()" style="background:none;border:none;font-size:24px;color:#64748b;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;">✕</button>
+        </div>
+
+        <!-- Modal Body -->
+        <div style="padding:22px 24px;">
+          <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px;margin-bottom:18px;display:flex;align-items:center;gap:8px;">
+            <span style="font-size:16px;">💡</span>
+            <span style="font-size:12.5px;color:#1e40af;font-weight:700;">Click any test to start. If you are a new student, quick mobile OTP verification will save your scorecard on your personal dashboard.</span>
+          </div>
+
+          <div id="availModalTestsList" style="display:flex;flex-direction:column;gap:12px;">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 2: Quick Mobile & OTP Registration Modal -->
+    <div id="testSeriesQuickOtpModal" class="c2s-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.7);z-index:10000;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);">
+      <div style="background:#ffffff;border-radius:18px;max-width:480px;width:100%;box-shadow:0 25px 50px -12px rgba(0,0,0,0.3);border:1.5px solid #cbd5e1;overflow:hidden;position:relative;">
+        <!-- Header -->
+        <div style="background:linear-gradient(135deg, #0f2a5c 0%, #1e3a8a 100%);color:#ffffff;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:11px;font-weight:800;color:#fde047;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px;">C2S STUDENT REGISTRATION</div>
+            <h3 style="margin:0;font-size:18px;font-weight:900;color:#ffffff;">Mobile &amp; OTP Verification</h3>
+          </div>
+          <button type="button" onclick="closeQuickOtpModal()" style="background:rgba(255,255,255,0.15);border:none;color:#ffffff;font-size:18px;border-radius:50%;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+        </div>
+
+        <!-- Body -->
+        <div style="padding:22px 24px;">
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;margin-bottom:16px;">
+            <span style="font-size:11px;font-weight:800;color:#64748b;text-transform:uppercase;display:block;">SELECTED TEST PAPER:</span>
+            <strong id="quickOtpTestName" style="font-size:13.5px;color:#0f2a5c;display:block;margin-top:2px;">SSC CHSL 2026 Mock Test 1</strong>
+          </div>
+
+          <!-- Step 1: Mobile & Name -->
+          <div id="quickOtpStep1">
+            <div style="margin-bottom:12px;">
+              <label style="display:block;font-size:12.5px;font-weight:750;color:#334155;margin-bottom:4px;">Student Full Name *</label>
+              <input id="quickOtpStudentName" type="text" placeholder="Enter your full name" style="width:100%;padding:10px 12px;font-size:13.5px;border:1.5px solid #cbd5e1;border-radius:8px;outline:none;box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:12.5px;font-weight:750;color:#334155;margin-bottom:4px;">Mobile Number (for OTP &amp; Dashboard Login) *</label>
+              <div style="display:flex;gap:6px;">
+                <span style="padding:10px 12px;background:#f1f5f9;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;font-weight:750;color:#475569;">+91</span>
+                <input id="quickOtpMobile" type="tel" maxlength="10" placeholder="10-digit mobile number" style="flex:1;padding:10px 12px;font-size:13.5px;border:1.5px solid #cbd5e1;border-radius:8px;outline:none;box-sizing:border-box;">
+              </div>
+            </div>
+            <button type="button" class="btn orange" style="width:100%;padding:12px;font-size:14px;font-weight:850;border-radius:8px;cursor:pointer;" onclick="sendQuickOtp()">
+              📲 Send Verification OTP →
+            </button>
+          </div>
+
+          <!-- Step 2: OTP Entry -->
+          <div id="quickOtpStep2" style="display:none;">
+            <div style="margin-bottom:12px;background:#fef3c7;border:1px solid #fcd34d;padding:10px 14px;border-radius:10px;">
+              <div style="font-size:12px;color:#92400e;">OTP sent to <strong id="quickOtpDisplayMobile"></strong></div>
+              <div style="margin-top:4px;font-size:13px;color:#b45309;">
+                PREVIEW OTP CODE: <strong id="quickOtpPreviewCode" style="font-size:16px;letter-spacing:2px;color:#b45309;">123456</strong>
+              </div>
+            </div>
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:12.5px;font-weight:750;color:#334155;margin-bottom:4px;">Enter 6-Digit OTP *</label>
+              <input id="quickOtpInputCode" type="text" maxlength="6" placeholder="Enter 6-digit OTP" style="width:100%;padding:11px 14px;font-size:16px;letter-spacing:4px;text-align:center;font-weight:800;border:1.5px solid #2563eb;border-radius:8px;outline:none;box-sizing:border-box;">
+            </div>
+            <button type="button" class="btn green" style="width:100%;padding:12px;font-size:14px;font-weight:850;border-radius:8px;cursor:pointer;" onclick="verifyQuickOtpAndLandOnDashboard()">
+              ✓ Verify OTP &amp; Land on Personal Dashboard →
+            </button>
+            <div style="text-align:center;margin-top:10px;">
+              <button type="button" onclick="sendQuickOtp()" style="background:none;border:none;color:#2563eb;font-size:12px;font-weight:750;cursor:pointer;text-decoration:underline;">Resend OTP</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- VIEW: Batches / Classes -->
     <section data-view="batches" class="hidden">
