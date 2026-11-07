@@ -690,7 +690,7 @@
       </div>
 
       <!-- Member Registry Status Filter Tabs -->
-      <div style="display:flex;gap:8px;padding:0 20px 14px;border-bottom:1px solid #f1f5f9;flex-wrap:wrap;align-items:center;" id="adminMemberStatusTabs">
+      <div style="display:flex;gap:8px;padding:0 20px 10px;border-bottom:1px solid #f1f5f9;flex-wrap:wrap;align-items:center;" id="adminMemberStatusTabs">
         <span style="font-size:12px;font-weight:750;color:#64748b;margin-right:4px;">Filter Registry:</span>
         <button type="button" class="btn active" id="tabStatusAll" onclick="setMemberStatusFilter('all')" style="padding:5px 12px;font-size:12px;font-weight:800;border-radius:6px;">
           All Members (<span id="countAllMembers">0</span>)
@@ -703,6 +703,34 @@
         </button>
         <button type="button" class="btn ghost" id="tabStatusCancelled" onclick="setMemberStatusFilter('cancelled')" style="padding:5px 12px;font-size:12px;font-weight:750;color:#dc2626;border-color:#fecaca;background:#fef2f2;border-radius:6px;">
           🚫 Cancelled (<span id="countCancelledMembers">0</span>)
+        </button>
+      </div>
+
+      <!-- Member Registry Shift Filter Tabs -->
+      <div style="display:flex;gap:8px;padding:10px 20px 14px;border-bottom:1.5px solid #e2e8f0;background:#f8fafc;flex-wrap:wrap;align-items:center;" id="adminMemberShiftTabs">
+        <span style="font-size:12px;font-weight:800;color:#334155;margin-right:4px;display:inline-flex;align-items:center;gap:4px;">
+          <span>⏰ Filter Shift:</span>
+        </span>
+        <button type="button" class="btn active" id="tabShiftAll" onclick="setMemberShiftFilter('all')" style="padding:5px 12px;font-size:12px;font-weight:800;border-radius:6px;">
+          All Shifts (<span id="countShiftAll">0</span>)
+        </button>
+        <button type="button" class="btn ghost" id="tabShiftMorning" onclick="setMemberShiftFilter('morning')" style="padding:5px 12px;font-size:12px;font-weight:750;color:#059669;border-color:#a7f3d0;background:#ecfdf5;border-radius:6px;">
+          🌅 Morning (<span id="countShiftMorning">0</span>)
+        </button>
+        <button type="button" class="btn ghost" id="tabShiftAfternoon" onclick="setMemberShiftFilter('afternoon')" style="padding:5px 12px;font-size:12px;font-weight:750;color:#c2410c;border-color:#fed7aa;background:#fff7ed;border-radius:6px;">
+          🌇 Afternoon (<span id="countShiftAfternoon">0</span>)
+        </button>
+        <button type="button" class="btn ghost" id="tabShiftNight" onclick="setMemberShiftFilter('night')" style="padding:5px 12px;font-size:12px;font-weight:750;color:#334155;border-color:#cbd5e1;background:#f1f5f9;border-radius:6px;">
+          🌙 Night (<span id="countShiftNight">0</span>)
+        </button>
+        <button type="button" class="btn ghost" id="tabShiftFullDay" onclick="setMemberShiftFilter('fullday')" style="padding:5px 12px;font-size:12px;font-weight:750;color:#1d4ed8;border-color:#bfdbfe;background:#eff6ff;border-radius:6px;">
+          ⚡ Full Day (<span id="countShiftFullDay">0</span>)
+        </button>
+        <button type="button" class="btn ghost" id="tabShift24Hours" onclick="setMemberShiftFilter('24hours')" style="padding:5px 12px;font-size:12px;font-weight:750;color:#7c3aed;border-color:#e9d5ff;background:#faf5ff;border-radius:6px;">
+          🌟 24 Hours (<span id="countShift24Hours">0</span>)
+        </button>
+        <button type="button" class="btn ghost" id="tabShiftCustom" onclick="setMemberShiftFilter('custom')" style="padding:5px 12px;font-size:12px;font-weight:750;color:#0369a1;border-color:#bae6fd;background:#f0f9ff;border-radius:6px;">
+          🎨 Custom / Other (<span id="countShiftCustom">0</span>)
         </button>
       </div>
       <table class="admin-table">

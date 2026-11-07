@@ -1580,6 +1580,18 @@ window.resetDeskAdmissionForm = function() {
 };
 
 let currentMemberStatusFilter = 'all';
+let currentMemberShiftFilter = 'all';
+
+window.getMemberShiftCategory = function(shiftStr) {
+  const s = String(shiftStr || '').toLowerCase().trim();
+  if (!s) return 'custom';
+  if (s.includes('24') || s.includes('round')) return '24hours';
+  if (s.includes('full')) return 'fullday';
+  if (s.includes('morning')) return 'morning';
+  if (s.includes('afternoon')) return 'afternoon';
+  if (s.includes('night')) return 'night';
+  return 'custom';
+};
 
 window.setMemberStatusFilter = function(status) {
   currentMemberStatusFilter = status;
@@ -1592,6 +1604,35 @@ window.setMemberStatusFilter = function(status) {
       } else {
         btn.classList.remove('active');
         btn.classList.add('ghost');
+      }
+    }
+  });
+  const q = document.getElementById('memberSearch')?.value || '';
+  renderMemberList(q);
+};
+
+window.setMemberShiftFilter = function(shift) {
+  currentMemberShiftFilter = shift;
+  const shiftTabs = [
+    { key: 'all', id: 'tabShiftAll' },
+    { key: 'morning', id: 'tabShiftMorning' },
+    { key: 'afternoon', id: 'tabShiftAfternoon' },
+    { key: 'night', id: 'tabShiftNight' },
+    { key: 'fullday', id: 'tabShiftFullDay' },
+    { key: '24hours', id: 'tabShift24Hours' },
+    { key: 'custom', id: 'tabShiftCustom' }
+  ];
+  shiftTabs.forEach(item => {
+    const btn = document.getElementById(item.id);
+    if (btn) {
+      if (item.key === shift) {
+        btn.classList.add('active');
+        btn.classList.remove('ghost');
+        btn.style.boxShadow = '0 2px 6px rgba(15,42,92,0.25)';
+      } else {
+        btn.classList.remove('active');
+        btn.classList.add('ghost');
+        btn.style.boxShadow = 'none';
       }
     }
   });
@@ -1612,6 +1653,15 @@ function renderMemberList(filterQuery = '') {
   let countLeft = 0;
   let countCancelled = 0;
 
+  // Calculate Shift Counts
+  let countShiftAll = members.length;
+  let countShiftMorning = 0;
+  let countShiftAfternoon = 0;
+  let countShiftNight = 0;
+  let countShiftFullDay = 0;
+  let countShift24Hours = 0;
+  let countShiftCustom = 0;
+
   members.forEach(m => {
     const isCancelled = m.status === 'Cancelled' || (m.status && m.status.toLowerCase().includes('cancel'));
     const isLeft = m.status && (m.status.toLowerCase().includes('left') || m.status.toLowerCase().includes('completed') || m.status.toLowerCase().includes('selected'));
@@ -1627,6 +1677,14 @@ function renderMemberList(filterQuery = '') {
     } else {
       countLeft++;
     }
+
+    const cat = getMemberShiftCategory(m.shift);
+    if (cat === 'morning') countShiftMorning++;
+    else if (cat === 'afternoon') countShiftAfternoon++;
+    else if (cat === 'night') countShiftNight++;
+    else if (cat === 'fullday') countShiftFullDay++;
+    else if (cat === '24hours') countShift24Hours++;
+    else countShiftCustom++;
   });
 
   const elAll = document.getElementById('countAllMembers');
@@ -1638,6 +1696,21 @@ function renderMemberList(filterQuery = '') {
   const elCancelled = document.getElementById('countCancelledMembers');
   if (elCancelled) elCancelled.textContent = countCancelled;
 
+  const elSAll = document.getElementById('countShiftAll');
+  if (elSAll) elSAll.textContent = countShiftAll;
+  const elSMorning = document.getElementById('countShiftMorning');
+  if (elSMorning) elSMorning.textContent = countShiftMorning;
+  const elSAfternoon = document.getElementById('countShiftAfternoon');
+  if (elSAfternoon) elSAfternoon.textContent = countShiftAfternoon;
+  const elSNight = document.getElementById('countShiftNight');
+  if (elSNight) elSNight.textContent = countShiftNight;
+  const elSFullDay = document.getElementById('countShiftFullDay');
+  if (elSFullDay) elSFullDay.textContent = countShiftFullDay;
+  const elS24Hours = document.getElementById('countShift24Hours');
+  if (elS24Hours) elS24Hours.textContent = countShift24Hours;
+  const elSCustom = document.getElementById('countShiftCustom');
+  if (elSCustom) elSCustom.textContent = countShiftCustom;
+
   const q = filterQuery.toLowerCase().trim();
   const filtered = members.filter(m => {
     const isCancelled = m.status === 'Cancelled' || (m.status && m.status.toLowerCase().includes('cancel'));
@@ -1645,16 +1718,23 @@ function renderMemberList(filterQuery = '') {
     const expDate = getMemberExpiryDate(m);
     const isExpired = expDate ? (todayStr > expDate) : false;
 
-    // Filter by tab
+    // Filter by status tab
     if (currentMemberStatusFilter === 'active' && (isCancelled || isLeft || isExpired)) return false;
     if (currentMemberStatusFilter === 'left' && !isLeft && !isExpired) return false;
     if (currentMemberStatusFilter === 'cancelled' && !isCancelled) return false;
+
+    // Filter by shift tab
+    if (currentMemberShiftFilter !== 'all') {
+      const cat = getMemberShiftCategory(m.shift);
+      if (cat !== currentMemberShiftFilter) return false;
+    }
 
     const matchesQ = !q || 
       (m.name || '').toLowerCase().includes(q) || 
       (m.regNo || '').toLowerCase().includes(q) || 
       (m.mobile || '').includes(q) ||
       (m.seat || '').toLowerCase().includes(q) ||
+      (m.shift || '').toLowerCase().includes(q) ||
       (m.studyPurpose || m.examPref || '').toLowerCase().includes(q);
     
     return matchesQ;
@@ -1688,6 +1768,44 @@ function renderMemberList(filterQuery = '') {
       statusPill = `<span class="pill" style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;font-size:10px;padding:2px 6px;font-weight:800;display:inline-block;margin-top:2px;">🟢 Active (${expDate || 'Till ' + (m.toDate || 'Valid')})</span>`;
     }
 
+    const cat = getMemberShiftCategory(m.shift);
+    let shiftBadgeBg = '#f1f5f9';
+    let shiftBadgeColor = '#0f172a';
+    let shiftBadgeBorder = '#cbd5e1';
+    let shiftIcon = '⏰';
+
+    if (cat === 'morning') {
+      shiftBadgeBg = '#ecfdf5';
+      shiftBadgeColor = '#065f46';
+      shiftBadgeBorder = '#a7f3d0';
+      shiftIcon = '🌅';
+    } else if (cat === 'afternoon') {
+      shiftBadgeBg = '#fff7ed';
+      shiftBadgeColor = '#9a3412';
+      shiftBadgeBorder = '#fed7aa';
+      shiftIcon = '🌇';
+    } else if (cat === 'night') {
+      shiftBadgeBg = '#f1f5f9';
+      shiftBadgeColor = '#1e293b';
+      shiftBadgeBorder = '#cbd5e1';
+      shiftIcon = '🌙';
+    } else if (cat === 'fullday') {
+      shiftBadgeBg = '#eff6ff';
+      shiftBadgeColor = '#1d4ed8';
+      shiftBadgeBorder = '#bfdbfe';
+      shiftIcon = '⚡';
+    } else if (cat === '24hours') {
+      shiftBadgeBg = '#faf5ff';
+      shiftBadgeColor = '#6b21a8';
+      shiftBadgeBorder = '#e9d5ff';
+      shiftIcon = '🌟';
+    } else {
+      shiftBadgeBg = '#f0f9ff';
+      shiftBadgeColor = '#0369a1';
+      shiftBadgeBorder = '#bae6fd';
+      shiftIcon = '🎨';
+    }
+
     return `
       <tr style="${isCancelled ? 'background:#fffafa;' : (isExpired ? 'background:#fffbfb;' : '')}">
         <td>
@@ -1711,7 +1829,10 @@ function renderMemberList(filterQuery = '') {
           ${m.email ? `<span style="font-size:11px;color:#64748b;display:block;">${m.email}</span>` : ''}
         </td>
         <td>
-          <span class="pill" style="font-size:11.5px;padding:3px 9px;margin-bottom:3px;display:inline-block;">${m.shift}</span>
+          <span class="pill" style="font-size:11.5px;padding:3.5px 9px;margin-bottom:3px;display:inline-flex;align-items:center;gap:4px;background:${shiftBadgeBg};color:${shiftBadgeColor};border:1px solid ${shiftBadgeBorder};font-weight:800;border-radius:6px;cursor:pointer;" onclick="setMemberShiftFilter('${cat}')" title="Click to filter by ${cat} shift">
+            <span>${shiftIcon}</span>
+            <span>${m.shift || 'General Shift'}</span>
+          </span>
           <span style="font-size:11.5px;color:${(isCancelled || isLeft || isExpired) ? '#94a3b8' : '#2563eb'};font-weight:750;display:block;">
             💺 ${m.seat || 'Front Desk'} ${(isCancelled || isLeft || isExpired) ? '<span style="font-size:10px;color:#dc2626;">(Released)</span>' : ''}
           </span>
