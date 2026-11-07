@@ -418,13 +418,13 @@ const TEST_PACKAGES = [
     title: "JAIIB 2026 Complete Test Series Package",
     exam: "JAIIB",
     category: "jaiib",
-    badge: "🪔 Diwali Special Mega Launch",
-    bannerTag: "FOR PROMOTIONAL & BANKING OFFICERS (IIBF)",
+    badge: "IIBF 4-Paper Pass",
+    bannerTag: "BANKING PROMOTIONAL EXAMS (IIBF)",
     description: "Strictly aligned with latest revised IIBF 4-Paper syllabus. 40+ Full Mocks, 80+ Chapter Tests, real CBT countdown timer, on-screen financial calculator, and bilingual detailed solutions.",
     price: 499,
     mrp: 1499,
     discount: "67% OFF",
-    launchDate: "Diwali 2026 Special Launch",
+    launchDate: "Official 4-Paper Pass",
     highlights: [
       "All 4 Compulsory Papers: IE&IFS, PPB, AFM & RBWM",
       "40 Full-Length Mocks (10 per Paper) + 80 Topic Tests",
@@ -439,13 +439,13 @@ const TEST_PACKAGES = [
     title: "SSC CHSL (10+2) 2026 Complete Test Series Package",
     exam: "SSC CHSL",
     category: "chsl",
-    badge: "🪔 Diwali Special Mega Launch",
+    badge: "TCS Pattern Test Pass",
     bannerTag: "TIER-1 & TIER-2 COMPREHENSIVE PACK",
     description: "Prepared by TCS-pattern experts. 50+ Full-Length Mocks, 100+ Sectional Tests, Previous Year Papers (2020-2024), and Computer Knowledge module.",
     price: 299,
     mrp: 999,
     discount: "70% OFF",
-    launchDate: "Diwali 2026 Special Launch",
+    launchDate: "Tier-1 + Tier-2 Pass",
     highlights: [
       "50 Full-Length Tier-1 Mocks (TCS Latest Interface)",
       "25 Tier-2 Mains Mocks with Typing Speed Diagnostic",
@@ -460,13 +460,13 @@ const TEST_PACKAGES = [
     title: "Banking & Insurance All-in-One Mock Pass",
     exam: "BANK",
     category: "banking",
-    badge: "Popular Banking Pack",
-    bannerTag: "SBI PO/CLERK, IBPS PO/CLERK, RRB",
+    badge: "Banking & Insurance Pass",
+    bannerTag: "SBI • IBPS • RRB PO & CLERK",
     description: "Complete mock series for all major public sector bank exams with high difficulty reasoning and DI.",
     price: 399,
     mrp: 1199,
     discount: "66% OFF",
-    launchDate: "Available Now",
+    launchDate: "SBI • IBPS • RRB",
     highlights: ["60+ Full Mocks", "Bilingual", "Financial Calculator Allowed", "Sectional Time Limits"],
     tests: ["BANK-MOCK-1"]
   },
@@ -481,7 +481,7 @@ const TEST_PACKAGES = [
     price: 249,
     mrp: 799,
     discount: "68% OFF",
-    launchDate: "Available Now",
+    launchDate: "OSSC • OSSSC • OPSC",
     highlights: ["35+ Full Mocks", "Special Focus on Odisha GK & Culture", "Negative Marking Simulation"],
     tests: ["OSSC-MOCK-1"]
   },
@@ -496,13 +496,25 @@ const TEST_PACKAGES = [
     price: 249,
     mrp: 699,
     discount: "64% OFF",
-    launchDate: "Available Now",
+    launchDate: "CBT-1 & CBT-2",
     highlights: ["45+ Full Mocks", "General Science Special Modules", "Scratch Pad Notes"],
     tests: ["RAILWAY-MOCK-1"]
   }
 ];
 
 let activeTestCategory = "all";
+let activeTestSearchQuery = "";
+
+window.handleTestbookSearch = function(query) {
+  activeTestSearchQuery = String(query || "").toLowerCase().trim();
+  renderTestPackages();
+  renderTests();
+};
+
+window.scrollToAttemptedTests = function() {
+  const el = document.getElementById("attemptedTestsSection") || document.getElementById("givenTests");
+  if (el) el.scrollIntoView({ behavior: "smooth" });
+};
 
 function filterTestPackages(cat) {
   activeTestCategory = cat;
@@ -517,7 +529,7 @@ function renderTestPackages() {
   const container = document.getElementById("testPackagesGrid");
   if (!container) return;
 
-  const filtered = activeTestCategory === "all" 
+  let filtered = activeTestCategory === "all" 
     ? TEST_PACKAGES 
     : (activeTestCategory === "banking" 
         ? TEST_PACKAGES.filter(p => p.category === "banking" || p.category === "jaiib")
@@ -525,27 +537,34 @@ function renderTestPackages() {
             ? TEST_PACKAGES.filter(p => p.category === "ssc" || p.category === "chsl")
             : TEST_PACKAGES.filter(p => p.category === activeTestCategory)));
 
+  if (activeTestSearchQuery) {
+    filtered = filtered.filter(p => 
+      (p.title || "").toLowerCase().includes(activeTestSearchQuery) ||
+      (p.exam || "").toLowerCase().includes(activeTestSearchQuery) ||
+      (p.description || "").toLowerCase().includes(activeTestSearchQuery) ||
+      (p.bannerTag || "").toLowerCase().includes(activeTestSearchQuery) ||
+      (p.highlights || []).some(h => h.toLowerCase().includes(activeTestSearchQuery))
+    );
+  }
+
   const unlockedPkgs = store.get("c2s_unlocked_packages", []);
 
-  container.innerHTML = filtered.map(pkg => {
+  container.innerHTML = filtered.length ? filtered.map(pkg => {
     const isUnlocked = unlockedPkgs.includes(pkg.id) || store.get("c2s_all_access_pass", false);
-    const isDiwali = pkg.badge.includes("Diwali");
 
     return `
-      <div class="card test-pkg-card" style="border:${isDiwali ? '2px solid #ea580c' : '1.5px solid #e2e8f0'};border-radius:18px;padding:24px;background:#ffffff;box-shadow:${isDiwali ? '0 12px 30px rgba(234,88,12,0.12)' : '0 4px 16px rgba(15,23,42,0.06)'};display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;">
-        ${isDiwali ? '<div style="position:absolute;top:0;right:0;background:linear-gradient(135deg, #ea580c, #c2410c);color:#fff;font-size:10.5px;font-weight:900;padding:4px 14px;border-bottom-left-radius:12px;text-transform:uppercase;letter-spacing:0.5px;">🪔 DIWALI LAUNCH</div>' : ''}
-        
+      <div class="card test-pkg-card" style="border:1.5px solid #e2e8f0;border-radius:18px;padding:22px;background:#ffffff;box-shadow:0 4px 16px rgba(15,23,42,0.06);display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;transition:all 0.2s;" onmouseenter="this.style.borderColor='#93c5fd';this.style.transform='translateY(-3px)';" onmouseleave="this.style.borderColor='#e2e8f0';this.style.transform='none';">
         <div>
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
-            <span class="pill ${isDiwali ? 'orange' : 'blue'}" style="font-weight:800;font-size:11px;">${pkg.badge}</span>
-            <span style="font-size:11.5px;font-weight:750;color:#64748b;">${pkg.bannerTag}</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+            <span class="pill blue" style="font-weight:800;font-size:11px;">${pkg.badge}</span>
+            <span style="font-size:11px;font-weight:750;color:#64748b;text-transform:uppercase;">${pkg.bannerTag}</span>
           </div>
 
-          <h3 style="font-size:20px;font-weight:900;color:#0f172a;margin:4px 0 6px;line-height:1.3;">${pkg.title}</h3>
+          <h3 style="font-size:19px;font-weight:900;color:#0f2a5c;margin:4px 0 6px;line-height:1.3;">${pkg.title}</h3>
           <p style="font-size:13px;color:#475569;margin:0 0 14px;line-height:1.55;">${pkg.description}</p>
 
           <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;margin-bottom:16px;">
-            <div style="font-size:12px;font-weight:800;color:#1e3a8a;margin-bottom:6px;text-transform:uppercase;">Package Inclusions:</div>
+            <div style="font-size:11.5px;font-weight:800;color:#1e3a8a;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.3px;">Test Series Inclusions:</div>
             <ul style="margin:0;padding-left:16px;font-size:12.5px;color:#334155;line-height:1.6;">
               ${pkg.highlights.map(h => `<li>${h}</li>`).join('')}
             </ul>
@@ -559,7 +578,7 @@ function renderTestPackages() {
               <span style="font-size:13.5px;color:#94a3b8;text-decoration:line-through;margin-left:6px;">₹${pkg.mrp}</span>
               <span style="font-size:11.5px;font-weight:800;color:#16a34a;margin-left:6px;">${pkg.discount}</span>
             </div>
-            <span style="font-size:11.5px;color:#64748b;font-weight:700;">Complete Mock Pass</span>
+            <span style="font-size:11.5px;color:#64748b;font-weight:700;">Full Mock Pass</span>
           </div>
 
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -569,7 +588,7 @@ function renderTestPackages() {
               </button>
             ` : `
               <button class="btn orange" style="flex:1;padding:10px 14px;font-weight:850;font-size:13px;" onclick="openPackageBuyModal('${pkg.id}')">
-                ⚡ Buy Package (₹${pkg.price})
+                ⚡ Unlock Series (₹${pkg.price})
               </button>
               <button class="btn ghost" style="flex:1;padding:10px 12px;font-weight:750;font-size:12.5px;" onclick="scrollToTestsAndHighlight('${pkg.id}')">
                 📝 Free Demo Mock
@@ -579,7 +598,7 @@ function renderTestPackages() {
         </div>
       </div>
     `;
-  }).join('');
+  }).join('') : '<div style="grid-column:1/-1;text-align:center;padding:36px;color:#64748b;background:#f8fafc;border-radius:16px;border:1px dashed #cbd5e1;"><p style="margin:0;font-size:14px;font-weight:700;">No test packages matched your search.</p></div>';
 };
 
 function scrollToAvailableTests() {
@@ -700,23 +719,34 @@ function renderTests(){
   } else if (activeTestCategory === "ossc") {
     categoryFiltered = categoryFiltered.filter(t => t.exam === "OSSC");
   }
+  // Filter by search query if present
+  if (activeTestSearchQuery) {
+    categoryFiltered = categoryFiltered.filter(t => 
+      (t.title || "").toLowerCase().includes(activeTestSearchQuery) ||
+      (t.exam || "").toLowerCase().includes(activeTestSearchQuery)
+    );
+  }
+
   const avail = categoryFiltered;
   const examTheme = { 'BANK': 'bank', 'SSC': 'ssc', 'RAILWAY': 'railway', 'OSSC': 'ossc', 'UPSC': 'upsc', 'JAIIB': 'bank', 'SSC CHSL': 'ssc' };
+
+  const countEl = document.getElementById('testbookAvailCount');
+  if (countEl) countEl.textContent = avail.length;
 
   const availHeader = document.getElementById("availableTestsSection");
   if (availHeader) {
     const catLabels = {
       all: "All Target Exams",
-      jaiib: "🪔 JAIIB 2026 (Banking) Package",
-      chsl: "⚡ SSC CHSL 2026 Package",
-      banking: "🏛️ Banking & Insurance Package",
-      ssc: "📋 SSC Exams Package",
-      railway: "🚂 Railway NTPC Package",
-      ossc: "🏢 OSSC / Odisha State Package"
+      jaiib: "🪔 JAIIB 2026 (Banking)",
+      chsl: "⚡ SSC CHSL 2026",
+      banking: "🏛️ Banking & Insurance",
+      ssc: "📋 SSC Exams",
+      railway: "🚂 Railway NTPC",
+      ossc: "🏢 OSSC / Odisha State"
     };
     const currentLabel = catLabels[activeTestCategory] || "Selected Exam Package";
     const h2 = availHeader.querySelector("h2");
-    if (h2) h2.innerHTML = `2. Do The Exams Available in Package <span style="font-size:14px;color:#f97316;font-weight:800;margin-left:8px;">[${currentLabel} &bull; ${avail.length} Papers]</span>`;
+    if (h2) h2.innerHTML = `2. Practice &amp; Attempt Mock Tests <span style="font-size:13.5px;color:#2563eb;font-weight:800;margin-left:8px;">[${currentLabel} &bull; ${avail.length} Papers Available]</span>`;
   }
 
   if ($("#availTests")) $("#availTests").innerHTML = avail.length ? '<div class="test-grid">' + avail.map(t => {
@@ -745,29 +775,46 @@ function renderTests(){
             </div>
           </div>
           ${unlocked
-            ? `<button class="btn orange" style="width:100%;padding:11px;font-weight:800;" onclick="startTest('${t.id}')">Start Test Engine →</button>`
-            : `<button class="btn" style="width:100%;padding:11px;font-weight:800;background:#0f2444;color:#fff;" onclick="openTestPaymentModal('${t.id}','single')">🔒 Unlock Test / Buy Package →</button>`
+            ? `<button class="btn orange" style="width:100%;padding:11px;font-weight:800;border-radius:10px;cursor:pointer;" onclick="startTest('${t.id}')">Start Test Engine →</button>`
+            : `<button class="btn" style="width:100%;padding:11px;font-weight:800;background:#0f2444;color:#fff;border-radius:10px;cursor:pointer;" onclick="openTestPaymentModal('${t.id}','single')">🔒 Unlock Test / Buy Package →</button>`
           }
         </div>
       </div>`;
-  }).join("") + '</div>' : "<p class='small'>All available mock tests have been completed. Check your scores and solutions in Given Tests below.</p>";
+  }).join("") + '</div>' : "<p class='small'>No matching tests found. Try changing your search query or exam category tab above.</p>";
 
   if ($("#givenTests")) $("#givenTests").innerHTML = given.length ? given.map(g => `
-    <div class="card" style="border-left:5px solid var(--c2s-emerald-600);margin-bottom:14px;">
+    <div class="card" style="border-left:5px solid var(--c2s-emerald-600);margin-bottom:14px;border-radius:14px;padding:20px;background:#ffffff;box-shadow:0 3px 12px rgba(15,23,42,0.05);">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
         <h4 style="margin:0;font-size:18px;color:var(--c2s-navy-800);">${g.title}</h4>
-        <span class="pill green" style="font-size:14px;">Score: ${g.score} / ${g.total} marks</span>
+        <span class="pill green" style="font-size:13.5px;font-weight:800;padding:4px 10px;">Score: ${g.score} / ${g.total || g.maxMarks || 0} marks</span>
       </div>
-      <p class="small" style="margin:8px 0 12px;color:var(--c2s-slate-600);">
-        ✅ Correct: <strong>${g.correct}</strong> • ❌ Wrong: <strong>${g.wrong}</strong> • ⏭ Skipped: <strong>${g.skipped}</strong> • ⚠️ Violations: <strong>${g.violations||0}</strong> • Status: <em>${g.reason||"submitted"}</em>
+      <p class="small" style="margin:8px 0 14px;color:var(--c2s-slate-600);line-height:1.6;">
+        ✅ Correct: <strong>${g.correct}</strong> • ❌ Wrong: <strong>${g.wrong}</strong> • ⏭ Skipped: <strong>${g.skipped}</strong> • 🎯 Accuracy: <strong>${g.accuracy || 0}%</strong> • ⏱ Time: <strong>${g.timeTaken || '—'}</strong>
       </p>
-      <button class="btn ghost" onclick="reviewGiven('${g.testId}')">View Detailed Marks &amp; Solutions →</button>
-    </div>`).join("") : "<p class='small' style='color:var(--c2s-slate-500);'>No given tests yet. Take an available test above to view your score breakdown.</p>";
+      <button class="btn ghost" style="font-weight:800;font-size:13px;border-radius:8px;padding:8px 16px;" onclick="reviewGiven('${g.testId}')">View Detailed Solutions &amp; Question Review →</button>
+    </div>`).join("") : "<p class='small' style='color:var(--c2s-slate-500);'>No given tests yet. Take an available mock test above to view your score breakdown and solutions.</p>";
 }
-function reviewGiven(id){
-  const g=store.get("c2s_main_given", []).find(x=>x.testId===id); if(!g) return;
-  const t=TESTS.find(x=>x.id===id);
-  alert(t.title+"\nScore: "+g.score+"/"+g.total+"\n\n"+t.qs.map((q,i)=>"Q"+(i+1)+": "+q[0]+"\nYour answer: "+(g.answers[i]==null?"Skipped":q[1][g.answers[i]])+"\nCorrect: "+q[1][q[2]]).join("\n\n"));
+
+function reviewGiven(id) {
+  const given = store.get("c2s_main_given", []);
+  const g = given.find(x => x.testId === id);
+  if (!g) return alert("Attempt record not found.");
+  const customTests = store.get("c2s_custom_tests", []);
+  const allTests = [...(typeof ENRICHED_TESTS !== "undefined" ? ENRICHED_TESTS : []), ...(typeof TESTS !== "undefined" ? TESTS : []), ...customTests];
+  const t = allTests.find(x => x.id === id);
+  if (!t) return alert("Test data not found.");
+
+  lastSubmittedResult = {
+    test: t,
+    result: g
+  };
+  if (typeof showSolutions === "function") {
+    showSolutions();
+    const lock = document.getElementById("examLock");
+    if (lock) lock.classList.remove("hidden");
+  } else {
+    alert(t.title + "\nScore: " + g.score + "/" + (g.total || g.maxMarks));
+  }
 }
 /* ---------- OTP login/signup (Main) — all three channels, no demo logins ---------- */
 /* ==========================================================================

@@ -2478,79 +2478,63 @@
 
     <!-- VIEW: Test Series Page (Standardized Unified Layout) -->
     <section data-view="tests" class="hidden">
-      <!-- PW + TESTBOOK STYLE HERO BANNER -->
-      <div class="test-portal-hero" style="background:linear-gradient(135deg, #091a38 0%, #1e3a8a 60%, #9a3412 100%);color:#ffffff;border-radius:20px;padding:32px 26px;margin-bottom:28px;box-shadow:0 14px 34px rgba(15,23,42,0.22);position:relative;overflow:hidden;border:1.5px solid rgba(255,255,255,0.12);">
-        <div style="position:relative;z-index:2;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
-            <span class="pill" style="background:#ea580c;color:#ffffff;font-size:11.5px;font-weight:900;letter-spacing:0.5px;padding:4px 12px;border-radius:20px;box-shadow:0 2px 8px rgba(234,88,12,0.4);">
-              🪔 DIWALI SPECIAL MEGA LAUNCH
-            </span>
-            <span class="pill" style="background:rgba(255,255,255,0.18);color:#fde047;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:20px;">
-              ⭐ COMBINATION OF PW &amp; TESTBOOK ENGINE
-            </span>
+      <!-- TESTBOOK CLEAN TOP BAR & SEARCH -->
+      <div class="testbook-portal-header" style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:18px;padding:22px 26px;margin-bottom:24px;box-shadow:0 4px 16px rgba(15,23,42,0.04);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:16px;">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+              <span style="background:#eff6ff;color:#1d4ed8;font-size:11.5px;font-weight:800;padding:3px 10px;border-radius:6px;border:1px solid #bfdbfe;">CBT TEST SERIES</span>
+              <span style="font-size:12px;color:#64748b;font-weight:700;">• Real TCS Exam Hall Interface</span>
+            </div>
+            <h1 style="font-size:clamp(22px, 3vw, 28px);font-weight:900;color:#0f2a5c;margin:0 0 4px;">
+              Test Series &amp; Mock Tests
+            </h1>
+            <p style="font-size:13.5px;color:#64748b;margin:0;">
+              Practice 100% TCS-pattern CBT mock tests with negative marking, all-India ranking, real timer, and detailed step-by-step solutions.
+            </p>
           </div>
-
-          <h2 style="font-size:clamp(22px, 3.2vw, 32px);font-weight:900;color:#ffffff;margin:0 0 10px;line-height:1.25;">
-            C2S CBT Mock Test Series Portal
-          </h2>
-          <p style="font-size:clamp(13.5px, 1.8vw, 15px);color:#cbd5e1;margin:0 0 22px;line-height:1.6;max-width:820px;">
-            Now introducing exclusive <strong>JAIIB 2026</strong> and <strong>SSC CHSL 2026</strong> Test Series by Diwali! Choose your target exam package, unlock at special inaugural rates, and take full-length TCS interface mock tests with real-time countdown, negative marking, on-screen calculator, and step-by-step solutions.
-          </p>
-
-          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:12px;margin-bottom:22px;">
-            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:12px 14px;">
-              <div style="font-size:20px;font-weight:900;color:#fde047;">JAIIB 2026</div>
-              <div style="font-size:11px;color:#cbd5e1;font-weight:700;text-transform:uppercase;">All 4 Papers Covered</div>
-            </div>
-            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:12px 14px;">
-              <div style="font-size:20px;font-weight:900;color:#fdba74;">SSC CHSL</div>
-              <div style="font-size:11px;color:#cbd5e1;font-weight:700;text-transform:uppercase;">Tier 1 + Tier 2 Full Mocks</div>
-            </div>
-            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:12px 14px;">
-              <div style="font-size:20px;font-weight:900;color:#86efac;">100% TCS CBT</div>
-              <div style="font-size:11px;color:#cbd5e1;font-weight:700;text-transform:uppercase;">Exam Hall Anti-Cheat Mode</div>
-            </div>
-            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:12px 14px;">
-              <div style="font-size:20px;font-weight:900;color:#93c5fd;">AIR &amp; Solutions</div>
-              <div style="font-size:11px;color:#cbd5e1;font-weight:700;text-transform:uppercase;">In-Depth Explanations</div>
-            </div>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-            <button type="button" class="btn" style="background:#ea580c;color:#ffffff;padding:10px 22px;font-size:14px;font-weight:850;border-radius:10px;border:none;cursor:pointer;box-shadow:0 4px 14px rgba(234,88,12,0.4);" onclick="filterTestPackages('jaiib')">
-              🪔 Explore JAIIB Test Series →
+          
+          <!-- Testbook Sub-Navigation Quick Links -->
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <a href="#testPackagesSection" class="btn" style="background:#0f2a5c;color:#ffffff;padding:8px 16px;font-size:12.5px;font-weight:800;border-radius:8px;text-decoration:none;">
+              🎯 Test Packages
+            </a>
+            <button type="button" class="btn orange" onclick="scrollToAvailableTests()" style="padding:8px 16px;font-size:12.5px;font-weight:800;border-radius:8px;cursor:pointer;">
+              📝 Available Tests (<span id="testbookAvailCount">0</span>)
             </button>
-            <button type="button" class="btn" style="background:#ffffff;color:#0f172a;padding:10px 22px;font-size:14px;font-weight:850;border-radius:10px;border:none;cursor:pointer;" onclick="filterTestPackages('chsl')">
-              ⚡ Explore SSC CHSL Series →
-            </button>
-            <button type="button" class="btn ghost" style="color:#ffffff;border:1px solid rgba(255,255,255,0.4);padding:10px 18px;font-size:13.5px;font-weight:750;border-radius:10px;" onclick="scrollToAvailableTests()">
-              📝 Take Free Demo Mocks ↓
+            <button type="button" class="btn ghost" onclick="scrollToAttemptedTests()" style="padding:8px 14px;font-size:12.5px;font-weight:750;border-radius:8px;cursor:pointer;">
+              📊 Attempted Tests
             </button>
           </div>
         </div>
-      </div>
 
-      <!-- PW & TESTBOOK EXAM CATEGORY FILTER TABS -->
-      <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:16px;padding:14px 18px;margin-bottom:26px;box-shadow:0 2px 10px rgba(0,0,0,0.03);">
-        <div style="font-size:12px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">
-          🎯 Choose Your Exam Category / Target Test Package:
+        <!-- Testbook Live Search Input -->
+        <div style="position:relative;margin-bottom:14px;">
+          <input id="testSeriesSearchInput" type="text" placeholder="🔍 Search test series or exam (e.g. SSC CHSL, JAIIB, Banking, Railway, OSSC)..." 
+            style="width:100%;padding:12px 16px 12px 42px;font-size:14px;border:1.5px solid #cbd5e1;border-radius:10px;outline:none;background:#f8fafc;color:#0f172a;box-sizing:border-box;transition:all 0.2s;"
+            onfocus="this.style.background='#ffffff';this.style.borderColor='#2563eb';"
+            onblur="this.style.background='#f8fafc';this.style.borderColor='#cbd5e1';"
+            oninput="handleTestbookSearch(this.value)">
+          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:#64748b;pointer-events:none;">🔍</span>
         </div>
-        <div id="testCategoryTabs" style="display:flex;align-items:center;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;-webkit-overflow-scrolling:touch;">
-          <button type="button" class="btn test-cat-pill active" data-cat="all" onclick="filterTestPackages('all')">🌟 All Packages</button>
-          <button type="button" class="btn test-cat-pill" data-cat="jaiib" onclick="filterTestPackages('jaiib')" style="border:1.5px solid #f97316;color:#c2410c;font-weight:850;">🪔 JAIIB (Banking) — Diwali Special</button>
-          <button type="button" class="btn test-cat-pill" data-cat="chsl" onclick="filterTestPackages('chsl')" style="border:1.5px solid #2563eb;color:#1d4ed8;font-weight:850;">⚡ SSC CHSL 2026 — Diwali Special</button>
-          <button type="button" class="btn test-cat-pill" data-cat="banking" onclick="filterTestPackages('banking')">🏛️ Banking &amp; Insurance</button>
+
+        <!-- Testbook Exam Category Pills -->
+        <div style="display:flex;align-items:center;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;-webkit-overflow-scrolling:touch;" id="testCategoryTabs">
+          <button type="button" class="btn test-cat-pill active" data-cat="all" onclick="filterTestPackages('all')">🌟 All Exams</button>
           <button type="button" class="btn test-cat-pill" data-cat="ssc" onclick="filterTestPackages('ssc')">📋 SSC Exams</button>
-          <button type="button" class="btn test-cat-pill" data-cat="railway" onclick="filterTestPackages('railway')">🚂 Railway NTPC</button>
-          <button type="button" class="btn test-cat-pill" data-cat="ossc" onclick="filterTestPackages('ossc')">🏢 OSSC / Odisha State</button>
+          <button type="button" class="btn test-cat-pill" data-cat="chsl" onclick="filterTestPackages('chsl')">⚡ SSC CHSL 2026</button>
+          <button type="button" class="btn test-cat-pill" data-cat="banking" onclick="filterTestPackages('banking')">🏛️ Banking &amp; Insurance</button>
+          <button type="button" class="btn test-cat-pill" data-cat="jaiib" onclick="filterTestPackages('jaiib')">🪔 JAIIB / CAIIB (Banking)</button>
+          <button type="button" class="btn test-cat-pill" data-cat="railway" onclick="filterTestPackages('railway')">🚂 Railways (RRB)</button>
+          <button type="button" class="btn test-cat-pill" data-cat="ossc" onclick="filterTestPackages('ossc')">🏢 Odisha State (OSSC)</button>
         </div>
       </div>
 
       <!-- TEST PACKAGES SHOWCASE GRID -->
-      <div class="section-header" style="margin-top:0;">
-        <span class="section-tag">TESTBOOK &amp; PW STYLE TEST PACKAGES</span>
-        <h2>1. Choose &amp; Buy Your Test Series Package</h2>
-        <p>Select your package, complete payment via UPI / Desk Pickup, and unlock all full-length mocks, sectional tests, and PYQs instantly.</p>
+      <div id="testPackagesSection" class="section-header" style="margin-top:0;">
+        <span class="section-tag">TARGET EXAM PASSES</span>
+        <h2>1. Target Exam Test Series Packages</h2>
+        <p>Complete mock test packages with full-length mocks, sectional tests, and previous year papers.</p>
         <div class="section-divider"></div>
       </div>
 
@@ -2569,7 +2553,7 @@
       <div id="availTests" class="test-grid" style="margin-bottom:36px;"></div>
 
       <!-- ATTEMPTED TESTS SECTION -->
-      <div class="section-header" style="margin-top:36px;">
+      <div id="attemptedTestsSection" class="section-header" style="margin-top:36px;">
         <span class="section-tag">PERFORMANCE &bull; ATTEMPTED PAPERS &bull; FULL SOLUTIONS</span>
         <h2>3. ✅ Attempted Tests &amp; Scorecards</h2>
         <p>Your completed tests with marks, negative marking deduction, correct answer keys, and in-depth step-by-step explanations.</p>
