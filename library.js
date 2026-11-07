@@ -331,17 +331,151 @@ function renderTheatreSeats() {
     zoneTabs.style.display = currentLibraryFloor === 2 ? "none" : "flex";
   }
 
-  const zones = currentLibraryFloor === 2 ? [
-    {
-      id: "zone-a",
-      title: "Zone A (2nd Floor • Seats S-1 to S-24)",
-      desc: "Silent Academic Deck • Dedicated Air-Conditioned Sanctuary",
-      rows: [
-        { label: "Row 1 • Upper Deck (Seats S-1 to S-12)", start: 1, end: 12 },
-        { label: "Row 2 • Upper Deck (Seats S-13 to S-24)", start: 13, end: 24 }
-      ]
+  // -------------------------------------------------------------
+  // DEDICATED ARCHITECTURAL OPPOSITE BAY ENGINE FOR 2ND FLOOR (24 SEATS)
+  // Left Bay (S-01 to S-12) and Right Bay (S-13 to S-24 Opposite)
+  // -------------------------------------------------------------
+  if (currentLibraryFloor === 2) {
+    let zoneTotal = 24;
+    let zoneTaken = 0;
+    for (let i = 1; i <= 24; i++) {
+      if (taken[i] || (i % 7 === 0) || (i % 11 === 0)) zoneTaken++;
     }
-  ] : [
+    const zoneVacant = zoneTotal - zoneTaken;
+
+    let leftBayHtml = "";
+    let rightBayHtml = "";
+
+    // Build Left Bay: Seats S-01 to S-12
+    for (let i = 1; i <= 12; i++) {
+      const seatCode = "S-" + (i < 10 ? "0" + i : i);
+      const isOccupied = taken[i] || (i % 7 === 0) || (i % 11 === 0);
+      const bg = isOccupied ? "#f8fafc" : "#ffffff";
+      const border = isOccupied ? "1px dashed #cbd5e1" : "1.5px solid #0284c7";
+      const textCol = isOccupied ? "#94a3b8" : "#0f2a5c";
+      const statusLabel = isOccupied 
+        ? `<span style="font-size:9.5px;font-weight:600;color:#94a3b8;">Occupied</span>`
+        : `<span style="font-size:9.5px;font-weight:750;color:#0284c7;">Free</span>`;
+      const clickHandler = isOccupied ? "" : `onclick="selectAndBookSeat('${seatCode}', ${i})"`;
+
+      leftBayHtml += `
+        <button type="button" ${clickHandler} title="Seat ${seatCode} (Left Bay • Facing Central Divider ➜) • Attached Locker #L-${i} • ₹2,000/mo"
+          style="display:flex;align-items:center;justify-content:space-between;background:${bg};border:${border};border-radius:10px;padding:8px 12px;cursor:${isOccupied ? 'not-allowed' : 'pointer'};transition:all 0.18s cubic-bezier(0.16,1,0.3,1);box-shadow:0 1px 3px rgba(15,23,42,0.03);"
+          class="${isOccupied ? '' : 'c2s-seat-card-opposite'}">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:14px;">💺</span>
+            <div style="text-align:left;">
+              <strong style="font-size:13px;color:${textCol};display:block;line-height:1.2;">${seatCode}</strong>
+              <span style="font-size:10px;color:#64748b;">Locker #${i}</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            ${statusLabel}
+            <span style="font-size:11px;color:#0284c7;font-weight:900;" title="Facing central partition">➜</span>
+          </div>
+        </button>
+      `;
+    }
+
+    // Build Right Bay: Seats S-13 to S-24 (Opposite!)
+    for (let i = 13; i <= 24; i++) {
+      const seatCode = "S-" + i;
+      const isOccupied = taken[i] || (i % 7 === 0) || (i % 11 === 0);
+      const bg = isOccupied ? "#f8fafc" : "#ffffff";
+      const border = isOccupied ? "1px dashed #cbd5e1" : "1.5px solid #0284c7";
+      const textCol = isOccupied ? "#94a3b8" : "#0f2a5c";
+      const statusLabel = isOccupied 
+        ? `<span style="font-size:9.5px;font-weight:600;color:#94a3b8;">Occupied</span>`
+        : `<span style="font-size:9.5px;font-weight:750;color:#0284c7;">Free</span>`;
+      const clickHandler = isOccupied ? "" : `onclick="selectAndBookSeat('${seatCode}', ${i})"`;
+
+      rightBayHtml += `
+        <button type="button" ${clickHandler} title="Seat ${seatCode} (Right Bay • Opposite Facing 🠔) • Attached Locker #L-${i} • ₹2,000/mo"
+          style="display:flex;align-items:center;justify-content:space-between;background:${bg};border:${border};border-radius:10px;padding:8px 12px;cursor:${isOccupied ? 'not-allowed' : 'pointer'};transition:all 0.18s cubic-bezier(0.16,1,0.3,1);box-shadow:0 1px 3px rgba(15,23,42,0.03);"
+          class="${isOccupied ? '' : 'c2s-seat-card-opposite'}">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span style="font-size:11px;color:#0284c7;font-weight:900;" title="Facing central partition opposite">🠔</span>
+            ${statusLabel}
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;text-align:right;">
+            <div>
+              <strong style="font-size:13px;color:${textCol};display:block;line-height:1.2;">${seatCode}</strong>
+              <span style="font-size:10px;color:#64748b;">Locker #${i}</span>
+            </div>
+            <span style="font-size:14px;">💺</span>
+          </div>
+        </button>
+      `;
+    }
+
+    gridEl.innerHTML = `
+      <div class="c2s-opposite-sanctuary-wrap">
+        <!-- Sanctuary Status Header Strip -->
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px;padding-bottom:14px;border-bottom:1.5px solid #e2e8f0;">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:20px;">🏛️</span>
+              <h3 style="margin:0;font-size:17px;font-weight:850;color:#0f2a5c;">2nd Floor • Zone-A Executive Sanctuary</h3>
+              <span style="background:#ecfdf5;color:#059669;border:1px solid #a7f3d0;font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;">
+                ${zoneVacant} Free / 24 Total
+              </span>
+            </div>
+            <p style="margin:4px 0 0;font-size:12.5px;color:#64748b;">
+              Architectural Layout: Symmetrical Face-to-Face Opposite Bays with Sound-Absorbing Central Partition &amp; 1.8m Walkway.
+            </p>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <span style="font-size:12px;font-weight:800;color:#0284c7;background:#f0f9ff;border:1px solid #bae6fd;padding:5px 12px;border-radius:8px;">
+              ⚡ ₹2,000 / mo &bull; Warm LED &bull; Dedicated 230V Socket
+            </span>
+          </div>
+        </div>
+
+        <!-- 3-Column Symmetrical Opposite Bay Architectural Layout -->
+        <div class="c2s-opposite-bay-grid">
+          <!-- Left Bay (Row 1 • S-01 to S-12) -->
+          <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1.5px solid #e2e8f0;">
+              <div>
+                <strong style="color:#0f2a5c;font-size:13.5px;display:block;">⬅️ Left Bay (Seats S-01 to S-12)</strong>
+                <span style="font-size:11px;color:#64748b;">Facing Central Soundproof Partition ➜</span>
+              </div>
+              <span style="font-size:11px;font-weight:750;color:#0284c7;background:#e0f2fe;padding:2px 8px;border-radius:6px;">12 Seats</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr;gap:8px;">
+              ${leftBayHtml}
+            </div>
+          </div>
+
+          <!-- Central Architectural Acoustic Barrier & Walkway -->
+          <div class="c2s-central-walkway-strip">
+            <span style="font-size:22px;margin-bottom:6px;">🛡️</span>
+            <span style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;font-weight:850;color:#475569;letter-spacing:1.5px;text-transform:uppercase;margin:12px 0;">
+              CENTRAL ACOUSTIC PARTITION &bull; 1.8M WALKWAY
+            </span>
+            <span style="font-size:18px;margin-top:6px;">🚶‍♂️</span>
+          </div>
+
+          <!-- Right Bay (Row 2 • S-13 to S-24 • Opposite!) -->
+          <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1.5px solid #e2e8f0;">
+              <div>
+                <strong style="color:#0f2a5c;font-size:13.5px;display:block;">Right Bay (Seats S-13 to S-24) ➡️</strong>
+                <span style="font-size:11px;color:#0284c7;font-weight:750;">🠔 OPPOSITE FACING</span>
+              </div>
+              <span style="font-size:11px;font-weight:750;color:#0284c7;background:#e0f2fe;padding:2px 8px;border-radius:6px;">12 Seats</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr;gap:8px;">
+              ${rightBayHtml}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const zones = [
     {
       id: "zone-b",
       title: "Zone B (1st Floor • Seats S-25 to S-67 • Left Wall Bay)",

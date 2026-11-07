@@ -380,40 +380,51 @@
 
     buildPerimeterWalls(floor2Group, 30, 20, 0.6, 2.6);
 
-    // Executive Aisle Carpet
-    const aisleGeo = new THREE.BoxGeometry(26, 0.05, 3.2);
-    const aisleMesh = new THREE.Mesh(aisleGeo, mats.aislePath);
-    aisleMesh.position.set(0, 0.63, 0);
-    aisleMesh.receiveShadow = true;
-    floor2Group.add(aisleMesh);
+    // Central Frosted Glass Sound-Absorbing Partition Wall along z = 0
+    const divGeo = new THREE.BoxGeometry(26, 1.45, 0.08);
+    const divMesh = new THREE.Mesh(divGeo, mats.glassRailing);
+    divMesh.position.set(0, 1.35, 0);
+    floor2Group.add(divMesh);
+
+    // Executive Aisle Carpets along walking paths (z = -2.5 and z = +2.5)
+    const aisle1 = new THREE.Mesh(new THREE.BoxGeometry(26, 0.05, 2.0), mats.aislePath);
+    aisle1.position.set(0, 0.63, -2.5);
+    aisle1.receiveShadow = true;
+    floor2Group.add(aisle1);
+
+    const aisle2 = new THREE.Mesh(new THREE.BoxGeometry(26, 0.05, 2.0), mats.aislePath);
+    aisle2.position.set(0, 0.63, 2.5);
+    aisle2.receiveShadow = true;
+    floor2Group.add(aisle2);
 
     // -------------------------------------------------------------
     // ZONE A: Upper Floor Executive Sanctuary (24 Seats S-1 to S-24)
+    // Symmetrical Opposite Face-to-Face Dual Bay Architecture
     // -------------------------------------------------------------
-    // Executive Row 1: S-1 to S-12 (z = -3.8)
+    // Left Bay: S-1 to S-12 (along z = -0.55, partition at z=0, chair at z=-1.2 facing center)
     buildCubicleRow(floor2Group, {
       zone: 'Zone A: Executive Sanctuary',
-      sub: 'Upper 2nd Floor Executive Row 1',
+      sub: 'Upper 2nd Floor Executive Row 1 (Left Bay)',
       startSeat: 1,
       count: 12,
       startX: -11,
       spacingX: 2.0, // Wider executive spacing
-      z: -3.8,
-      facing: 1,
+      z: -0.55,
+      facing: -1,
       accentColor: 0x38bdf8,
       isExec: true
     });
 
-    // Executive Row 2: S-13 to S-24 (z = 3.8)
+    // Right Bay: S-13 to S-24 (along z = 0.55, partition at z=0, chair at z=1.2 facing center, OPPOSITE!)
     buildCubicleRow(floor2Group, {
       zone: 'Zone A: Executive Sanctuary',
-      sub: 'Upper 2nd Floor Executive Row 2',
+      sub: 'Upper 2nd Floor Executive Row 2 (Right Bay - Opposite)',
       startSeat: 13,
       count: 12,
       startX: -11,
       spacingX: 2.0,
-      z: 3.8,
-      facing: -1,
+      z: 0.55,
+      facing: 1,
       accentColor: 0x38bdf8,
       isExec: true
     });
@@ -461,7 +472,7 @@
       // Acoustic Privacy Partition (Back Screen)
       const backPartGeo = new THREE.BoxGeometry(deskW, partH, 0.05);
       const backPart = new THREE.Mesh(backPartGeo, mats.partition);
-      const backZ = (opts.facing === 1) ? -deskD / 2 : deskD / 2;
+      const backZ = -deskD / 2;
       backPart.position.set(0, partH / 2, backZ);
       backPart.castShadow = true;
       cubicleGroup.add(backPart);
@@ -475,16 +486,16 @@
       // Attached Steel Locker underneath/behind desk
       const lockerGeo = new THREE.BoxGeometry(0.35, 0.55, 0.45);
       const lockerMesh = new THREE.Mesh(lockerGeo, mats.chair);
-      lockerMesh.position.set(deskW / 2 - 0.22, 0.3, backZ + (opts.facing === 1 ? 0.25 : -0.25));
+      lockerMesh.position.set(deskW / 2 - 0.22, 0.3, backZ + 0.25);
       cubicleGroup.add(lockerMesh);
 
       // Office Ergonomic Chair
-      const chairGroup = buildChair(opts.facing);
-      chairGroup.position.set(0, 0, opts.facing === 1 ? 0.65 : -0.65);
+      const chairGroup = buildChair();
+      chairGroup.position.set(0, 0, 0.65);
       cubicleGroup.add(chairGroup);
 
       // Warm Personal LED Desk Lamp
-      const lampBulb = buildDeskLamp(cubicleGroup, deskW / 2 - 0.2, deskH + 0.03, backZ + (opts.facing === 1 ? 0.18 : -0.18));
+      const lampBulb = buildDeskLamp(cubicleGroup, deskW / 2 - 0.2, deskH + 0.03, backZ + 0.18);
 
       // Interactive Click Target (Invisible Bounding Box for easy click/hover)
       const hitBoxGeo = new THREE.BoxGeometry(deskW + 0.2, partH + 0.3, deskD + 0.8);
@@ -505,11 +516,16 @@
       cubicleGroup.add(hitBox);
       interactiveObjects.push(hitBox);
 
+      // Symmetrical 180° rotation for opposite facing
+      if (opts.facing === -1) {
+        cubicleGroup.rotation.y = Math.PI;
+      }
+
       parentGroup.add(cubicleGroup);
     }
   }
 
-  function buildChair(facing) {
+  function buildChair() {
     const chairGroup = new THREE.Group();
 
     // Seat cushion
@@ -521,8 +537,7 @@
     // Curved backrest
     const backGeo = new THREE.BoxGeometry(0.44, 0.48, 0.05);
     const backMesh = new THREE.Mesh(backGeo, mats.chair);
-    const backZ = (facing === 1) ? 0.22 : -0.22;
-    backMesh.position.set(0, 0.72, backZ);
+    backMesh.position.set(0, 0.72, 0.22);
     chairGroup.add(backMesh);
 
     // Central stand & wheeled star base
