@@ -2460,7 +2460,12 @@ window.getCartItems = function() {
 
 window.updateCartBadge = function() {
   const items = window.getCartItems();
+  const cartBtn = document.querySelector(".header-cart-btn");
   const badge = document.getElementById("headerCartCount");
+  
+  if (cartBtn) {
+    cartBtn.style.display = items.length > 0 ? "inline-flex" : "none";
+  }
   if (badge) {
     badge.textContent = items.length;
     badge.style.display = items.length > 0 ? "inline-block" : "none";
@@ -2485,39 +2490,28 @@ window.removeFromCart = function(itemId) {
   items = items.filter(i => i.id !== itemId);
   store.set("c2s_cart_items", items);
   window.updateCartBadge();
-  window.renderCartSummary();
+  if (items.length === 0) {
+    window.closeCartModal();
+  } else {
+    window.renderCartSummary();
+  }
 };
 
 window.openCartModal = function(specificItem = null) {
-  const modal = document.getElementById("c2sOrderSummaryModal");
-  if (!modal) return;
-
   if (specificItem) {
     window.addToCart(specificItem, false);
-  } else {
-    // If cart is empty and activeSeriesModalId is set, auto-seed with active series
-    let items = window.getCartItems();
-    if (items.length === 0 && activeSeriesModalId) {
-      const s = TEST_SERIES_CATALOG.find(x => x.id === activeSeriesModalId);
-      if (s) {
-        const mrp = s.mrp || 499;
-        const price = s.price || 199;
-        const discountPct = Math.round(((mrp - price) / mrp) * 100);
-        items.push({
-          id: s.id,
-          title: s.title,
-          subtitle: "Online Test Module",
-          badge: s.exam || "TEST MODULE",
-          icon: s.emblemIcon || "📋",
-          price: price,
-          mrp: mrp,
-          discountPercent: discountPct
-        });
-        store.set("c2s_cart_items", items);
-        window.updateCartBadge();
-      }
-    }
   }
+
+  const items = window.getCartItems();
+  // Do NOT display an empty cart modal! Only opens when an item is added
+  if (items.length === 0) {
+    const modal = document.getElementById("c2sOrderSummaryModal");
+    if (modal) modal.style.display = "none";
+    return;
+  }
+
+  const modal = document.getElementById("c2sOrderSummaryModal");
+  if (!modal) return;
 
   // Reset steps
   const step1 = document.getElementById("orderSummaryStep1");
@@ -2527,6 +2521,7 @@ window.openCartModal = function(specificItem = null) {
 
   window.renderCartSummary();
   modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
 };
 
 window.closeCartModal = function() {
@@ -6712,6 +6707,7 @@ function ensureAllHomepageCardsRendered() {
   if (typeof renderCourses === 'function') renderCourses();
   if (typeof renderBooks === 'function') renderBooks();
   if (typeof renderCurrentAffairs === 'function') renderCurrentAffairs();
+  if (typeof updateCartBadge === 'function') updateCartBadge();
 }
 
 window.ensureAllHomepageCardsRendered = ensureAllHomepageCardsRendered;

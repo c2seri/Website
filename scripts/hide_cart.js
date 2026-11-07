@@ -21,3 +21,4 @@ if (html.includes(target)) {
     console.log('Cart button hidden (normalized)!');
   }
 }
+
