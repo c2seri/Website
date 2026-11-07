@@ -661,9 +661,21 @@
       }
     };
 
-    // Pre-populate seat if coming from 3D Seat Map or Blueprint
+    // Pre-populate seat & shift if coming from Shift Cards, 3D Seat Map or Blueprint
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
+      const shiftParam = urlParams.get('shift');
+      if (shiftParam && typeof SHIFTS !== 'undefined') {
+        const raw = shiftParam.toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (raw.includes('morn')) selShift = 'Morning';
+        else if (raw.includes('after') || raw.includes('noon')) selShift = 'Afternoon';
+        else if (raw.includes('full') || raw === '3') selShift = 'Full Day';
+        else if (raw.includes('night') || raw === '4') selShift = 'Night';
+        else if (raw.includes('24') || raw === '5') selShift = '24 Hours';
+        if (typeof renderShifts === 'function') renderShifts();
+        if (typeof calcFees === 'function') calcFees(true);
+      }
+
       const seat = urlParams.get('seat');
       if (seat) {
         // If seat param is passed in URL, automatically switch to Online Mode and select it!

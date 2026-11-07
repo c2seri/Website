@@ -105,8 +105,23 @@ const SHIFTS = {
 let selShift = "Full Day";
 let selectedSeat = "";
 
+function initShiftFromUrl() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const rawShift = (params.get("shift") || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (rawShift) {
+      if (rawShift.includes("morn")) selShift = "Morning";
+      else if (rawShift.includes("after") || rawShift.includes("noon")) selShift = "Afternoon";
+      else if (rawShift.includes("full") || rawShift === "3") selShift = "Full Day";
+      else if (rawShift.includes("night") || rawShift === "4") selShift = "Night";
+      else if (rawShift.includes("24") || rawShift === "5") selShift = "24 Hours";
+    }
+  } catch (e) {}
+}
+
 /* 1. Shift Selector and Fee Calculator */
 function renderShifts() {
+  initShiftFromUrl();
   const container = $("#shiftBtns");
   if (!container) return;
   container.innerHTML = Object.keys(SHIFTS).map(s => {

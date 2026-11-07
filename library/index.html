@@ -263,78 +263,113 @@
       <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));gap:16px;">
         <!-- Morning -->
         <div
-          style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 4px 16px -2px rgba(15, 23, 42, 0.04);">
-          <div
-            style="display:inline-block;padding:3px 10px;background:#f1f5f9;border-radius:6px;font-size:11px;font-weight:800;color:#1e293b;margin-bottom:8px;">
-            SHIFT 1</div>
-          <h3 style="margin:0 0 4px;font-size:17px;color:#0a192f;">Morning Shift</h3>
-          <p style="color:#ea580c;font-size:13.5px;font-weight:750;margin:0 0 8px;">07:00 AM – 02:00 PM</p>
-          <div style="font-size:20px;color:#059669;font-weight:900;margin-bottom:4px;">₹800 <span
-              style="font-size:12px;color:#64748b;font-weight:500;">/ mo</span></div>
-          <div style="font-size:12px;color:#64748b;margin-bottom:6px;">Duration: <strong>7 Hours Daily</strong></div>
-          <div style="font-size:11px;color:#94a3b8;">🔒 Locker: Full Day / 24h only</div>
+          onclick="window.location.href='admission.html?shift=Morning'"
+          style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 4px 16px -2px rgba(15, 23, 42, 0.04);cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.15s ease,box-shadow 0.15s ease;">
+          <div>
+            <div
+              style="display:inline-block;padding:3px 10px;background:#f1f5f9;border-radius:6px;font-size:11px;font-weight:800;color:#1e293b;margin-bottom:8px;">
+              SHIFT 1</div>
+            <h3 style="margin:0 0 4px;font-size:17px;color:#0a192f;">Morning Shift</h3>
+            <p style="color:#ea580c;font-size:13.5px;font-weight:750;margin:0 0 8px;">07:00 AM – 02:00 PM</p>
+            <div style="font-size:20px;color:#059669;font-weight:900;margin-bottom:4px;">₹800 <span
+                style="font-size:12px;color:#64748b;font-weight:500;">/ mo</span></div>
+            <div style="font-size:12px;color:#64748b;margin-bottom:6px;">Duration: <strong>7 Hours Daily</strong></div>
+            <div style="font-size:11px;color:#94a3b8;">🔒 Locker: Full Day / 24h only</div>
+          </div>
+          <a href="admission.html?shift=Morning" class="btn"
+            style="display:block;text-align:center;margin-top:14px;padding:9px 12px;font-size:12.5px;font-weight:800;background:#059669;color:#ffffff;border-radius:8px;text-decoration:none;box-shadow:0 2px 8px rgba(5,150,105,0.25);">
+            Apply Morning Shift →
+          </a>
         </div>
 
         <!-- Afternoon -->
         <div
-          style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 4px 16px -2px rgba(15, 23, 42, 0.04);">
-          <div
-            style="display:inline-block;padding:3px 10px;background:#fff7ed;border-radius:6px;font-size:11px;font-weight:800;color:#ea580c;margin-bottom:8px;">
-            SHIFT 2</div>
-          <h3 style="margin:0 0 4px;font-size:17px;color:#0a192f;">Afternoon Shift</h3>
-          <p style="color:#ea580c;font-size:13.5px;font-weight:750;margin:0 0 8px;">02:30 PM – 09:00 PM</p>
-          <div style="font-size:20px;color:#059669;font-weight:900;margin-bottom:4px;">₹800 <span
-              style="font-size:12px;color:#64748b;font-weight:500;">/ mo</span></div>
-          <div style="font-size:12px;color:#64748b;margin-bottom:6px;">Duration: <strong>6.5 Hours Daily</strong></div>
-          <div style="font-size:11px;color:#94a3b8;">🔒 Locker: Full Day / 24h only</div>
+          onclick="window.location.href='admission.html?shift=Afternoon'"
+          style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 4px 16px -2px rgba(15, 23, 42, 0.04);cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.15s ease,box-shadow 0.15s ease;">
+          <div>
+            <div
+              style="display:inline-block;padding:3px 10px;background:#fff7ed;border-radius:6px;font-size:11px;font-weight:800;color:#ea580c;margin-bottom:8px;">
+              SHIFT 2</div>
+            <h3 style="margin:0 0 4px;font-size:17px;color:#0a192f;">Afternoon Shift</h3>
+            <p style="color:#ea580c;font-size:13.5px;font-weight:750;margin:0 0 8px;">02:30 PM – 09:00 PM</p>
+            <div style="font-size:20px;color:#059669;font-weight:900;margin-bottom:4px;">₹800 <span
+                style="font-size:12px;color:#64748b;font-weight:500;">/ mo</span></div>
+            <div style="font-size:12px;color:#64748b;margin-bottom:6px;">Duration: <strong>6.5 Hours Daily</strong></div>
+            <div style="font-size:11px;color:#94a3b8;">🔒 Locker: Full Day / 24h only</div>
+          </div>
+          <a href="admission.html?shift=Afternoon" class="btn"
+            style="display:block;text-align:center;margin-top:14px;padding:9px 12px;font-size:12.5px;font-weight:800;background:#ea580c;color:#ffffff;border-radius:8px;text-decoration:none;box-shadow:0 2px 8px rgba(234,88,12,0.25);">
+            Apply Afternoon Shift →
+          </a>
         </div>
 
         <!-- Full Day -->
         <div
-          style="background:#ffffff;border:2px solid #2563eb;border-radius:14px;padding:20px;position:relative;box-shadow:0 6px 20px -2px rgba(37, 99, 235, 0.12);">
+          onclick="window.location.href='admission.html?shift=FullDay'"
+          style="background:#ffffff;border:2px solid #2563eb;border-radius:14px;padding:20px;position:relative;box-shadow:0 6px 20px -2px rgba(37, 99, 235, 0.12);cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.15s ease,box-shadow 0.15s ease;">
           <span
             style="position:absolute;top:10px;right:10px;background:#2563eb;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px;">14
             HRS</span>
-          <div
-            style="display:inline-block;padding:3px 10px;background:#eff6ff;border-radius:6px;font-size:11px;font-weight:800;color:#1e40af;margin-bottom:8px;">
-            SHIFT 3</div>
-          <h3 style="margin:0 0 4px;font-size:17px;color:#0a192f;">Full Day Shift</h3>
-          <p style="color:#2563eb;font-size:13.5px;font-weight:750;margin:0 0 8px;">07:00 AM – 09:00 PM</p>
-          <div style="font-size:20px;color:#1e40af;font-weight:900;margin-bottom:4px;">₹1,200 <span
-              style="font-size:12px;color:#64748b;font-weight:500;">/ mo</span></div>
-          <div style="font-size:12px;color:#64748b;margin-bottom:6px;">Duration: <strong>14 Hours</strong></div>
-          <div style="font-size:11px;color:#059669;font-weight:750;">✓ Attached Locker Included</div>
+          <div>
+            <div
+              style="display:inline-block;padding:3px 10px;background:#eff6ff;border-radius:6px;font-size:11px;font-weight:800;color:#1e40af;margin-bottom:8px;">
+              SHIFT 3</div>
+            <h3 style="margin:0 0 4px;font-size:17px;color:#0a192f;">Full Day Shift</h3>
+            <p style="color:#2563eb;font-size:13.5px;font-weight:750;margin:0 0 8px;">07:00 AM – 09:00 PM</p>
+            <div style="font-size:20px;color:#1e40af;font-weight:900;margin-bottom:4px;">₹1,200 <span
+                style="font-size:12px;color:#64748b;font-weight:500;">/ mo</span></div>
+            <div style="font-size:12px;color:#64748b;margin-bottom:6px;">Duration: <strong>14 Hours</strong></div>
+            <div style="font-size:11px;color:#059669;font-weight:750;">✓ Attached Locker Included</div>
+          </div>
+          <a href="admission.html?shift=FullDay" class="btn"
+            style="display:block;text-align:center;margin-top:14px;padding:9px 12px;font-size:12.5px;font-weight:800;background:#2563eb;color:#ffffff;border-radius:8px;text-decoration:none;box-shadow:0 2px 8px rgba(37,99,235,0.3);">
+            Apply Full Day Shift ★ →
+          </a>
         </div>
 
         <!-- Night -->
         <div
-          style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 4px 16px -2px rgba(15, 23, 42, 0.04);">
-          <div
-            style="display:inline-block;padding:3px 10px;background:#f1f5f9;border-radius:6px;font-size:11px;font-weight:800;color:#1e293b;margin-bottom:8px;">
-            SHIFT 4</div>
-          <h3 style="margin:0 0 4px;font-size:17px;color:#0a192f;">Night Shift</h3>
-          <p style="color:#ea580c;font-size:13.5px;font-weight:750;margin:0 0 8px;">09:30 PM – 06:30 AM</p>
-          <div style="font-size:20px;color:#059669;font-weight:900;margin-bottom:4px;">₹1,000 <span
-              style="font-size:12px;color:#64748b;font-weight:500;">/ mo</span></div>
-          <div style="font-size:12px;color:#64748b;margin-bottom:6px;">Duration: <strong>9 Hours Overnight</strong></div>
-          <div style="font-size:11px;color:#94a3b8;">🔒 Locker: Full Day / 24h only</div>
+          onclick="window.location.href='admission.html?shift=Night'"
+          style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 4px 16px -2px rgba(15, 23, 42, 0.04);cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.15s ease,box-shadow 0.15s ease;">
+          <div>
+            <div
+              style="display:inline-block;padding:3px 10px;background:#f1f5f9;border-radius:6px;font-size:11px;font-weight:800;color:#1e293b;margin-bottom:8px;">
+              SHIFT 4</div>
+            <h3 style="margin:0 0 4px;font-size:17px;color:#0a192f;">Night Shift</h3>
+            <p style="color:#ea580c;font-size:13.5px;font-weight:750;margin:0 0 8px;">09:30 PM – 06:30 AM</p>
+            <div style="font-size:20px;color:#059669;font-weight:900;margin-bottom:4px;">₹1,000 <span
+                style="font-size:12px;color:#64748b;font-weight:500;">/ mo</span></div>
+            <div style="font-size:12px;color:#64748b;margin-bottom:6px;">Duration: <strong>9 Hours Overnight</strong></div>
+            <div style="font-size:11px;color:#94a3b8;">🔒 Locker: Full Day / 24h only</div>
+          </div>
+          <a href="admission.html?shift=Night" class="btn"
+            style="display:block;text-align:center;margin-top:14px;padding:9px 12px;font-size:12.5px;font-weight:800;background:#0f172a;color:#ffffff;border-radius:8px;text-decoration:none;box-shadow:0 2px 8px rgba(15,23,42,0.25);">
+            Apply Night Shift →
+          </a>
         </div>
 
         <!-- 24 Hours (Full Day & Night) -->
         <div
-          style="background:linear-gradient(135deg,#0f172a,#1e3a8a);border:2px solid #38bdf8;border-radius:14px;padding:20px;position:relative;box-shadow:0 8px 24px -4px rgba(56, 189, 248, 0.2);color:#fff;">
+          onclick="window.location.href='admission.html?shift=24Hours'"
+          style="background:linear-gradient(135deg,#0f172a,#1e3a8a);border:2px solid #38bdf8;border-radius:14px;padding:20px;position:relative;box-shadow:0 8px 24px -4px rgba(56, 189, 248, 0.2);color:#fff;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.15s ease,box-shadow 0.15s ease;">
           <span
             style="position:absolute;top:10px;right:10px;background:#38bdf8;color:#0f172a;font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px;">24x7
             ROUND-THE-CLOCK</span>
-          <div
-            style="display:inline-block;padding:3px 10px;background:#38bdf8;border-radius:6px;font-size:11px;font-weight:900;color:#0f172a;margin-bottom:8px;">
-            SHIFT 5</div>
-          <h3 style="margin:0 0 4px;font-size:17px;color:#ffffff;">24 Hours (Full &amp; Night)</h3>
-          <p style="color:#38bdf8;font-size:13.5px;font-weight:750;margin:0 0 8px;">Round-The-Clock 24x7</p>
-          <div style="font-size:20px;color:#38bdf8;font-weight:900;margin-bottom:4px;">₹2,000 <span
-              style="font-size:12px;color:#cbd5e1;font-weight:500;">/ mo</span></div>
-          <div style="font-size:12px;color:#cbd5e1;margin-bottom:6px;">Duration: <strong>24 Hours Daily</strong></div>
-          <div style="font-size:11px;color:#a7f3d0;font-weight:800;">✓ Attached Locker Included</div>
+          <div>
+            <div
+              style="display:inline-block;padding:3px 10px;background:#38bdf8;border-radius:6px;font-size:11px;font-weight:900;color:#0f172a;margin-bottom:8px;">
+              SHIFT 5</div>
+            <h3 style="margin:0 0 4px;font-size:17px;color:#ffffff;">24 Hours (Full &amp; Night)</h3>
+            <p style="color:#38bdf8;font-size:13.5px;font-weight:750;margin:0 0 8px;">Round-The-Clock 24x7</p>
+            <div style="font-size:20px;color:#38bdf8;font-weight:900;margin-bottom:4px;">₹2,000 <span
+                style="font-size:12px;color:#cbd5e1;font-weight:500;">/ mo</span></div>
+            <div style="font-size:12px;color:#cbd5e1;margin-bottom:6px;">Duration: <strong>24 Hours Daily</strong></div>
+            <div style="font-size:11px;color:#a7f3d0;font-weight:800;">✓ Attached Locker Included</div>
+          </div>
+          <a href="admission.html?shift=24Hours" class="btn"
+            style="display:block;text-align:center;margin-top:14px;padding:9px 12px;font-size:12.5px;font-weight:900;background:#38bdf8;color:#0f172a;border-radius:8px;text-decoration:none;box-shadow:0 2px 8px rgba(56,189,248,0.35);">
+            Apply 24x7 Shift ★ →
+          </a>
         </div>
       </div>
     </div>
