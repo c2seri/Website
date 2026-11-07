@@ -10557,13 +10557,34 @@ body {
   overflow: hidden !important;
 }
 
-#examLock.testbook-mode #testArea {
+#examLock.testbook-mode .hidden {
+  display: none !important;
+}
+
+#examLock.testbook-mode #testArea:not(.hidden) {
   display: flex !important;
   flex-direction: column !important;
   height: 100vh !important;
   width: 100vw !important;
   background: #ffffff !important;
   overflow: hidden !important;
+}
+
+#examLock.testbook-mode #solutionsArea:not(.hidden) {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100vh !important;
+  width: 100vw !important;
+  background: #ffffff !important;
+  overflow: hidden !important;
+}
+
+#examLock.testbook-mode #analysisArea:not(.hidden) {
+  display: block !important;
+  height: 100vh !important;
+  width: 100vw !important;
+  background: #f8fafc !important;
+  overflow-y: auto !important;
 }
 
 .cbt-opt-label {
