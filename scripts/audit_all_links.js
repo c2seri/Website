@@ -15,12 +15,15 @@ const htmlFiles = [
   'shifts.html',
   'facilities.html',
   'login.html',
+  'current-affairs-reader.html',
+  'website-flowchart.html',
   'library/index.html',
   'library/admission.html',
   'library/dashboard.html',
   'library/facilities.html',
   'library/login.html',
-  'library/shifts.html'
+  'library/shifts.html',
+  'library/branches.html'
 ];
 
 let issues = [];
@@ -41,10 +44,9 @@ htmlFiles.forEach(file => {
   while ((match = hrefRegex.exec(content)) !== null) {
     const target = match[1].trim();
     checked++;
-    if (target.startsWith('http://') || target.startsWith('https://') || target.startsWith('tel:') || target.startsWith('mailto:') || target.startsWith('#') || target.startsWith('javascript:')) {
+    if (target.startsWith('http://') || target.startsWith('https://') || target.startsWith('tel:') || target.startsWith('mailto:') || target.startsWith('#') || target.startsWith('javascript:') || target.startsWith('data:')) {
       continue;
     }
-    // internal link
     let cleanTarget = target.split('?')[0].split('#')[0];
     if (!cleanTarget) continue;
 
@@ -81,11 +83,10 @@ htmlFiles.forEach(file => {
   }
 });
 
-console.log(`Audited ${htmlFiles.length} HTML files, checked ${checked} links and sources.`);
+console.log(`Audited all ${htmlFiles.length} HTML files, checked ${checked} links and sources.`);
 if (issues.length === 0) {
   console.log('✅ ALL LINKS AND ASSET SOURCES EXIST! ZERO 404s!');
 } else {
   console.log(`❌ Found ${issues.length} issues:`);
   issues.forEach(i => console.log(' - ' + i));
 }
-
