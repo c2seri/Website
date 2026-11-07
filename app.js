@@ -5481,6 +5481,12 @@ function startTest(testId) {
     t.marks = 100;
     t.negativeMarking = 0;
   }
+  if (t.id === "JAIIB-PPB-1" && typeof window !== "undefined" && window.JAIIB_PPB_QUESTIONS && window.JAIIB_PPB_QUESTIONS.length === 100) {
+    t.qs = window.JAIIB_PPB_QUESTIONS;
+    t.minutes = 120;
+    t.marks = 100;
+    t.negativeMarking = 0;
+  }
 
   // Check if test requires unlocking
   if (!isTestUnlocked(t.id)) {
