@@ -1979,41 +1979,82 @@ a:hover {
   box-shadow: none !important;
 }
 
-/* Forms & Inputs */
-input:not([type="radio"]):not([type="checkbox"]), select, textarea {
+/* ==========================================================================
+   ULTRA-PREMIUM FORMS & INPUT DESIGN SYSTEM (FLAGSHIP EDTECH / FINTECH GRADE)
+   ========================================================================== */
+input:not([type="radio"]):not([type="checkbox"]):not([type="file"]):not([type="range"]), 
+select, 
+textarea {
   width: 100%;
-  padding: 12px 14px;
-  border: 1px solid var(--c2s-slate-300);
-  border-radius: var(--c2s-radius-md);
+  padding: 11px 16px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
   font: inherit;
-  font-size: 14.5px;
-  background: #fff;
-  color: var(--c2s-slate-800);
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 1.5;
+  background: #ffffff;
+  color: #0f172a;
   margin: 6px 0 14px;
-  transition: var(--c2s-transition);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+input:not([type="radio"]):not([type="checkbox"]):not([type="file"]):not([type="range"]):hover, 
+select:hover, 
+textarea:hover {
+  border-color: #94a3b8;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #2563eb !important;
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14), 0 2px 4px rgba(15, 23, 42, 0.05) !important;
+  background-color: #ffffff !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #94a3b8;
+  font-weight: 450;
+}
+
+input[readonly], select[disabled], textarea[readonly] {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+  color: #334155;
+  cursor: default;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 14px 14px;
+  padding-right: 38px;
+  cursor: pointer;
 }
 
 input[type="radio"], input[type="checkbox"] {
-  width: auto !important;
-  height: auto !important;
+  width: 18px !important;
+  height: 18px !important;
   padding: 0 !important;
   margin: 0 !important;
   display: inline-block !important;
   vertical-align: middle !important;
   cursor: pointer !important;
-  accent-color: var(--c2s-orange) !important;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: var(--c2s-blue-600);
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  accent-color: #ea580c !important;
 }
 
 label {
-  font-weight: 700;
-  font-size: 13.5px;
-  color: var(--c2s-slate-700);
+  display: inline-block;
+  font-weight: 750;
+  font-size: 13px;
+  color: #0f2a5c;
+  letter-spacing: -0.01em;
+  margin-bottom: 2px;
 }
 
 .small {
@@ -9562,4 +9603,278 @@ html, body {
     justify-content: center;
   }
 }
+
+/* ==========================================================================
+   FLAGSHIP FORM & INTERACTION DESIGN SUITE (TOP-BRAND LUXURY UI)
+   ========================================================================== */
+.c2s-form-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04);
+  padding: 36px;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .c2s-form-card {
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+}
+
+.c2s-form-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ea580c 0%, #2563eb 50%, #10b981 100%);
+}
+
+.c2s-form-step-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 32px 0 18px;
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid #f1f5f9;
+}
+
+.c2s-form-step-header:first-of-type {
+  margin-top: 14px;
+}
+
+.c2s-step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1d4ed8, #0f2a5c);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 850;
+  box-shadow: 0 3px 10px rgba(29, 78, 216, 0.3);
+  flex-shrink: 0;
+}
+
+.c2s-step-title {
+  margin: 0;
+  font-size: 17.5px;
+  font-weight: 800;
+  color: #0f2a5c;
+  letter-spacing: -0.02em;
+}
+
+.c2s-step-subtitle {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+  margin-left: auto;
+}
+
+/* Form Grid Layouts */
+.c2s-form-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.c2s-form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.c2s-form-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 768px) {
+  .c2s-form-grid-2,
+  .c2s-form-grid-3,
+  .c2s-form-grid-4 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* Upload Dropzones */
+.c2s-upload-card {
+  position: relative;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 2px dashed #cbd5e1;
+  border-radius: 14px;
+  padding: 18px 20px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+}
+
+.c2s-upload-card:hover {
+  border-color: #3b82f6;
+  background: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%);
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.12);
+}
+
+.c2s-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 750;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.c2s-upload-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+}
+
+/* Fee Summary Receipt Block */
+.c2s-fee-receipt {
+  background: linear-gradient(135deg, #0a192f 0%, #0f2a5c 100%);
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin: 24px 0;
+  box-shadow: 0 15px 35px -5px rgba(10, 25, 47, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.c2s-fee-receipt-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+
+.c2s-fee-badge {
+  background: rgba(234, 88, 12, 0.25);
+  color: #fdba74;
+  border: 1px solid rgba(234, 88, 12, 0.4);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+
+.c2s-fee-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+}
+
+.c2s-fee-cell {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.c2s-fee-cell-label {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 650;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.c2s-fee-cell-val {
+  font-size: 17px;
+  font-weight: 900;
+  color: #38bdf8;
+}
+
+/* Shimmer Submit CTA Button */
+.c2s-submit-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  color: #ffffff !important;
+  font-size: 15.5px;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+  padding: 14px 34px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px -4px rgba(234, 88, 12, 0.45), 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  overflow: hidden;
+}
+
+.c2s-submit-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -4px rgba(234, 88, 12, 0.6), 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.c2s-submit-cta:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.4);
+}
+
+.c2s-submit-cta::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.25) 25%,
+    transparent 30%
+  );
+  transform: rotate(25deg);
+  animation: c2sShimmerEffect 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+@keyframes c2sShimmerEffect {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  35%, 100% { transform: translateX(100%) rotate(25deg); }
+}
+
+/* Clean Form Reset Button */
+.c2s-form-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 24px;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 750;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.c2s-form-reset-btn:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
 

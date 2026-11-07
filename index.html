@@ -2806,55 +2806,53 @@
 
           <!-- Right: Interactive Contact & Enquiry Form -->
           <div
-            style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:26px;box-shadow:0 4px 18px rgba(15, 23, 42, 0.04);">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-              <h3 style="margin:0;font-size:19px;color:#0f172a;">Send Enquiry / Request Callback</h3>
+            style="background:#fff;border:1px solid rgba(226, 232, 240, 0.95);border-radius:20px;padding:30px;box-shadow:0 20px 45px -10px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04);position:relative;overflow:hidden;">
+            <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg, #ea580c, #2563eb);"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+              <div>
+                <h3 style="margin:0;font-size:20px;font-weight:850;color:#0f2a5c;letter-spacing:-0.02em;">Send Enquiry / Request Callback</h3>
+                <span style="font-size:12px;color:#64748b;">Direct counsellor guidance &amp; offline batch orientation</span>
+              </div>
               <span
-                style="font-size:11.5px;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;padding:3px 8px;border-radius:999px;font-weight:700;">Fast
-                Response</span>
+                style="font-size:11.5px;background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;padding:4px 10px;border-radius:999px;font-weight:800;letter-spacing:0.3px;">⚡ Fast Response</span>
             </div>
 
             <form id="c2sContactForm" onsubmit="handleContactSubmit(event)"
-              style="display:flex;flex-direction:column;gap:12px;">
+              style="display:flex;flex-direction:column;gap:14px;">
               <div>
                 <label for="contactName"
-                  style="font-size:13px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Full Name
-                  *</label>
+                  style="font-size:13px;font-weight:750;color:#0f2a5c;display:block;margin-bottom:5px;">Full Name <span style="color:#ef4444;">*</span></label>
                 <input id="contactName" type="text" placeholder="e.g. Priyaranjan Mohanty" required
-                  style="margin:0;padding:11px 13px;font-size:14px;border:1.5px solid #cbd5e1;border-radius:8px;width:100%;">
+                  style="margin:0;width:100%;">
               </div>
 
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
                 <div>
                   <label for="contactMobile"
-                    style="font-size:13px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Mobile Number
-                    *</label>
+                    style="font-size:13px;font-weight:750;color:#0f2a5c;display:block;margin-bottom:5px;">Mobile Number <span style="color:#ef4444;">*</span></label>
                   <input id="contactMobile" type="tel" pattern="[0-9]{10}" placeholder="10-digit number" required
-                    style="margin:0;padding:11px 13px;font-size:14px;border:1.5px solid #cbd5e1;border-radius:8px;width:100%;">
+                    style="margin:0;width:100%;">
                 </div>
                 <div>
                   <label for="contactEmail"
-                    style="font-size:13px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Email Address
-                    *</label>
+                    style="font-size:13px;font-weight:750;color:#0f2a5c;display:block;margin-bottom:5px;">Email Address <span style="color:#ef4444;">*</span></label>
                   <input id="contactEmail" type="email" placeholder="name@example.com" required
-                    style="margin:0;padding:11px 13px;font-size:14px;border:1.5px solid #cbd5e1;border-radius:8px;width:100%;">
+                    style="margin:0;width:100%;">
                 </div>
               </div>
 
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
                 <div>
                   <label for="contactCity"
-                    style="font-size:13px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">City / Address
-                    *</label>
+                    style="font-size:13px;font-weight:750;color:#0f2a5c;display:block;margin-bottom:5px;">City / Address <span style="color:#ef4444;">*</span></label>
                   <input id="contactCity" type="text" placeholder="e.g. Patrapada, Bhubaneswar" required
-                    style="margin:0;padding:11px 13px;font-size:14px;border:1.5px solid #cbd5e1;border-radius:8px;width:100%;">
+                    style="margin:0;width:100%;">
                 </div>
                 <div>
                   <label for="contactGoal"
-                    style="font-size:13px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Interested In
-                    *</label>
+                    style="font-size:13px;font-weight:750;color:#0f2a5c;display:block;margin-bottom:5px;">Interested In <span style="color:#ef4444;">*</span></label>
                   <select id="contactGoal" required
-                    style="margin:0;padding:11px 13px;font-size:14px;border:1.5px solid #cbd5e1;border-radius:8px;width:100%;background:#fff;">
+                    style="margin:0;width:100%;">
                     <option value="Classroom Batches">Classroom Foundation Batch (Patrapada)</option>
                     <option value="24h Study Library">24-Hour Premium Study Library</option>
                     <option value="CBT Mock Test Series">CBT Mock Test Engine Pass</option>
@@ -2868,20 +2866,19 @@
 
               <div>
                 <label for="contactMessage"
-                  style="font-size:13px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Your Message /
-                  Query *</label>
+                  style="font-size:13px;font-weight:750;color:#0f2a5c;display:block;margin-bottom:5px;">Your Message / Query <span style="color:#ef4444;">*</span></label>
                 <textarea id="contactMessage" rows="3"
                   placeholder="Tell us about your target examination, timing preference or any questions you have..."
                   required
-                  style="margin:0;padding:11px 13px;font-size:14px;border:1.5px solid #cbd5e1;border-radius:8px;width:100%;resize:vertical;"></textarea>
+                  style="margin:0;width:100%;resize:vertical;"></textarea>
               </div>
 
               <!-- Mandatory Consent Checkbox for SMS / WhatsApp / RCS Updates -->
-              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin:2px 0 6px;">
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;margin:2px 0 4px;">
                 <label
-                  style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:12.5px;color:#334155;line-height:1.5;font-weight:500;">
+                  style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:12px;color:#475569;line-height:1.5;font-weight:550;margin:0;">
                   <input type="checkbox" id="contactConsent" checked required
-                    style="margin-top:2px;width:16px;height:16px;cursor:pointer;accent-color:#1d4ed8;flex-shrink:0;">
+                    style="margin-top:2px;cursor:pointer;flex-shrink:0;">
                   <span>
                     I agree to receive transactional and promotional updates, exam notifications, admission alerts, SMS,
                     WhatsApp, and RCS messages from <strong>C2S &mdash; College to Service</strong> at the mobile number
@@ -2890,9 +2887,8 @@
                 </label>
               </div>
 
-              <button type="submit" id="contactSubmitBtn" class="btn"
-                style="background:linear-gradient(135deg, #f97316, #ea580c);color:#fff;font-weight:700;padding:12px 20px;border-radius:8px;border:none;cursor:pointer;font-size:15px;box-shadow:0 4px 14px rgba(249, 15, 22, 0.3);transition:all 0.15s ease;">
-                Submit Enquiry &rarr;
+              <button type="submit" id="contactSubmitBtn" class="c2s-submit-cta" style="width:100%;margin-top:4px;">
+                <span>Submit Enquiry &rarr;</span>
               </button>
 
               <div id="contactFeedback" style="display:none;margin-top:12px;"></div>

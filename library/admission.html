@@ -74,37 +74,39 @@
   </header>
 
   <main class="container" style="padding:36px 16px 60px;max-width:880px;">
-    <div class="card" style="box-shadow:var(--c2s-shadow-md);border-radius:20px;padding:32px;">
-      <div class="section-head" style="text-align:left;margin-bottom:20px;">
-        <span class="pill orange">ONLINE MEMBERSHIP &amp; ADMISSION</span>
-        <h1 style="font-size:28px;margin:8px 0 4px;color:var(--c2s-navy-900);">Quick Admission — Joining Form</h1>
-        <p class="small" style="color:var(--c2s-slate-600);margin:0;">
-          Registration No is auto-generated upon submission. Photo and Aadhaar card are private member records only.
+    <div class="c2s-form-card">
+      <div class="section-head" style="text-align:left;margin-bottom:24px;">
+        <span class="pill orange" style="font-weight:850;letter-spacing:0.5px;">ONLINE MEMBERSHIP &amp; ADMISSION</span>
+        <h1 style="font-size:30px;font-weight:900;margin:10px 0 6px;color:#0f2a5c;letter-spacing:-0.02em;">Quick Admission — Joining Form</h1>
+        <p class="small" style="color:#64748b;margin:0;font-size:13.5px;">
+          ⏱️ Takes ~2 minutes. Registration No is auto-generated upon submission. Photo and Aadhaar card are private member records only.
         </p>
       </div>
 
       <!-- RENEWAL FAST-TRACK BANNER -->
-      <div style="background:linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);border:2px solid #3b82f6;border-radius:14px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;box-shadow:0 4px 12px rgba(59,130,246,0.08);">
+      <div style="background:linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);border:1.5px solid #93c5fd;border-radius:16px;padding:16px 20px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;box-shadow:0 4px 14px rgba(37,99,235,0.08);">
         <div style="display:flex;align-items:center;gap:14px;">
           <span style="font-size:32px;">🔄</span>
           <div>
-            <strong style="color:#0f2a5c;font-size:16px;display:block;">Already a Registered Member? Renew Membership &amp; Manage Shift / Seat</strong>
+            <strong style="color:#0f2a5c;font-size:15.5px;display:block;">Already a Registered Member? Renew Membership &amp; Manage Shift / Seat</strong>
             <span style="font-size:12.5px;color:#475569;">Renew on or before expiry day to retain your exact seat! Shift change and seat change options available.</span>
           </div>
         </div>
-        <button type="button" class="btn orange" onclick="openStudentRenewalModal()" style="padding:10px 20px;font-size:13.5px;font-weight:800;border:none;border-radius:8px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;">
+        <button type="button" class="btn orange" onclick="openStudentRenewalModal()" style="padding:10px 20px;font-size:13.5px;font-weight:800;border:none;border-radius:10px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(234,88,12,0.3);">
           <span>🔄 Member Renewal / Shift Change →</span>
         </button>
       </div>
 
       <form onsubmit="libAdmit(event)">
         <!-- 1. Access Validation -->
-        <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:24px 0 14px;color:var(--c2s-navy-900);">
-          1. Access Validation &amp; Membership Duration
-        </h3>
+        <div class="c2s-form-step-header">
+          <span class="c2s-step-badge">1</span>
+          <h3 class="c2s-step-title">Access Validation &amp; Membership Duration</h3>
+          <span class="c2s-step-subtitle">Step 1 of 7</span>
+        </div>
 
         <!-- Branch Selection & Tablet Kiosk Local Admission Mode Block -->
-        <div id="branchSelectionBox" style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:16px 18px;margin-bottom:18px;">
+        <div id="branchSelectionBox" style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:14px;padding:18px 20px;margin-bottom:20px;box-shadow:0 2px 6px rgba(15,23,42,0.03);">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:8px;">
             <label for="branchPref" style="font-weight:800;color:#0f2a5c;font-size:14px;margin:0;display:flex;align-items:center;gap:6px;">
               <span>📍</span> Study Sanctuary Branch <span style="color:#dc2626;">*</span>
@@ -113,7 +115,7 @@
               🏛️ LOCAL DESK / TABLET ADMISSION MODE
             </span>
           </div>
-          <select id="branchPref" onchange="onBranchChange()" required style="width:100%;padding:10px 12px;border:1.5px solid #93c5fd;border-radius:8px;font-size:13.5px;font-weight:750;color:#0f172a;background:#ffffff;">
+          <select id="branchPref" onchange="onBranchChange()" required style="width:100%;font-size:13.5px;font-weight:750;color:#0f172a;background-color:#ffffff;">
             <option value="Patrapada Flagship Branch (NH-16, Bhubaneswar)" selected>
               🏛️ Patrapada Flagship Branch — Opp. Sani Mandir, NH-16, Bhubaneswar (149 Seats Across 2 Floors • Open 24h)
             </option>
@@ -124,19 +126,19 @@
               🏢 Cuttack Link Road / Badambadi Hub — High Court Wing (Pre-Registration Open)
             </option>
           </select>
-          <div id="branchInfoSnippet" style="font-size:12.5px;color:#1e3a8a;margin-top:7px;font-weight:650;">
+          <div id="branchInfoSnippet" style="font-size:12px;color:#1e40af;margin-top:7px;font-weight:650;">
             ✓ 149 Seats across 2 Floors • Open 24 Hours • Free Weekly Math/Reasoning Classes • Free CBT Tests • Underground Parking • Fiber Wi-Fi
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px;align-items:flex-start;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;align-items:flex-start;">
           <div>
-            <label style="font-weight:700;color:var(--c2s-navy-900);">From Date <span style="color:#dc2626;">*</span></label>
+            <label style="font-weight:750;color:#0f2a5c;">From Date <span style="color:#dc2626;">*</span></label>
             <input type="date" id="fromDate" required onchange="updateAccessDates()">
           </div>
           <div>
-            <label style="font-weight:700;color:var(--c2s-navy-900);">Duration (Term) <span style="color:#dc2626;">*</span></label>
-            <select id="membershipDuration" onchange="updateAccessDates()" required style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;font-weight:700;color:#0f172a;background:#fff;">
+            <label style="font-weight:750;color:#0f2a5c;">Duration (Term) <span style="color:#dc2626;">*</span></label>
+            <select id="membershipDuration" onchange="updateAccessDates()" required>
               <option value="1" selected>1 Month</option>
               <option value="2">2 Months</option>
               <option value="3">3 Months</option>
@@ -145,50 +147,52 @@
             </select>
           </div>
           <div>
-            <label style="font-weight:700;color:var(--c2s-navy-900);">To Date (Auto-calculated)</label>
-            <input type="date" id="toDate" readonly required style="background:#f1f5f9;font-weight:700;color:#0f2a5c;">
+            <label style="font-weight:750;color:#0f2a5c;">To Date (Auto-calculated)</label>
+            <input type="date" id="toDate" readonly required style="background:#f8fafc;font-weight:750;color:#0f2a5c;">
           </div>
         </div>
 
         <!-- 2. Candidate Details -->
-        <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:28px 0 14px;color:var(--c2s-navy-900);">
-          2. Candidate Details
-        </h3>
+        <div class="c2s-form-step-header">
+          <span class="c2s-step-badge">2</span>
+          <h3 class="c2s-step-title">Candidate Details</h3>
+          <span class="c2s-step-subtitle">Step 2 of 7</span>
+        </div>
         <!-- First Name, Middle Name, Surname (Official 3-field layout) -->
-        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;margin-bottom:14px;">
-          <div><label style="font-weight:700;color:var(--c2s-navy-900);">First Name <span style="color:#dc2626;">*</span></label><input id="candFirstName" required placeholder="First Name" oninput="syncCandidateFullName()"></div>
-          <div><label style="font-weight:700;color:var(--c2s-navy-900);">Middle Name</label><input id="candMiddleName" placeholder="Middle Name" oninput="syncCandidateFullName()"></div>
-          <div><label style="font-weight:700;color:var(--c2s-navy-900);">Surname / Last Name <span style="color:#dc2626;">*</span></label><input id="candSurname" required placeholder="Surname" oninput="syncCandidateFullName()"></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px;margin-bottom:6px;">
+          <div><label style="font-weight:750;color:#0f2a5c;">First Name <span style="color:#dc2626;">*</span></label><input id="candFirstName" required placeholder="First Name" oninput="syncCandidateFullName()"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Middle Name</label><input id="candMiddleName" placeholder="Middle Name" oninput="syncCandidateFullName()"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Surname / Last Name <span style="color:#dc2626;">*</span></label><input id="candSurname" required placeholder="Surname" oninput="syncCandidateFullName()"></div>
         </div>
         <input type="hidden" id="candName" value="">
 
         <div class="grid2">
-          <div><label style="font-weight:700;color:var(--c2s-navy-900);">Father / Guardian Name <span style="color:#dc2626;">*</span></label><input id="fatherName" required placeholder="Father or Guardian Full Name"></div>
-          <div><label style="font-weight:700;color:var(--c2s-navy-900);">Mobile Number (Used for Login &amp; OTP) <span style="color:#dc2626;">*</span></label><input type="tel" id="studMobile" required placeholder="10-digit mobile number"></div>
-          <div><label style="font-weight:700;color:var(--c2s-navy-900);">Date of Birth <span style="color:#dc2626;">*</span></label><input type="date" id="dob" required></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Father / Guardian Name <span style="color:#dc2626;">*</span></label><input id="fatherName" required placeholder="Father or Guardian Full Name"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Mobile Number (Used for Login &amp; OTP) <span style="color:#dc2626;">*</span></label><input type="tel" id="studMobile" required placeholder="10-digit mobile number"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Date of Birth <span style="color:#dc2626;">*</span></label><input type="date" id="dob" required></div>
           <div>
-            <label style="font-weight:700;color:var(--c2s-navy-900);display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <label style="font-weight:750;color:#0f2a5c;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
               Admission Date <span style="color:#dc2626;">*</span>
               <span style="font-size:11px;color:#059669;font-weight:800;background:#ecfdf5;border:1px solid #a7f3d0;padding:2px 7px;border-radius:4px;letter-spacing:0.3px;">
                 🔒 Date of Filing Form (Locked)
               </span>
             </label>
             <input type="date" id="admDate" readonly tabindex="-1" required
-              style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;font-weight:800;color:#0f2a5c;background:#f8fafc;cursor:not-allowed;pointer-events:none;-webkit-user-select:none;user-select:none;"
+              style="width:100%;font-weight:800;color:#0f2a5c;background:#f8fafc;cursor:not-allowed;pointer-events:none;-webkit-user-select:none;user-select:none;"
               title="Admission date is locked to the date of filing this form and cannot be altered.">
           </div>
           <div>
-            <label style="font-weight:700;color:var(--c2s-navy-900);">Gender <span style="color:#dc2626;">*</span></label>
-            <select id="gender" required style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;font-weight:600;color:#0f172a;background:#fff;">
+            <label style="font-weight:750;color:#0f2a5c;">Gender <span style="color:#dc2626;">*</span></label>
+            <select id="gender" required>
               <option value="">-- Select Gender --</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
           </div>
-          <div><label>Email Address</label><input type="email" id="studEmail" placeholder="you@example.com"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Email Address</label><input type="email" id="studEmail" placeholder="you@example.com"></div>
           <div>
-            <label for="examPref" style="font-weight:700;color:var(--c2s-navy-900);">Target Competitive Exams <span style="color:#dc2626;">*</span></label>
-            <select id="examPref" required onchange="handleExamPrefChange(this.value)" style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;font-weight:600;color:#0f172a;background:#fff;">
+            <label for="examPref" style="font-weight:750;color:#0f2a5c;">Target Competitive Exams <span style="color:#dc2626;">*</span></label>
+            <select id="examPref" required onchange="handleExamPrefChange(this.value)">
               <option value="">-- Select Your Target Competitive Exam --</option>
               <option value="OSSC CGL & Specialist (Group B/C)">🎯 OSSC CGL &amp; Specialist (Group B &amp; C)</option>
               <option value="Odisha Police SI & Constable">👮 Odisha Police SI &amp; Constable</option>
@@ -205,26 +209,26 @@
             </select>
             <div id="otherExamFieldWrap" style="display:none;margin-top:8px;">
               <label style="font-size:12.5px;font-weight:750;color:#1e40af;">Specify Your Target Exam <span style="color:#dc2626;">*</span></label>
-              <input id="otherExamText" placeholder="Enter your target examination" style="width:100%;padding:9px 12px;border:1.5px solid #2563eb;border-radius:8px;font-size:13px;color:#0f172a;background:#eff6ff;">
+              <input id="otherExamText" placeholder="Enter your target examination" style="width:100%;background:#eff6ff;border-color:#2563eb;">
             </div>
           </div>
-          <div><label>Highest Qualification</label><input id="qualif" placeholder="e.g. Graduation / B.Tech / +2"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Highest Qualification</label><input id="qualif" placeholder="e.g. Graduation / B.Tech / +2"></div>
         </div>
 
         <!-- Photo & Aadhaar Card Uploads (Compulsory) -->
-        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px;background:#f8fafc;padding:16px;border-radius:12px;border:1.5px dashed #cbd5e1;margin-top:14px;">
-          <div>
-            <label style="display:block;font-size:13px;font-weight:800;color:#0f172a;margin-bottom:3px;">
-              📷 Candidate Photo / Selfie <span style="color:#dc2626;">*</span> <span style="font-size:12px;font-weight:700;color:#0284c7;">(Passport Photo OR Clear Selfie Accepted)</span>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px;margin-top:16px;">
+          <div class="c2s-upload-card">
+            <label style="display:block;font-size:13px;font-weight:800;color:#0f172a;margin-bottom:6px;">
+              📷 Candidate Photo / Selfie <span style="color:#dc2626;">*</span> <span style="font-size:12px;font-weight:700;color:#0284c7;">(Selfie / Passport Photo)</span>
             </label>
             <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap;">
-              <input type="file" id="studPhoto" required accept="image/*" onchange="previewPublicPhoto(this)" style="font-size:12px;color:#475569;flex:1;">
-              <button type="button" class="btn" style="padding:4px 10px;font-size:11px;background:#0284c7;color:#fff;border-radius:6px;font-weight:700;display:inline-flex;align-items:center;gap:4px;cursor:pointer;" onclick="triggerLiveSelfie()">
+              <input type="file" id="studPhoto" required accept="image/*" onchange="previewPublicPhoto(this)" style="font-size:12px;color:#475569;flex:1;padding:6px;margin:0;">
+              <button type="button" class="c2s-upload-btn" onclick="triggerLiveSelfie()">
                 🤳 Live Selfie Camera
               </button>
             </div>
             <input type="file" id="studPhotoCapture" accept="image/*" capture="user" onchange="previewPublicPhoto(this)" style="display:none;">
-            <span style="display:block;font-size:11px;color:#64748b;">Upload passport photo, gallery image, or capture a live selfie directly from phone/laptop camera (JPG, PNG, WebP up to 15 MB).</span>
+            <span style="display:block;font-size:11px;color:#64748b;">Upload passport photo, gallery image, or capture a live selfie directly from phone/laptop camera.</span>
             <div id="studPhotoPreviewWrap" style="display:none;margin-top:8px;align-items:center;gap:10px;">
               <img id="studPhotoPreview" src="" alt="Photo Preview" style="width:52px;height:62px;object-fit:cover;border-radius:8px;border:2px solid #10b981;box-shadow:0 2px 8px rgba(16,185,129,0.2);">
               <div>
@@ -234,46 +238,49 @@
             </div>
           </div>
 
-          <div>
-            <label style="display:block;font-size:13px;font-weight:800;color:#0f172a;margin-bottom:3px;">
+          <div class="c2s-upload-card">
+            <label style="display:block;font-size:13px;font-weight:800;color:#0f172a;margin-bottom:6px;">
               🪪 Aadhar Card <span style="color:#dc2626;">*</span> <span style="font-size:12px;font-weight:600;color:#64748b;">(Identity Proof)</span>
             </label>
-            <input type="file" id="studAadhar" required accept="image/*,application/pdf,.doc,.docx" onchange="previewPublicAadhar(this)" style="font-size:12px;color:#475569;margin-bottom:4px;">
-            <span style="display:block;font-size:11px;color:#64748b;">Only PDF or .DOC or .DOCX or JPG/PNG formats are allowed. Max size 5 MB. (Compulsory)</span>
+            <input type="file" id="studAadhar" required accept="image/*,application/pdf,.doc,.docx" onchange="previewPublicAadhar(this)" style="font-size:12px;color:#475569;padding:6px;margin:0 0 6px;">
+            <span style="display:block;font-size:11px;color:#64748b;">PDF, DOC, DOCX or JPG/PNG formats (Max 5 MB).</span>
             <div id="studAadharPreviewWrap" style="display:none;margin-top:8px;align-items:center;gap:10px;">
               <span style="font-size:22px;">📄</span>
               <span id="studAadharName" style="font-size:12px;color:#047857;font-weight:750;">Aadhaar Attached</span>
             </div>
           </div>
         </div>
-        <p class="small" style="color:var(--c2s-slate-500);margin-top:6px;">
-          * Candidate Photo/Selfie and Aadhaar identity proof are mandatory for security, biometric access, and library records.
-        </p>
 
         <!-- 3. Present Address -->
-        <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:28px 0 14px;color:var(--c2s-navy-900);">
-          3. Present Address <span style="font-size:13px;font-weight:600;color:#dc2626;">(Compulsory)</span>
-        </h3>
+        <div class="c2s-form-step-header">
+          <span class="c2s-step-badge">3</span>
+          <h3 class="c2s-step-title">Present Residential Address</h3>
+          <span class="c2s-step-subtitle">Step 3 of 7</span>
+        </div>
         <div class="grid2">
-          <div><label style="font-weight:700;color:var(--c2s-navy-900);">Plot / House No. <span style="color:#dc2626;">*</span></label><input id="plotNo" required placeholder="Plot / House No."></div>
-          <div><label style="font-weight:700;color:var(--c2s-navy-900);">Lane / Village / Area <span style="color:#dc2626;">*</span></label><input id="lane" required placeholder="Lane / Locality"></div>
-          <div><label style="font-weight:700;color:var(--c2s-navy-900);">District <span style="color:#dc2626;">*</span></label><input id="district" required placeholder="e.g. Khordha, Cuttack" value="Khordha"></div>
-          <div><label style="font-weight:700;color:var(--c2s-navy-900);">State <span style="color:#dc2626;">*</span></label><input id="state" required value="Odisha"></div>
-          <div><label style="font-weight:700;color:var(--c2s-navy-900);">PIN Code <span style="color:#dc2626;">*</span></label><input id="pin" required maxlength="6" pattern="[0-9]{6}" placeholder="e.g. 751019"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Plot / House No. <span style="color:#dc2626;">*</span></label><input id="plotNo" required placeholder="Plot / House No."></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Lane / Village / Area <span style="color:#dc2626;">*</span></label><input id="lane" required placeholder="Lane / Locality"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">District <span style="color:#dc2626;">*</span></label><input id="district" required placeholder="e.g. Khordha, Cuttack" value="Khordha"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">State <span style="color:#dc2626;">*</span></label><input id="state" required value="Odisha"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">PIN Code <span style="color:#dc2626;">*</span></label><input id="pin" required maxlength="6" pattern="[0-9]{6}" placeholder="e.g. 751019"></div>
         </div>
 
         <!-- 4. Shift Allocation -->
-        <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:28px 0 14px;color:var(--c2s-navy-900);">
-          4. Shift Allocation (Choose One)
-        </h3>
+        <div class="c2s-form-step-header">
+          <span class="c2s-step-badge">4</span>
+          <h3 class="c2s-step-title">Shift Allocation (Choose One)</h3>
+          <span class="c2s-step-subtitle">Step 4 of 7</span>
+        </div>
         <div id="shiftBtns" style="margin-bottom:10px;"></div>
-        <p id="shiftInfo" class="small" style="font-weight:700;color:var(--c2s-navy-900);"></p>
+        <p id="shiftInfo" class="small" style="font-weight:750;color:#0f2a5c;"></p>
 
         <!-- 5. Study Seat Allocation Preference -->
-        <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:28px 0 14px;color:var(--c2s-navy-900);">
-          5. Study Seat Allocation Preference
-        </h3>
-        <p class="small" style="color:var(--c2s-slate-600);margin-bottom:14px;">
+        <div class="c2s-form-step-header">
+          <span class="c2s-step-badge">5</span>
+          <h3 class="c2s-step-title">Study Seat Allocation Preference</h3>
+          <span class="c2s-step-subtitle">Step 5 of 7</span>
+        </div>
+        <p class="small" style="color:#64748b;margin-bottom:14px;">
           Aap chahein toh online 3D map se apni seat abhi reserve kar sakte hain, ya phir Patrapada centre par physically aakar inspection ke baad receptionist se allocate karwa sakte hain.
         </p>
 
@@ -282,7 +289,7 @@
           <!-- Choice 1: Physical Visit at Centre -->
           <label style="cursor:pointer;position:relative;display:block;">
             <input type="radio" name="seatAllocMode" value="physical" checked onchange="toggleSeatAllocMode(this.value)" style="position:absolute;opacity:0;">
-            <div id="cardPhysicalSeat" style="border:2px solid #ea580c;background:#fff7ed;border-radius:14px;padding:18px;height:100%;transition:all 0.2s ease;">
+            <div id="cardPhysicalSeat" style="border:2px solid #ea580c;background:#fff7ed;border-radius:14px;padding:18px;height:100%;transition:all 0.2s ease;box-shadow:0 4px 12px rgba(234,88,12,0.1);">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
                 <span style="font-size:24px;">🏛️</span>
                 <span style="background:#ea580c;color:#fff;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:999px;">RECOMMENDED</span>
@@ -320,7 +327,7 @@
         <input type="hidden" id="allocSeat" value="Physically at Patrapada Front Desk">
 
         <!-- Physical Mode Explainer -->
-        <div id="physicalSeatInfo" style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:14px 18px;margin-bottom:20px;">
+        <div id="physicalSeatInfo" style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px 20px;margin-bottom:20px;">
           <div style="display:flex;align-items:flex-start;gap:12px;">
             <span style="font-size:22px;">📍</span>
             <div>
@@ -368,21 +375,23 @@
         </div>
 
         <!-- 6. Payment Details & Summary -->
-        <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:28px 0 14px;color:var(--c2s-navy-900);">
-          6. Payment Details &amp; Summary
-        </h3>
-        <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px;margin-bottom:14px;">
+        <div class="c2s-form-step-header">
+          <span class="c2s-step-badge">6</span>
+          <h3 class="c2s-step-title">Payment Details &amp; Fee Summary</h3>
+          <span class="c2s-step-subtitle">Step 6 of 7</span>
+        </div>
+        <div style="background:#fff7ed;border:1.5px solid #fed7aa;border-radius:14px;padding:14px 18px;margin-bottom:16px;">
           <strong style="color:var(--c2s-orange-600);">Registration Fee: ₹200 (One-Time Non-refundable)</strong> • <strong style="color:var(--c2s-navy-900);">Official Verified Shift Fees</strong>.
           <br><span class="small" style="color:var(--c2s-slate-700);">First month total includes ₹200 registration fee. Morning / Afternoon: <strong>₹1,000</strong> (₹800 + ₹200) • Full Day: <strong>₹1,400</strong> (₹1,200 + ₹200) • Night: <strong>₹1,200</strong> (₹1,000 + ₹200) • 24 Hours: <strong>₹2,200</strong> (₹2,000 + ₹200).</span>
         </div>
 
         <div class="grid2">
-          <div><label>Shift Fees (₹ Automatic as per shift)</label><input id="shiftFees" readonly style="background:#f8fafc;font-weight:750;color:#0f2a5c;"></div>
-          <div><label>Registration Fee (₹ One-Time)</label><input value="200" readonly style="background:#f1f5f9;font-weight:700;color:#0a192f;"></div>
-          <div><label>Total Fees Payable (₹)</label><input id="totalFees" readonly style="font-weight:800;color:var(--c2s-navy-900);background:#eff6ff;"></div>
-          <div><label>Amount Paid (₹ Auto-calculated)</label><input id="paidFees" readonly value="1400" style="font-weight:800;color:#047857;background:#ecfdf5;"></div>
-          <div><label>Pending Fees (₹)</label><input id="pendingFees" readonly value="0" style="color:#64748b;font-weight:800;background:#f8fafc;"></div>
-          <div><label>Payment Mode</label>
+          <div><label style="font-weight:750;color:#0f2a5c;">Shift Fees (₹ Automatic as per shift)</label><input id="shiftFees" readonly style="background:#f8fafc;font-weight:750;color:#0f2a5c;"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Registration Fee (₹ One-Time)</label><input value="200" readonly style="background:#f8fafc;font-weight:700;color:#0a192f;"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Total Fees Payable (₹)</label><input id="totalFees" readonly style="font-weight:850;color:#1d4ed8;background:#eff6ff;"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Amount Paid (₹ Auto-calculated)</label><input id="paidFees" readonly value="1400" style="font-weight:850;color:#047857;background:#ecfdf5;"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Pending Fees (₹)</label><input id="pendingFees" readonly value="0" style="color:#64748b;font-weight:800;background:#f8fafc;"></div>
+          <div><label style="font-weight:750;color:#0f2a5c;">Payment Mode</label>
             <select id="payMode">
               <option>UPI / GPay / PhonePe</option>
               <option>Cash (Patrapada Desk)</option>
@@ -392,19 +401,21 @@
           </div>
         </div>
 
-        <div style="font-size:12px;color:#475569;margin-top:10px;background:#f8fafc;padding:10px 14px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:flex-start;gap:8px;">
-          <span style="font-size:16px;">ℹ️</span>
+        <div style="font-size:12px;color:#475569;margin-top:10px;background:#f8fafc;padding:12px 16px;border-radius:10px;border:1px solid #e2e8f0;display:flex;align-items:flex-start;gap:10px;">
+          <span style="font-size:18px;">ℹ️</span>
           <span><strong>Branch Concession Policy:</strong> Online admission follows standard official shift pricing. Any fee discount or scholarship concession is strictly authorized and processed in-person at the Patrapada branch by designated C2S staff.</span>
         </div>
 
         <!-- 7. LIBRARY USE RULES & APPLICANT DECLARATION AGREEMENT (T&C) -->
-        <h3 style="border-bottom:2px solid #e2e8f0;padding-bottom:6px;margin:32px 0 14px;color:var(--c2s-navy-900);">
-          7. Library Use Rules &amp; Applicant Declaration
-        </h3>
+        <div class="c2s-form-step-header">
+          <span class="c2s-step-badge">7</span>
+          <h3 class="c2s-step-title">Library Use Rules &amp; Applicant Declaration</h3>
+          <span class="c2s-step-subtitle">Step 7 of 7</span>
+        </div>
 
-        <div style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:14px;padding:20px;box-shadow:0 4px 14px -2px rgba(15, 23, 42, 0.05);margin-bottom:22px;">
+        <div style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:16px;padding:20px;box-shadow:0 4px 14px -2px rgba(15, 23, 42, 0.05);margin-bottom:24px;">
           <!-- Interactive Trigger Box: Clicking opens the Declaration Popup -->
-          <div style="display:flex;align-items:flex-start;gap:14px;cursor:pointer;background:#ffffff;border:1.5px solid #93c5fd;border-radius:12px;padding:16px 18px;box-shadow:0 2px 8px rgba(37,99,235,0.06);transition:all 0.15s ease;" onclick="handleDeclarationBoxClick(event)">
+          <div style="display:flex;align-items:flex-start;gap:14px;cursor:pointer;background:#ffffff;border:1.5px solid #93c5fd;border-radius:14px;padding:16px 18px;box-shadow:0 2px 8px rgba(37,99,235,0.06);transition:all 0.15s ease;" onclick="handleDeclarationBoxClick(event)">
             <input type="checkbox" id="acceptLibraryTerms" required style="width:22px;height:22px;margin-top:2px;cursor:pointer;accent-color:#16a34a;" onclick="handleCheckboxClick(event)">
             <div style="flex:1;">
               <span style="font-size:14.5px;font-weight:800;color:#0f2a5c;line-height:1.45;display:block;">
@@ -428,17 +439,19 @@
               🔒 Digital Consent recorded automatically on submission with verified mobile number &amp; timestamp.
             </div>
             <div style="display:flex;align-items:center;gap:8px;">
-              <label style="font-weight:750;font-size:12.5px;color:var(--c2s-navy-900);margin:0;">Date of Declaration:</label>
-              <input id="declarationDate" readonly style="background:#f1f5f9;font-weight:750;color:#0f2a5c;width:125px;padding:6px 10px;font-size:12px;border:1px solid #cbd5e1;border-radius:6px;">
+              <label style="font-weight:750;font-size:12.5px;color:#0f2a5c;margin:0;">Date of Declaration:</label>
+              <input id="declarationDate" readonly style="background:#f1f5f9;font-weight:750;color:#0f2a5c;width:125px;padding:6px 10px;font-size:12px;border:1.5px solid #cbd5e1;border-radius:8px;margin:0;">
             </div>
           </div>
         </div>
 
-        <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;">
-          <button class="btn orange btn-shimmer" type="submit" style="padding:13px 28px;font-size:15px;font-weight:800;">
-            Submit Admission &amp; Generate Registration No →
+        <div style="display:flex;gap:14px;margin-top:28px;flex-wrap:wrap;align-items:center;">
+          <button class="c2s-submit-cta" type="submit">
+            <span>Submit Admission &amp; Generate Registration No →</span>
           </button>
-          <button class="btn ghost" type="reset" onclick="setTimeout(calcFees, 0)">Reset Form</button>
+          <button class="c2s-form-reset-btn" type="reset" onclick="setTimeout(calcFees, 0)">
+            Reset Form
+          </button>
         </div>
 
         <p id="admitMsg" style="margin-top:16px;"></p>
