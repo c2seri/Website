@@ -2126,45 +2126,20 @@ window.selectLocalArea = function(areaKey) {
 
 
 window.quickDemoMemberLogin = function() {
-  const demoMember = {
-    regNo: "C2SLIB-00104",
-    name: "Prakash Behera",
-    mobile: "9777481909",
-    email: "prakash.member@gmail.com",
-    shift: "Full Day (07:00 AM – 09:00 PM)",
-    seat: "Seat #14",
-    zone: "Zone A (Executive 2nd Floor)",
-    validTill: "30 Nov 2026",
-    wifiPassword: "Mama@123",
-    status: "Active Allocated",
-    paid: 1800,
-    pending: 0
-  };
-  
-  store.set("c2s_lib_user", demoMember);
-  store.set("c2s_lib_current_user", demoMember);
-  
   const members = store.get("c2s_lib_members", []);
-  if (!members.some(m => m.regNo === demoMember.regNo)) {
-    members.unshift(demoMember);
-    store.set("c2s_lib_members", members);
+  if (members && members.length > 0) {
+    const firstMember = members[0];
+    store.set("c2s_lib_user", firstMember);
+    store.set("c2s_lib_current_user", firstMember);
+    if (typeof renderDigitalIdCard === "function") renderDigitalIdCard();
+    else if (typeof renderUser === "function") renderUser();
+    const box = document.getElementById("libLoginBox");
+    if (box) box.style.display = "none";
+    const portal = document.getElementById("libMemberPortal");
+    if (portal) portal.style.display = "block";
+    return;
   }
-  
-  if (typeof renderDigitalID === "function") {
-    renderDigitalID();
-  }
-  if (typeof renderDigitalIdCard === "function") {
-    renderDigitalIdCard();
-  } else if (typeof renderUser === "function") {
-    renderUser();
-  }
-  
-  const box = document.getElementById("libLoginBox");
-  if (box) box.style.display = "none";
-  const portal = document.getElementById("libMemberPortal");
-  if (portal) portal.style.display = "block";
-  
-  alert("🏛️ Welcome Prakash Behera! Your Digital Pass & Assigned Seat A-14 are ready.");
+  alert("No members registered yet. Please submit admission first from the Joining Form or Front Desk Admin.");
 };
 
 window.shareLibraryReferralWhatsapp = function() {

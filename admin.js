@@ -2020,11 +2020,24 @@ function deskQuickAdmit(e) {
   members.unshift(newMember);
   store.set('c2s_lib_members', members);
 
+  // Mark seat as occupied for real admission
+  if (seat && !seat.toLowerCase().includes('physical') && !seat.toLowerCase().includes('walk-in')) {
+    const numMatch = seat.match(/\d+/);
+    if (numMatch) {
+      const num = parseInt(numMatch[0]);
+      const taken = store.get('c2s_lib_taken', {});
+      taken[`S-${num}`] = true;
+      taken[`S-${String(num).padStart(2, '0')}`] = true;
+      taken[`Desk-${String(num).padStart(3, '0')}`] = true;
+      store.set('c2s_lib_taken', taken);
+    }
+  }
+
   // Add ledger entry
   const ledger = store.get('c2s_lib_ledger', []);
   ledger.unshift({
     date: newMember.date,
-    desc: `Admission ${regNo} (${name}, ${shift})`,
+    desc: `Admission ${regNo} (${name}, ${shift}, Seat: ${seat})`,
     amt: paid
   });
   store.set('c2s_lib_ledger', ledger);
@@ -2036,6 +2049,10 @@ function deskQuickAdmit(e) {
 
   alert(`🎉 Admission registered successfully!\n\nRegistration ID: ${regNo}\nCandidate: ${name}\nShift: ${shift}\nSeat: ${seat}\nPaid: ₹${paid} | Pending: ₹${pending}\n\nAutomated receipt & biometric login credentials dispatched!`);
   
+  if (confirm("Would you like to print / download the official 1-Page Admission Form (A4 PDF) now?")) {
+    window.printAdmissionForm(newMember);
+  }
+
   resetDeskAdmissionForm();
   renderFrontDesk();
   renderSuperAdmin();
@@ -2795,427 +2812,58 @@ function teacherPublishPost(e) {
 }
 
 /* ==========================================================================
-   ENSURE SEED STUDENT REGISTRY (10 Active + 4 Completed + 1 Cancelled)
+   CLEAN DEMO DATA MANAGER (100% CLEAN SLATE FOR ORIGINAL ADMISSIONS)
    ========================================================================== */
-function ensureSeedMembers() {
-  let members = store.get('c2s_lib_members', []);
-  if (!members || members.length < 6) {
-    const defaultRegistry = [
-      // 10 ACTIVE STUDENTS (Currently using library seats across 2 floors)
-      {
-        regNo: "C2SLIB-00101",
-        name: "Prakash Behera",
-        gender: "Male",
-        dob: "14/08/1998",
-        mobile: "9777481909",
-        guardianContact: "9437012345",
-        fatherName: "Rabindra Behera",
-        address: "Patrapada, Bhubaneswar",
-        email: "prakash.behera@gmail.com",
-        shift: "Full Day (07:00 AM – 09:00 PM)",
-        seat: "S-14",
-        floor: "2nd Floor (Zone A)",
-        zone: "Zone A (Executive Sanctuary)",
-        locker: "Locker #14",
-        status: "Active Allocated",
-        paid: 1800,
-        pending: 0,
-        mode: "UPI / PhonePe",
-        examPref: "OSSC CGL 2026",
-        studyPurpose: "OSSC CGL 2026",
-        admDate: "01/10/2026",
-        fromDate: "01/10/2026",
-        toDate: "30/11/2026",
-        date: "01/10/2026",
-        termsAccepted: true
-      },
-      {
-        regNo: "C2SLIB-00102",
-        name: "Soumya Ranjan Mohapatra",
-        gender: "Male",
-        dob: "20/05/1997",
-        mobile: "9861001234",
-        guardianContact: "9437112233",
-        fatherName: "Bichitrananda Mohapatra",
-        address: "Khandagiri, Bhubaneswar",
-        email: "soumya.c2s@gmail.com",
-        shift: "Full Day (07:00 AM – 09:00 PM)",
-        seat: "S-25",
-        floor: "1st Floor (Zone B)",
-        zone: "Zone B (Left Wall Bay)",
-        locker: "Locker #25",
-        status: "Active Allocated",
-        paid: 1500,
-        pending: 0,
-        mode: "UPI / GPay",
-        examPref: "OPSC OAS (Civil Services)",
-        studyPurpose: "OPSC OAS",
-        admDate: "05/10/2026",
-        fromDate: "05/10/2026",
-        toDate: "04/12/2026",
-        date: "05/10/2026",
-        termsAccepted: true
-      },
-      {
-        regNo: "C2SLIB-00103",
-        name: "Lipsa Tripathy",
-        gender: "Female",
-        dob: "11/12/1999",
-        mobile: "9437105678",
-        guardianContact: "9861209876",
-        fatherName: "Pradeep Tripathy",
-        address: "Patrapada Jagannath Vihar, BBSR",
-        email: "lipsa.tripathy@gmail.com",
-        shift: "Full Day (07:00 AM – 09:00 PM)",
-        seat: "S-70",
-        floor: "1st Floor (Zone C)",
-        zone: "Zone C (Center Dual-Row)",
-        locker: "Locker #70",
-        status: "Active Allocated",
-        paid: 1500,
-        pending: 0,
-        mode: "UPI / PhonePe",
-        examPref: "Banking (IBPS PO / Clerk)",
-        studyPurpose: "IBPS PO",
-        admDate: "08/10/2026",
-        fromDate: "08/10/2026",
-        toDate: "07/12/2026",
-        date: "08/10/2026",
-        termsAccepted: true
-      },
-      {
-        regNo: "C2SLIB-00104",
-        name: "Rohan Kumar Mohapatra",
-        gender: "Male",
-        dob: "03/09/1998",
-        mobile: "9337054321",
-        guardianContact: "9438012345",
-        fatherName: "Kailash Mohapatra",
-        address: "Sundarpada, Bhubaneswar",
-        email: "rohan.km@gmail.com",
-        shift: "24 Hours Sanctuary (07:00 AM – 07:00 AM)",
-        seat: "S-36",
-        floor: "1st Floor (Zone B)",
-        zone: "Zone B (Left Wall Bay)",
-        locker: "Locker #36",
-        status: "Active Allocated",
-        paid: 1800,
-        pending: 0,
-        mode: "UPI / Paytm",
-        examPref: "SSC CGL / CHSL 2026",
-        studyPurpose: "SSC CGL",
-        admDate: "10/10/2026",
-        fromDate: "10/10/2026",
-        toDate: "09/12/2026",
-        date: "10/10/2026",
-        termsAccepted: true
-      },
-      {
-        regNo: "C2SLIB-00105",
-        name: "Barsha Priyadarshini",
-        gender: "Female",
-        dob: "25/03/2000",
-        mobile: "7008123456",
-        guardianContact: "9437298765",
-        fatherName: "Saroj Senapati",
-        address: "Dumduma Housing Board, BBSR",
-        email: "barsha.senapati@gmail.com",
-        shift: "Day Shift (07:00 AM – 05:00 PM)",
-        seat: "S-85",
-        floor: "1st Floor (Zone C)",
-        zone: "Zone C (Center Dual-Row)",
-        locker: "Not Applicable",
-        status: "Active Allocated",
-        paid: 1000,
-        pending: 0,
-        mode: "Cash",
-        examPref: "Odisha Teacher (OTET / OSSTET)",
-        studyPurpose: "OTET",
-        admDate: "12/10/2026",
-        fromDate: "12/10/2026",
-        toDate: "11/11/2026",
-        date: "12/10/2026",
-        termsAccepted: true
-      },
-      {
-        regNo: "C2SLIB-00106",
-        name: "Deepak Kumar Behera",
-        gender: "Male",
-        dob: "19/07/1996",
-        mobile: "9178234567",
-        guardianContact: "9861345678",
-        fatherName: "Balaram Behera",
-        address: "Aiginia, Patrapada, Bhubaneswar",
-        email: "deepak.behera@gmail.com",
-        shift: "Evening Shift (03:00 PM – 11:00 PM)",
-        seat: "S-112",
-        floor: "1st Floor (Zone D)",
-        zone: "Zone D (Right Wall Bay)",
-        locker: "Not Applicable",
-        status: "Active Allocated",
-        paid: 800,
-        pending: 0,
-        mode: "UPI / PhonePe",
-        examPref: "Railway RRB NTPC",
-        studyPurpose: "RRB NTPC",
-        admDate: "14/10/2026",
-        fromDate: "14/10/2026",
-        toDate: "13/11/2026",
-        date: "14/10/2026",
-        termsAccepted: true
-      },
-      {
-        regNo: "C2SLIB-00107",
-        name: "Pooja Samal",
-        gender: "Female",
-        dob: "08/01/1999",
-        mobile: "9938456789",
-        guardianContact: "9437876543",
-        fatherName: "Narayan Samal",
-        address: "Pokhariput, Bhubaneswar",
-        email: "pooja.samal@gmail.com",
-        shift: "Full Day (07:00 AM – 09:00 PM)",
-        seat: "S-135",
-        floor: "1st Floor (Zone D)",
-        zone: "Zone D (Right Wall Bay)",
-        locker: "Locker #135",
-        status: "Active Allocated",
-        paid: 1500,
-        pending: 0,
-        mode: "UPI / GPay",
-        examPref: "UPSC Civil Services (Prelims)",
-        studyPurpose: "UPSC CSE",
-        admDate: "15/10/2026",
-        fromDate: "15/10/2026",
-        toDate: "14/12/2026",
-        date: "15/10/2026",
-        termsAccepted: true
-      },
-      {
-        regNo: "C2SLIB-00108",
-        name: "Amit Kumar Das",
-        gender: "Male",
-        dob: "12/04/1997",
-        mobile: "8249123456",
-        guardianContact: "9437001122",
-        fatherName: "Hemanta Das",
-        address: "Tamando, Bhubaneswar",
-        email: "amit.das99@gmail.com",
-        shift: "24 Hours Sanctuary (07:00 AM – 07:00 AM)",
-        seat: "S-05",
-        floor: "2nd Floor (Zone A)",
-        zone: "Zone A (Executive Sanctuary)",
-        locker: "Locker #05",
-        status: "Active Allocated",
-        paid: 1800,
-        pending: 0,
-        mode: "UPI / PhonePe",
-        examPref: "OSSC Combined Police Service",
-        studyPurpose: "OSSC SI",
-        admDate: "18/10/2026",
-        fromDate: "18/10/2026",
-        toDate: "17/12/2026",
-        date: "18/10/2026",
-        termsAccepted: true
-      },
-      {
-        regNo: "C2SLIB-00109",
-        name: "Sneha Snigdha Rout",
-        gender: "Female",
-        dob: "30/06/1998",
-        mobile: "7978234512",
-        guardianContact: "9861112244",
-        fatherName: "Bijay Kumar Rout",
-        address: "Patrapada NH-16, Bhubaneswar",
-        email: "sneha.rout@gmail.com",
-        shift: "Full Day (07:00 AM – 09:00 PM)",
-        seat: "S-18",
-        floor: "2nd Floor (Zone A)",
-        zone: "Zone A (Executive Sanctuary)",
-        locker: "Locker #18",
-        status: "Active Allocated",
-        paid: 1500,
-        pending: 0,
-        mode: "UPI / GPay",
-        examPref: "Odisha Judicial Services (OJS)",
-        studyPurpose: "OJS",
-        admDate: "20/10/2026",
-        fromDate: "20/10/2026",
-        toDate: "19/12/2026",
-        date: "20/10/2026",
-        termsAccepted: true
-      },
-      {
-        regNo: "C2SLIB-00110",
-        name: "Abhishek Mohanty",
-        gender: "Male",
-        dob: "14/02/1995",
-        mobile: "9853123456",
-        guardianContact: "9437998877",
-        fatherName: "Sanjay Mohanty",
-        address: "Baramunda, Bhubaneswar",
-        email: "abhishek.m@gmail.com",
-        shift: "Full Day (07:00 AM – 09:00 PM)",
-        seat: "S-52",
-        floor: "1st Floor (Zone B)",
-        zone: "Zone B (Left Wall Bay)",
-        locker: "Locker #52",
-        status: "Active Allocated",
-        paid: 1500,
-        pending: 0,
-        mode: "Cash",
-        examPref: "JAIIB / Banking Promotion",
-        studyPurpose: "JAIIB",
-        admDate: "22/10/2026",
-        fromDate: "22/10/2026",
-        toDate: "21/11/2026",
-        date: "22/10/2026",
-        termsAccepted: true
-      },
+function cleanAllDemoData() {
+  const members = store.get('c2s_lib_members', []);
+  const demoRegNos = new Set([
+    "C2SLIB-00101", "C2SLIB-00102", "C2SLIB-00103", "C2SLIB-00104", "C2SLIB-00105",
+    "C2SLIB-00106", "C2SLIB-00107", "C2SLIB-00108", "C2SLIB-00109", "C2SLIB-00110",
+    "C2SLIB-00045", "C2SLIB-00052", "C2SLIB-00068", "C2SLIB-00074", "C2SLIB-00080"
+  ]);
 
-      // 4 STUDENTS WHO LEFT / COMPLETED TENURE (Seats Released)
-      {
-        regNo: "C2SLIB-00045",
-        name: "Bikram Mallick",
-        gender: "Male",
-        dob: "10/05/1996",
-        mobile: "9439876543",
-        fatherName: "Purna Chandra Mallick",
-        address: "Patrapada, Bhubaneswar",
-        shift: "Full Day",
-        seat: "Seat Released (Former: S-02)",
-        floor: "2nd Floor (Zone A)",
-        status: "Left / Selected 🏆 SBI PO",
-        paid: 1500,
-        pending: 0,
-        mode: "UPI",
-        examPref: "SBI PO 2026",
-        studyPurpose: "SBI PO 2026",
-        admDate: "15/04/2026",
-        toDate: "15/10/2026",
-        exitDate: "15/10/2026",
-        notes: "Successfully cracked SBI PO 2026! Seat S-02 released back to pool.",
-        termsAccepted: true
-      },
-      {
-        regNo: "C2SLIB-00052",
-        name: "Subhashree Nayak",
-        gender: "Female",
-        dob: "22/11/1997",
-        mobile: "9658234123",
-        fatherName: "Artatrana Nayak",
-        address: "Nayapalli, Bhubaneswar",
-        shift: "Full Day",
-        seat: "Seat Released (Former: S-48)",
-        floor: "1st Floor (Zone B)",
-        status: "Left / Completed",
-        paid: 1500,
-        pending: 0,
-        mode: "UPI",
-        examPref: "OPSC OAS Prelims",
-        studyPurpose: "OPSC OAS",
-        admDate: "01/05/2026",
-        toDate: "28/09/2026",
-        exitDate: "28/09/2026",
-        notes: "Completed 6-month intensive study tenure. Relocated.",
-        termsAccepted: true
-      },
-      {
-        regNo: "C2SLIB-00068",
-        name: "Manoj Kumar Sahoo",
-        gender: "Male",
-        dob: "05/03/1998",
-        mobile: "9861987654",
-        fatherName: "Dillip Sahoo",
-        address: "Khandagiri, Bhubaneswar",
-        shift: "Day Shift",
-        seat: "Seat Released (Former: S-92)",
-        floor: "1st Floor (Zone C)",
-        status: "Left / Completed",
-        paid: 1000,
-        pending: 0,
-        mode: "Cash",
-        examPref: "UPSC CSE Mains",
-        studyPurpose: "UPSC CSE",
-        admDate: "10/06/2026",
-        toDate: "10/10/2026",
-        exitDate: "10/10/2026",
-        notes: "Tenure completed. Moving to Delhi for Mains batch.",
-        termsAccepted: true
-      },
-      {
-        regNo: "C2SLIB-00080",
-        name: "Tapas Kumar Das",
-        gender: "Male",
-        dob: "17/09/1995",
-        mobile: "8249765432",
-        fatherName: "Radha Shyam Das",
-        address: "Jatni, Khurda",
-        shift: "24 Hours Sanctuary",
-        seat: "Seat Released (Former: S-10)",
-        floor: "2nd Floor (Zone A)",
-        status: "Left / Completed",
-        paid: 1800,
-        pending: 0,
-        mode: "UPI",
-        examPref: "Odisha Judicial Service",
-        studyPurpose: "OJS",
-        admDate: "18/05/2026",
-        toDate: "18/10/2026",
-        exitDate: "18/10/2026",
-        notes: "Completed 5 months preparation tenure.",
-        termsAccepted: true
-      },
+  // Keep only real original admissions
+  const cleanMembers = members.filter(m => !demoRegNos.has(m.regNo) && !(m.name && (m.name.includes("Prakash Behera") || m.name.includes("Soumya Ranjan Mohapatra") || m.name.includes("Lipsa Tripathy") || m.name.includes("Bikram Mallick"))));
+  store.set('c2s_lib_members', cleanMembers);
 
-      // 1 CANCELLED MEMBER (Seat Released)
-      {
-        regNo: "C2SLIB-00074",
-        name: "Ananya Rath",
-        gender: "Female",
-        dob: "18/04/2001",
-        mobile: "9338765432",
-        fatherName: "Gopal Rath",
-        address: "Saheed Nagar, Bhubaneswar",
-        shift: "Evening Shift",
-        seat: "Seat Released (Former: S-120)",
-        floor: "1st Floor (Zone D)",
-        status: "Cancelled",
-        cancelledDate: "05/10/2026",
-        cancelledReason: "Shift timing conflict with college semester exams",
-        refundPaid: 300,
-        paid: 800,
-        pending: 0,
-        mode: "UPI / PhonePe",
-        examPref: "SSC CHSL",
-        studyPurpose: "SSC CHSL",
-        admDate: "25/08/2026",
-        toDate: "05/10/2026",
-        exitDate: "05/10/2026",
-        notes: "Cancelled on applicant request. Refund ₹300 disbursed via PhonePe.",
-        termsAccepted: true
-      }
-    ];
-
-    store.set('c2s_lib_members', defaultRegistry);
-    members = defaultRegistry;
-
-    // Seed occupied seats in c2s_lib_taken
-    const taken = store.get('c2s_lib_taken', {});
-    ['S-05', 'S-14', 'S-18', 'S-25', 'S-36', 'S-52', 'S-70', 'S-85', 'S-112', 'S-135'].forEach(code => {
-      taken[code] = true;
-      const numMatch = code.match(/\d+/);
+  // Recalculate taken seats strictly from real members
+  const realTaken = {};
+  cleanMembers.forEach(m => {
+    if (m.seat && !m.seat.toLowerCase().includes('released') && !m.seat.toLowerCase().includes('walk-in') && !m.seat.toLowerCase().includes('physical')) {
+      const numMatch = m.seat.match(/\d+/);
       if (numMatch) {
-        taken[`S-${String(numMatch[0]).padStart(2, '0')}`] = true;
-        taken[`Desk-${String(numMatch[0]).padStart(3, '0')}`] = true;
+        const num = parseInt(numMatch[0]);
+        realTaken[`S-${num}`] = true;
+        realTaken[`S-${String(num).padStart(2, '0')}`] = true;
+        realTaken[`Desk-${String(num).padStart(3, '0')}`] = true;
       }
-    });
-    store.set('c2s_lib_taken', taken);
-  }
+    }
+  });
+  store.set('c2s_lib_taken', realTaken);
+
+  // Clean demo entries from ledger
+  const ledger = store.get('c2s_lib_ledger', []);
+  const cleanLedger = ledger.filter(l => !l.desc || (!l.desc.includes('C2SLIB-001') && !l.desc.includes('Prakash Behera')));
+  store.set('c2s_lib_ledger', cleanLedger);
 }
+
+window.clearAllDemoMembers = function() {
+  const confirmClean = confirm("⚠️ Are you sure you want to clean all demo/sample student records? This will reset the library registry to a fresh, clean slate ready for 100% original admissions.");
+  if (!confirmClean) return;
+
+  store.set('c2s_lib_members', []);
+  store.set('c2s_lib_taken', {});
+  store.set('c2s_lib_ledger', []);
+  renderMemberList();
+  renderSeatController();
+  renderSuperAdmin();
+  initDeskAdmissionForm();
+  alert("✓ All demo student records wiped! Clean slate active — ready for real student admissions.");
+};
 
 /* Run on load */
 document.addEventListener('DOMContentLoaded', () => {
-  ensureSeedMembers();
+  cleanAllDemoData();
   if (typeof populateAdminMonthDropdown === 'function') {
     populateAdminMonthDropdown();
   }
