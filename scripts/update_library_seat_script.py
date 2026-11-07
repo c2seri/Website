@@ -165,3 +165,4 @@ with open('library.js', 'w', encoding='utf-8') as f:
     f.write(js)
 
 print('Successfully updated library.js with compact wide-view seat layout!')
+

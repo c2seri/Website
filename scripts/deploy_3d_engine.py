@@ -871,3 +871,4 @@ with open('library-360.js', 'w', encoding='utf-8') as f:
     f.write(code)
 
 print('Successfully generated and updated 3D virtual tour engine in both files!')
+

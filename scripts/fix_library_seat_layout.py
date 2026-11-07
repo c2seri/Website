@@ -57,3 +57,4 @@ with open('library/index.html', 'w', encoding='utf-8') as f:
     f.write(html)
 
 print('Successfully updated library/index.html seat matrix view!')
+
